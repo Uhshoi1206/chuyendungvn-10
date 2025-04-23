@@ -17,27 +17,38 @@ const SearchPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   
-  // Function to get the minimum weight for a weight category
-  const getMinWeightForCategory = (maxWeight: number): number => {
+  // Function to get weight range for a category
+  const getWeightRange = (categoryWeight: number): { min: number, max: number } => {
+    const weightCategory = truckWeights.find(w => w.value === categoryWeight);
+    if (!weightCategory) return { min: 0, max: 0 };
+    
     // For category "under 1 ton"
-    if (maxWeight === 1) return 0;
-    
-    // For other standard categories, find the previous weight boundary
-    const prevCategory = truckWeights.find(w => w.value === maxWeight);
-    const categoryIndex = truckWeights.findIndex(w => w.value === maxWeight);
-    
-    if (categoryIndex > 0) {
-      return truckWeights[categoryIndex - 1].value;
+    if (categoryWeight === 1) {
+      return { min: 0, max: 1 };
     }
     
-    // Fallback to 70% of the max weight if we can't find a category
-    return maxWeight * 0.7;
+    // For other categories, find the range
+    const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
+    if (categoryIndex > 0) {
+      // Get the previous weight as the minimum for this category
+      const minWeight = truckWeights[categoryIndex - 1].value;
+      return { min: minWeight, max: categoryWeight };
+    }
+    
+    // Fallback (should not happen with proper data)
+    return { min: 0, max: categoryWeight };
   };
+  
+  // Get weight param
+  const weightParam = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
+  
+  // Set initial filters based on weight range
+  const weightRange = weightParam ? getWeightRange(weightParam) : { min: null, max: null };
   
   const initialFilters: TruckFilters = {
     brand: queryParams.get('brand'),
-    minWeight: queryParams.get('weight') ? getMinWeightForCategory(parseFloat(queryParams.get('weight') || '0')) : null,
-    maxWeight: queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null,
+    minWeight: weightParam ? weightRange.min : null,
+    maxWeight: weightParam ? weightRange.max : null,
     minPrice: null,
     maxPrice: null,
     search: queryParams.get('search'),
@@ -50,16 +61,26 @@ const SearchPage = () => {
   useEffect(() => {
     // Update filters when URL changes
     const brand = queryParams.get('brand');
-    const weight = queryParams.get('weight');
+    const weight = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
     const search = queryParams.get('search');
     
-    const newFilters: TruckFilters = {
-      ...filters,
-      brand,
-      minWeight: weight ? parseFloat(weight) : null,
-      maxWeight: weight ? parseFloat(weight) + 0.1 : null,
-      search,
-    };
+    let newFilters: TruckFilters = { ...filters, brand, search };
+    
+    // Update weight range filters if weight parameter exists
+    if (weight) {
+      const range = getWeightRange(weight);
+      newFilters = {
+        ...newFilters,
+        minWeight: range.min,
+        maxWeight: range.max
+      };
+    } else {
+      newFilters = {
+        ...newFilters,
+        minWeight: null,
+        maxWeight: null
+      };
+    }
     
     setFilters(newFilters);
     if (search) setSearchInput(search);
@@ -81,10 +102,18 @@ const SearchPage = () => {
     }
     
     // Weight range filter
-    if (filters.minWeight !== null && truck.weight < filters.minWeight) {
+    if (filters.minWeight !== null && filters.maxWeight !== null) {
+      // Include trucks within the weight range (inclusive of min, exclusive of max - except for the highest category)
+      if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
+        // Special case for the highest category "Trên 15 tấn"
+        if (filters.maxWeight === 20 && truck.weight >= filters.minWeight) {
+          return true;
+        }
+        return false;
+      }
+    } else if (filters.minWeight !== null && truck.weight < filters.minWeight) {
       return false;
-    }
-    if (filters.maxWeight !== null && truck.weight > filters.maxWeight) {
+    } else if (filters.maxWeight !== null && truck.weight > filters.maxWeight) {
       return false;
     }
     

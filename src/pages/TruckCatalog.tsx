@@ -42,10 +42,18 @@ const TruckCatalog = () => {
     }
     
     // Weight range filter
-    if (filters.minWeight !== null && truck.weight < filters.minWeight) {
+    if (filters.minWeight !== null && filters.maxWeight !== null) {
+      // Include trucks within the weight range (inclusive of min, exclusive of max - except for the highest category)
+      if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
+        // Special case for the highest category "Trên 15 tấn"
+        if (filters.maxWeight === 20 && truck.weight >= filters.minWeight) {
+          return true;
+        }
+        return false;
+      }
+    } else if (filters.minWeight !== null && truck.weight < filters.minWeight) {
       return false;
-    }
-    if (filters.maxWeight !== null && truck.weight > filters.maxWeight) {
+    } else if (filters.maxWeight !== null && truck.weight > filters.maxWeight) {
       return false;
     }
     
