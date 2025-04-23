@@ -1,16 +1,16 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TruckItem from '@/components/TruckItem';
 import FilterSidebar from '@/components/FilterSidebar';
 import { trucks, truckWeights } from '@/data/truckData';
-import { Truck, TruckFilters } from '@/models/TruckTypes';
+import { Truck, TruckFilters, VehicleType } from '@/models/TruckTypes';
 import { Button } from '@/components/ui/button';
 import { Filter, Search } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const TruckCatalog = () => {
   const initialFilters: TruckFilters = {
@@ -24,10 +24,14 @@ const TruckCatalog = () => {
   
   const [filters, setFilters] = useState<TruckFilters>(initialFilters);
   const [searchInput, setSearchInput] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<VehicleType>('truck');
   const isMobile = useIsMobile();
   
-  // Apply filters
-  const filteredTrucks = trucks.filter(truck => {
+  // Filter trucks by type first
+  const vehiclesByType = trucks.filter(truck => truck.type === selectedType);
+  
+  // Apply other filters
+  const filteredTrucks = vehiclesByType.filter(truck => {
     // Brand filter
     if (filters.brand && truck.brand !== filters.brand) {
       return false;
@@ -81,18 +85,40 @@ const TruckCatalog = () => {
     });
   };
   
+  const vehicleTypeLabels: Record<VehicleType, string> = {
+    truck: 'Xe Tải',
+    trailer: 'Sơ Mi Rơ Mooc',
+    tractor: 'Xe Đầu Kéo'
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
       {/* Page Header */}
       <div className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Danh Mục Xe Tải</h1>
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold mb-2">Danh Mục Xe</h1>
           <p className="text-gray-300">
-            Tìm kiếm và lựa chọn xe tải phù hợp với nhu cầu vận chuyển của bạn
+            Tìm kiếm và lựa chọn phương tiện phù hợp với nhu cầu vận chuyển của bạn
           </p>
         </div>
+      </div>
+      
+      {/* Vehicle Type Tabs */}
+      <div className="container mx-auto px-4 py-6">
+        <Tabs
+          defaultValue="truck"
+          value={selectedType}
+          onValueChange={(value) => setSelectedType(value as VehicleType)}
+          className="w-full"
+        >
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="truck">Xe Tải</TabsTrigger>
+            <TabsTrigger value="trailer">Sơ Mi Rơ Mooc</TabsTrigger>
+            <TabsTrigger value="tractor">Xe Đầu Kéo</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
       
       {/* Search Bar for Mobile */}
@@ -102,7 +128,7 @@ const TruckCatalog = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
             <Input
               type="search"
-              placeholder="Tìm kiếm xe tải..."
+              placeholder={`Tìm ${vehicleTypeLabels[selectedType].toLowerCase()}...`}
               className="pl-10"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -142,7 +168,7 @@ const TruckCatalog = () => {
             </div>
           </div>
           
-          {/* Trucks Grid */}
+          {/* Vehicles Grid */}
           <div className="w-full md:w-3/4 lg:w-4/5">
             {/* Search and Sort - Desktop Only */}
             <div className="hidden md:flex justify-between items-center mb-6">
@@ -150,7 +176,7 @@ const TruckCatalog = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                 <Input
                   type="search"
-                  placeholder="Tìm kiếm xe tải..."
+                  placeholder={`Tìm ${vehicleTypeLabels[selectedType].toLowerCase()}...`}
                   className="pl-10"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
@@ -167,7 +193,7 @@ const TruckCatalog = () => {
               Hiển thị {filteredTrucks.length} kết quả
             </div>
             
-            {/* Trucks Grid */}
+            {/* Vehicles Grid */}
             {filteredTrucks.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredTrucks.map(truck => (

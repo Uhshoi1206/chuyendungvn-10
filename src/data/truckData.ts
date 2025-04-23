@@ -1,4 +1,3 @@
-
 import { Truck, TruckWeight, TruckBrand } from '../models/TruckTypes';
 
 export const truckWeights: TruckWeight[] = [
@@ -42,7 +41,8 @@ export const trucks: Truck[] = [
     ],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg',
     isHot: true,
-    isNew: false
+    isNew: false,
+    type: 'truck'
   },
   {
     id: 't2',
@@ -64,7 +64,8 @@ export const trucks: Truck[] = [
     ],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/thaco-ollin-350-e4.jpg',
     isHot: true,
-    isNew: true
+    isNew: true,
+    type: 'truck'
   },
   {
     id: 't3',
@@ -86,94 +87,51 @@ export const trucks: Truck[] = [
     ],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/isuzu-qkr-270.jpg',
     isHot: false,
-    isNew: true
+    isNew: true,
+    type: 'truck'
   },
   {
-    id: 't4',
-    name: 'Hino 500 Series FG',
-    slug: 'hino-500-series-fg',
-    brand: 'Hino',
-    price: 950000000,
-    priceText: '950.000.000 VNĐ',
-    weight: 8.5,
-    weightText: '8.5 tấn',
-    length: 6.8,
-    engine: 'Hino J08E-UG, 7.7L, 260HP',
-    fuelType: 'Dầu Diesel',
-    features: ['Công suất lớn', 'Cabin hiện đại', 'Hệ thống phanh ABS/EBD'],
-    description: 'Hino 500 Series FG là dòng xe tải hạng trung cao cấp với tải trọng 8.5 tấn, được trang bị nhiều tính năng hiện đại và động cơ mạnh mẽ, phù hợp cho vận tải hàng hóa đường dài.',
+    id: 'tr1',
+    name: 'Sơ mi rơ mooc Doosung 3 trục',
+    slug: 'so-mi-ro-mooc-doosung-3-truc',
+    brand: 'Doosung',
+    price: 350000000,
+    priceText: '350.000.000 VNĐ',
+    weight: 30,
+    weightText: '30 tấn',
+    length: 12.4,
+    engine: 'N/A',
+    fuelType: 'N/A',
+    features: ['Thùng lửng', '3 trục', 'Tải trọng cao'],
+    description: 'Sơ mi rơ mooc Doosung 3 trục với thiết kế chắc chắn, tải trọng lớn, phù hợp vận chuyển container và hàng hóa nặng.',
     images: [
-      'https://tongkhoxetai.vn/upload/images/hino-500-series-fg.jpg',
-      'https://tongkhoxetai.vn/upload/images/hino-500-fg-thung-mui-bat.jpg'
+      'https://tongkhoxetai.vn/upload/images/so-mi-ro-mooc-doosung.jpg'
     ],
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/hino-500-series-fg.jpg',
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/so-mi-ro-mooc-doosung.jpg',
     isHot: true,
-    isNew: false
+    isNew: false,
+    type: 'trailer'
   },
   {
-    id: 't5',
-    name: 'Dongfeng Hoàng Huy B180',
-    slug: 'dongfeng-hoang-huy-b180',
-    brand: 'Dongfeng',
-    price: 600000000,
-    priceText: '600.000.000 VNĐ',
-    weight: 7.8,
-    weightText: '7.8 tấn',
-    length: 6.2,
-    engine: 'Cummins ISB 140, 5.9L, 140HP',
+    id: 'tr2',
+    name: 'Xe đầu kéo Hyundai HD1000',
+    slug: 'xe-dau-keo-hyundai-hd1000',
+    brand: 'Hyundai',
+    price: 1850000000,
+    priceText: '1.850.000.000 VNĐ',
+    weight: 18,
+    weightText: '18 tấn',
+    length: 7.2,
+    engine: 'Hyundai D6CC, Euro 4, 380HP',
     fuelType: 'Dầu Diesel',
-    features: ['Khả năng chịu tải cao', 'Tiêu thụ nhiên liệu thấp', 'Dễ dàng bảo trì'],
-    description: 'Dongfeng Hoàng Huy B180 là dòng xe tải trung cao cấp với tải trọng 7.8 tấn, được trang bị động cơ Cummins mạnh mẽ với khả năng vận hành bền bỉ trên mọi địa hình.',
+    features: ['Động cơ mạnh mẽ', 'Cabin hiện đại', 'Tiết kiệm nhiên liệu'],
+    description: 'Xe đầu kéo Hyundai HD1000 mạnh mẽ với động cơ 380HP, cabin hiện đại và nhiều tính năng an toàn.',
     images: [
-      'https://tongkhoxetai.vn/upload/images/dongfeng-hoang-huy-b180.jpg',
-      'https://tongkhoxetai.vn/upload/images/dongfeng-b180-thung-kin.jpg'
+      'https://tongkhoxetai.vn/upload/images/xe-dau-keo-hyundai.jpg'
     ],
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/dongfeng-hoang-huy-b180.jpg',
-    isHot: false,
-    isNew: false
-  },
-  {
-    id: 't6',
-    name: 'JAC X5',
-    slug: 'jac-x5',
-    brand: 'JAC',
-    price: 295000000,
-    priceText: '295.000.000 VNĐ',
-    weight: 1.25,
-    weightText: '1.25 tấn',
-    length: 3.1,
-    engine: 'HFC4DA1-2C, 1.9L, 90HP',
-    fuelType: 'Dầu Diesel',
-    features: ['Nhỏ gọn', 'Vận hành linh hoạt', 'Tiết kiệm nhiên liệu'],
-    description: 'JAC X5 là dòng xe tải nhẹ cỡ nhỏ với tải trọng 1.25 tấn, phù hợp với các tuyến đường nhỏ hẹp trong thành phố, chi phí đầu tư và vận hành thấp.',
-    images: [
-      'https://tongkhoxetai.vn/upload/images/jac-x5.jpg',
-      'https://tongkhoxetai.vn/upload/images/xe-tai-jac-x5-125-tan.jpg'
-    ],
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/jac-x5.jpg',
-    isHot: false,
-    isNew: true
-  },
-  {
-    id: 't7',
-    name: 'Mitsubishi Fuso Canter TF',
-    slug: 'mitsubishi-fuso-canter-tf',
-    brand: 'Mitsubishi',
-    price: 677000000,
-    priceText: '677.000.000 VNĐ',
-    weight: 7.5,
-    weightText: '7.5 tấn',
-    length: 6.0,
-    engine: 'FUSO 4D34i, 3.9L, 136HP',
-    fuelType: 'Dầu Diesel',
-    features: ['Công nghệ Nhật Bản', 'An toàn cao', 'Độ bền vượt trội'],
-    description: 'Mitsubishi Fuso Canter TF là dòng xe tải trung với công nghệ Nhật Bản, tải trọng 7.5 tấn, độ bền cao và chi phí vận hành thấp, phù hợp cho vận tải đường dài.',
-    images: [
-      'https://tongkhoxetai.vn/upload/images/mitsubishi-fuso-canter-tf.jpg',
-      'https://tongkhoxetai.vn/upload/images/fuso-canter-tf-thung-mui-bat.jpg'
-    ],
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mitsubishi-fuso-canter-tf.jpg',
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-hyundai.jpg',
     isHot: true,
-    isNew: false
+    isNew: true,
+    type: 'tractor'
   }
 ];

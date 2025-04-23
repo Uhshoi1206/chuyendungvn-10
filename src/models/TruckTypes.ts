@@ -1,4 +1,3 @@
-
 export interface TruckWeight {
   id: string;
   name: string;
@@ -10,6 +9,8 @@ export interface TruckBrand {
   name: string;
   logo?: string;
 }
+
+export type VehicleType = 'truck' | 'trailer' | 'tractor';
 
 export interface Truck {
   id: string;
@@ -29,6 +30,7 @@ export interface Truck {
   thumbnailUrl: string;
   isHot: boolean;
   isNew: boolean;
+  type: VehicleType;
 }
 
 export interface TruckFilters {
