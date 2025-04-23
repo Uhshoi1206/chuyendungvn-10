@@ -1,0 +1,39 @@
+
+import React from 'react';
+import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
+
+const Hero: React.FC = () => {
+  return (
+    <div className="relative bg-gray-900 text-white">
+      <div className="absolute inset-0 overflow-hidden">
+        <img 
+          src="https://tongkhoxetai.vn/upload/images/banner-xe-tai.jpg" 
+          alt="Xe tải hạng nặng" 
+          className="w-full h-full object-cover opacity-30"
+        />
+      </div>
+      <div className="container mx-auto relative z-10 py-16 md:py-24">
+        <div className="max-w-xl">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            Chuyên Cung Cấp Các Loại <span className="text-primary">Xe Tải</span> Chính Hãng
+          </h1>
+          <p className="text-lg md:text-xl mb-6 text-gray-200">
+            Đa dạng tải trọng từ 500kg đến 20 tấn với nhiều thương hiệu uy tín.
+            Cam kết giá tốt nhất thị trường và dịch vụ sau bán hàng chuyên nghiệp.
+          </p>
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+            <Button asChild size="lg" className="bg-primary hover:bg-red-700 text-white font-medium">
+              <Link to="/danh-muc">Xem danh mục xe</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white hover:text-gray-900">
+              <Link to="/lien-he">Liên hệ tư vấn</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;
