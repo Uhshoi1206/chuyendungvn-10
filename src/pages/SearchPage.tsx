@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TruckItem from '@/components/TruckItem';
 import FilterSidebar from '@/components/FilterSidebar';
-import { trucks } from '@/data/truckData';
+import { trucks, truckWeights } from '@/data/truckData';
 import { TruckFilters } from '@/models/TruckTypes';
 import { Button } from '@/components/ui/button';
 import { Filter, Search } from 'lucide-react';
@@ -17,10 +17,27 @@ const SearchPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   
+  // Function to get the minimum weight for a weight category
+  const getMinWeightForCategory = (maxWeight: number): number => {
+    // For category "under 1 ton"
+    if (maxWeight === 1) return 0;
+    
+    // For other standard categories, find the previous weight boundary
+    const prevCategory = truckWeights.find(w => w.value === maxWeight);
+    const categoryIndex = truckWeights.findIndex(w => w.value === maxWeight);
+    
+    if (categoryIndex > 0) {
+      return truckWeights[categoryIndex - 1].value;
+    }
+    
+    // Fallback to 70% of the max weight if we can't find a category
+    return maxWeight * 0.7;
+  };
+  
   const initialFilters: TruckFilters = {
     brand: queryParams.get('brand'),
-    minWeight: queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null,
-    maxWeight: queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') + 0.1 : null,
+    minWeight: queryParams.get('weight') ? getMinWeightForCategory(parseFloat(queryParams.get('weight') || '0')) : null,
+    maxWeight: queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null,
     minPrice: null,
     maxPrice: null,
     search: queryParams.get('search'),

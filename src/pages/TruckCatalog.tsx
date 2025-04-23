@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TruckItem from '@/components/TruckItem';
 import FilterSidebar from '@/components/FilterSidebar';
-import { trucks } from '@/data/truckData';
+import { trucks, truckWeights } from '@/data/truckData';
 import { Truck, TruckFilters } from '@/models/TruckTypes';
 import { Button } from '@/components/ui/button';
 import { Filter, Search } from 'lucide-react';
