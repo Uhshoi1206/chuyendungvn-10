@@ -94,6 +94,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     }
     
     setFilters(newFilters);
+    updateUrl(newFilters);
   };
   
   const updateUrl = (newFilters: TruckFilters) => {

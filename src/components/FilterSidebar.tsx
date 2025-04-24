@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
@@ -62,8 +63,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleApplyFilters = () => {
+    // Truyền toàn bộ đối tượng localFilters vào hàm onFilterChange parent
     for (const key in localFilters) {
-      onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
+      if (Object.prototype.hasOwnProperty.call(localFilters, key)) {
+        onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
+      }
     }
     
     toast({
