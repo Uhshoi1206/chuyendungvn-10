@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,16 +5,25 @@ import Hero from '@/components/Hero';
 import TruckItem from '@/components/TruckItem';
 import ContactForm from '@/components/ContactForm';
 import { trucks, truckWeights, truckBrands } from '@/data/truckData';
+import { blogPosts, blogCategories } from '@/data/blogData';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
+import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 
 const Index = () => {
   // Get hot trucks for featured section
   const hotTrucks = trucks.filter(truck => truck.isHot);
   // Get new trucks
   const newTrucks = trucks.filter(truck => truck.isNew);
+
+  // Lấy bài viết mới nhất của mỗi danh mục
+  const latestPostsByCategory = Object.keys(blogCategories).map(category => {
+    return blogPosts
+      .filter(post => post.category === category)
+      .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())[0];
+  });
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -96,6 +104,70 @@ const Index = () => {
                 <span className="font-bold text-xl">{brand.name}</span>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Blog Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">Tin Tức & Chia Sẻ</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Cập nhật thông tin mới nhất về ngành vận tải và các dòng xe tải phổ biến trên thị trường
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {latestPostsByCategory.map(post => (
+              <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
+                  <div className="aspect-video relative overflow-hidden">
+                    <img
+                      src={post.images[0]}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <Link 
+                        to={`/blog/category/${post.category}`}
+                        className="inline-block bg-red-100 bg-opacity-90 text-primary rounded-full px-3 py-1 text-xs font-medium"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {blogCategories[post.category]}
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-sm text-gray-500 flex items-center">
+                        <CalendarDays className="h-4 w-4 mr-1" />
+                        {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+                      </span>
+                      <span className="text-sm text-gray-500 flex items-center">
+                        <Clock className="h-4 w-4 mr-1" />
+                        {post.readTime} phút
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {post.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="px-6">
+              <Link to="/blog" className="flex items-center gap-2">
+                Xem tất cả bài viết
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
