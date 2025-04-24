@@ -10,6 +10,8 @@ import TruckDetail from "./pages/TruckDetail";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
 
 const queryClient = new QueryClient();
 

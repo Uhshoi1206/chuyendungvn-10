@@ -67,9 +67,13 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     setFilters(newFilters);
   }, [location.search]);
 
-  const handleFilterChange = (newFilters: TruckFilters) => {
+  const handleFilterChange = (key: keyof TruckFilters, value: any) => {
+    const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
-    
+    updateUrl(newFilters);
+  };
+  
+  const updateUrl = (newFilters: TruckFilters) => {
     const params = new URLSearchParams();
     
     if (newFilters.brand) {
@@ -98,7 +102,8 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       ...filters,
       search: searchInput,
     };
-    handleFilterChange(newFilters);
+    setFilters(newFilters);
+    updateUrl(newFilters);
   };
 
   const handleResetFilters = () => {

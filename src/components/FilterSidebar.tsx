@@ -12,7 +12,7 @@ import { Filter } from 'lucide-react';
 
 interface FilterSidebarProps {
   filters: TruckFilters;
-  onFilterChange: (filters: TruckFilters) => void;
+  onFilterChange: (key: keyof TruckFilters, value: any) => void;
   onResetFilters: () => void;
   className?: string;
 }
@@ -51,7 +51,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleApplyFilters = () => {
-    onFilterChange(localFilters);
+    // Áp dụng từng bộ lọc một
+    for (const key in localFilters) {
+      onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
+    }
   };
 
   const handleResetFilters = () => {
