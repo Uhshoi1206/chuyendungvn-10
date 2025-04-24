@@ -25,7 +25,8 @@ const App = () => (
           <Route path="/xe-tai/:slug" element={<TruckDetail />} />
           <Route path="/lien-he" element={<ContactPage />} />
           <Route path="/gioi-thieu" element={<AboutPage />} />
-          <Route path="/blog" element={<NotFound />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
