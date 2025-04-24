@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TruckItem from '@/components/TruckItem';
@@ -11,33 +12,103 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const TruckCatalog = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  
+  // Hàm để lấy phạm vi trọng lượng cho một danh mục
+  const getWeightRange = (categoryWeight: number): { min: number, max: number } => {
+    const weightCategory = truckWeights.find(w => w.value === categoryWeight);
+    if (!weightCategory) return { min: 0, max: 0 };
+    
+    // Đối với danh mục "dưới 1 tấn"
+    if (categoryWeight === 1) {
+      return { min: 0, max: 1 };
+    }
+    
+    // Đối với danh mục "trên 15 tấn"
+    if (categoryWeight === 20) {
+      return { min: 15, max: 100 };
+    }
+    
+    // Đối với các danh mục khác, tìm phạm vi
+    const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
+    if (categoryIndex > 0) {
+      // Lấy trọng lượng trước đó làm giá trị tối thiểu cho danh mục này
+      const minWeight = truckWeights[categoryIndex - 1].value;
+      return { min: minWeight, max: categoryWeight };
+    }
+    
+    // Giá trị mặc định (không nên xảy ra với dữ liệu hợp lệ)
+    return { min: 0, max: categoryWeight };
+  };
+  
+  // Lấy tham số trọng lượng từ URL
+  const weightParam = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
+  const brandParam = queryParams.get('brand');
+  const searchParam = queryParams.get('search');
+  
+  // Thiết lập bộ lọc ban đầu dựa trên phạm vi trọng lượng
+  const weightRange = weightParam ? getWeightRange(weightParam) : { min: null, max: null };
+  
   const initialFilters: TruckFilters = {
-    brand: null,
+    brand: brandParam || null,
     minPrice: null,
     maxPrice: null,
-    minWeight: null,
-    maxWeight: null,
-    search: null,
+    minWeight: weightParam ? weightRange.min : null,
+    maxWeight: weightParam ? weightRange.max : null,
+    search: searchParam || null,
   };
   
   const [filters, setFilters] = useState<TruckFilters>(initialFilters);
-  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>(searchParam || '');
   const [selectedType, setSelectedType] = useState<VehicleType>('truck');
   const isMobile = useIsMobile();
   
-  // Filter trucks by type first
+  useEffect(() => {
+    // Cập nhật bộ lọc khi URL thay đổi
+    const brand = queryParams.get('brand');
+    const weight = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
+    const search = queryParams.get('search');
+    
+    let newFilters: TruckFilters = { ...filters };
+    
+    if (brand) {
+      newFilters.brand = brand;
+    }
+    
+    if (search) {
+      newFilters.search = search;
+      setSearchInput(search);
+    }
+    
+    // Cập nhật bộ lọc phạm vi trọng lượng nếu tham số trọng lượng tồn tại
+    if (weight) {
+      const range = getWeightRange(weight);
+      newFilters = {
+        ...newFilters,
+        minWeight: range.min,
+        maxWeight: range.max
+      };
+    }
+    
+    setFilters(newFilters);
+  }, [location.search]);
+  
+  // Lọc xe theo loại trước tiên
   const vehiclesByType = trucks.filter(truck => truck.type === selectedType);
   
-  // Apply other filters
+  // Áp dụng các bộ lọc khác
   const filteredTrucks = vehiclesByType.filter(truck => {
-    // Brand filter
+    // Bộ lọc thương hiệu
     if (filters.brand && truck.brand !== filters.brand) {
       return false;
     }
     
-    // Price range filter
+    // Bộ lọc phạm vi giá
     if (filters.minPrice !== null && truck.price < filters.minPrice) {
       return false;
     }
@@ -45,14 +116,15 @@ const TruckCatalog = () => {
       return false;
     }
     
-    // Weight range filter
+    // Bộ lọc phạm vi trọng lượng
     if (filters.minWeight !== null && filters.maxWeight !== null) {
-      // Include trucks within the weight range (inclusive of min, exclusive of max - except for the highest category)
+      // Trường hợp đặc biệt cho danh mục cao nhất "Trên 15 tấn"
+      if (filters.maxWeight >= 20 && truck.weight >= filters.minWeight) {
+        return true;
+      }
+      
+      // Bao gồm xe tải trong phạm vi trọng lượng
       if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
-        // Special case for the highest category "Trên 15 tấn"
-        if (filters.maxWeight === 20 && truck.weight >= filters.minWeight) {
-          return true;
-        }
         return false;
       }
     } else if (filters.minWeight !== null && truck.weight < filters.minWeight) {
@@ -61,7 +133,7 @@ const TruckCatalog = () => {
       return false;
     }
     
-    // Search filter
+    // Bộ lọc tìm kiếm
     if (filters.search && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
       return false;
     }
@@ -71,18 +143,65 @@ const TruckCatalog = () => {
   
   const handleFilterChange = (newFilters: TruckFilters) => {
     setFilters(newFilters);
+    
+    // Cập nhật URL với bộ lọc mới
+    const params = new URLSearchParams();
+    
+    if (newFilters.brand) {
+      params.set('brand', newFilters.brand);
+    }
+    
+    if (newFilters.minWeight !== null && newFilters.maxWeight !== null) {
+      // Tìm danh mục trọng lượng phù hợp với phạm vi
+      const weightCategory = truckWeights.find(w => 
+        w.min === newFilters.minWeight && w.max === newFilters.maxWeight
+      );
+      
+      if (weightCategory) {
+        params.set('weight', weightCategory.value.toString());
+      }
+    }
+    
+    if (newFilters.search) {
+      params.set('search', newFilters.search);
+    }
+    
+    // Cập nhật URL mà không làm mới trang
+    navigate(`/danh-muc?${params.toString()}`, { replace: true });
   };
   
   const handleResetFilters = () => {
-    setFilters(initialFilters);
+    setFilters({
+      brand: null,
+      minPrice: null,
+      maxPrice: null,
+      minWeight: null,
+      maxWeight: null,
+      search: null,
+    });
     setSearchInput('');
+    
+    // Xóa tất cả các tham số truy vấn
+    navigate('/danh-muc', { replace: true });
   };
   
   const handleSearch = () => {
-    setFilters({
+    const newFilters = {
       ...filters,
       search: searchInput,
-    });
+    };
+    setFilters(newFilters);
+    
+    // Cập nhật URL với bộ lọc mới
+    const params = new URLSearchParams(location.search);
+    
+    if (searchInput) {
+      params.set('search', searchInput);
+    } else {
+      params.delete('search');
+    }
+    
+    navigate(`/danh-muc?${params.toString()}`, { replace: true });
   };
   
   const vehicleTypeLabels: Record<VehicleType, string> = {
