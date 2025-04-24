@@ -23,9 +23,9 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
       >
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="truck">Xe Tải</TabsTrigger>
-          <TabsTrigger value="trailer">Sơ Mi Rơ Mooc</TabsTrigger>
-          <TabsTrigger value="tractor">Xe Đầu Kéo</TabsTrigger>
           <TabsTrigger value="crane">Cẩu</TabsTrigger>
+          <TabsTrigger value="trailer">Mooc</TabsTrigger>
+          <TabsTrigger value="tractor">Xe Đầu Kéo</TabsTrigger>
         </TabsList>
       </Tabs>
     </div>
