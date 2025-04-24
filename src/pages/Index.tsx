@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,9 +12,14 @@ import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 
 const Index = () => {
   // Get hot trucks for featured section
-  const hotTrucks = trucks.filter(truck => truck.isHot);
+  const hotTrucks = trucks.filter(truck => truck.isHot && truck.type === 'truck');
   // Get new trucks
   const newTrucks = trucks.filter(truck => truck.isNew);
+  
+  // Lọc sản phẩm theo loại
+  const cranes = trucks.filter(truck => truck.type === 'crane');
+  const trailers = trucks.filter(truck => truck.type === 'trailer');
+  const tractors = trucks.filter(truck => truck.type === 'tractor');
 
   // Lấy bài viết mới nhất của mỗi danh mục
   const latestPostsByCategory = Object.keys(blogCategories).map(category => {
@@ -52,7 +56,7 @@ const Index = () => {
           
           <div className="text-center mt-10">
             <Button asChild variant="outline" className="px-6">
-              <Link to="/danh-muc">Xem tất cả xe tải</Link>
+              <Link to="/danh-muc?type=truck">Xem tất cả xe tải</Link>
             </Button>
           </div>
         </div>
@@ -70,59 +74,9 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
-                  alt="Cẩu tự hành"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Cẩu Tự Hành 25 Tấn</h3>
-                <p className="text-gray-600 mb-4">Cẩu tự hành hiện đại, khả năng nâng tối đa 25 tấn</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
-                  alt="Cẩu lắp xe tải"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Cẩu Gắn Xe Tải</h3>
-                <p className="text-gray-600 mb-4">Cẩu chuyên dụng lắp trên xe tải, tải trọng đa dạng</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
-                  alt="Cẩu công trình"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Cẩu Tháp Công Trình</h3>
-                <p className="text-gray-600 mb-4">Cẩu tháp chuyên dụng cho các công trình xây dựng</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
+            {cranes.map(crane => (
+              <TruckItem key={crane.id} truck={crane} />
+            ))}
           </div>
 
           <div className="text-center mt-10">
@@ -145,59 +99,9 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
-                  alt="Mooc sàn"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Mooc Sàn</h3>
-                <p className="text-gray-600 mb-4">Mooc sàn 40 feet, tải trọng cao, chất lượng vượt trội</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
-                  alt="Mooc ben"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Mooc Ben</h3>
-                <p className="text-gray-600 mb-4">Mooc ben tự đổ, thiết kế hiện đại, bền bỉ</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
-                  alt="Mooc xương"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Mooc Xương</h3>
-                <p className="text-gray-600 mb-4">Mooc xương chuyên chở container, độ bền cao</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
+            {trailers.map(trailer => (
+              <TruckItem key={trailer.id} truck={trailer} />
+            ))}
           </div>
 
           <div className="text-center mt-10">
@@ -220,59 +124,9 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1550919559-2256f4b083a4"
-                  alt="Xe đầu kéo"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Đầu Kéo Cao Cấp</h3>
-                <p className="text-gray-600 mb-4">Xe đầu kéo cao cấp, động cơ mạnh mẽ, cabin tiện nghi</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7"
-                  alt="Xe đầu kéo thế hệ mới"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Đầu Kéo Thế Hệ Mới</h3>
-                <p className="text-gray-600 mb-4">Xe đầu kéo thế hệ mới, tích hợp công nghệ tiên tiến</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1597404294360-feeeda04612e"
-                  alt="Xe đầu kéo tiết kiệm nhiên liệu"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-bold mb-2">Đầu Kéo Tiết Kiệm</h3>
-                <p className="text-gray-600 mb-4">Xe đầu kéo tiết kiệm nhiên liệu, chi phí vận hành thấp</p>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/lien-he">Liên hệ tư vấn</Link>
-                </Button>
-              </div>
-            </div>
+            {tractors.map(tractor => (
+              <TruckItem key={tractor.id} truck={tractor} />
+            ))}
           </div>
 
           <div className="text-center mt-10">

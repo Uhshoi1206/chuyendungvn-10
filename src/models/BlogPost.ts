@@ -1,3 +1,4 @@
+
 // Định nghĩa các danh mục blog có sẵn
 // Khi thêm danh mục mới, cần thêm vào đây và trong blogData.ts
 export type BlogCategory = 'xe-tai' | 'cau' | 'mooc-ben' | 'mooc-san' | 'mooc-xuong' | 'xe-dau-keo';
