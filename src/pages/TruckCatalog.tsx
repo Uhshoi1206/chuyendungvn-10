@@ -21,16 +21,17 @@ const TruckCatalog = () => {
   const brandParam = queryParams.get('brand');
   const weightParam = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
   const searchParam = queryParams.get('search');
+  const typeParam = queryParams.get('type') as VehicleType | null;
   const isMobile = useIsMobile();
-  const [selectedType, setSelectedType] = useState<VehicleType>('truck');
-
-  console.log('Weight param:', weightParam); // Thêm log để kiểm tra
+  
+  // Sử dụng tham số type từ URL nếu có, mặc định là 'truck'
+  const [selectedType, setSelectedType] = useState<VehicleType>(typeParam || 'truck');
 
   const initialFilters = {
     brand: brandParam || null,
     minPrice: null,
     maxPrice: null,
-    minWeight: weightParam || null, // Đảm bảo tham số trọng lượng được xử lý đúng
+    minWeight: weightParam || null,
     maxWeight: weightParam || null,
     search: searchParam || null,
   };
@@ -44,7 +45,7 @@ const TruckCatalog = () => {
     handleResetFilters,
   } = useTruckFilters(initialFilters);
 
-  // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc
+  // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc và tab
   useEffect(() => {
     const newFilters = {
       ...filters,
@@ -53,6 +54,11 @@ const TruckCatalog = () => {
       maxWeight: weightParam || null,
       search: searchParam || null
     };
+    
+    // Cập nhật tab dựa trên tham số type
+    if (typeParam && (typeParam === 'truck' || typeParam === 'trailer' || typeParam === 'tractor' || typeParam === 'crane')) {
+      setSelectedType(typeParam);
+    }
     
     // Cập nhật bộ lọc nếu có thay đổi từ URL
     const hasChanged = 
@@ -74,7 +80,8 @@ const TruckCatalog = () => {
   const vehicleTypeLabels: Record<VehicleType, string> = {
     truck: 'Xe Tải',
     trailer: 'Sơ Mi Rơ Mooc',
-    tractor: 'Xe Đầu Kéo'
+    tractor: 'Xe Đầu Kéo',
+    crane: 'Cẩu'
   };
 
   return (
