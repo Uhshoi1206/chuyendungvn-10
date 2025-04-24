@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FilterSidebar from '@/components/FilterSidebar';
 import { trucks } from '@/data/truckData';
-import { VehicleType } from '@/models/TruckTypes';
+import { TruckFilters, VehicleType } from '@/models/TruckTypes';
 import { useTruckFilters } from '@/hooks/useTruckFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useVehicleFiltering } from '@/hooks/useVehicleFiltering';
@@ -27,13 +27,14 @@ const TruckCatalog = () => {
   // Sử dụng tham số type từ URL nếu có, mặc định là 'truck'
   const [selectedType, setSelectedType] = useState<VehicleType>(typeParam || 'truck');
 
-  const initialFilters = {
+  const initialFilters: TruckFilters = {
     brand: brandParam || null,
     minPrice: null,
     maxPrice: null,
     minWeight: weightParam || null,
     maxWeight: weightParam || null,
     search: searchParam || null,
+    vehicleType: typeParam || null,
   };
 
   const {
@@ -43,37 +44,23 @@ const TruckCatalog = () => {
     handleFilterChange,
     handleSearch,
     handleResetFilters,
+    updateUrl
   } = useTruckFilters(initialFilters);
+
+  // Theo dõi thay đổi của selectedType và cập nhật bộ lọc
+  useEffect(() => {
+    handleFilterChange('vehicleType', selectedType);
+    // Cập nhật URL với loại xe đã chọn
+    const newFilters = { ...filters, vehicleType: selectedType };
+    updateUrl(newFilters);
+  }, [selectedType]);
 
   // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc và tab
   useEffect(() => {
-    const newFilters = {
-      ...filters,
-      brand: brandParam || null,
-      minWeight: weightParam || null,
-      maxWeight: weightParam || null,
-      search: searchParam || null
-    };
-    
-    // Cập nhật tab dựa trên tham số type
     if (typeParam && (typeParam === 'truck' || typeParam === 'trailer' || typeParam === 'tractor' || typeParam === 'crane')) {
       setSelectedType(typeParam);
     }
-    
-    // Cập nhật bộ lọc nếu có thay đổi từ URL
-    const hasChanged = 
-      newFilters.brand !== filters.brand ||
-      newFilters.minWeight !== filters.minWeight ||
-      newFilters.maxWeight !== filters.maxWeight ||
-      newFilters.search !== filters.search;
-      
-    if (hasChanged) {
-      handleFilterChange('brand', newFilters.brand);
-      handleFilterChange('minWeight', newFilters.minWeight);
-      handleFilterChange('maxWeight', newFilters.maxWeight);
-      setSearchInput(searchParam || '');
-    }
-  }, [location.search]);
+  }, [typeParam]);
 
   const { filteredVehicles } = useVehicleFiltering(trucks, selectedType, filters);
 

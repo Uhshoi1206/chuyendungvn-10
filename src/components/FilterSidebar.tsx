@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -9,6 +10,7 @@ import { truckBrands, truckWeights } from '@/data/truckData';
 import { TruckFilters, VehicleType } from '@/models/TruckTypes';
 import { Filter } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { toast } from '@/components/ui/use-toast';
 
 interface FilterSidebarProps {
   filters: TruckFilters;
@@ -26,6 +28,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [localFilters, setLocalFilters] = useState<TruckFilters>(filters);
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000000000]);
   const [weightRange, setWeightRange] = useState<number[]>([0, 20]);
+
+  useEffect(() => {
+    // Cập nhật trạng thái local khi filters từ props thay đổi
+    setLocalFilters(filters);
+    if (filters.minPrice !== null && filters.maxPrice !== null) {
+      setPriceRange([filters.minPrice, filters.maxPrice]);
+    }
+    if (filters.minWeight !== null && filters.maxWeight !== null) {
+      setWeightRange([filters.minWeight, filters.maxWeight]);
+    }
+  }, [filters]);
 
   const handleFilterChange = (key: keyof TruckFilters, value: any) => {
     const newFilters = { ...localFilters, [key]: value };
@@ -51,9 +64,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleApplyFilters = () => {
+    // Áp dụng từng bộ lọc riêng lẻ
     for (const key in localFilters) {
       onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
     }
+    
+    // Hiển thị thông báo
+    toast({
+      title: "Đã áp dụng bộ lọc",
+      description: "Danh sách sản phẩm đã được cập nhật.",
+    });
   };
 
   const handleResetFilters = () => {
@@ -69,6 +89,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     setPriceRange([0, 1000000000]);
     setWeightRange([0, 20]);
     onResetFilters();
+    
+    toast({
+      title: "Đã đặt lại bộ lọc",
+      description: "Tất cả bộ lọc đã được xóa.",
+    });
   };
 
   const formatPrice = (price: number) => {
@@ -96,7 +121,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <Button 
           variant="ghost" 
           size="sm" 
-          onClick={onResetFilters} 
+          onClick={handleResetFilters} 
           className="text-gray-500 hover:text-primary"
         >
           Đặt lại
@@ -109,9 +134,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <RadioGroup
             value={localFilters.vehicleType || ''}
             onValueChange={(value) => {
-              const newValue = value as VehicleType;
-              setLocalFilters({ ...localFilters, vehicleType: newValue });
-              onFilterChange('vehicleType', newValue);
+              const newValue = value as VehicleType | '';
+              handleFilterChange('vehicleType', newValue || null);
             }}
           >
             {vehicleTypes.map((type) => (

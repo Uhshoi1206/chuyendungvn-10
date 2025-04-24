@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TruckFilters, VehicleType } from '@/models/TruckTypes';
@@ -45,11 +46,15 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     
     if (brand) {
       newFilters.brand = brand;
+    } else {
+      newFilters.brand = null;
     }
     
     if (search) {
       newFilters.search = search;
       setSearchInput(search);
+    } else {
+      newFilters.search = null;
     }
     
     if (weightParam) {
@@ -62,10 +67,15 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
           maxWeight: range.max
         };
       }
+    } else {
+      newFilters.minWeight = null;
+      newFilters.maxWeight = null;
     }
 
     if (vehicleType) {
       newFilters.vehicleType = vehicleType;
+    } else {
+      newFilters.vehicleType = null;
     }
     
     setFilters(newFilters);
@@ -84,7 +94,6 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     }
     
     setFilters(newFilters);
-    updateUrl(newFilters);
   };
   
   const updateUrl = (newFilters: TruckFilters) => {
@@ -125,7 +134,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   };
 
   const handleResetFilters = () => {
-    setFilters({
+    const emptyFilters: TruckFilters = {
       brand: null,
       minPrice: null,
       maxPrice: null,
@@ -133,7 +142,8 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       maxWeight: null,
       search: null,
       vehicleType: null,
-    });
+    };
+    setFilters(emptyFilters);
     setSearchInput('');
     navigate('/danh-muc', { replace: true });
   };
@@ -145,5 +155,6 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     handleFilterChange,
     handleSearch,
     handleResetFilters,
+    updateUrl
   };
 };
