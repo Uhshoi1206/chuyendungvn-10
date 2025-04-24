@@ -48,7 +48,7 @@ const BlogPage = () => {
                 <div className="flex justify-between items-center mb-8">
                   <h2 className="text-2xl font-bold">{blogCategoryLabels[categoryKey]}</h2>
                   <Link 
-                    to={`/blog?category=${categoryKey}`} 
+                    to={`/blog/category?category=${categoryKey}`} 
                     className="text-primary flex items-center hover:underline"
                   >
                     <span>Xem tất cả</span>

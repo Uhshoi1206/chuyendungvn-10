@@ -14,7 +14,19 @@ const BlogCategoryPage = () => {
   const categoryPosts = blogPosts.filter(post => post.category === category);
 
   if (!category || !blogCategoryLabels[category]) {
-    return <div>Danh mục không tồn tại</div>;
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-gray-50 py-12">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-3xl font-bold mb-4">Danh mục không tồn tại</h1>
+            <p className="mb-8">Danh mục bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+            <Link to="/blog" className="text-primary hover:underline">Quay lại trang Blog</Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -23,7 +35,10 @@ const BlogCategoryPage = () => {
       
       <main className="flex-grow bg-gray-50 py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-8">{blogCategoryLabels[category]}</h1>
+          <div className="mb-8">
+            <Link to="/blog" className="text-primary hover:underline mb-2 inline-block">« Quay lại Blog</Link>
+            <h1 className="text-3xl font-bold">Danh mục: {blogCategoryLabels[category]}</h1>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {categoryPosts.map(post => (
@@ -62,6 +77,12 @@ const BlogCategoryPage = () => {
               </Link>
             ))}
           </div>
+          
+          {categoryPosts.length === 0 && (
+            <div className="text-center py-10">
+              <p className="text-lg text-gray-600">Không có bài viết nào trong danh mục này.</p>
+            </div>
+          )}
         </div>
       </main>
       
