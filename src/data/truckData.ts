@@ -133,5 +133,138 @@ export const trucks: Truck[] = [
     isHot: true,
     isNew: true,
     type: 'tractor'
+  },
+  {
+    id: 'c1',
+    name: 'Cẩu Tadano TM-ZE554HS',
+    slug: 'cau-tadano-tm-ze554hs',
+    brand: 'Tadano',
+    price: 1850000000,
+    priceText: '1.850.000.000 VNĐ',
+    weight: 5,
+    weightText: '5 tấn',
+    length: 8.5,
+    engine: 'Diesel, 4 xy lanh',
+    fuelType: 'Dầu Diesel',
+    features: ['Tầm với xa 15.5m', 'Độ cao nâng tối đa 18.2m', 'Bảo hành 12 tháng'],
+    description: 'Cẩu Tadano TM-ZE554HS - dòng cẩu tự hành 5 tấn, thiết kế nhỏ gọn, hiệu suất cao, phù hợp cho các công trình xây dựng và công nghiệp.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/cau-tu-hanh-5-tan.jpg',
+      'https://tongkhoxetai.vn/upload/images/cau-tadano-5-tan.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-tu-hanh-5-tan.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'crane'
+  },
+  {
+    id: 'c2',
+    name: 'Cẩu Kanglim KS1256G-II',
+    slug: 'cau-kanglim-ks1256g-ii',
+    brand: 'Kanglim',
+    price: 980000000,
+    priceText: '980.000.000 VNĐ',
+    weight: 6,
+    weightText: '6 tấn',
+    length: 12.6,
+    engine: 'Thủy lực, 6 đoạn',
+    fuelType: 'Dầu thủy lực',
+    features: ['Tầm với xa 18.7m', 'Góc quay 360 độ', 'Hệ thống an toàn tự động'],
+    description: 'Cẩu Kanglim KS1256G-II là dòng cẩu gắn xe tải 6 tấn, tính năng vượt trội, độ bền cao, phù hợp cho các công trình xây dựng và vận chuyển hàng hóa.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/cau-kanglim-6-tan.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-kanglim-6-tan.jpg',
+    isHot: true,
+    isNew: false,
+    type: 'crane'
+  },
+  {
+    id: 'm1',
+    name: 'Sơ mi rơ mooc Ben DOOSUNG 24 khối',
+    slug: 'so-mi-ro-mooc-ben-doosung-24-khoi',
+    brand: 'Doosung',
+    price: 580000000,
+    priceText: '580.000.000 VNĐ',
+    weight: 30,
+    weightText: '30 tấn',
+    length: 9.7,
+    engine: 'N/A',
+    fuelType: 'N/A',
+    features: ['Thùng ben 24 khối', 'Khung gầm chịu lực cao', 'Hệ thống ben thủy lực mạnh mẽ'],
+    description: 'Sơ mi rơ mooc ben DOOSUNG 24 khối với thiết kế hiện đại, bền bỉ, phù hợp vận chuyển vật liệu xây dựng, khoáng sản.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/mooc-ben-doosung.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mooc-ben-doosung.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'trailer'
+  },
+  {
+    id: 'm2',
+    name: 'Sơ mi rơ mooc Sàn CIMC 3 trục',
+    slug: 'so-mi-ro-mooc-san-cimc-3-truc',
+    brand: 'CIMC',
+    price: 420000000,
+    priceText: '420.000.000 VNĐ',
+    weight: 32,
+    weightText: '32 tấn',
+    length: 12.4,
+    engine: 'N/A',
+    fuelType: 'N/A',
+    features: ['Sàn thép chịu lực', '3 trục nhập khẩu', 'Tải trọng cao'],
+    description: 'Sơ mi rơ mooc Sàn CIMC 3 trục với thiết kế chắc chắn, tải trọng lớn, phù hợp vận chuyển container và hàng hóa nặng.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/mooc-san-cimc.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mooc-san-cimc.jpg',
+    isHot: false,
+    isNew: true,
+    type: 'trailer'
+  },
+  {
+    id: 't3',
+    name: 'Xe Đầu Kéo HOWO 420HP',
+    slug: 'xe-dau-keo-howo-420hp',
+    brand: 'HOWO',
+    price: 950000000,
+    priceText: '950.000.000 VNĐ',
+    weight: 18,
+    weightText: '18 tấn',
+    length: 6.8,
+    engine: 'WD615.47, Euro 4, 420HP',
+    fuelType: 'Dầu Diesel',
+    features: ['Công suất lớn 420HP', 'Cabin rộng rãi', 'Tiết kiệm nhiên liệu'],
+    description: 'Xe đầu kéo HOWO 420HP mạnh mẽ với động cơ Weichai công suất lớn, cabin hiện đại và nhiều tính năng an toàn.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/xe-dau-keo-howo.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-howo.jpg',
+    isHot: true,
+    isNew: false,
+    type: 'tractor'
+  },
+  {
+    id: 't4',
+    name: 'Xe Đầu Kéo Chenglong H7 460HP',
+    slug: 'xe-dau-keo-chenglong-h7-460hp',
+    brand: 'Chenglong',
+    price: 1250000000,
+    priceText: '1.250.000.000 VNĐ',
+    weight: 19,
+    weightText: '19 tấn',
+    length: 7.2,
+    engine: 'ISG12, Euro 5, 460HP',
+    fuelType: 'Dầu Diesel',
+    features: ['Động cơ Cummins 460HP', 'Hộp số Fast 12 cấp', 'Cabin cao cấp'],
+    description: 'Xe đầu kéo Chenglong H7 460HP thế hệ mới với động cơ Cummins mạnh mẽ, cabin sang trọng và công nghệ hiện đại.',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/xe-dau-keo-chenglong.jpg'
+    ],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-chenglong.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'tractor'
   }
 ];
