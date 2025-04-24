@@ -1,13 +1,11 @@
-
 import { BlogPost, BlogCategory } from '@/models/BlogPost';
 
 // Định nghĩa các danh mục blog - Chỉ cần sửa object này để thêm/xóa danh mục
 export const blogCategories: Record<BlogCategory, string> = {
   'xe-tai': 'Xe Tải',
   'cau': 'Cẩu',
-  'mooc-ben': 'Mooc Ben', 
-  'mooc-san': 'Mooc Sàn',
-  'mooc-xuong': 'Mooc Xương'
+  'mooc': 'Mooc',
+  'xe-dau-keo': 'Xe Đầu Kéo'
 };
 
 // Hàm tạo bài viết - giúp tạo nhiều bài viết dễ dàng
