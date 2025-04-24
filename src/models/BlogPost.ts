@@ -8,8 +8,9 @@ export interface BlogPost {
   image: string;
   publishDate: string;
   readTime: number;
-  category: 'truck' | 'trailer' | 'crane';
+  category: 'truck' | 'trailer' | 'crane' | 'lifestyle' | 'shopping' | 'health';
   author: string;
   tags: string[];
   featured?: boolean;
 }
+
