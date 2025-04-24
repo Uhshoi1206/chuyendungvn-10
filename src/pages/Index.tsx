@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
@@ -8,8 +8,6 @@ import { trucks, truckWeights, truckBrands } from '@/data/truckData';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
 import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 
 const Index = () => {
@@ -20,10 +18,12 @@ const Index = () => {
 
   // Lấy bài viết mới nhất của mỗi danh mục
   const latestPostsByCategory = Object.keys(blogCategories).map(category => {
-    return blogPosts
+    const categoryPosts = blogPosts
       .filter(post => post.category === category)
-      .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())[0];
-  });
+      .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
+    
+    return categoryPosts.length > 0 ? categoryPosts[0] : null;
+  }).filter(post => post !== null);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -108,9 +108,9 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Blog Section */}
+      {/* Blog Section - Tự động từ blogCategories */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-3">Tin Tức & Chia Sẻ</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -119,7 +119,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestPostsByCategory.map(post => (
+            {latestPostsByCategory.map(post => post && (
               <Link key={post.id} to={`/blog/${post.slug}`} className="group">
                 <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
                   <div className="aspect-video relative overflow-hidden">

@@ -1,18 +1,18 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { BlogCategory } from '@/models/BlogPost';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CalendarDays, Clock, User, ChevronRight } from 'lucide-react';
 
 const BlogPage = () => {
-  const [activeTab, setActiveTab] = useState<'all' | BlogCategory>('all');
-
   // Nhóm bài viết theo danh mục
   const groupedPosts = Object.entries(blogCategories).reduce((acc, [category, label]) => {
-    acc[category] = blogPosts.filter(post => post.category === category).slice(0, 3);
+    acc[category] = blogPosts
+      .filter(post => post.category === category)
+      .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+      .slice(0, 3); // Hiển thị 3 bài viết mới nhất mỗi danh mục
     return acc;
   }, {} as Record<string, typeof blogPosts>);
   
@@ -31,7 +31,7 @@ const BlogPage = () => {
           </div>
         </div>
 
-        {/* Blog Categories Sections */}
+        {/* Blog Categories Sections - Tự động từ blogCategories */}
         <div className="container mx-auto px-4 py-12">
           {Object.entries(blogCategories).map(([category, label]) => (
             <div key={category} className="mb-16">

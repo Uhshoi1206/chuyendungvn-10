@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { blogPosts } from '@/data/blogData';
-import { BlogCategory, blogCategoryLabels } from '@/models/BlogPost';
+import { blogPosts, blogCategories } from '@/data/blogData';
+import { BlogCategory } from '@/models/BlogPost';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CalendarDays, Clock, User } from 'lucide-react';
@@ -12,8 +12,9 @@ const BlogCategoryPage = () => {
   const currentCategory = category as BlogCategory;
   
   const categoryPosts = blogPosts.filter(post => post.category === currentCategory);
+  const categoryLabel = blogCategories[currentCategory];
 
-  if (!currentCategory || !blogCategoryLabels[currentCategory]) {
+  if (!currentCategory || !categoryLabel) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -37,7 +38,7 @@ const BlogCategoryPage = () => {
         <div className="container mx-auto px-4">
           <div className="mb-8">
             <Link to="/blog" className="text-primary hover:underline mb-2 inline-block">« Quay lại Blog</Link>
-            <h1 className="text-3xl font-bold">Danh mục: {blogCategoryLabels[currentCategory]}</h1>
+            <h1 className="text-3xl font-bold">Danh mục: {categoryLabel}</h1>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
