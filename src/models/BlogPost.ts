@@ -9,5 +9,7 @@ export interface BlogPost {
   publishDate: string;
   readTime: number;
   category: 'truck' | 'trailer' | 'crane';
+  author: string;
+  tags: string[];
+  featured?: boolean;
 }
-

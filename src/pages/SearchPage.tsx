@@ -125,8 +125,13 @@ const SearchPage = () => {
     return true;
   });
   
-  const handleFilterChange = (newFilters: TruckFilters) => {
-    setFilters(newFilters);
+  // Updated handleFilterChange to be compatible with both usage patterns
+  const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
+    if (typeof keyOrFilters === 'object') {
+      setFilters(keyOrFilters);
+    } else {
+      setFilters({...filters, [keyOrFilters]: value});
+    }
   };
   
   const handleResetFilters = () => {

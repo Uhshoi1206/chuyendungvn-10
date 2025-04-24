@@ -12,7 +12,7 @@ interface MobileSearchProps {
   setSearchInput: (value: string) => void;
   handleSearch: () => void;
   filters: TruckFilters;
-  onFilterChange: (filters: TruckFilters) => void;
+  onFilterChange: (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => void;
   onResetFilters: () => void;
   vehicleTypeLabel: string;
 }

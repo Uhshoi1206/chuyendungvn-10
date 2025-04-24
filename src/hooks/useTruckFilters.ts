@@ -67,8 +67,18 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     setFilters(newFilters);
   }, [location.search]);
 
-  const handleFilterChange = (key: keyof TruckFilters, value: any) => {
-    const newFilters = { ...filters, [key]: value };
+  // Update the handleFilterChange function to accept both formats (key/value or entire filter object)
+  const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
+    let newFilters: TruckFilters;
+    
+    if (typeof keyOrFilters === 'object') {
+      // Handle case where entire filters object is passed
+      newFilters = { ...keyOrFilters };
+    } else {
+      // Handle case where key and value are passed separately
+      newFilters = { ...filters, [keyOrFilters]: value };
+    }
+    
     setFilters(newFilters);
     updateUrl(newFilters);
   };
