@@ -1,7 +1,7 @@
 
 // Định nghĩa các danh mục blog có sẵn
 // Khi thêm danh mục mới, cần thêm vào đây và trong blogData.ts
-export type BlogCategory = 'xe-tai' | 'cau' | 'mooc-ben' | 'mooc-san' | 'mooc-xuong';
+export type BlogCategory = 'xe-tai' | 'cau' | 'mooc-ben' | 'mooc-san' | 'mooc-xuong' | 'xe-dau-keo';
 
 export interface BlogPost {
   id: string;
@@ -24,5 +24,6 @@ export const blogCategoryLabels: Record<BlogCategory, string> = {
   'cau': 'Cẩu',
   'mooc-ben': 'Mooc Ben',
   'mooc-san': 'Mooc Sàn',
-  'mooc-xuong': 'Mooc Xương'
+  'mooc-xuong': 'Mooc Xương',
+  'xe-dau-keo': 'Xe Đầu Kéo'
 };

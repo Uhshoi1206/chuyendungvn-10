@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -126,7 +127,7 @@ const Index = () => {
 
           <div className="text-center mt-10">
             <Button asChild variant="outline" className="px-6">
-              <Link to="/danh-muc">Xem tất cả cẩu</Link>
+              <Link to="/danh-muc?type=crane">Xem tất cả cẩu</Link>
             </Button>
           </div>
         </div>
@@ -201,7 +202,82 @@ const Index = () => {
 
           <div className="text-center mt-10">
             <Button asChild variant="outline" className="px-6">
-              <Link to="/danh-muc">Xem tất cả mooc</Link>
+              <Link to="/danh-muc?type=trailer">Xem tất cả mooc</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* Xe Đầu Kéo Section */}
+      <section className="py-16">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">Xe Đầu Kéo Cao Cấp</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Các dòng xe đầu kéo mạnh mẽ, bền bỉ, tiết kiệm nhiên liệu,
+              phù hợp cho vận chuyển hàng hóa đường dài.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1550919559-2256f4b083a4"
+                  alt="Xe đầu kéo"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Đầu Kéo Cao Cấp</h3>
+                <p className="text-gray-600 mb-4">Xe đầu kéo cao cấp, động cơ mạnh mẽ, cabin tiện nghi</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7"
+                  alt="Xe đầu kéo thế hệ mới"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Đầu Kéo Thế Hệ Mới</h3>
+                <p className="text-gray-600 mb-4">Xe đầu kéo thế hệ mới, tích hợp công nghệ tiên tiến</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1597404294360-feeeda04612e"
+                  alt="Xe đầu kéo tiết kiệm nhiên liệu"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Đầu Kéo Tiết Kiệm</h3>
+                <p className="text-gray-600 mb-4">Xe đầu kéo tiết kiệm nhiên liệu, chi phí vận hành thấp</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="px-6">
+              <Link to="/danh-muc?type=tractor">Xem tất cả xe đầu kéo</Link>
             </Button>
           </div>
         </div>

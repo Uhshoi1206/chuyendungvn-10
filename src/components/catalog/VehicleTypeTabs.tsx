@@ -21,10 +21,11 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
         onValueChange={handleTabChange}
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="truck">Xe Tải</TabsTrigger>
           <TabsTrigger value="trailer">Sơ Mi Rơ Mooc</TabsTrigger>
           <TabsTrigger value="tractor">Xe Đầu Kéo</TabsTrigger>
+          <TabsTrigger value="crane">Cẩu</TabsTrigger>
         </TabsList>
       </Tabs>
     </div>
