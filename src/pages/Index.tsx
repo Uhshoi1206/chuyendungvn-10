@@ -57,6 +57,156 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Cẩu Section */}
+      <section className="py-16">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">Cẩu Chất Lượng Cao</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Các loại cẩu chuyên dụng với công nghệ tiên tiến, đa dạng tải trọng, 
+              phù hợp cho nhiều mục đích sử dụng khác nhau.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
+                  alt="Cẩu tự hành"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Cẩu Tự Hành 25 Tấn</h3>
+                <p className="text-gray-600 mb-4">Cẩu tự hành hiện đại, khả năng nâng tối đa 25 tấn</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
+                  alt="Cẩu lắp xe tải"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Cẩu Gắn Xe Tải</h3>
+                <p className="text-gray-600 mb-4">Cẩu chuyên dụng lắp trên xe tải, tải trọng đa dạng</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
+                  alt="Cẩu công trình"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Cẩu Tháp Công Trình</h3>
+                <p className="text-gray-600 mb-4">Cẩu tháp chuyên dụng cho các công trình xây dựng</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="px-6">
+              <Link to="/danh-muc">Xem tất cả cẩu</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* Mooc Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">Sơ Mi Rơ Mooc Đa Dạng</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Các loại mooc chất lượng cao, đa dạng kích thước và tải trọng, 
+              đáp ứng mọi nhu cầu vận chuyển.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
+                  alt="Mooc sàn"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Mooc Sàn</h3>
+                <p className="text-gray-600 mb-4">Mooc sàn 40 feet, tải trọng cao, chất lượng vượt trội</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1487887235947-a955ef187fcc"
+                  alt="Mooc ben"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Mooc Ben</h3>
+                <p className="text-gray-600 mb-4">Mooc ben tự đổ, thiết kế hiện đại, bền bỉ</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group">
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1469041797191-50ace28483c3"
+                  alt="Mooc xương"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="text-xl font-bold mb-2">Mooc Xương</h3>
+                <p className="text-gray-600 mb-4">Mooc xương chuyên chở container, độ bền cao</p>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to="/lien-he">Liên hệ tư vấn</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="px-6">
+              <Link to="/danh-muc">Xem tất cả mooc</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      
       {/* Weight Categories Section */}
       <section className="py-16">
         <div className="container mx-auto">
