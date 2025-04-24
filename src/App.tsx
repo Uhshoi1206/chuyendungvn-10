@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import TruckCatalog from "./pages/TruckCatalog";
 import TruckDetail from "./pages/TruckDetail";
-import SearchPage from "./pages/SearchPage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
@@ -24,9 +23,9 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/danh-muc" element={<TruckCatalog />} />
           <Route path="/xe-tai/:slug" element={<TruckDetail />} />
-          <Route path="/tim-kiem" element={<SearchPage />} />
           <Route path="/lien-he" element={<ContactPage />} />
           <Route path="/gioi-thieu" element={<AboutPage />} />
+          <Route path="/blog" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

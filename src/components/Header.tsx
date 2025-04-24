@@ -27,11 +27,11 @@ const Header: React.FC = () => {
               <Link to="/danh-muc" className="font-medium hover:text-primary transition-colors">
                 Danh mục xe
               </Link>
-              <Link to="/tim-kiem" className="font-medium hover:text-primary transition-colors">
-                Tìm kiếm xe
-              </Link>
               <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
                 Giới thiệu
+              </Link>
+              <Link to="/blog" className="font-medium hover:text-primary transition-colors">
+                Blog
               </Link>
               <Link to="/lien-he" className="font-medium hover:text-primary transition-colors">
                 Liên hệ
