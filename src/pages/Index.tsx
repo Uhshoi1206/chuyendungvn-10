@@ -14,7 +14,7 @@ const Index = () => {
   // Get hot trucks for featured section
   const hotTrucks = trucks.filter(truck => truck.isHot && truck.type === 'truck');
   // Get new trucks
-  const newTrucks = trucks.filter(truck => truck.isNew);
+  // const newTrucks = trucks.filter(truck => truck.isNew);
   
   // Lọc sản phẩm theo loại
   const cranes = trucks.filter(truck => truck.type === 'crane');
@@ -248,25 +248,6 @@ const Index = () => {
                 <ChevronRight className="h-4 w-4" />
               </Link>
             </Button>
-          </div>
-        </div>
-      </section>
-      
-      {/* New Arrivals Section */}
-      <section className="py-16">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">Xe Mới Về</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Khám phá những dòng xe tải mới nhất, được trang bị công nghệ hiện đại và 
-              đáp ứng các tiêu chuẩn khí thải nghiêm ngặt.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {newTrucks.map(truck => (
-              <TruckItem key={truck.id} truck={truck} />
-            ))}
           </div>
         </div>
       </section>
