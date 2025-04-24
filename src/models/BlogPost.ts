@@ -8,4 +8,6 @@ export interface BlogPost {
   image: string;
   publishDate: string;
   readTime: number;
+  category: 'truck' | 'trailer' | 'crane';
 }
+

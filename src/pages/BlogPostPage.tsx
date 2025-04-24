@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { blogPosts } from '@/data/blogData';
+import { useParams, useNavigate } from 'react-router-dom';
+import { blogPosts, blogCategories } from '@/data/blogData';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,12 @@ const BlogPostPage = () => {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Quay lại Blog
           </Button>
+
+          <div className="flex items-center gap-4 mb-4">
+            <span className="bg-primary text-white px-3 py-1 rounded-full text-sm">
+              {blogCategories[post.category]}
+            </span>
+          </div>
 
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
           
@@ -77,3 +83,4 @@ const BlogPostPage = () => {
 };
 
 export default BlogPostPage;
+

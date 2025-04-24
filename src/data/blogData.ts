@@ -25,7 +25,8 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "/placeholder.svg",
     publishDate: "2024-04-20",
-    readTime: 5
+    readTime: 5,
+    category: "truck"
   },
   {
     id: "2",
@@ -56,7 +57,8 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "/placeholder.svg",
     publishDate: "2024-04-19",
-    readTime: 6
+    readTime: 6,
+    category: "crane"
   },
   {
     id: "3",
@@ -87,7 +89,8 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "/placeholder.svg",
     publishDate: "2024-04-18",
-    readTime: 5
+    readTime: 5,
+    category: "trailer"
   },
   {
     id: "4",
@@ -118,7 +121,8 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "/placeholder.svg",
     publishDate: "2024-04-17",
-    readTime: 4
+    readTime: 4,
+    category: "trailer"
   },
   {
     id: "5",
@@ -149,6 +153,14 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "/placeholder.svg",
     publishDate: "2024-04-16",
-    readTime: 5
+    readTime: 5,
+    category: "trailer"
   }
 ];
+
+export const blogCategories = {
+  truck: "Xe Tải",
+  trailer: "Sơ Mi Rơ Mooc",
+  crane: "Xe Cẩu"
+} as const;
+
