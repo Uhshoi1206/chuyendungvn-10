@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -24,12 +24,14 @@ const TruckCatalog = () => {
   const isMobile = useIsMobile();
   const [selectedType, setSelectedType] = useState<VehicleType>('truck');
 
+  console.log('Weight param:', weightParam); // Thêm log để kiểm tra
+
   const initialFilters = {
     brand: brandParam || null,
     minPrice: null,
     maxPrice: null,
-    minWeight: null,
-    maxWeight: null,
+    minWeight: weightParam || null, // Đảm bảo tham số trọng lượng được xử lý đúng
+    maxWeight: weightParam || null,
     search: searchParam || null,
   };
 
@@ -41,6 +43,31 @@ const TruckCatalog = () => {
     handleSearch,
     handleResetFilters,
   } = useTruckFilters(initialFilters);
+
+  // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc
+  useEffect(() => {
+    const newFilters = {
+      ...filters,
+      brand: brandParam || null,
+      minWeight: weightParam || null,
+      maxWeight: weightParam || null,
+      search: searchParam || null
+    };
+    
+    // Cập nhật bộ lọc nếu có thay đổi từ URL
+    const hasChanged = 
+      newFilters.brand !== filters.brand ||
+      newFilters.minWeight !== filters.minWeight ||
+      newFilters.maxWeight !== filters.maxWeight ||
+      newFilters.search !== filters.search;
+      
+    if (hasChanged) {
+      handleFilterChange('brand', newFilters.brand);
+      handleFilterChange('minWeight', newFilters.minWeight);
+      handleFilterChange('maxWeight', newFilters.maxWeight);
+      setSearchInput(searchParam || '');
+    }
+  }, [location.search]);
 
   const { filteredVehicles } = useVehicleFiltering(trucks, selectedType, filters);
 
