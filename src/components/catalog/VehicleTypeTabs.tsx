@@ -9,12 +9,16 @@ interface VehicleTypeTabsProps {
 }
 
 const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeChange }) => {
+  const handleTabChange = (value: string) => {
+    onTypeChange(value as VehicleType);
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       <Tabs
-        defaultValue="truck"
+        defaultValue={selectedType}
         value={selectedType}
-        onValueChange={(value) => onTypeChange(value as VehicleType)}
+        onValueChange={handleTabChange}
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-3">

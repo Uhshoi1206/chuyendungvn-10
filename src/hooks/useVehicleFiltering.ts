@@ -14,10 +14,12 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
   
   // Áp dụng các bộ lọc khác
   const filteredVehicles = vehiclesByType.filter(truck => {
+    // Lọc theo thương hiệu
     if (filters.brand && truck.brand !== filters.brand) {
       return false;
     }
     
+    // Lọc theo giá
     if (filters.minPrice !== null && truck.price < filters.minPrice) {
       return false;
     }
@@ -25,8 +27,10 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       return false;
     }
     
+    // Lọc theo trọng lượng
     if (filters.minWeight !== null && filters.maxWeight !== null) {
-      if (filters.maxWeight >= 20 && truck.weight >= filters.minWeight) {
+      // Trường hợp đặc biệt cho "trên 15 tấn"
+      if (filters.maxWeight >= 15 && truck.weight >= filters.minWeight) {
         return true;
       }
       
@@ -39,6 +43,7 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       return false;
     }
     
+    // Lọc theo từ khóa tìm kiếm
     if (filters.search && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
       return false;
     }

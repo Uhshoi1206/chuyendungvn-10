@@ -38,7 +38,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const brand = queryParams.get('brand');
-    const weight = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
+    const weightParam = queryParams.get('weight');
     const search = queryParams.get('search');
     
     let newFilters: TruckFilters = { ...filters };
@@ -52,13 +52,16 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       setSearchInput(search);
     }
     
-    if (weight) {
-      const range = getWeightRange(weight);
-      newFilters = {
-        ...newFilters,
-        minWeight: range.min,
-        maxWeight: range.max
-      };
+    if (weightParam) {
+      const weight = parseFloat(weightParam);
+      if (!isNaN(weight)) {
+        const range = getWeightRange(weight);
+        newFilters = {
+          ...newFilters,
+          minWeight: range.min,
+          maxWeight: range.max
+        };
+      }
     }
     
     setFilters(newFilters);
