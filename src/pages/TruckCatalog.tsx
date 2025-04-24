@@ -19,6 +19,7 @@ const TruckCatalog = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const brandParam = queryParams.get('brand');
+  const weightParam = queryParams.get('weight') ? parseFloat(queryParams.get('weight') || '0') : null;
   const searchParam = queryParams.get('search');
   const isMobile = useIsMobile();
   const [selectedType, setSelectedType] = useState<VehicleType>('truck');

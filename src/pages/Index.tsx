@@ -64,7 +64,7 @@ const Index = () => {
             {truckWeights.map(weight => (
               <Link 
                 key={weight.id} 
-                to={`/tim-kiem?weight=${weight.value}`}
+                to={`/danh-muc?weight=${weight.value}`}
                 className="bg-white p-5 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow border border-gray-100"
               >
                 <div className="font-bold text-lg mb-2">{weight.name}</div>
@@ -90,7 +90,7 @@ const Index = () => {
             {truckBrands.map(brand => (
               <Link 
                 key={brand.id} 
-                to={`/tim-kiem?brand=${brand.name}`}
+                to={`/danh-muc?brand=${brand.name}`}
                 className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center border border-gray-100"
               >
                 <span className="font-bold text-xl">{brand.name}</span>
