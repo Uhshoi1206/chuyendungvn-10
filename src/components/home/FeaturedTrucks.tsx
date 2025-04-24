@@ -3,10 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
-import { TruckType } from '@/models/TruckTypes';
+import { Truck } from '@/models/TruckTypes';
 
 interface FeaturedTrucksProps {
-  trucks: TruckType[];
+  trucks: Truck[];
 }
 
 const FeaturedTrucks = ({ trucks }: FeaturedTrucksProps) => {

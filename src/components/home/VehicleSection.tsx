@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
-import { TruckType } from '@/models/TruckTypes';
+import { Truck } from '@/models/TruckTypes';
 
 interface VehicleSectionProps {
   title: string;
   description: string;
-  vehicles: TruckType[];
+  vehicles: Truck[];
   type: string;
   linkText: string;
   className?: string;
