@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { TruckFilters } from '@/models/TruckTypes';
+import { TruckFilters, VehicleType } from '@/models/TruckTypes';
 import { truckWeights } from '@/data/truckData';
 
 export const useTruckFilters = (initialFilters: TruckFilters) => {
@@ -40,6 +39,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     const brand = queryParams.get('brand');
     const weightParam = queryParams.get('weight');
     const search = queryParams.get('search');
+    const vehicleType = queryParams.get('type') as VehicleType | null;
     
     let newFilters: TruckFilters = { ...filters };
     
@@ -62,6 +62,10 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
           maxWeight: range.max
         };
       }
+    }
+
+    if (vehicleType) {
+      newFilters.vehicleType = vehicleType;
     }
     
     setFilters(newFilters);
@@ -103,6 +107,10 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     if (newFilters.search) {
       params.set('search', newFilters.search);
     }
+
+    if (newFilters.vehicleType) {
+      params.set('type', newFilters.vehicleType);
+    }
     
     navigate(`/danh-muc?${params.toString()}`, { replace: true });
   };
@@ -124,6 +132,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       minWeight: null,
       maxWeight: null,
       search: null,
+      vehicleType: null,
     });
     setSearchInput('');
     navigate('/danh-muc', { replace: true });

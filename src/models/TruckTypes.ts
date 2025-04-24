@@ -1,4 +1,3 @@
-
 export interface TruckWeight {
   id: string;
   name: string;
@@ -41,4 +40,5 @@ export interface TruckFilters {
   minWeight: number | null;
   maxWeight: number | null;
   search: string | null;
+  vehicleType: VehicleType | null;
 }

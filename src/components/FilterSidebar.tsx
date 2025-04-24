@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -7,8 +6,9 @@ import { Separator } from './ui/separator';
 import { Slider } from './ui/slider';
 import { Checkbox } from './ui/checkbox';
 import { truckBrands, truckWeights } from '@/data/truckData';
-import { TruckFilters } from '@/models/TruckTypes';
+import { TruckFilters, VehicleType } from '@/models/TruckTypes';
 import { Filter } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 interface FilterSidebarProps {
   filters: TruckFilters;
@@ -26,7 +26,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [localFilters, setLocalFilters] = useState<TruckFilters>(filters);
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000000000]);
   const [weightRange, setWeightRange] = useState<number[]>([0, 20]);
-  
+
   const handleFilterChange = (key: keyof TruckFilters, value: any) => {
     const newFilters = { ...localFilters, [key]: value };
     setLocalFilters(newFilters);
@@ -51,7 +51,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleApplyFilters = () => {
-    // Áp dụng từng bộ lọc một
     for (const key in localFilters) {
       onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
     }
@@ -65,13 +64,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       minWeight: null,
       maxWeight: null,
       search: null,
+      vehicleType: null,
     });
     setPriceRange([0, 1000000000]);
     setWeightRange([0, 20]);
     onResetFilters();
   };
 
-  // Format price to Vietnamese Dong
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -79,6 +78,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       maximumFractionDigits: 0
     }).format(price);
   };
+
+  const vehicleTypes: { value: VehicleType; label: string }[] = [
+    { value: 'truck', label: 'Xe Tải' },
+    { value: 'trailer', label: 'Sơ Mi Rơ Mooc' },
+    { value: 'tractor', label: 'Xe Đầu Kéo' },
+    { value: 'crane', label: 'Cẩu' },
+  ];
 
   return (
     <div className={`bg-white p-5 rounded-lg shadow-md ${className}`}>
@@ -90,7 +96,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <Button 
           variant="ghost" 
           size="sm" 
-          onClick={handleResetFilters} 
+          onClick={onResetFilters} 
           className="text-gray-500 hover:text-primary"
         >
           Đặt lại
@@ -98,7 +104,27 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       <div className="space-y-6">
-        {/* Tìm kiếm */}
+        <div className="space-y-4">
+          <Label className="text-base font-medium">Loại xe</Label>
+          <RadioGroup
+            value={localFilters.vehicleType || ''}
+            onValueChange={(value) => {
+              const newValue = value as VehicleType;
+              setLocalFilters({ ...localFilters, vehicleType: newValue });
+              onFilterChange('vehicleType', newValue);
+            }}
+          >
+            {vehicleTypes.map((type) => (
+              <div key={type.value} className="flex items-center space-x-2">
+                <RadioGroupItem value={type.value} id={`type-${type.value}`} />
+                <Label htmlFor={`type-${type.value}`}>{type.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+
+        <Separator />
+
         <div>
           <Label htmlFor="search" className="text-base font-medium mb-1.5 block">
             Tìm kiếm
@@ -113,7 +139,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <Separator />
 
-        {/* Thương hiệu */}
         <div>
           <h3 className="text-base font-medium mb-2">Thương hiệu</h3>
           <div className="space-y-2">
@@ -139,7 +164,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <Separator />
 
-        {/* Giá xe */}
         <div>
           <h3 className="text-base font-medium mb-2">Giá xe</h3>
           <div className="px-2">
@@ -160,7 +184,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <Separator />
 
-        {/* Tải trọng */}
         <div>
           <h3 className="text-base font-medium mb-2">Tải trọng</h3>
           <div className="px-2">
