@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle, Tiktok } from 'lucide-react';
@@ -89,57 +90,64 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Newsletter & Social Media */}
+          {/* Social Media & Contact */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-bold mb-4">Đăng ký nhận tin</h3>
-              <p className="mb-4 text-gray-300">
-                Đăng ký để nhận thông tin mới nhất về sản phẩm và khuyến mãi.
-              </p>
-              <form className="flex flex-col space-y-3">
-                <input
-                  type="email"
-                  placeholder="Địa chỉ email của bạn"
-                  className="px-4 py-2 rounded-md text-gray-900"
-                />
-                <button type="submit" className="btn-primary">
-                  Đăng ký
-                </button>
-              </form>
-            </div>
-
-            {/* Social Media Links */}
-            <div>
               <h3 className="text-xl font-bold mb-4">Kết nối với chúng tôi</h3>
-              <div className="flex space-x-4">
+              <div className="flex flex-col space-y-4">
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#1877F2] p-2 rounded-full hover:bg-[#1865D3] transition-colors"
-                  aria-label="Facebook"
+                  className="flex items-center space-x-3 text-gray-300 hover:text-[#1877F2] transition-colors group"
                 >
-                  <Facebook className="h-6 w-6" />
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-[#1877F2] transition-colors">
+                    <Facebook className="h-5 w-5" />
+                  </div>
+                  <span>Facebook XeTaiViet</span>
                 </a>
+                
                 <a
                   href="https://m.me/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#0099FF] p-2 rounded-full hover:bg-[#0088EE] transition-colors"
-                  aria-label="Messenger"
+                  className="flex items-center space-x-3 text-gray-300 hover:text-[#0099FF] transition-colors group"
                 >
-                  <MessageCircle className="h-6 w-6" />
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-[#0099FF] transition-colors">
+                    <MessageCircle className="h-5 w-5" />
+                  </div>
+                  <span>Messenger XeTaiViet</span>
                 </a>
+                
                 <a
                   href="https://tiktok.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#000000] p-2 rounded-full hover:bg-[#333333] transition-colors"
-                  aria-label="TikTok"
+                  className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors group"
                 >
-                  <Tiktok className="h-6 w-6" />
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-black transition-colors">
+                    <Tiktok className="h-5 w-5" />
+                  </div>
+                  <span>TikTok XeTaiViet</span>
                 </a>
               </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold mb-4">Liên hệ trực tuyến</h3>
+              <p className="text-gray-300 mb-4">
+                Để lại số điện thoại, chúng tôi sẽ gọi lại cho bạn ngay!
+              </p>
+              <form className="flex space-x-2">
+                <input
+                  type="tel"
+                  placeholder="Số điện thoại của bạn"
+                  className="flex-1 px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-primary"
+                />
+                <button type="submit" className="px-4 py-2 bg-primary hover:bg-red-700 rounded-md transition-colors">
+                  Gửi
+                </button>
+              </form>
             </div>
           </div>
         </div>
