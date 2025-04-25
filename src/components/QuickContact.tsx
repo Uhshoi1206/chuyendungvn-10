@@ -16,7 +16,7 @@ const QuickContact = () => {
     },
     {
       href: "https://zalo.me/",
-      imgSrc: "/zalo-icon.png",
+      imgSrc: "/zalo-icon.png", // Thêm đường dẫn icon Zalo
       color: "bg-[#0068FF]",
       hoverColor: "hover:bg-[#0054CC]",
       label: "Zalo"
