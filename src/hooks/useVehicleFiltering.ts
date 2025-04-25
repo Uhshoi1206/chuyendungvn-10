@@ -9,14 +9,20 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
   maxWeight: number | null;
   search: string | null;
 }) => {
+  console.log("useVehicleFiltering được gọi với:", { selectedType, filters });
+  
   // Lọc xe theo loại trước tiên
   const vehiclesByType = vehicles.filter(truck => truck.type === selectedType);
+  console.log("Số xe theo loại:", vehiclesByType.length);
   
   // Áp dụng các bộ lọc khác
   const filteredVehicles = vehiclesByType.filter(truck => {
     // Lọc theo thương hiệu
-    if (filters.brand && filters.brand.trim() !== '' && truck.brand.toLowerCase() !== filters.brand.toLowerCase()) {
-      return false;
+    if (filters.brand && filters.brand !== "") {
+      console.log(`So sánh brand: '${truck.brand}' với '${filters.brand}'`);
+      if (truck.brand.toLowerCase() !== filters.brand.toLowerCase()) {
+        return false;
+      }
     }
     
     // Lọc theo giá
@@ -44,12 +50,13 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     }
     
     // Lọc theo từ khóa tìm kiếm
-    if (filters.search && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
+    if (filters.search && filters.search !== "" && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
       return false;
     }
     
     return true;
   });
 
+  console.log("Kết quả lọc cuối cùng:", filteredVehicles.length);
   return { filteredVehicles };
 };

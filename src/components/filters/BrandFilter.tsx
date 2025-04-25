@@ -13,6 +13,8 @@ export const BrandFilter: React.FC<BrandFilterProps> = ({
   selectedBrand,
   onBrandChange,
 }) => {
+  console.log("BrandFilter được render với selectedBrand:", selectedBrand);
+  
   return (
     <div>
       <h3 className="text-base font-medium mb-2">Thương hiệu</h3>
@@ -22,9 +24,10 @@ export const BrandFilter: React.FC<BrandFilterProps> = ({
             <Checkbox
               id={`brand-${brand.id}`}
               checked={selectedBrand === brand.name}
-              onCheckedChange={(checked) =>
-                onBrandChange(checked ? brand.name : null)
-              }
+              onCheckedChange={(checked) => {
+                console.log(`Chọn brand ${brand.name}:`, checked);
+                onBrandChange(checked ? brand.name : null);
+              }}
             />
             <Label
               htmlFor={`brand-${brand.id}`}

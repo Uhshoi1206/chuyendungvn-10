@@ -40,6 +40,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   }, [filters]);
 
   const handleFilterChange = (key: keyof TruckFilters, value: any) => {
+    console.log(`Thay đổi filter ${key}:`, value);
     const newFilters = { ...localFilters, [key]: value };
     setLocalFilters(newFilters);
   };
@@ -63,12 +64,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const handleApplyFilters = () => {
-    // Truyền toàn bộ đối tượng localFilters vào hàm onFilterChange parent
-    for (const key in localFilters) {
-      if (Object.prototype.hasOwnProperty.call(localFilters, key)) {
-        onFilterChange(key as keyof TruckFilters, localFilters[key as keyof TruckFilters]);
-      }
-    }
+    console.log("Áp dụng bộ lọc:", localFilters);
+    
+    // Truyền một-một các giá trị filter lên component cha
+    Object.entries(localFilters).forEach(([key, value]) => {
+      onFilterChange(key as keyof TruckFilters, value);
+    });
     
     toast({
       title: "Đã áp dụng bộ lọc",

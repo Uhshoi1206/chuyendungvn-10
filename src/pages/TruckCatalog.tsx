@@ -37,6 +37,8 @@ const TruckCatalog = () => {
     vehicleType: typeParam || null,
   };
 
+  console.log("TruckCatalog khởi tạo với initialFilters:", initialFilters);
+
   const {
     filters,
     searchInput,
@@ -49,6 +51,7 @@ const TruckCatalog = () => {
 
   // Theo dõi thay đổi của selectedType và cập nhật bộ lọc
   useEffect(() => {
+    console.log("selectedType thay đổi:", selectedType);
     handleFilterChange('vehicleType', selectedType);
     // Cập nhật URL với loại xe đã chọn
     const newFilters = { ...filters, vehicleType: selectedType };
@@ -57,6 +60,7 @@ const TruckCatalog = () => {
 
   // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc và tab
   useEffect(() => {
+    console.log("URL params thay đổi, typeParam:", typeParam);
     if (typeParam && (typeParam === 'truck' || typeParam === 'trailer' || typeParam === 'tractor' || typeParam === 'crane')) {
       setSelectedType(typeParam);
     }
