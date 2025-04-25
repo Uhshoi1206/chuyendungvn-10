@@ -1,3 +1,4 @@
+
 import { BlogPost, BlogCategory } from '@/models/BlogPost';
 
 // Định nghĩa các danh mục blog - Chỉ cần sửa object này để thêm/xóa danh mục
@@ -106,27 +107,28 @@ const generateBlogPosts = () => {
 // Tạo danh sách bài viết
 let blogPosts: BlogPost[] = generateBlogPosts();
 
-// Thêm bài viết blog chi tiết về Hyundai New Porter H150 vào cuối mảng blogPosts
+// ======= Thêm bài viết blog chi tiết về Hyundai New Porter H150 =======
+
 const hyundaiH150Post: BlogPost = {
   id: (blogPosts.length + 1).toString(),
   slug: "hyundai-new-porter-h150-danh-gia-chi-tiet",
   title: "Hyundai New Porter H150 – Đánh giá chi tiết dòng xe tải nhỏ linh hoạt",
-  description: "Khám phá những ưu điểm nổi bật của Hyundai New Porter H150 – xe tải nhỏ bán chạy hàng đầu tại Việt Nam với thiết kế hiện đại, tiết kiệm nhiên liệu và khả năng vận hành linh hoạt trong đô thị.",
+  description: "Khám phá ưu điểm nổi bật của Hyundai New Porter H150 – xe tải nhẹ hiện đại, tiết kiệm nhiên liệu, vận hành linh hoạt trong đô thị và phù hợp với mọi doanh nghiệp vận tải.",
   content: `
     <h2>Giới thiệu về Hyundai New Porter H150</h2>
-    <p>Hyundai New Porter H150 là dòng xe tải nhẹ đến từ thương hiệu Hyundai nổi tiếng, sở hữu thiết kế mạnh mẽ, nhỏ gọn, khả năng vận hành ưu việt và đặc biệt phù hợp với nhu cầu vận chuyển trong thành phố cũng như các khu vực đông dân cư.</p>
-    <img src="https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg" alt="Hyundai New Porter H150" className="w-full h-auto my-4 rounded-lg" />
-    <h3>Thiết kế hiện đại, tinh tế</h3>
-    <p>Xe sở hữu ngoại thất thanh lịch, màu sắc trang nhã, cabin rộng rãi mang lại cảm giác thoải mái cho người lái. Hệ thống chiếu sáng và gương chiếu hậu bố trí hợp lý, tăng độ an toàn khi di chuyển ban đêm hoặc các cung đường khó quan sát.</p>
-    <img src="https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg" alt="Nội thất xe tải Hyundai H150" className="w-full h-auto my-4 rounded-lg" />
-    <h3>Vận hành mạnh mẽ & tiết kiệm nhiên liệu</h3>
-    <p>Động cơ D4CB Diesel 2.5L công suất 130HP giúp H150 dễ dàng vượt qua các địa hình phức tạp, tải trọng thường xuyên mà vẫn tiết kiệm nhiên liệu tối đa. Xe đạt tiêu chuẩn khí thải Euro 4 thân thiện với môi trường.</p>
-    <h3>An toàn và tiện nghi</h3>
-    <p>Trang bị hệ thống phanh ABS, khung gầm chắc chắn, hệ thống giảm xóc, điều hòa hai chiều, giải trí Bluetooth/CD cùng nhiều tiện nghi hỗ trợ lái xe an toàn và thư thái.</p>
-    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c" alt="Vận chuyển cùng H150" className="w-full h-auto my-4 rounded-lg" />
+    <p>Hyundai New Porter H150 là một trong những dòng xe tải nhỏ thành công nhất tại Việt Nam, nổi bật với thiết kế nhỏ gọn, động cơ mạnh mẽ và khả năng hoạt động ổn định trên mọi cung đường đô thị. Xe phù hợp cho cả cá nhân kinh doanh vận chuyển và doanh nghiệp cần phương tiện giao nhận có tính linh hoạt cao.</p>
+    <img src="https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg" alt="Xe tải Hyundai New Porter H150" className="w-full h-auto my-4 rounded-lg" />
+    <h3>Thiết kế hiện đại, tối ưu không gian</h3>
+    <p>Cabin rộng rãi thoải mái cho 3 người, bảng điều khiển dễ sử dụng, tầm nhìn thoáng đãng và nhiều hộc để đồ tiện lợi. Ngoại thất trẻ trung, mạnh mẽ và bền bỉ với vật liệu cao cấp.</p>
+    <img src="https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg" alt="Nội thất Hyundai H150" className="w-full h-auto my-4 rounded-lg" />
+    <h3>Động cơ vận hành mạnh mẽ & tiết kiệm nhiên liệu</h3>
+    <p>Xe được trang bị động cơ D4CB Diesel 2.5L công suất 130PS, đạt tiêu chuẩn khí thải Euro 4, vận hành êm ái, tiết kiệm nhiên liệu và thân thiện với môi trường. Khả năng leo dốc tốt, tải trọng 1.5 tấn và bền bỉ theo thời gian.</p>
+    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c" alt="Xe tải Hyundai H150 động cơ mạnh mẽ" className="w-full h-auto my-4 rounded-lg" />
+    <h3>An toàn tối ưu – Trang bị tiện nghi</h3>
+    <p>Trang bị phanh ABS, hệ thống giảm xóc, điều hòa hai chiều, giải trí Bluetooth/CD và các tính năng hỗ trợ an toàn vượt trội, giúp lái xe luôn an tâm trên mọi quãng đường.</p>
+    <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510" alt="Hyundai H150 thùng xe" className="w-full h-auto my-4 rounded-lg" />
     <h3>Kết luận</h3>
-    <p>Hyundai New Porter H150 là lựa chọn hoàn hảo cho nhu cầu vận chuyển hàng hóa trong thành phố, nhỏ gọn, hiệu quả và giá cạnh tranh – rất đáng để đầu tư cho doanh nghiệp và cá nhân.</p>
-    <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510" alt="Hyundai H150 trên phố" className="w-full h-auto my-4 rounded-lg" />
+    <p>Hyundai New Porter H150 xứng đáng là lựa chọn hàng đầu trong phân khúc xe tải nhẹ: kinh tế, tiện dụng, bền bỉ, dễ bảo dưỡng và linh hoạt phù hợp với nhu cầu vận tải tại Việt Nam.</p>
   `,
   images: [
     "https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg",
@@ -135,26 +137,22 @@ const hyundaiH150Post: BlogPost = {
     "https://images.unsplash.com/photo-1597733336794-12d05021d510"
   ],
   publishDate: new Date().toISOString().split('T')[0],
-  readTime: 6,
-  category: "xe-tai" as BlogCategory,
+  readTime: 7,
+  category: "xe-tai",
   author: "Nguyễn Văn A",
-  tags: ["xe-tai", "hyundai", "porter-h150", "xe tai nhe"],
+  tags: ["xe-tai", "hyundai", "porter-h150", "xe tải nhẹ", "đô thị"],
   featured: true
 };
 
-// Đảm bảo không bị trùng lặp featured: chỉ một bài nổi bật / danh mục
+// Đảm bảo chỉ có một bài featured cho mỗi danh mục (thay bài mới vào nếu là xe-tai)
 const updatedBlogPosts: BlogPost[] = [
-  ...blogPosts.filter(
-    post => !(post.category === "xe-tai" && post.featured)
-  ),
+  ...blogPosts.filter((post) => !(post.category === "xe-tai" && post.featured)),
   hyundaiH150Post,
-  ...blogPosts.filter(
-    post => post.category !== "xe-tai"
-  )
+  ...blogPosts.filter((post) => post.category !== "xe-tai"),
 ].sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
 
-// Gán lại blogPosts để các trang sử dụng đúng bài viết mới nhất
 blogPosts = updatedBlogPosts;
 
-// Export đúng duy nhất một lần ở cuối file
+// Xuất dữ liệu duy nhất một lần ở cuối file
 export { blogPosts, blogCategories, generateBlogPosts };
+
