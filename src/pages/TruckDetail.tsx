@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -182,7 +183,7 @@ const TruckDetail = () => {
                 Nhận báo giá
               </Button>
               <Button asChild variant="outline" size="lg" className="flex-1">
-                <a href="tel:0764678901" aria-label="Gọi ngay 0764678901">Gọi ngay: 0764678901</a>
+                <a href="tel:0764678901" aria-label="Gọi ngay: 0764678901">Gọi ngay: 0764678901</a>
               </Button>
             </div>
           </div>
@@ -300,7 +301,7 @@ const TruckDetail = () => {
                       <a
                         href="tel:0764678901"
                         className="hover:underline font-semibold text-black"
-                        aria-label="Gọi ngay 0764678901"
+                        aria-label="Gọi ngay: 0764678901"
                       >0764678901</a>
                     </div>
                   </div>
@@ -320,6 +321,7 @@ const TruckDetail = () => {
               </div>
             </div>
           </TabsContent>
+        </Tabs>
         
         {/* Related Products */}
         {relatedTrucks.length > 0 && (
