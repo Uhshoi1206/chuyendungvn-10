@@ -63,7 +63,7 @@ const Header: React.FC = () => {
               <a
                 href="tel:0764678901"
                 className="font-bold hover:underline text-black"
-                aria-label="Gọi ngay 0764678901"
+                aria-label="Gọi ngay: 0764678901"
               >
                 0764678901
               </a>

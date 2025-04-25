@@ -21,8 +21,10 @@ const Footer: React.FC = () => {
                 <a
                   href="tel:0764678901"
                   className="hover:underline font-semibold text-white"
-                  aria-label="Gọi ngay 0764678901"
-                >0764678901</a>
+                  aria-label="Gọi ngay: 0764678901"
+                >
+                  0764678901
+                </a>
               </div>
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2 text-primary" />

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
@@ -116,8 +115,10 @@ const MobileMenu: React.FC = () => {
               <a
                 href="tel:0764678901"
                 className="font-bold hover:underline text-black"
-                aria-label="Gọi ngay 0764678901"
-              >0764678901</a>
+                aria-label="Gọi ngay: 0764678901"
+              >
+                0764678901
+              </a>
             </div>
           </div>
         </div>
