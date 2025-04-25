@@ -1,10 +1,9 @@
 
-import React, { useState } from 'react';
-import { MessageCircle, Phone, Mail, FileText, ChevronRight } from 'lucide-react';
-import { Button } from './ui/button';
+import React, { useState, useEffect } from 'react';
+import { MessageCircle, Phone, Mail, FileText } from 'lucide-react';
 
 const QuickContact = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [activeIconIndex, setActiveIconIndex] = useState(0);
 
   const contactLinks = [
     {
@@ -41,24 +40,48 @@ const QuickContact = () => {
       color: "bg-[#EA4335]",
       hoverColor: "hover:bg-[#D63A2D]",
       label: "Email"
-    },
+    }
   ];
 
-  return (
-    <div className="fixed right-4 bottom-20 z-50 flex flex-col items-end">
-      {/* Nút thu gọn/mở rộng */}
-      <Button
-        variant="outline"
-        size="icon"
-        className={`mb-2 bg-white shadow-lg transform transition-transform duration-300 hover:bg-gray-100 ${isExpanded ? 'rotate-180' : ''}`}
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <ChevronRight className="w-4 h-4" />
-      </Button>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIconIndex((prev) => (prev + 1) % contactLinks.length);
+    }, 1500); // Rotate every 1.5 seconds like giaonhan.org
 
-      {/* Danh sách liên hệ */}
-      <div className={`flex flex-col gap-3 transition-all duration-300 origin-right transform 
-        ${isExpanded ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="fixed right-4 bottom-20 z-50">
+      <div className="relative w-[66px] h-[66px] bg-[#00aeef] rounded-full shadow-lg">
+        {/* Pulse animation */}
+        <div className="absolute inset-0 rounded-full border border-[#00aeef] animate-[widgetPulse_1.5s_infinite]" />
+        
+        {/* Icons container */}
+        <div className="relative w-full h-full overflow-hidden rounded-full">
+          {contactLinks.map((contact, index) => (
+            <a
+              key={index}
+              href={contact.href}
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-500
+                ${index === activeIconIndex ? 'opacity-100 rotate-0' : 'opacity-0 rotate-90'}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="text-white">
+                {contact.imgSrc ? (
+                  <img src={contact.imgSrc} alt={contact.label} className="w-5 h-5" />
+                ) : (
+                  contact.icon
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Social links */}
+      <div className="mt-3 flex flex-col gap-3">
         {contactLinks.map((contact, index) => (
           <a
             key={index}
@@ -68,10 +91,10 @@ const QuickContact = () => {
             className={`relative w-12 h-12 rounded-full ${contact.color} ${contact.hoverColor} 
               flex items-center justify-center text-white shadow-lg
               hover:-translate-y-1 hover:shadow-xl transition-all duration-300
-              group overflow-hidden`}
+              group`}
           >
             {/* Icon */}
-            <div className="absolute inset-0 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-[360deg]">
+            <div className="transform transition-transform duration-300 group-hover:rotate-[360deg]">
               {contact.imgSrc ? (
                 <img src={contact.imgSrc} alt={contact.label} className="w-5 h-5" />
               ) : (
@@ -92,4 +115,3 @@ const QuickContact = () => {
 };
 
 export default QuickContact;
-
