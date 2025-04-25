@@ -18,7 +18,11 @@ const Footer: React.FC = () => {
             <div className="flex flex-col space-y-2">
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-2 text-primary" />
-                <span>0764678901</span>
+                <a
+                  href="tel:0764678901"
+                  className="hover:underline font-semibold text-white"
+                  aria-label="Gọi ngay 0764678901"
+                >0764678901</a>
               </div>
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2 text-primary" />

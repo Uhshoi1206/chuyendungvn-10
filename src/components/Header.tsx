@@ -60,9 +60,14 @@ const Header: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2">
               <Phone className="h-4 w-4 text-primary" />
-              <span className="font-bold">0764678901</span>
+              <a
+                href="tel:0764678901"
+                className="font-bold hover:underline text-black"
+                aria-label="Gọi ngay 0764678901"
+              >
+                0764678901
+              </a>
             </div>
-            
             {!isMobile ? (
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>

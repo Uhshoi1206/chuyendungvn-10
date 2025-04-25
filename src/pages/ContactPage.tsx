@@ -28,7 +28,13 @@ const ContactPage = () => {
               <Phone className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold mb-1">Điện thoại</h3>
-            <p className="text-gray-600">0764678901</p>
+            <p className="text-gray-600">
+              <a
+                href="tel:0764678901"
+                className="hover:underline font-semibold text-black"
+                aria-label="Gọi ngay 0764678901"
+              >0764678901</a>
+            </p>
           </Card>
           
           <Card className="p-6 flex flex-col items-center text-center">
@@ -72,7 +78,7 @@ const ContactPage = () => {
             <h2 className="text-2xl font-bold mb-6">Bản đồ</h2>
             <div className="aspect-video overflow-hidden rounded-lg shadow-md">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6696584237108!2d106.6413080147119!3d10.7549171922773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a90e5dbd%3A0x674d5126513db295!2zUXXhu5FjIEzhu5kgMUEsIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1619203457489!5m2!1svi!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6696584237108!2d106.6413080147119!3d10.7549171922773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a90e5dbd%3A0x674d5126513db295!2zUXXhu5FjIEzhu5kgMUEsIEjhu5MgQ2jDrCBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1619203457489!5m2!1svi!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -87,7 +93,13 @@ const ContactPage = () => {
               <div className="space-y-3">
                 <p className="flex items-start">
                   <Phone className="h-5 w-5 mr-2 text-primary flex-shrink-0" />
-                  <span className="text-gray-700">Hotline: 0764678901 (Tư vấn miễn phí 24/7)</span>
+                  <span className="text-gray-700">
+                    Hotline: <a
+                      href="tel:0764678901"
+                      className="hover:underline font-semibold text-black"
+                      aria-label="Gọi ngay 0764678901"
+                    >0764678901</a> (Tư vấn miễn phí 24/7)
+                  </span>
                 </p>
                 <p className="flex items-start">
                   <Mail className="h-5 w-5 mr-2 text-primary flex-shrink-0" />

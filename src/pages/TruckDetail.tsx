@@ -182,7 +182,7 @@ const TruckDetail = () => {
                 Nhận báo giá
               </Button>
               <Button asChild variant="outline" size="lg" className="flex-1">
-                <a href="tel:0764678901">Gọi ngay: 0764678901</a>
+                <a href="tel:0764678901" aria-label="Gọi ngay 0764678901">Gọi ngay: 0764678901</a>
               </Button>
             </div>
           </div>
@@ -296,7 +296,13 @@ const TruckDetail = () => {
                 <div className="space-y-4">
                   <div>
                     <div className="font-bold">Phòng kinh doanh:</div>
-                    <div className="text-gray-700">0764678901</div>
+                    <div className="text-gray-700">
+                      <a
+                        href="tel:0764678901"
+                        className="hover:underline font-semibold text-black"
+                        aria-label="Gọi ngay 0764678901"
+                      >0764678901</a>
+                    </div>
                   </div>
                   <div>
                     <div className="font-bold">Email:</div>
@@ -314,7 +320,6 @@ const TruckDetail = () => {
               </div>
             </div>
           </TabsContent>
-        </Tabs>
         
         {/* Related Products */}
         {relatedTrucks.length > 0 && (
