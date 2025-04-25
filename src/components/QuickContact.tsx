@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, Phone, Mail, FileText, X } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
+import { SiZalo } from '@icons-pack/react-simple-icons';
 
 const QuickContact = () => {
   const [activeIconIndex, setActiveIconIndex] = useState(0);
@@ -17,7 +18,7 @@ const QuickContact = () => {
     },
     {
       href: "https://zalo.me/",
-      imgSrc: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTI0IDRDMTIuOTU0IDQgNCAxMi45NTQgNCAyNHM4Ljk1NCAyMCAyMCAyMCAyMC04Ljk1NCAyMC0yMFMzNS4wNDYgNCAyNCA0em0xMC42MDkgMjYuMjE0YTcuNTk2IDcuNTk2IDAgMCAxLTMuODc2LS4wMjRjLTIuMjY4LS42MTctMy45MDktMi4xODQtNC45OTItNC4xNDhhLjUwMy41MDMgMCAwIDAtLjQ0My0uMjg4aC0zLjU0MmMtLjIxNiAwLS40MDMuMTQtLjQ2OC4zNDNsLTEuMTQ3IDMuNTc2YS41MDMuNTAzIDAgMCAxLS40MjQuMzUzSDEyLjRhLjUwMy41MDMgMCAwIDEtLjQ2OC0uNjg3TDE2LjE5IDE0LjljLjA3NC0uMjI4LjI4OC0uMzgzLjUyOC0uMzgzaDYuNDM4YzcuODQ4IDAgOS44ODIgNC4zOTYgOS44ODIgOC42NTIgMCAyLjAyOS0uNTU3IDQuMzA3LTEuOTUyIDUuODQ4YTYuNjI1IDYuNjI1IDAgMCAxLTQuNDc3IDEuOTc3di0uNzh6TTI0LjE1IDE3LjgxNWgtNC4wMzRhLjUwMy41MDMgMCAwIDAtLjQ3OC4zNDhsLTIuODA1IDguNzM3YS41MDMuNTAzIDAgMCAwIC40NzguNjU4aDMuNTQyYy4yMTYgMCAuNDAzLS4xNC40NjgtLjM0M2wyLjgwNS04LjczN2EuNTAzLjUwMyAwIDAgMC0uNDc4LS42NTh2LS4wMDV6Ii8+PC9zdmc+", 
+      icon: <SiZalo className="w-5 h-5" />,
       color: "bg-[#0068FF]",
       hoverColor: "hover:bg-[#0054CC]",
       label: "Zalo"
