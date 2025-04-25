@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
@@ -46,18 +45,45 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/tim-kiem" className="text-gray-300 hover:text-primary transition-colors">
-                  Tìm kiếm xe
-                </Link>
-              </li>
-              <li>
                 <Link to="/gioi-thieu" className="text-gray-300 hover:text-primary transition-colors">
                   Giới thiệu
                 </Link>
               </li>
               <li>
+                <Link to="/blog" className="text-gray-300 hover:text-primary transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link to="/lien-he" className="text-gray-300 hover:text-primary transition-colors">
                   Liên hệ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Vehicle Categories */}
+          <div>
+            <h3 className="text-xl font-bold mb-4">Danh mục xe</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/danh-muc?type=truck" className="text-gray-300 hover:text-primary transition-colors">
+                  Xe Tải
+                </Link>
+              </li>
+              <li>
+                <Link to="/danh-muc?type=crane" className="text-gray-300 hover:text-primary transition-colors">
+                  Cẩu
+                </Link>
+              </li>
+              <li>
+                <Link to="/danh-muc?type=trailer" className="text-gray-300 hover:text-primary transition-colors">
+                  Sơ Mi Rơ Mooc
+                </Link>
+              </li>
+              <li>
+                <Link to="/danh-muc?type=tractor" className="text-gray-300 hover:text-primary transition-colors">
+                  Xe Đầu Kéo
                 </Link>
               </li>
             </ul>
