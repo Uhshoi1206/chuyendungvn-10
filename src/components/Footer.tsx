@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook, MessageCircle, Tiktok } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, MessageCircle, Instagram } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -126,7 +126,7 @@ const Footer: React.FC = () => {
                   className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors group"
                 >
                   <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-black transition-colors">
-                    <Tiktok className="h-5 w-5" />
+                    <Instagram className="h-5 w-5" />
                   </div>
                   <span>TikTok XeTaiViet</span>
                 </a>
