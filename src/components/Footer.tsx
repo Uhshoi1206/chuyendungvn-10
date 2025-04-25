@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, MessageCircle, Tiktok } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-8">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
             <h3 className="text-xl font-bold mb-4">XeTaiViet</h3>
@@ -89,22 +89,58 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">Đăng ký nhận tin</h3>
-            <p className="mb-4 text-gray-300">
-              Đăng ký để nhận thông tin mới nhất về sản phẩm và khuyến mãi.
-            </p>
-            <form className="flex flex-col space-y-3">
-              <input
-                type="email"
-                placeholder="Địa chỉ email của bạn"
-                className="px-4 py-2 rounded-md text-gray-900"
-              />
-              <button type="submit" className="btn-primary">
-                Đăng ký
-              </button>
-            </form>
+          {/* Newsletter & Social Media */}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-bold mb-4">Đăng ký nhận tin</h3>
+              <p className="mb-4 text-gray-300">
+                Đăng ký để nhận thông tin mới nhất về sản phẩm và khuyến mãi.
+              </p>
+              <form className="flex flex-col space-y-3">
+                <input
+                  type="email"
+                  placeholder="Địa chỉ email của bạn"
+                  className="px-4 py-2 rounded-md text-gray-900"
+                />
+                <button type="submit" className="btn-primary">
+                  Đăng ký
+                </button>
+              </form>
+            </div>
+
+            {/* Social Media Links */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Kết nối với chúng tôi</h3>
+              <div className="flex space-x-4">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#1877F2] p-2 rounded-full hover:bg-[#1865D3] transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://m.me/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0099FF] p-2 rounded-full hover:bg-[#0088EE] transition-colors"
+                  aria-label="Messenger"
+                >
+                  <MessageCircle className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://tiktok.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#000000] p-2 rounded-full hover:bg-[#333333] transition-colors"
+                  aria-label="TikTok"
+                >
+                  <Tiktok className="h-6 w-6" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
