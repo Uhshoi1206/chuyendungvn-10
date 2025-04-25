@@ -1,7 +1,7 @@
 import { BlogPost, BlogCategory } from '@/models/BlogPost';
 
 // Định nghĩa các danh mục blog - Chỉ cần sửa object này để thêm/xóa danh mục
-export const blogCategories: Record<BlogCategory, string> = {
+const blogCategories: Record<BlogCategory, string> = {
   'xe-tai': 'Xe Tải',
   'cau': 'Cẩu',
   'mooc': 'Mooc',
@@ -69,7 +69,7 @@ const createBlogPost = (
 };
 
 // Tạo dữ liệu bài viết cho mỗi danh mục
-export const generateBlogPosts = () => {
+const generateBlogPosts = () => {
   let allPosts: BlogPost[] = [];
   let idCounter = 1;
 
