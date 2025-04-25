@@ -6,7 +6,6 @@ import { Filter } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { TruckFilters } from '@/models/TruckTypes';
 import { VehicleTypeFilter } from './filters/VehicleTypeFilter';
-import { SearchFilter } from './filters/SearchFilter';
 import { BrandFilter } from './filters/BrandFilter';
 import { PriceFilter } from './filters/PriceFilter';
 import { WeightFilter } from './filters/WeightFilter';
@@ -29,7 +28,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [weightRange, setWeightRange] = useState<number[]>([0, 20]);
 
   useEffect(() => {
-    // Cập nhật trạng thái local khi filters từ props thay đổi
     setLocalFilters(filters);
     if (filters.minPrice !== null && filters.maxPrice !== null) {
       setPriceRange([filters.minPrice, filters.maxPrice]);
@@ -65,8 +63,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const handleApplyFilters = () => {
     console.log("Áp dụng bộ lọc:", localFilters);
-    
-    // Thay vì cập nhật từng thuộc tính, chúng ta sẽ cập nhật toàn bộ đối tượng filters
     onFilterChange(localFilters as any, undefined);
     
     toast({
@@ -82,7 +78,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       maxPrice: null,
       minWeight: null,
       maxWeight: null,
-      search: null,
       vehicleType: null,
     });
     setPriceRange([0, 1000000000]);
@@ -120,13 +115,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <Separator />
 
-        <SearchFilter
-          searchValue={localFilters.search}
-          onSearchChange={(value) => handleFilterChange('search', value)}
-        />
-
-        <Separator />
-
         <BrandFilter
           selectedBrand={localFilters.brand}
           onBrandChange={(value) => handleFilterChange('brand', value)}
@@ -158,3 +146,4 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 };
 
 export default FilterSidebar;
+
