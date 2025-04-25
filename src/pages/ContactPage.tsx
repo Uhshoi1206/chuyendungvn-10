@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -29,7 +28,7 @@ const ContactPage = () => {
               <Phone className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold mb-1">Điện thoại</h3>
-            <p className="text-gray-600">0123.456.789</p>
+            <p className="text-gray-600">0764678901</p>
           </Card>
           
           <Card className="p-6 flex flex-col items-center text-center">
@@ -88,7 +87,7 @@ const ContactPage = () => {
               <div className="space-y-3">
                 <p className="flex items-start">
                   <Phone className="h-5 w-5 mr-2 text-primary flex-shrink-0" />
-                  <span className="text-gray-700">Hotline: 0123.456.789 (Tư vấn miễn phí 24/7)</span>
+                  <span className="text-gray-700">Hotline: 0764678901 (Tư vấn miễn phí 24/7)</span>
                 </p>
                 <p className="flex items-start">
                   <Mail className="h-5 w-5 mr-2 text-primary flex-shrink-0" />

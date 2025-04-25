@@ -60,7 +60,7 @@ const Header: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2">
               <Phone className="h-4 w-4 text-primary" />
-              <span className="font-bold">0123.456.789</span>
+              <span className="font-bold">0764678901</span>
             </div>
             
             {!isMobile ? (
