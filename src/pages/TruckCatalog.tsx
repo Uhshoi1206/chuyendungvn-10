@@ -64,6 +64,11 @@ const TruckCatalog = () => {
 
   const { filteredVehicles } = useVehicleFiltering(trucks, selectedType, filters);
 
+  // Log để debug
+  console.log('Filters applied:', filters);
+  console.log('Filtered vehicles:', filteredVehicles);
+  console.log('Selected type:', selectedType);
+
   const vehicleTypeLabels: Record<VehicleType, string> = {
     truck: 'Xe Tải',
     trailer: 'Sơ Mi Rơ Mooc',
