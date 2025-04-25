@@ -11,10 +11,25 @@ import TruckItem from '@/components/TruckItem';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { CalendarDays, User, Clock } from 'lucide-react';
 
+// Nhãn tiếng Việt cho danh mục xe
+const TRUCK_TYPE_LABELS: Record<string, string> = {
+  'truck': 'Xe tải',
+  'trailer': 'Mooc',
+  'tractor': 'Xe đầu kéo',
+  'crane': 'Cẩu',
+};
+
+const TRUCK_TYPES: Array<keyof typeof TRUCK_TYPE_LABELS> = ['truck', 'trailer', 'tractor', 'crane'];
+
 const SearchPage = () => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
-  const [productResults, setProductResults] = useState<Truck[]>([]);
+  const [productResultsByType, setProductResultsByType] = useState<Record<string, Truck[]>>({
+    truck: [],
+    trailer: [],
+    tractor: [],
+    crane: [],
+  });
   const [blogResults, setBlogResults] = useState<typeof blogPosts>([]);
 
   useEffect(() => {
@@ -27,27 +42,41 @@ const SearchPage = () => {
   }, [location.search]);
 
   const performSearch = (query: string) => {
-    // Tìm kiếm sản phẩm
-    const prodResults = trucks.filter(truck => {
-      if (truck.name.toLowerCase().includes(query.toLowerCase())) return true;
-      if (truck.brand.toLowerCase().includes(query.toLowerCase())) return true;
-      if (truck.description.toLowerCase().includes(query.toLowerCase())) return true;
-      if (truck.features.some(feature => feature.toLowerCase().includes(query.toLowerCase()))) return true;
-      if (truck.engine.toLowerCase().includes(query.toLowerCase())) return true;
-      if (truck.fuelType.toLowerCase().includes(query.toLowerCase())) return true;
-      return false;
+    const productByType: Record<string, Truck[]> = {
+      truck: [],
+      trailer: [],
+      tractor: [],
+      crane: [],
+    };
+
+    // Phân loại sản phẩm tìm thấy theo type
+    trucks.forEach(truck => {
+      const lowerQuery = query.toLowerCase();
+      if (
+        truck.name.toLowerCase().includes(lowerQuery) ||
+        truck.brand.toLowerCase().includes(lowerQuery) ||
+        truck.description.toLowerCase().includes(lowerQuery) ||
+        truck.features.some(feature => feature.toLowerCase().includes(lowerQuery)) ||
+        truck.engine.toLowerCase().includes(lowerQuery) ||
+        truck.fuelType.toLowerCase().includes(lowerQuery)
+      ) {
+        if (productByType[truck.type]) {
+          productByType[truck.type].push(truck);
+        }
+      }
     });
 
     // Tìm kiếm bài viết blog
     const blogFiltered = blogPosts.filter(post => {
-      if (post.title.toLowerCase().includes(query.toLowerCase())) return true;
-      if (post.description.toLowerCase().includes(query.toLowerCase())) return true;
-      if (post.content.toLowerCase().includes(query.toLowerCase())) return true;
-      if ((post.tags || []).some(tag => tag.toLowerCase().includes(query.toLowerCase()))) return true;
+      const lowerQuery = query.toLowerCase();
+      if (post.title.toLowerCase().includes(lowerQuery)) return true;
+      if (post.description.toLowerCase().includes(lowerQuery)) return true;
+      if (post.content.toLowerCase().includes(lowerQuery)) return true;
+      if ((post.tags || []).some(tag => tag.toLowerCase().includes(lowerQuery))) return true;
       return false;
     });
 
-    setProductResults(prodResults);
+    setProductResultsByType(productByType);
     setBlogResults(blogFiltered);
   };
 
@@ -59,8 +88,12 @@ const SearchPage = () => {
     performSearch(searchTerm);
   };
 
-  // Tổng số kết quả tìm kiếm
-  const totalResults = productResults.length + blogResults.length;
+  // Tổng số kết quả sản phẩm tìm được (tất cả nhóm)
+  const totalProductResults = Object.values(productResultsByType).reduce(
+    (acc, arr) => acc + arr.length,
+    0
+  );
+  const totalResults = totalProductResults + blogResults.length;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -101,7 +134,12 @@ const SearchPage = () => {
               variant="outline" 
               onClick={() => {
                 setSearchTerm('');
-                setProductResults([]);
+                setProductResultsByType({
+                  truck: [],
+                  trailer: [],
+                  tractor: [],
+                  crane: [],
+                });
                 setBlogResults([]);
                 window.history.pushState({}, '', '/search');
               }}
@@ -111,19 +149,19 @@ const SearchPage = () => {
           </div>
         ) : (
           <div className="max-w-5xl mx-auto">
-            {/* DANH SÁCH SẢN PHẨM */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-semibold mb-4">Sản phẩm xe tải</h2>
-              {productResults.length === 0 ? (
-                <p className="text-gray-600">Không tìm thấy xe tải phù hợp.</p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {productResults.map(truck => (
-                    <TruckItem key={truck.id} truck={truck} />
-                  ))}
+            {/* DANH SÁCH SẢN PHẨM THEO NHÓM TYPE */}
+            {TRUCK_TYPES.map(type => (
+              productResultsByType[type] && productResultsByType[type].length > 0 && (
+                <div key={type} className="mb-12">
+                  <h2 className="text-2xl font-semibold mb-4">{TRUCK_TYPE_LABELS[type]}</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {productResultsByType[type].map(truck => (
+                      <TruckItem key={truck.id} truck={truck} />
+                    ))}
+                  </div>
                 </div>
-              )}
-            </div>
+              )
+            ))}
 
             {/* DANH SÁCH BÀI VIẾT BLOG */}
             <div>
@@ -180,4 +218,3 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
-
