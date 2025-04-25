@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -9,10 +10,8 @@ import { useTruckFilters } from '@/hooks/useTruckFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useVehicleFiltering } from '@/hooks/useVehicleFiltering';
 import CatalogHeader from '@/components/catalog/CatalogHeader';
-import MobileSearch from '@/components/catalog/MobileSearch';
 import VehicleGrid from '@/components/catalog/VehicleGrid';
 import VehicleTypeTabs from '@/components/catalog/VehicleTypeTabs';
-import DesktopSearch from '@/components/catalog/DesktopSearch';
 
 const TruckCatalog = () => {
   const location = useLocation();
@@ -35,8 +34,6 @@ const TruckCatalog = () => {
     vehicleType: typeParam || null,
   };
 
-  console.log("TruckCatalog khởi tạo với initialFilters:", initialFilters);
-
   const {
     filters,
     searchInput,
@@ -48,14 +45,12 @@ const TruckCatalog = () => {
   } = useTruckFilters(initialFilters);
 
   useEffect(() => {
-    console.log("selectedType thay đổi:", selectedType);
     handleFilterChange('vehicleType', selectedType);
     const newFilters = { ...filters, vehicleType: selectedType };
     updateUrl(newFilters);
   }, [selectedType]);
 
   useEffect(() => {
-    console.log("URL params thay đổi, typeParam:", typeParam);
     if (typeParam && (typeParam === 'truck' || typeParam === 'trailer' || typeParam === 'tractor' || typeParam === 'crane')) {
       setSelectedType(typeParam);
     }
@@ -84,16 +79,6 @@ const TruckCatalog = () => {
         onTypeChange={(value) => setSelectedType(value)}
       />
       
-      <MobileSearch
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        handleSearch={handleSearch}
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        onResetFilters={handleResetFilters}
-        vehicleTypeLabel={vehicleTypeLabels[selectedType]}
-      />
-      
       <div className="container mx-auto py-8 px-4">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="hidden md:block w-full md:w-1/4 lg:w-1/5">
@@ -107,14 +92,6 @@ const TruckCatalog = () => {
           </div>
           
           <div className="w-full md:w-3/4 lg:w-4/5">
-            <DesktopSearch
-              searchInput={searchInput}
-              onSearchChange={setSearchInput}
-              onSearch={handleSearch}
-              totalResults={filteredVehicles.length}
-              vehicleTypeLabel={vehicleTypeLabels[selectedType]}
-            />
-            
             <div className="md:hidden mb-4 text-gray-600">
               Hiển thị {filteredVehicles.length} kết quả
             </div>
@@ -133,3 +110,4 @@ const TruckCatalog = () => {
 };
 
 export default TruckCatalog;
+
