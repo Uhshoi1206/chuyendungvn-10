@@ -3,7 +3,7 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { FilterSidebar } from '@/components/FilterSidebar';
+import FilterSidebar from '@/components/FilterSidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Filter } from 'lucide-react';
 import { TruckFilters } from '@/models/TruckTypes';
@@ -59,3 +59,5 @@ export const MobileSearch: React.FC<MobileSearchProps> = ({
     </div>
   );
 };
+
+export default MobileSearch;

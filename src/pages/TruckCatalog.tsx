@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -24,7 +23,6 @@ const TruckCatalog = () => {
   const typeParam = queryParams.get('type') as VehicleType | null;
   const isMobile = useIsMobile();
   
-  // Sử dụng tham số type từ URL nếu có, mặc định là 'truck'
   const [selectedType, setSelectedType] = useState<VehicleType>(typeParam || 'truck');
 
   const initialFilters: TruckFilters = {
@@ -49,16 +47,13 @@ const TruckCatalog = () => {
     updateUrl
   } = useTruckFilters(initialFilters);
 
-  // Theo dõi thay đổi của selectedType và cập nhật bộ lọc
   useEffect(() => {
     console.log("selectedType thay đổi:", selectedType);
     handleFilterChange('vehicleType', selectedType);
-    // Cập nhật URL với loại xe đã chọn
     const newFilters = { ...filters, vehicleType: selectedType };
     updateUrl(newFilters);
   }, [selectedType]);
 
-  // Theo dõi thay đổi của các tham số trên URL và cập nhật bộ lọc và tab
   useEffect(() => {
     console.log("URL params thay đổi, typeParam:", typeParam);
     if (typeParam && (typeParam === 'truck' || typeParam === 'trailer' || typeParam === 'tractor' || typeParam === 'crane')) {
@@ -68,7 +63,6 @@ const TruckCatalog = () => {
 
   const { filteredVehicles } = useVehicleFiltering(trucks, selectedType, filters);
 
-  // Log để debug
   console.log('Filters applied:', filters);
   console.log('Filtered vehicles:', filteredVehicles);
   console.log('Selected type:', selectedType);
