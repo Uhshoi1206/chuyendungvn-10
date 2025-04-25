@@ -74,11 +74,7 @@ const QuickContact = () => {
                   ${index === activeIconIndex ? 'opacity-100 rotate-0' : 'opacity-0 rotate-90'}`}
               >
                 <div className="text-white">
-                  {contact.imgSrc ? (
-                    <img src={contact.imgSrc} alt={contact.label} className="w-5 h-5" />
-                  ) : (
-                    contact.icon
-                  )}
+                  {contact.icon}
                 </div>
               </div>
             ))}
@@ -104,11 +100,7 @@ const QuickContact = () => {
               >
                 {/* Icon */}
                 <div className="transform transition-transform duration-300 group-hover:rotate-[360deg]">
-                  {contact.imgSrc ? (
-                    <img src={contact.imgSrc} alt={contact.label} className="w-5 h-5" />
-                  ) : (
-                    contact.icon
-                  )}
+                  {contact.icon}
                 </div>
 
                 {/* Tooltip */}
