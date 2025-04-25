@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import FilterSidebar from '@/components/FilterSidebar';
+import { FilterSidebar } from '@/components/FilterSidebar';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Filter } from 'lucide-react';
 import { TruckFilters } from '@/models/TruckTypes';
 
 interface MobileSearchProps {
@@ -12,53 +13,49 @@ interface MobileSearchProps {
   setSearchInput: (value: string) => void;
   handleSearch: () => void;
   filters: TruckFilters;
-  onFilterChange: (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => void;
+  onFilterChange: (key: keyof TruckFilters, value: any) => void;
   onResetFilters: () => void;
   vehicleTypeLabel: string;
 }
 
-const MobileSearch: React.FC<MobileSearchProps> = ({
+export const MobileSearch: React.FC<MobileSearchProps> = ({
   searchInput,
   setSearchInput,
   handleSearch,
   filters,
   onFilterChange,
   onResetFilters,
-  vehicleTypeLabel,
+  vehicleTypeLabel
 }) => {
   return (
-    <div className="container mx-auto py-4 px-4 md:hidden">
-      <div className="flex space-x-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+    <div className="block md:hidden px-4 py-3 bg-gray-50">
+      <div className="flex items-center space-x-2">
+        <div className="flex-1">
           <Input
-            type="search"
-            placeholder={`Tìm ${vehicleTypeLabel.toLowerCase()}...`}
-            className="pl-10"
+            placeholder={`Tìm ${vehicleTypeLabel}...`}
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            className="w-full"
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
         </div>
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button size="icon">
+
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon">
               <Filter className="h-4 w-4" />
             </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <div className="p-4 max-h-[80vh] overflow-y-auto">
-              <FilterSidebar
-                filters={filters}
-                onFilterChange={onFilterChange}
-                onResetFilters={onResetFilters}
-              />
-            </div>
-          </DrawerContent>
-        </Drawer>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[90%] p-0">
+            <FilterSidebar
+              filters={filters}
+              onFilterChange={onFilterChange}
+              onResetFilters={onResetFilters}
+              className="h-full"
+            />
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
 };
-
-export default MobileSearch;
