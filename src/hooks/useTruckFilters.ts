@@ -36,6 +36,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   };
 
   useEffect(() => {
+    console.log("useTruckFilters: URL thay đổi, đọc tham số mới");
     const queryParams = new URLSearchParams(location.search);
     const brand = queryParams.get('brand');
     const weightParam = queryParams.get('weight');
@@ -45,6 +46,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     let newFilters: TruckFilters = { ...filters };
     
     if (brand) {
+      console.log("Đọc brand từ URL:", brand);
       newFilters.brand = brand;
     } else {
       newFilters.brand = null;
@@ -78,6 +80,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       newFilters.vehicleType = null;
     }
     
+    console.log("Cập nhật filters từ URL:", newFilters);
     setFilters(newFilters);
   }, [location.search]);
 
@@ -88,9 +91,11 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     if (typeof keyOrFilters === 'object') {
       // Handle case where entire filters object is passed
       newFilters = { ...keyOrFilters };
+      console.log("handleFilterChange: Cập nhật toàn bộ filters:", newFilters);
     } else {
       // Handle case where key and value are passed separately
       newFilters = { ...filters, [keyOrFilters]: value };
+      console.log(`handleFilterChange: Cập nhật filter ${keyOrFilters}:`, value);
     }
     
     setFilters(newFilters);
@@ -98,6 +103,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   };
   
   const updateUrl = (newFilters: TruckFilters) => {
+    console.log("Cập nhật URL với filters:", newFilters);
     const params = new URLSearchParams();
     
     if (newFilters.brand) {
@@ -130,11 +136,13 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       ...filters,
       search: searchInput,
     };
+    console.log("handleSearch: Cập nhật search:", searchInput);
     setFilters(newFilters);
     updateUrl(newFilters);
   };
 
   const handleResetFilters = () => {
+    console.log("Đặt lại tất cả bộ lọc");
     const emptyFilters: TruckFilters = {
       brand: null,
       minPrice: null,

@@ -66,10 +66,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const handleApplyFilters = () => {
     console.log("Áp dụng bộ lọc:", localFilters);
     
-    // Truyền một-một các giá trị filter lên component cha
-    Object.entries(localFilters).forEach(([key, value]) => {
-      onFilterChange(key as keyof TruckFilters, value);
-    });
+    // Thay vì cập nhật từng thuộc tính, chúng ta sẽ cập nhật toàn bộ đối tượng filters
+    onFilterChange(localFilters as any, undefined);
     
     toast({
       title: "Đã áp dụng bộ lọc",
