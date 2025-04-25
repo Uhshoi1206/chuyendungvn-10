@@ -1,4 +1,3 @@
-
 import { BlogPost, BlogCategory } from '@/models/BlogPost';
 
 // Định nghĩa các danh mục blog - Chỉ cần sửa object này để thêm/xóa danh mục
@@ -153,6 +152,110 @@ const updatedBlogPosts: BlogPost[] = [
 
 blogPosts = updatedBlogPosts;
 
+// ======= Thêm 3 bài viết mới về Thaco Ollin 350.E4, Isuzu QKR 270, Hyundai HD800 =======
+const customPosts: BlogPost[] = [
+  {
+    id: (blogPosts.length + 1).toString(),
+    slug: "thaco-ollin-350e4-danh-gia-uu-nhuoc-diem",
+    title: "Thaco Ollin 350.E4 – Đánh giá ưu nhược điểm thực tế",
+    description:
+      "Khám phá chi tiết về Thaco Ollin 350.E4: xe tải nhẹ động cơ mạnh mẽ, tiết kiệm nhiên liệu và giá thành hợp lý dành cho doanh nghiệp vừa và nhỏ.",
+    content: `
+      <h2>Giới thiệu Thaco Ollin 350.E4</h2>
+      <p>Thaco Ollin 350.E4 là dòng xe tải nhẹ ứng dụng công nghệ hiện đại, động cơ Euro 4 giúp tiết kiệm nhiên liệu và bảo vệ môi trường. Xe có tải trọng 3.49 tấn, thích hợp cho vận chuyển hàng tại nội thành và liên tỉnh.</p>
+      <img src="https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg" alt="Thaco Ollin 350.E4" className="w-full h-auto my-4 rounded-lg" />
+      <h3>Đặc điểm nổi bật</h3>
+      <ul>
+        <li>Động cơ Yuchai tiết kiệm nhiên liệu, bền bỉ</li>
+        <li>Thiết kế nhỏ gọn, phù hợp đường phố Việt Nam</li>
+        <li>Khung gầm chắc chắn, nội thất tiện nghi</li>
+      </ul>
+      <h3>Nhược điểm cần lưu ý</h3>
+      <p>Trang bị tiêu chuẩn còn khá cơ bản, khả năng chống ồn ở tốc độ cao chưa thực sự ấn tượng, tuy nhiên với tầm giá thì Ollin 350.E4 vẫn là lựa chọn xứng đáng.</p>
+      <h3>Kết luận</h3>
+      <p>Cạnh tranh trực tiếp với các dòng xe Nhật, Ollin 350.E4 nổi bật ở chi phí đầu tư thấp, bảo dưỡng thuận tiện và linh hoạt vận hành.</p>
+    `,
+    images: [
+      "https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg",
+      "https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-e4-thung-dai.jpg",
+      "https://xetaiso1.com/wp-content/uploads/2019/02/xetaiollin.jpg",
+      "https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-cabin.jpg"
+    ],
+    publishDate: new Date().toISOString().split("T")[0],
+    readTime: 6,
+    category: "xe-tai",
+    author: "Nguyễn Văn A",
+    tags: ["xe-tai", "thaco", "ollin-350-e4", "xe tải nhẹ"],
+    featured: false,
+  },
+  {
+    id: (blogPosts.length + 2).toString(),
+    slug: "isuzu-qkr-270-dong-co-ben-bi-thich-hop-do-thi",
+    title: "Isuzu QKR 270 – Dòng xe tải bền bỉ, phù hợp đô thị Việt",
+    description:
+      "Isuzu QKR 270 là lựa chọn xe tải nhẹ lý tưởng cho các tuyến đường nội thành: tiết kiệm nhiên liệu, độ bền cao, thương hiệu Nhật uy tín.",
+    content: `
+      <h2>Giới thiệu Isuzu QKR 270</h2>
+      <p>Dòng xe QKR 270 của Isuzu nổi bật ở khả năng vận hành ổn định, động cơ Common Rail tiết kiệm nhiên liệu, đáp ứng tiêu chuẩn khí thải Euro 4. Thiết kế cabin vuông hiện đại với tầm nhìn rộng rãi.</p>
+      <img src="https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg" alt="Isuzu QKR 270" className="w-full h-auto my-4 rounded-lg" />
+      <h3>Ưu điểm nổi bật</h3>
+      <ul>
+        <li>Thương hiệu nổi tiếng Nhật Bản, độ bền vượt trội</li>
+        <li>Vận hành tiết kiệm, bảo dưỡng dễ dàng</li>
+        <li>Thùng xe đa dạng, tải trọng linh động</li>
+      </ul>
+      <h3>Có phù hợp với doanh nghiệp vận tải nhỏ?</h3>
+      <p>Với chi phí sử dụng hợp lý, Isuzu QKR 270 đặc biệt thích hợp cho các doanh nghiệp kinh doanh vận chuyển nội thành hoặc giao nhận hàng hóa tần suất lớn.</p>
+    `,
+    images: [
+      "https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg",
+      "https://otoisuzu.com.vn/uploads/images/2020/12/03/isuzu-qkr-270-thung-dai.jpeg",
+      "https://isuzutentien.vn/wp-content/uploads/2021/12/xe-tai-isuzu-qkr-2701.jpg",
+      "https://ototruonggiang.com.vn/wp-content/uploads/2020/09/qkr270.jpg"
+    ],
+    publishDate: new Date().toISOString().split("T")[0],
+    readTime: 5,
+    category: "xe-tai",
+    author: "Phạm Thị D",
+    tags: ["xe-tai", "isuzu", "qkr-270", "vận tải"],
+    featured: false,
+  },
+  {
+    id: (blogPosts.length + 3).toString(),
+    slug: "danh-gia-xe-tai-hyundai-hd800",
+    title: "Đánh giá xe tải Hyundai HD800: Động cơ mạnh mẽ, độ bền vượt trội",
+    description:
+      "Hyundai HD800 gây ấn tượng ở động cơ mạnh mẽ, khả năng chịu tải tốt và chi phí vận hành hợp lý – lựa chọn hàng đầu trong phân khúc tầm trung.",
+    content: `
+      <h2>Giới thiệu xe tải Hyundai HD800</h2>
+      <p>Hyundai HD800 là dòng xe tải tầm trung có lịch sử lâu đời, nổi tiếng với độ bền cao, khả năng vận hành mạnh mẽ và tiết kiệm nhiên liệu nhờ động cơ D4DB 4.0L.</p>
+      <img src="https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg" alt="Hyundai HD800" className="w-full h-auto my-4 rounded-lg" />
+      <h3>Lý do nên chọn HD800</h3>
+      <ul>
+        <li>Động cơ bền bỉ, tải trọng lớn đến 8 tấn</li>
+        <li>Khung gầm chắc chắn, vận hành ổn định mọi địa hình</li>
+        <li>Chi phí bảo trì thấp, phụ tùng phổ biến</li>
+      </ul>
+      <h3>Kết luận</h3>
+      <p>Hyundai HD800 xứng đáng là bạn đồng hành tin cậy của các doanh nghiệp vận tải với độ bền, hiệu suất và giá trị đầu tư lâu dài.</p>
+    `,
+    images: [
+      "https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg",
+      "https://xetaisaigon.vn/wp-content/uploads/2019/03/hyundai-hd800.jpg",
+      "https://xetaiquangngai.com.vn/wp-content/uploads/2020/12/xe-tai-hyundai-hd800-thung-dai.jpg",
+      "https://xeototai.vn/wp-content/uploads/2020/09/hd800-noi-that.jpg"
+    ],
+    publishDate: new Date().toISOString().split("T")[0],
+    readTime: 6,
+    category: "xe-tai",
+    author: "Lê Văn C",
+    tags: ["xe-tai", "hyundai", "hd800", "xe tải trung"],
+    featured: false,
+  }
+];
+
+// Thêm các bài viết mới vào mảng blogPosts
+blogPosts = [...blogPosts, ...customPosts];
+
 // Xuất dữ liệu duy nhất một lần ở cuối file
 export { blogPosts, blogCategories, generateBlogPosts };
-
