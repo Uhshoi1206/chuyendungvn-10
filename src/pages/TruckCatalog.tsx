@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -36,10 +35,7 @@ const TruckCatalog = () => {
 
   const {
     filters,
-    searchInput,
-    setSearchInput,
     handleFilterChange,
-    handleSearch,
     handleResetFilters,
     updateUrl
   } = useTruckFilters(initialFilters);
@@ -110,4 +106,3 @@ const TruckCatalog = () => {
 };
 
 export default TruckCatalog;
-

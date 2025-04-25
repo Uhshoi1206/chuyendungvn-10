@@ -36,6 +36,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     const brand = queryParams.get('brand');
     const weightParam = queryParams.get('weight');
     const vehicleType = queryParams.get('type') as VehicleType | null;
+    const search = queryParams.get('search');
     
     let newFilters: TruckFilters = { ...filters };
     
@@ -65,6 +66,12 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       newFilters.vehicleType = vehicleType;
     } else {
       newFilters.vehicleType = null;
+    }
+
+    if (search) {
+      newFilters.search = search;
+    } else {
+      newFilters.search = null;
     }
     
     console.log("Cập nhật filters từ URL:", newFilters);
@@ -107,6 +114,10 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     if (newFilters.vehicleType) {
       params.set('type', newFilters.vehicleType);
     }
+
+    if (newFilters.search) {
+      params.set('search', newFilters.search);
+    }
     
     navigate(`/danh-muc?${params.toString()}`, { replace: true });
   };
@@ -120,6 +131,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       minWeight: null,
       maxWeight: null,
       vehicleType: null,
+      search: null
     };
     setFilters(emptyFilters);
     navigate('/danh-muc', { replace: true });

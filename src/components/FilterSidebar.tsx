@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
+import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
-import { Filter } from 'lucide-react';
+import { Filter, Search } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { TruckFilters } from '@/models/TruckTypes';
 import { VehicleTypeFilter } from './filters/VehicleTypeFilter';
@@ -26,6 +27,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [localFilters, setLocalFilters] = useState<TruckFilters>(filters);
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000000000]);
   const [weightRange, setWeightRange] = useState<number[]>([0, 20]);
+  const [searchInput, setSearchInput] = useState<string>(filters.search || '');
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -35,6 +37,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     if (filters.minWeight !== null && filters.maxWeight !== null) {
       setWeightRange([filters.minWeight, filters.maxWeight]);
     }
+    setSearchInput(filters.search || '');
   }, [filters]);
 
   const handleFilterChange = (key: keyof TruckFilters, value: any) => {
@@ -61,6 +64,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     });
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleFilterChange('search', searchInput);
+    onFilterChange('search', searchInput);
+  };
+
   const handleApplyFilters = () => {
     console.log("Áp dụng bộ lọc:", localFilters);
     onFilterChange(localFilters as any, undefined);
@@ -79,9 +88,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       minWeight: null,
       maxWeight: null,
       vehicleType: null,
+      search: null
     });
     setPriceRange([0, 1000000000]);
     setWeightRange([0, 20]);
+    setSearchInput('');
     onResetFilters();
     
     toast({
@@ -108,6 +119,26 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       <div className="space-y-6">
+        <form onSubmit={handleSearch} className="relative">
+          <Input
+            type="search"
+            placeholder="Tìm xe tải..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="pr-10"
+          />
+          <Button
+            type="submit"
+            size="icon"
+            variant="ghost"
+            className="absolute right-0 top-0 h-full px-3"
+          >
+            <Search className="h-4 w-4" />
+          </Button>
+        </form>
+
+        <Separator />
+
         <VehicleTypeFilter
           selectedType={localFilters.vehicleType}
           onTypeChange={(value) => handleFilterChange('vehicleType', value)}
