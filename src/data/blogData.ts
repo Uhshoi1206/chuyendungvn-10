@@ -104,4 +104,56 @@ export const generateBlogPosts = () => {
 };
 
 // Tạo danh sách bài viết
-export const blogPosts: BlogPost[] = generateBlogPosts();
+export let blogPosts: BlogPost[] = generateBlogPosts();
+
+// Thêm bài viết blog chi tiết về Hyundai New Porter H150 vào cuối mảng blogPosts
+const hyundaiH150Post = {
+  id: (blogPosts.length + 1).toString(),
+  slug: "hyundai-new-porter-h150-danh-gia-chi-tiet",
+  title: "Hyundai New Porter H150 – Đánh giá chi tiết dòng xe tải nhỏ linh hoạt",
+  description: "Khám phá những ưu điểm nổi bật của Hyundai New Porter H150 – xe tải nhỏ bán chạy hàng đầu tại Việt Nam với thiết kế hiện đại, tiết kiệm nhiên liệu và khả năng vận hành linh hoạt trong đô thị.",
+  content: `
+    <h2>Giới thiệu về Hyundai New Porter H150</h2>
+    <p>Hyundai New Porter H150 là dòng xe tải nhẹ đến từ thương hiệu Hyundai nổi tiếng, sở hữu thiết kế mạnh mẽ, nhỏ gọn, khả năng vận hành ưu việt và đặc biệt phù hợp với nhu cầu vận chuyển trong thành phố cũng như các khu vực đông dân cư.</p>
+    <img src="https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg" alt="Hyundai New Porter H150" className="w-full h-auto my-4 rounded-lg" />
+    <h3>Thiết kế hiện đại, tinh tế</h3>
+    <p>Xe sở hữu ngoại thất thanh lịch, màu sắc trang nhã, cabin rộng rãi mang lại cảm giác thoải mái cho người lái. Hệ thống chiếu sáng và gương chiếu hậu bố trí hợp lý, tăng độ an toàn khi di chuyển ban đêm hoặc các cung đường khó quan sát.</p>
+    <img src="https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg" alt="Nội thất xe tải Hyundai H150" className="w-full h-auto my-4 rounded-lg" />
+    <h3>Vận hành mạnh mẽ & tiết kiệm nhiên liệu</h3>
+    <p>Động cơ D4CB Diesel 2.5L công suất 130HP giúp H150 dễ dàng vượt qua các địa hình phức tạp, tải trọng thường xuyên mà vẫn tiết kiệm nhiên liệu tối đa. Xe đạt tiêu chuẩn khí thải Euro 4 thân thiện với môi trường.</p>
+    <h3>An toàn và tiện nghi</h3>
+    <p>Trang bị hệ thống phanh ABS, khung gầm chắc chắn, hệ thống giảm xóc, điều hòa hai chiều, giải trí Bluetooth/CD cùng nhiều tiện nghi hỗ trợ lái xe an toàn và thư thái.</p>
+    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c" alt="Vận chuyển cùng H150" className="w-full h-auto my-4 rounded-lg" />
+    <h3>Kết luận</h3>
+    <p>Hyundai New Porter H150 là lựa chọn hoàn hảo cho nhu cầu vận chuyển hàng hóa trong thành phố, nhỏ gọn, hiệu quả và giá cạnh tranh – rất đáng để đầu tư cho doanh nghiệp và cá nhân.</p>
+    <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510" alt="Hyundai H150 trên phố" className="w-full h-auto my-4 rounded-lg" />
+  `,
+  images: [
+    "https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg",
+    "https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg",
+    "https://images.unsplash.com/photo-1519003722824-194d4455a60c",
+    "https://images.unsplash.com/photo-1597733336794-12d05021d510"
+  ],
+  publishDate: new Date().toISOString().split('T')[0],
+  readTime: 6,
+  category: "xe-tai",
+  author: "Nguyễn Văn A",
+  tags: ["xe-tai", "hyundai", "porter-h150", "xe tai nhe"],
+  featured: true
+};
+
+// Đảm bảo không bị trùng lặp featured: chỉ một bài nổi bật / danh mục
+const updatedBlogPosts = [
+  ...blogPosts.filter(
+    post => !(post.category === "xe-tai" && post.featured)
+  ),
+  hyundaiH150Post,
+  ...blogPosts.filter(
+    post => post.category !== "xe-tai"
+  )
+].sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
+
+// Gán lại blogPosts để các trang sử dụng đúng bài viết mới nhất
+blogPosts = updatedBlogPosts;
+
+export { blogCategories, generateBlogPosts };
