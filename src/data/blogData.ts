@@ -104,10 +104,10 @@ export const generateBlogPosts = () => {
 };
 
 // Tạo danh sách bài viết
-export let blogPosts: BlogPost[] = generateBlogPosts();
+let blogPosts: BlogPost[] = generateBlogPosts();
 
 // Thêm bài viết blog chi tiết về Hyundai New Porter H150 vào cuối mảng blogPosts
-const hyundaiH150Post = {
+const hyundaiH150Post: BlogPost = {
   id: (blogPosts.length + 1).toString(),
   slug: "hyundai-new-porter-h150-danh-gia-chi-tiet",
   title: "Hyundai New Porter H150 – Đánh giá chi tiết dòng xe tải nhỏ linh hoạt",
@@ -136,14 +136,14 @@ const hyundaiH150Post = {
   ],
   publishDate: new Date().toISOString().split('T')[0],
   readTime: 6,
-  category: "xe-tai",
+  category: "xe-tai" as BlogCategory,
   author: "Nguyễn Văn A",
   tags: ["xe-tai", "hyundai", "porter-h150", "xe tai nhe"],
   featured: true
 };
 
 // Đảm bảo không bị trùng lặp featured: chỉ một bài nổi bật / danh mục
-const updatedBlogPosts = [
+const updatedBlogPosts: BlogPost[] = [
   ...blogPosts.filter(
     post => !(post.category === "xe-tai" && post.featured)
   ),
@@ -156,4 +156,5 @@ const updatedBlogPosts = [
 // Gán lại blogPosts để các trang sử dụng đúng bài viết mới nhất
 blogPosts = updatedBlogPosts;
 
-export { blogCategories, generateBlogPosts };
+// Export đúng duy nhất một lần ở cuối file
+export { blogPosts, blogCategories, generateBlogPosts };
