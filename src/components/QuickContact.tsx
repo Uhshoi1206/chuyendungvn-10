@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, Phone, Mail, FileText, X } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
@@ -56,16 +55,13 @@ const QuickContact = () => {
 
   return (
     <div className="fixed right-4 bottom-20 z-50">
-      {/* Nút chính hiển thị các icon xoay vòng */}
       {!isOpen && (
         <div 
           className="relative w-[66px] h-[66px] bg-[#00aeef] rounded-full shadow-lg cursor-pointer"
           onClick={() => setIsOpen(true)}
         >
-          {/* Hiệu ứng pulse */}
           <div className="absolute inset-0 rounded-full border border-[#00aeef] animate-[widgetPulse_1.5s_infinite]" />
           
-          {/* Container hiển thị icon xoay vòng */}
           <div className="relative w-full h-full overflow-hidden rounded-full">
             {contactLinks.map((contact, index) => (
               <div
@@ -82,7 +78,6 @@ const QuickContact = () => {
         </div>
       )}
 
-      {/* Các liên kết liên hệ và nút đóng */}
       {isOpen && (
         <div className="flex flex-col items-end">
           <div className="flex flex-col gap-3 mb-3">
@@ -98,13 +93,11 @@ const QuickContact = () => {
                   group animate-fade-in`}
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                {/* Icon */}
                 <div className="transform transition-transform duration-300 group-hover:rotate-[360deg]">
                   {contact.icon}
                 </div>
 
-                {/* Tooltip */}
-                <span className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded 
+                <span className="absolute right-full mr-2 px-2 py-1 bg-gray-800 text-white text-sm rounded 
                   opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap">
                   {contact.label}
                 </span>
@@ -112,7 +105,6 @@ const QuickContact = () => {
             ))}
           </div>
           
-          {/* Nút đóng X */}
           <button 
             onClick={() => setIsOpen(false)}
             className="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-700 flex items-center justify-center text-white shadow-lg transition-all duration-300"
