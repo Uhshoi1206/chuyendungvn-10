@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { blogPosts } from '@/data/blogData';
@@ -6,6 +5,8 @@ import { blogCategoryLabels } from '@/models/BlogPost';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CalendarDays, ChevronRight, Clock, Share2, User } from 'lucide-react';
+import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
+import { Button } from '@/components/ui/button';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -26,6 +27,9 @@ const BlogPostPage = () => {
       </div>
     );
   }
+
+  // Tìm sản phẩm liên quan nếu bài viết tập trung vào 1 sản phẩm cụ thể
+  const relatedTruck = useRelatedTruckForBlogPost(post);
 
   // Lấy các bài viết liên quan (cùng danh mục, trừ bài viết hiện tại)
   const relatedPosts = blogPosts
@@ -111,7 +115,41 @@ const BlogPostPage = () => {
               )}
             </div>
           </div>
-          
+
+          {/* --- Section Mua ngay nếu có sản phẩm --- */}
+          {relatedTruck && (
+            <div className="mb-8">
+              <div className="bg-gradient-to-tr from-primary/10 to-white border border-primary rounded-xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
+                <div className="w-32 h-20 md:w-48 md:h-28 flex-shrink-0 rounded-lg overflow-hidden shadow">
+                  <img
+                    src={relatedTruck.images[0]}
+                    alt={relatedTruck.name}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-lg font-semibold text-primary mb-1">
+                    {relatedTruck.name}
+                  </div>
+                  <div className="text-gray-700 mb-2 line-clamp-2">
+                    {relatedTruck.description}
+                  </div>
+                  <div className="font-bold text-xl text-rose-600 mb-2">
+                    {relatedTruck.priceText}
+                  </div>
+                  <Button asChild size="lg">
+                    <a 
+                      href={`/xe-tai/${relatedTruck.slug}`}
+                      className="flex items-center gap-2"
+                    >
+                      Xem chi tiết xe này
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Bài viết liên quan */}
           {relatedPosts.length > 0 && (
             <div className="mb-8">
