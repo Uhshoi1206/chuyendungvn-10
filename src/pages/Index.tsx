@@ -19,10 +19,13 @@ const Index = () => {
   const featuredTrailers = trucks.filter(truck => truck.type === 'trailer');
   const featuredTractors = trucks.filter(truck => truck.type === 'tractor');
   
-  // Lấy bài viết nổi bật (3 bài gần nhất)
-  const recentPosts = [...blogPosts].sort((a, b) => 
-    new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-  ).slice(0, 3);
+  // Lấy bài viết mới nhất từ mỗi danh mục (xe-tai, cau, mooc, xe-dau-keo)
+  const latestPostsByCategory = Object.keys(blogCategories).map(category => {
+    const categoryPosts = blogPosts.filter(post => post.category === category);
+    return categoryPosts.sort((a, b) => 
+      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+    )[0]; // Lấy bài viết mới nhất của mỗi danh mục
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -72,7 +75,7 @@ const Index = () => {
         <ContactSection />
         
         {/* Tin tức & blog */}
-        <BlogSection posts={recentPosts} categories={blogCategories} />
+        <BlogSection posts={latestPostsByCategory} categories={blogCategories} />
       </main>
       
       <Footer />
