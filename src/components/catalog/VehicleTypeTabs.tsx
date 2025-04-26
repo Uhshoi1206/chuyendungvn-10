@@ -2,6 +2,7 @@
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VehicleType } from '@/models/TruckTypes';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VehicleTypeTabsProps {
   selectedType: VehicleType;
@@ -12,36 +13,74 @@ type TabInfo = {
   value: VehicleType;
   label: string;
   color: string;
+  border: string;
+  bg: string;
 };
 
 const vehicleTabs: TabInfo[] = [
   {
     value: 'truck',
     label: 'Xe Tải',
-    color: 'border-blue-500 text-blue-700 bg-blue-100',
+    color: 'text-blue-800',
+    border: 'border-blue-400',
+    bg: 'bg-blue-100',
   },
   {
     value: 'crane',
     label: 'Xe Cẩu',
-    color: 'border-orange-500 text-orange-700 bg-orange-100',
+    color: 'text-orange-700',
+    border: 'border-orange-400',
+    bg: 'bg-orange-100',
   },
   {
     value: 'trailer',
     label: 'Mooc',
-    color: 'border-purple-500 text-purple-700 bg-purple-100',
+    color: 'text-purple-700',
+    border: 'border-purple-400',
+    bg: 'bg-purple-100',
   },
   {
     value: 'tractor',
     label: 'Đầu Kéo',
-    color: 'border-red-500 text-red-700 bg-red-100',
+    color: 'text-red-700',
+    border: 'border-red-400',
+    bg: 'bg-red-100',
   },
 ];
 
 const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeChange }) => {
+  const isMobile = useIsMobile();
+
   const handleTabChange = (value: string) => {
     onTypeChange(value as VehicleType);
   };
 
+  // MOBILE: hiển thị dạng nút lưới dễ bấm
+  if (isMobile) {
+    return (
+      <div className="w-full flex justify-center mb-3 px-1">
+        <div className="grid grid-cols-2 gap-2 w-full max-w-xs mx-auto">
+          {vehicleTabs.map(tab => {
+            const isActive = selectedType === tab.value;
+            return (
+              <button
+                key={tab.value}
+                onClick={() => handleTabChange(tab.value)}
+                className={`py-3 rounded-xl font-bold text-base transition-all border-2
+                  ${isActive ? `shadow-lg ${tab.color} ${tab.bg} ${tab.border}` : 'bg-gray-50 text-gray-700 border-transparent'}
+                `}
+                style={{ minWidth: 0 }}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // DESKTOP: giữ dạng tab bấm truyền thống
   return (
     <div className="w-full flex justify-center mb-4 px-1">
       <Tabs
@@ -60,12 +99,10 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
               key={tab.value}
               value={tab.value}
               className={`
-                flex items-center justify-center px-4 py-2
-                min-w-[96px] rounded-lg font-bold text-base
-                border-2 border-transparent
-                transition-all duration-200 hover:scale-105
+                flex items-center justify-center px-4 py-2 min-w-[96px] rounded-lg font-bold text-base 
+                border-2 border-transparent transition-all duration-200 hover:scale-105
                 ${selectedType === tab.value
-                  ? `${tab.color} shadow-md scale-105 border`
+                  ? `${tab.color} ${tab.bg} shadow-md scale-105 border ${tab.border}`
                   : 'text-gray-700 bg-gray-50'
                 }
                 whitespace-nowrap
@@ -82,3 +119,4 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
 };
 
 export default VehicleTypeTabs;
+
