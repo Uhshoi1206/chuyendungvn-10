@@ -55,7 +55,7 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
     onTypeChange(value as VehicleType);
   };
 
-  // MOBILE: hiển thị dạng nút lưới dễ bấm
+  // MOBILE: hiển thị dạng lưới dễ bấm
   if (isMobile) {
     return (
       <div className="w-full flex justify-center mb-3 px-1">
@@ -66,7 +66,7 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
               <button
                 key={tab.value}
                 onClick={() => handleTabChange(tab.value)}
-                className={`py-3 rounded-xl font-bold text-base transition-all border-2
+                className={`py-3 rounded-xl font-bold text-base transition-all border-2 w-full
                   ${isActive ? `shadow-lg ${tab.color} ${tab.bg} ${tab.border}` : 'bg-gray-50 text-gray-700 border-transparent'}
                 `}
                 style={{ minWidth: 0 }}
@@ -80,43 +80,46 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
     );
   }
 
-  // DESKTOP: giữ dạng tab bấm truyền thống
+  // DESKTOP: tab giãn đều 4 phần, phân cách rõ với nội dung phía dưới
   return (
-    <div className="w-full flex justify-center mb-4 px-1">
-      <Tabs
-        value={selectedType}
-        onValueChange={handleTabChange}
-        className="w-full"
-      >
-        <TabsList
-          className="
-            flex flex-nowrap overflow-x-auto gap-2 bg-white rounded-xl shadow-inner border px-1 py-2
-            scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent
-          "
+    <div className="w-full mb-4 px-1">
+      <div className="w-full rounded-2xl shadow-lg bg-white border border-gray-200">
+        <Tabs
+          value={selectedType}
+          onValueChange={handleTabChange}
+          className="w-full"
         >
-          {vehicleTabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className={`
-                flex items-center justify-center px-4 py-2 min-w-[96px] rounded-lg font-bold text-base 
-                border-2 border-transparent transition-all duration-200 hover:scale-105
-                ${selectedType === tab.value
-                  ? `${tab.color} ${tab.bg} shadow-md scale-105 border ${tab.border}`
-                  : 'text-gray-700 bg-gray-50'
-                }
-                whitespace-nowrap
-              `}
-              style={{ marginRight: 2 }}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+          <TabsList
+            className="
+              flex w-full p-0 overflow-hidden rounded-2xl bg-transparent
+              "
+          >
+            {vehicleTabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className={`
+                  flex-1 flex items-center justify-center py-4 rounded-none font-bold text-base
+                  border-b-2 border-transparent transition-all duration-200
+                  ${selectedType === tab.value
+                    ? `${tab.color} ${tab.bg} shadow-md z-10 border-b-4 ${tab.border}`
+                    : 'text-gray-700 bg-white hover:bg-gray-50'
+                  }
+                  whitespace-nowrap
+                `}
+                style={{
+                  borderRadius: 0,
+                  borderLeft: '1px solid #eee',
+                }}
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
     </div>
   );
 };
 
 export default VehicleTypeTabs;
-
