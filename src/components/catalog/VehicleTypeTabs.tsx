@@ -80,10 +80,19 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
     );
   }
 
-  // DESKTOP: tab giãn đều 4 phần, phân cách rõ với nội dung phía dưới
+  // DESKTOP: tab giãn đều 4 phần, nền sáng, nổi bật hẳn với phần nội dung dưới
   return (
-    <div className="w-full mb-4 px-1">
-      <div className="w-full rounded-2xl shadow-lg bg-white border border-gray-200">
+    <div
+      className="w-full mb-4 px-1"
+    >
+      <div
+        className="w-full rounded-2xl shadow-lg border-none"
+        style={{
+          // Gradient xanh nhạt.
+          background: 'linear-gradient(90deg, #eaf4fb 0%, #f9fdff 100%)',
+          boxShadow: '0 4px 16px 0 rgba(60,124,167,0.10)',
+        }}
+      >
         <Tabs
           value={selectedType}
           onValueChange={handleTabChange}
@@ -94,27 +103,40 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
               flex w-full p-0 overflow-hidden rounded-2xl bg-transparent
               "
           >
-            {vehicleTabs.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className={`
-                  flex-1 flex items-center justify-center py-4 rounded-none font-bold text-base
-                  border-b-2 border-transparent transition-all duration-200
-                  ${selectedType === tab.value
-                    ? `${tab.color} ${tab.bg} shadow-md z-10 border-b-4 ${tab.border}`
-                    : 'text-gray-700 bg-white hover:bg-gray-50'
-                  }
-                  whitespace-nowrap
-                `}
-                style={{
-                  borderRadius: 0,
-                  borderLeft: '1px solid #eee',
-                }}
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
+            {vehicleTabs.map((tab, idx) => {
+              const isActive = selectedType === tab.value;
+              // Bo tròn đầu và cuối thanh tab
+              const radius =
+                idx === 0
+                  ? 'rounded-l-2xl'
+                  : idx === vehicleTabs.length - 1
+                  ? 'rounded-r-2xl'
+                  : '';
+              return (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className={`
+                    flex-1 flex items-center justify-center py-4 px-2 font-bold text-base
+                    border-none transition-all duration-200
+                    relative z-10
+                    ${radius}
+                    ${isActive
+                      ? `bg-white shadow-lg text-primary ${tab.border} border-b-4 ${tab.color}`
+                      : 'text-gray-700 bg-transparent hover:bg-blue-50'
+                    }
+                    whitespace-nowrap
+                  `}
+                  style={{
+                    // Tách nhẹ các tab
+                    marginLeft: idx !== 0 ? '-1px' : 0,
+                    borderBottom: isActive ? '4px solid #60a5fa' : '4px solid transparent',
+                  }}
+                >
+                  {tab.label}
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
         </Tabs>
       </div>
@@ -123,3 +145,4 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
 };
 
 export default VehicleTypeTabs;
+
