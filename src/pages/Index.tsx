@@ -20,7 +20,9 @@ const Index = () => {
   const featuredTractors = trucks.filter(truck => truck.type === 'tractor');
   
   // Lấy bài viết nổi bật (3 bài gần nhất)
-  const recentPosts = blogPosts.slice(0, 3);
+  const recentPosts = [...blogPosts].sort((a, b) => 
+    new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+  ).slice(0, 3);
 
   return (
     <div className="flex flex-col min-h-screen">

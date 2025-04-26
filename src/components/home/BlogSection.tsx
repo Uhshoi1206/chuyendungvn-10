@@ -21,8 +21,8 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {posts.map(post => post && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {posts.map(post => (
             <Link key={post.id} to={`/blog/${post.slug}`} className="group">
               <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
                 <div className="aspect-video relative overflow-hidden">
