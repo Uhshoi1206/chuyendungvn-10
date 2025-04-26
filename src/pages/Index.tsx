@@ -19,12 +19,12 @@ const Index = () => {
   const featuredTrailers = trucks.filter(truck => truck.type === 'trailer');
   const featuredTractors = trucks.filter(truck => truck.type === 'tractor');
   
-  // Lấy bài viết mới nhất từ mỗi danh mục (xe-tai, cau, mooc, xe-dau-keo)
+  // Lấy bài viết mới nhất từ mỗi danh mục
   const latestPostsByCategory = Object.keys(blogCategories).map(category => {
     const categoryPosts = blogPosts.filter(post => post.category === category);
     return categoryPosts.sort((a, b) => 
       new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-    )[0]; // Lấy bài viết mới nhất của mỗi danh mục
+    )[0];
   });
 
   return (
@@ -35,16 +35,29 @@ const Index = () => {
         {/* Hero Section */}
         <Hero />
         
-        {/* Phân loại theo tải trọng */}
-        <WeightCategories weights={truckWeights} />
-        
         {/* Xe Tải Nổi Bật */}
         <FeaturedTrucks trucks={featuredTrucks} />
         
-        {/* Thương hiệu nổi tiếng */}
-        <BrandCategories brands={truckBrands} />
+        {/* Cẩu Chuyên Dụng */}
+        <VehicleSection 
+          title="Cẩu Chuyên Dụng"
+          description="Cẩu các loại với nhiều tính năng vượt trội, phù hợp cho công trường và bốc xếp hàng hóa."
+          vehicles={featuredCranes}
+          type="crane"
+          linkText="Xem tất cả cẩu"
+          className="bg-gray-50"
+        />
         
-        {/* Các loại xe khác */}
+        {/* Sơ Mi Rơ Mooc */}
+        <VehicleSection 
+          title="Sơ Mi Rơ Mooc"
+          description="Đa dạng các loại sơ mi rơ mooc, đáp ứng mọi nhu cầu vận chuyển từ container đến hàng rời."
+          vehicles={featuredTrailers}
+          type="trailer"
+          linkText="Xem tất cả sơ mi rơ mooc"
+        />
+        
+        {/* Xe Đầu Kéo */}
         <VehicleSection 
           title="Xe Đầu Kéo"
           description="Xe đầu kéo mạnh mẽ, phù hợp cho vận tải đường dài và hàng hóa siêu trường siêu trọng."
@@ -54,22 +67,11 @@ const Index = () => {
           className="bg-gray-50"
         />
         
-        <VehicleSection 
-          title="Sơ Mi Rơ Mooc"
-          description="Đa dạng các loại sơ mi rơ mooc, đáp ứng mọi nhu cầu vận chuyển từ container đến hàng rời."
-          vehicles={featuredTrailers}
-          type="trailer"
-          linkText="Xem tất cả sơ mi rơ mooc"
-        />
+        {/* Phân Loại Theo Tải Trọng */}
+        <WeightCategories weights={truckWeights} />
         
-        <VehicleSection 
-          title="Cẩu Chuyên Dụng"
-          description="Cẩu các loại với nhiều tính năng vượt trội, phù hợp cho công trường và bốc xếp hàng hóa."
-          vehicles={featuredCranes}
-          type="crane"
-          linkText="Xem tất cả cẩu"
-          className="bg-gray-50"
-        />
+        {/* Thương hiệu nổi tiếng */}
+        <BrandCategories brands={truckBrands} />
         
         {/* Liên hệ tư vấn */}
         <ContactSection />
