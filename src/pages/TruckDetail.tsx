@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -12,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
+import { blogPosts } from '@/data/blogData';
+import { CalendarDays, Clock } from 'lucide-react';
 
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -39,6 +40,26 @@ const TruckDetail = () => {
       }
     }
   }, [slug]);
+
+  // Tìm các bài viết blog liên quan đến sản phẩm
+  let relatedBlogs: typeof blogPosts = [];
+  if (truck) {
+    const keywords = [truck.name, ...(truck.features ?? []), ...(truck.slug ? [truck.slug.replace(/-/g, ' ')] : [])]
+      .map(s => s.toLowerCase());
+
+    relatedBlogs = blogPosts.filter(post =>
+      // Tìm kiếm: tiêu đề hoặc mô tả hoặc tag chứa tên/slug xe
+      (keywords.some(kw =>
+        post.title.toLowerCase().includes(kw) ||
+        post.description.toLowerCase().includes(kw) ||
+        (post.tags && post.tags.some(tag => tag.toLowerCase().includes(kw)))
+      ))
+    );
+    // Loại bỏ bài viết trùng nhau
+    relatedBlogs = relatedBlogs.filter(
+      (post, idx, arr) => arr.findIndex(p => p.id === post.id) === idx
+    );
+  }
   
   if (!truck) {
     return (
@@ -333,6 +354,51 @@ const TruckDetail = () => {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Related Blog Section */}
+        {relatedBlogs.length > 0 && (
+          <section className="mt-16">
+            <div
+              className="rounded-2xl shadow-xl border border-blue-100 bg-gradient-to-b from-blue-50 via-white to-white px-2 py-7 mb-2"
+            >
+              <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center uppercase tracking-wider">
+                Bài viết liên quan về {truck.name}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedBlogs.slice(0, 3).map((post) => (
+                  <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                    <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition flex flex-col h-full border border-blue-100">
+                      <div className="aspect-video w-full overflow-hidden relative">
+                        <img
+                          src={post.images[0]}
+                          alt={post.title}
+                          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="p-4 flex-grow flex flex-col">
+                        <div className="flex items-center text-xs text-blue-700 mb-1 gap-2">
+                          <CalendarDays className="h-4 w-4 mr-1 inline-block" />
+                          {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+                          <span className="mx-2">•</span>
+                          <Clock className="h-4 w-4 mr-1 inline-block" />
+                          {post.readTime} phút đọc
+                        </div>
+                        <h3 className="font-bold text-lg mb-2 group-hover:text-blue-700 line-clamp-2 transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-3">{post.description}</p>
+                        <span className="mt-auto inline-block px-4 py-1 text-blue-700 font-semibold bg-blue-50 rounded-full text-xs hover:bg-blue-100 transition">
+                          Đọc chi tiết
+                        </span>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
       </div>
       
