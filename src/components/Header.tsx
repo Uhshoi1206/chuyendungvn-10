@@ -29,15 +29,15 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-primary">XeTaiViet</span>
+            <div className="font-heading text-2xl md:text-3xl font-bold text-primary tracking-tight">XeTaiViet</div>
           </Link>
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden md:flex items-center space-x-8">
               <Link to="/" className="font-medium hover:text-primary transition-colors">
                 Trang chủ
               </Link>
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
                 Giới thiệu
               </Link>
               <Link to="/blog" className="font-medium hover:text-primary transition-colors">
-                Blog
+                Tin tức
               </Link>
               <Link to="/lien-he" className="font-medium hover:text-primary transition-colors">
                 Liên hệ

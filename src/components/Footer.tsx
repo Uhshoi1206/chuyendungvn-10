@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react';
@@ -10,7 +11,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">XeTaiViet</h3>
+            <h3 className="font-heading text-xl font-bold mb-4">XeTaiViet</h3>
             <p className="mb-4 text-gray-300">
               Chuyên cung cấp các dòng xe tải chất lượng cao, đa dạng tải trọng, 
               giá cả cạnh tranh trên thị trường.
@@ -39,7 +40,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Liên kết nhanh</h3>
+            <h3 className="font-heading text-xl font-bold mb-4">Liên kết nhanh</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-gray-300 hover:text-primary transition-colors">
@@ -53,7 +54,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/blog" className="text-gray-300 hover:text-primary transition-colors">
-                  Blog
+                  Tin tức
                 </Link>
               </li>
               <li>
@@ -66,7 +67,7 @@ const Footer: React.FC = () => {
 
           {/* Vehicle Categories */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Danh mục xe</h3>
+            <h3 className="font-heading text-xl font-bold mb-4">Danh mục xe</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/danh-muc?type=truck" className="text-gray-300 hover:text-primary transition-colors">
@@ -94,7 +95,7 @@ const Footer: React.FC = () => {
           {/* Social Media & Contact */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-bold mb-4">Kết nối với chúng tôi</h3>
+              <h3 className="font-heading text-xl font-bold mb-4">Kết nối với chúng tôi</h3>
               <div className="flex flex-col space-y-4">
                 <a
                   href="https://facebook.com"
@@ -137,7 +138,7 @@ const Footer: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-xl font-bold mb-4">Liên hệ trực tuyến</h3>
+              <h3 className="font-heading text-xl font-bold mb-4">Liên hệ trực tuyến</h3>
               <p className="text-gray-300 mb-4">
                 Để lại số điện thoại, chúng tôi sẽ gọi lại cho bạn ngay!
               </p>
@@ -147,7 +148,7 @@ const Footer: React.FC = () => {
                   placeholder="Số điện thoại của bạn"
                   className="flex-1 px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-primary"
                 />
-                <button type="submit" className="px-4 py-2 bg-primary hover:bg-red-700 rounded-md transition-colors">
+                <button type="submit" className="px-4 py-2 bg-primary hover:bg-primary-700 rounded-md transition-colors">
                   Gửi
                 </button>
               </form>
