@@ -22,9 +22,11 @@ const VehicleGrid: React.FC<VehicleGridProps> = ({ vehicles, onResetFilters }) =
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
       {vehicles.map(vehicle => (
-        <TruckItem key={vehicle.id} truck={vehicle} />
+        <div key={vehicle.id} className="rounded-xl overflow-hidden shadow-md bg-white border card-hover transition-all duration-200">
+          <TruckItem truck={vehicle} />
+        </div>
       ))}
     </div>
   );
