@@ -41,24 +41,46 @@ const TruckDetail = () => {
     }
   }, [slug]);
 
-  // Tìm các bài viết blog liên quan đến sản phẩm
+  // ====== CẢI TIẾN LỌC BÀI VIẾT BLOG LIÊN QUAN ======
   let relatedBlogs: typeof blogPosts = [];
   if (truck) {
-    const keywords = [truck.name, ...(truck.features ?? []), ...(truck.slug ? [truck.slug.replace(/-/g, ' ')] : [])]
-      .map(s => s.toLowerCase());
-
-    relatedBlogs = blogPosts.filter(post =>
-      // Tìm kiếm: tiêu đề hoặc mô tả hoặc tag chứa tên/slug xe
-      (keywords.some(kw =>
+    // Tạo ra các từ khóa chính xác cho sản phẩm hiện tại
+    const nameKeywords = [
+      truck.name.toLowerCase(),
+      truck.slug.replace(/-/g, ' ').toLowerCase()
+    ];
+    // Tìm các bài viết có nhắc đến đúng sản phẩm này trong tiêu đề/mô tả/tag (ưu tiên số 1)
+    let mainRelated = blogPosts.filter(post =>
+      nameKeywords.some(kw =>
         post.title.toLowerCase().includes(kw) ||
         post.description.toLowerCase().includes(kw) ||
         (post.tags && post.tags.some(tag => tag.toLowerCase().includes(kw)))
-      ))
+      )
     );
-    // Loại bỏ bài viết trùng nhau
-    relatedBlogs = relatedBlogs.filter(
+
+    // Loại bỏ trùng id
+    mainRelated = mainRelated.filter(
       (post, idx, arr) => arr.findIndex(p => p.id === post.id) === idx
     );
+
+    // Nếu có ít hơn 3 bài viết liên quan trực tiếp, mở rộng thêm bài viết cùng thương hiệu nhưng trừ bài khác sản phẩm
+    if (mainRelated.length < 3) {
+      const brandKeyword = truck.brand.toLowerCase();
+      const extraRelated = blogPosts.filter(post =>
+        // Cùng thương hiệu, không phải bài chính này và chưa nằm trong mainRelated
+        (post.title.toLowerCase().includes(brandKeyword) ||
+         post.description.toLowerCase().includes(brandKeyword) ||
+         (post.tags && post.tags.some(tag => tag.toLowerCase().includes(brandKeyword)))
+        )
+        && !mainRelated.some(p => p.id === post.id)
+      );
+      // Gộp lại, vẫn loại trùng id
+      relatedBlogs = [...mainRelated, ...extraRelated].filter(
+        (post, idx, arr) => arr.findIndex(p => p.id === post.id) === idx
+      );
+    } else {
+      relatedBlogs = mainRelated;
+    }
   }
   
   if (!truck) {
