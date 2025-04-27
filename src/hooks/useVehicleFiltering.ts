@@ -33,21 +33,31 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       return false;
     }
     
-    // Lọc theo trọng lượng - điều chỉnh lại phần này
+    // Lọc theo trọng lượng - sửa lại triệt để phần này
     if (filters.minWeight !== null && filters.maxWeight !== null) {
       console.log(`Kiểm tra xe ${truck.name} có trọng lượng ${truck.weight} tấn trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
       
-      // Trường hợp đặc biệt cho "trên 20 tấn"
-      if (filters.maxWeight >= 25) {
-        if (truck.weight < filters.minWeight) {
-          console.log(`Xe ${truck.name} có trọng lượng ${truck.weight} < ${filters.minWeight} (min): loại bỏ`);
+      // Xử lý các trường hợp cụ thể cho từng phạm vi tải trọng
+      if (filters.maxWeight >= 25 && filters.minWeight >= 20) {
+        // Trường hợp "Trên 20 tấn"
+        if (truck.weight < 20) {
+          console.log(`Xe ${truck.name} bị loại (${truck.weight} < 20 tấn)`);
+          return false;
+        }
+      } 
+      else if (filters.minWeight === 0 && filters.maxWeight <= 1) {
+        // Trường hợp "Dưới 1 tấn"
+        if (truck.weight > 1) {
+          console.log(`Xe ${truck.name} bị loại (${truck.weight} > 1 tấn)`);
           return false;
         }
       }
-      // Các trường hợp thông thường - phải nằm trong khoảng min và max
-      else if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
-        console.log(`Xe ${truck.name} có trọng lượng ${truck.weight} nằm ngoài khoảng [${filters.minWeight}, ${filters.maxWeight}]: loại bỏ`);
-        return false;
+      else {
+        // Các trường hợp phạm vi bình thường
+        if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
+          console.log(`Xe ${truck.name} bị loại (${truck.weight} nằm ngoài [${filters.minWeight}, ${filters.maxWeight}])`);
+          return false;
+        }
       }
       
       console.log(`Xe ${truck.name} có trọng lượng ${truck.weight} tấn phù hợp với khoảng [${filters.minWeight}, ${filters.maxWeight}]`);

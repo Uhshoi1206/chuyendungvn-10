@@ -12,41 +12,36 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   const getWeightRange = (categoryWeight: number): { min: number, max: number } => {
     console.log(`Tính toán phạm vi trọng lượng cho: ${categoryWeight} tấn`);
     
-    // Trường hợp đặc biệt: "Trên 20 tấn"
-    if (categoryWeight >= 25) {
-      return { min: 20, max: 100 };
+    // Xử lý từng phạm vi tải trọng cụ thể theo đúng danh mục
+    switch (categoryWeight) {
+      case 1:
+        return { min: 0, max: 1 };    // Dưới 1 tấn
+      case 2:
+        return { min: 1, max: 2 };    // 1-2 tấn
+      case 3.5:
+        return { min: 2, max: 3.5 };  // 2-3.5 tấn
+      case 5:
+        return { min: 3.5, max: 5 };  // 3.5-5 tấn
+      case 8:
+        return { min: 5, max: 8 };    // 5-8 tấn
+      case 15:
+        return { min: 8, max: 15 };   // 8-15 tấn
+      case 20:
+        return { min: 15, max: 20 };  // 15-20 tấn
+      case 25:
+        return { min: 20, max: 100 }; // Trên 20 tấn
+      default:
+        // Fallback - tìm phạm vi phù hợp nhất
+        const weightCategory = truckWeights.find(w => w.value === categoryWeight);
+        if (!weightCategory) return { min: 0, max: 25 };
+        
+        const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
+        if (categoryIndex > 0) {
+          const prevWeight = truckWeights[categoryIndex - 1].value;
+          return { min: prevWeight, max: categoryWeight };
+        }
+        return { min: 0, max: categoryWeight };
     }
-    
-    // Tìm mục trong mảng trọng lượng
-    const weightCategory = truckWeights.find(w => w.value === categoryWeight);
-    if (!weightCategory) return { min: 0, max: 100 };
-    
-    // Xử lý các trường hợp cụ thể theo đúng phạm vi
-    if (categoryWeight === 1) {
-      return { min: 0, max: 1 };  // Dưới 1 tấn
-    } else if (categoryWeight === 2) {
-      return { min: 1, max: 2 };  // 1-2 tấn
-    } else if (categoryWeight === 3.5) {
-      return { min: 2, max: 3.5 };  // 2-3.5 tấn
-    } else if (categoryWeight === 5) {
-      return { min: 3.5, max: 5 };  // 3.5-5 tấn
-    } else if (categoryWeight === 8) {
-      return { min: 5, max: 8 };  // 5-8 tấn
-    } else if (categoryWeight === 15) {
-      return { min: 8, max: 15 };  // 8-15 tấn
-    } else if (categoryWeight === 20) {
-      return { min: 15, max: 20 };  // 15-20 tấn
-    }
-    
-    // Fallback nếu không khớp với trường hợp cụ thể nào
-    // Tìm vị trí của loại trọng lượng trong mảng
-    const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
-    if (categoryIndex > 0) {
-      const prevWeight = truckWeights[categoryIndex - 1].value;
-      return { min: prevWeight, max: categoryWeight };
-    }
-    
-    return { min: 0, max: categoryWeight };
   };
 
   useEffect(() => {
@@ -119,28 +114,27 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     }
     
     if (newFilters.minWeight !== null && newFilters.maxWeight !== null) {
-      // Xử lý phạm vi tải trọng
+      // Xác định chính xác danh mục tải trọng dựa trên phạm vi đã chọn
       let weightCategory;
       
-      // Tìm trọng lượng phù hợp nhất từ danh sách
       if (newFilters.minWeight >= 20) {
-        weightCategory = 25;  // Trên 20 tấn
+        weightCategory = 25;      // Trên 20 tấn
       } else if (newFilters.maxWeight <= 1) {
-        weightCategory = 1;   // Dưới 1 tấn
-      } else if (newFilters.minWeight >= 15) {
-        weightCategory = 20;  // 15-20 tấn
-      } else if (newFilters.minWeight >= 8) {
-        weightCategory = 15;  // 8-15 tấn
-      } else if (newFilters.minWeight >= 5) {
-        weightCategory = 8;   // 5-8 tấn
-      } else if (newFilters.minWeight >= 3.5) {
-        weightCategory = 5;   // 3.5-5 tấn
-      } else if (newFilters.minWeight >= 2) {
-        weightCategory = 3.5; // 2-3.5 tấn
-      } else if (newFilters.minWeight >= 1) {
-        weightCategory = 2;   // 1-2 tấn
+        weightCategory = 1;       // Dưới 1 tấn
+      } else if (newFilters.minWeight >= 15 && newFilters.maxWeight <= 20) {
+        weightCategory = 20;      // 15-20 tấn
+      } else if (newFilters.minWeight >= 8 && newFilters.maxWeight <= 15) {
+        weightCategory = 15;      // 8-15 tấn
+      } else if (newFilters.minWeight >= 5 && newFilters.maxWeight <= 8) {
+        weightCategory = 8;       // 5-8 tấn
+      } else if (newFilters.minWeight >= 3.5 && newFilters.maxWeight <= 5) {
+        weightCategory = 5;       // 3.5-5 tấn
+      } else if (newFilters.minWeight >= 2 && newFilters.maxWeight <= 3.5) {
+        weightCategory = 3.5;     // 2-3.5 tấn
+      } else if (newFilters.minWeight >= 1 && newFilters.maxWeight <= 2) {
+        weightCategory = 2;       // 1-2 tấn
       } else {
-        // Fallback - tìm danh mục trọng lượng phù hợp
+        // Fallback - tìm danh mục trọng lượng phù hợp nhất
         weightCategory = truckWeights.find(w => 
           w.value >= newFilters.maxWeight!
         )?.value || newFilters.maxWeight;
