@@ -14,8 +14,8 @@ const WeightCategories = ({ weights }: WeightCategoriesProps) => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3">Phân Loại Theo Tải Trọng</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Chúng tôi cung cấp đa dạng các dòng xe tải với nhiều tải trọng khác nhau, 
-            đáp ứng mọi nhu cầu vận chuyển của khách hàng.
+            Chúng tôi cung cấp đa dạng các loại phương tiện thương mại với nhiều tải trọng khác nhau, 
+            từ xe tải nhẹ đến xe đầu kéo hạng nặng, đáp ứng mọi nhu cầu vận chuyển của khách hàng.
           </p>
         </div>
         
