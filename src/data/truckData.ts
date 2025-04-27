@@ -156,7 +156,7 @@ export const trucks: Truck[] = [
     engine: 'Diesel, 4 xy lanh',
     fuelType: 'Dầu Diesel',
     features: ['Tầm với xa 15.5m', 'Độ cao nâng tối đa 18.2m', 'Bảo hành 12 tháng'],
-    description: 'Cẩu Tadano TM-ZE554HS - dòng cẩu tự hành 5 tấn, thiết kế nhỏ gọn, hiệu suất cao, phù hợp cho các công trình xây dựng và công nghiệp.',
+    description: 'Cẩu Tadano TM-ZE554HS - giải pháp chuyên nghiệp cho các công trình xây dựng và hậu cần. Với tầm với 15.5m, độ nâng tối đa 18.2m, thiết kế hiện đại và hệ thống an toàn tiên tiến, đáp ứng tối ưu nhu cầu nâng hạ và di chuyển hàng hóa đa dạng.',
     images: [
       'https://tongkhoxetai.vn/upload/images/cau-tu-hanh-5-tan.jpg',
       'https://tongkhoxetai.vn/upload/images/cau-tadano-5-tan.jpg'
@@ -179,7 +179,7 @@ export const trucks: Truck[] = [
     engine: 'Thủy lực, 6 đoạn',
     fuelType: 'Dầu thủy lực',
     features: ['Tầm với xa 18.7m', 'Góc quay 360 độ', 'Hệ thống an toàn tự động'],
-    description: 'Cẩu Kanglim KS1256G-II là dòng cẩu gắn xe tải 6 tấn, tính năng vượt trội, độ bền cao, phù hợp cho các công trình xây dựng và vận chuyển hàng hóa.',
+    description: 'Cẩu Kanglim KS1256G-II - máy móc chuyên dụng với công nghệ hiện đại, góc quay 360 độ, tầm với xa 18.7m. Được thiết kế cho các dự án xây dựng, hậu cần và sản xuất công nghiệp, mang đến giải pháp nâng hạ chính xác, an toàn và hiệu quả.',
     images: [
       'https://tongkhoxetai.vn/upload/images/cau-kanglim-6-tan.jpg'
     ],
