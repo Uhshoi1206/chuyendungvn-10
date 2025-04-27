@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -41,7 +40,7 @@ const Index = () => {
         {/* Cẩu Chuyên Dụng */}
         <VehicleSection 
           title="Cẩu Chuyên Dụng"
-          description="Cẩu các loại với nhiều tính năng vượt trội, phù hợp cho công trường và bốc xếp hàng hóa."
+          description="Giải pháp nâng hạ chuyên nghiệp với các dòng cẩu hiện đại, đa năng và an toàn. Đáp ứng mọi nhu cầu từ công trường xây dựng đến nhà máy sản xuất, với tầm với xa, tải trọng lớn và công nghệ tiên tiến."
           vehicles={featuredCranes}
           type="crane"
           linkText="Xem tất cả cẩu"
