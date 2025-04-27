@@ -61,6 +61,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       newFilters.brand = null;
     }
     
+    // Thiết lập phạm vi tải trọng dựa trên tham số weight
     if (weightParam) {
       const weight = parseFloat(weightParam);
       if (!isNaN(weight)) {
@@ -68,19 +69,23 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         console.log(`Đọc weight từ URL: ${weight}, phạm vi: [${range.min}, ${range.max}]`);
         newFilters.minWeight = range.min;
         newFilters.maxWeight = range.max;
+      } else {
+        newFilters.minWeight = null;
+        newFilters.maxWeight = null;
       }
     } else {
       newFilters.minWeight = null;
       newFilters.maxWeight = null;
     }
 
+    // Thiết lập loại xe dựa trên tham số type
     if (vehicleType) {
       newFilters.vehicleType = vehicleType;
     } else {
-      // Quan trọng: không đặt vehicleType mặc định ở đây
       newFilters.vehicleType = null;
     }
 
+    // Thiết lập từ khóa tìm kiếm
     if (search) {
       newFilters.search = search;
     } else {
@@ -94,10 +99,12 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
     let newFilters: TruckFilters;
     
+    // Xử lý trường hợp truyền vào toàn bộ đối tượng filters
     if (typeof keyOrFilters === 'object') {
       newFilters = { ...keyOrFilters };
       console.log("handleFilterChange: Cập nhật toàn bộ filters:", newFilters);
     } else {
+      // Xử lý trường hợp truyền vào từng cặp key/value
       newFilters = { ...filters, [keyOrFilters]: value };
       console.log(`handleFilterChange: Cập nhật filter ${keyOrFilters}:`, value);
     }
@@ -110,14 +117,16 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     console.log("Cập nhật URL với filters:", newFilters);
     const params = new URLSearchParams();
     
+    // Thêm các tham số vào URL nếu có giá trị
     if (newFilters.brand) {
       params.set('brand', newFilters.brand);
     }
     
+    // Xác định danh mục tải trọng dựa trên phạm vi đã chọn
     if (newFilters.minWeight !== null && newFilters.maxWeight !== null) {
-      // Xác định chính xác danh mục tải trọng dựa trên phạm vi đã chọn
       let weightCategory;
       
+      // Xác định đúng danh mục tải trọng dựa trên phạm vi đã chọn
       if (newFilters.minWeight >= 20) {
         weightCategory = 25;      // Trên 20 tấn
       } else if (newFilters.maxWeight <= 1) {
@@ -144,10 +153,12 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       params.set('weight', weightCategory.toString());
     }
 
+    // Thêm tham số loại xe nếu có
     if (newFilters.vehicleType) {
       params.set('type', newFilters.vehicleType);
     }
 
+    // Thêm tham số tìm kiếm nếu có
     if (newFilters.search) {
       params.set('search', newFilters.search);
     }

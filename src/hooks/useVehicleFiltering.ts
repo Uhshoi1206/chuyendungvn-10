@@ -11,47 +11,48 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
 }) => {
   console.log("useVehicleFiltering được gọi với:", { selectedType, filters });
   
-  // Lọc xe theo loại nếu loại được chọn, nếu không thì hiển thị tất cả
-  let filteredVehicles = selectedType ? vehicles.filter(truck => truck.type === selectedType) : vehicles;
-  console.log("Số xe theo loại:", filteredVehicles.length);
+  // Bắt đầu với tất cả xe
+  let filteredVehicles = [...vehicles];
+  
+  // Lọc theo loại xe
+  if (selectedType) {
+    console.log(`Lọc theo loại xe: ${selectedType}`);
+    filteredVehicles = filteredVehicles.filter(vehicle => vehicle.type === selectedType);
+  }
+  console.log(`Sau khi lọc theo loại xe: ${filteredVehicles.length} xe`);
   
   // Áp dụng các bộ lọc khác
-  filteredVehicles = filteredVehicles.filter(truck => {
+  filteredVehicles = filteredVehicles.filter(vehicle => {
     // Lọc theo thương hiệu
-    if (filters.brand) {
-      console.log(`So sánh brand: '${truck.brand}' với '${filters.brand}'`);
-      if (truck.brand !== filters.brand) {
-        return false;
-      }
+    if (filters.brand && vehicle.brand !== filters.brand) {
+      return false;
     }
     
     // Lọc theo giá
-    if (filters.minPrice !== null && truck.price < filters.minPrice) {
+    if (filters.minPrice !== null && vehicle.price < filters.minPrice) {
       return false;
     }
-    if (filters.maxPrice !== null && truck.price > filters.maxPrice) {
+    if (filters.maxPrice !== null && vehicle.price > filters.maxPrice) {
       return false;
     }
     
-    // Lọc theo trọng lượng
+    // Lọc theo tải trọng - điều kiện quan trọng!
     if (filters.minWeight !== null && filters.maxWeight !== null) {
-      console.log(`Kiểm tra xe ${truck.name} có trọng lượng ${truck.weight} tấn trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
-      
-      // Chỉ hiển thị xe khi tải trọng của xe nằm trong phạm vi đã chọn
-      if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
-        console.log(`Xe ${truck.name} bị loại (${truck.weight} tấn nằm ngoài khoảng [${filters.minWeight}, ${filters.maxWeight}])`);
+      // Kiểm tra xem xe có nằm trong phạm vi tải trọng đã chọn không
+      if (vehicle.weight < filters.minWeight || vehicle.weight > filters.maxWeight) {
+        console.log(`Xe ${vehicle.name} (${vehicle.weight} tấn) bị loại vì không nằm trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
         return false;
       }
-      
-      console.log(`Xe ${truck.name} có trọng lượng ${truck.weight} tấn phù hợp với khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
     }
     
     // Lọc theo từ khóa tìm kiếm
-    if (filters.search && filters.search !== "") {
+    if (filters.search && filters.search.trim() !== "") {
       const searchLower = filters.search.toLowerCase();
-      if (!truck.name.toLowerCase().includes(searchLower) && 
-          !truck.brand.toLowerCase().includes(searchLower) &&
-          !truck.description.toLowerCase().includes(searchLower)) {
+      const nameMatch = vehicle.name.toLowerCase().includes(searchLower);
+      const brandMatch = vehicle.brand.toLowerCase().includes(searchLower);
+      const descriptionMatch = vehicle.description.toLowerCase().includes(searchLower);
+      
+      if (!nameMatch && !brandMatch && !descriptionMatch) {
         return false;
       }
     }
@@ -59,6 +60,15 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     return true;
   });
 
-  console.log("Kết quả lọc cuối cùng:", filteredVehicles.length);
+  console.log("Kết quả lọc cuối cùng:", filteredVehicles.length, "xe");
+  
+  // Thông tin debug để kiểm tra chi tiết
+  if (filters.minWeight !== null && filters.maxWeight !== null) {
+    console.log("Chi tiết xe trong kết quả sau lọc:");
+    filteredVehicles.forEach(v => {
+      console.log(`- ${v.name} (${v.type}): ${v.weight} tấn`);
+    });
+  }
+  
   return { filteredVehicles };
 };

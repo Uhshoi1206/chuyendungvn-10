@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Layout from '@/components/Layout';
 import CatalogHeader from '@/components/catalog/CatalogHeader';
 import FilterSidebar from '@/components/FilterSidebar';
 import VehicleGrid from '@/components/catalog/VehicleGrid';
@@ -13,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useVehicleFiltering } from '@/hooks/useVehicleFiltering';
+import Layout from '@/components/Layout';
 
 const TruckCatalog = () => {
   const location = useLocation();
@@ -108,16 +108,17 @@ const TruckCatalog = () => {
     }
     
     setFilters(newFilters);
+    console.log("Các bộ lọc được thiết lập từ URL:", newFilters);
     
   }, [location.search]);
 
   // Xử lý thay đổi một bộ lọc cụ thể
-  const handleFilterChange = (key: keyof TruckFilters | TruckFilters, value?: any) => {
-    console.log(`Thay đổi filter:`, key, value);
+  const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
+    console.log(`Thay đổi filter:`, keyOrFilters, value);
     
-    // Kiểm tra nếu key là một đối tượng TruckFilters (trường hợp đối tượng filters đầy đủ được truyền vào)
-    if (typeof key === 'object') {
-      setFilters(key as TruckFilters);
+    // Kiểm tra nếu keyOrFilters là một đối tượng TruckFilters (trường hợp đối tượng filters đầy đủ được truyền vào)
+    if (typeof keyOrFilters === 'object') {
+      setFilters(keyOrFilters);
       
       // Đóng sheet filter khi áp dụng trên mobile
       if (isMobile) {
@@ -125,7 +126,7 @@ const TruckCatalog = () => {
       }
     } else {
       // Trường hợp là key/value riêng lẻ
-      setFilters(prev => ({ ...prev, [key]: value }));
+      setFilters(prev => ({ ...prev, [keyOrFilters]: value }));
       
       // Đóng sheet filter khi áp dụng trên mobile
       if (isMobile) {
