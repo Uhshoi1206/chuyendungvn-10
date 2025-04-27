@@ -1,17 +1,5 @@
 
-export interface TruckWeight {
-  id: string;
-  name: string;
-  value: number;
-}
-
-export interface TruckBrand {
-  id: string;
-  name: string;
-  logo?: string;
-}
-
-export type VehicleType = 'xe-tai' | 'mooc' | 'dau-keo' | 'xe-cau';
+export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 
 export interface Truck {
   id: string;
@@ -34,44 +22,39 @@ export interface Truck {
   type: VehicleType;
 }
 
+export interface TruckWeight {
+  id: string;
+  name: string;
+  value: number;
+}
+
+export interface TruckBrand {
+  id: string;
+  name: string;
+}
+
 export interface TruckFilters {
   brand: string | null;
   minPrice: number | null;
   maxPrice: number | null;
   minWeight: number | null;
   maxWeight: number | null;
-  search: string | null;
   vehicleType: VehicleType | null;
+  search: string | null;
 }
 
-// Tiện ích để lấy prefix URL dựa theo loại phương tiện
+// Hàm chuyển đổi loại xe thành đường dẫn URL
 export const getVehicleUrlPrefix = (type: VehicleType): string => {
   switch (type) {
     case 'xe-tai':
       return 'xe-tai';
-    case 'dau-keo':
-      return 'xe-dau-keo';
     case 'xe-cau':
       return 'xe-cau';
     case 'mooc':
       return 'mooc';
+    case 'dau-keo':
+      return 'dau-keo';
     default:
       return 'xe-tai';
-  }
-};
-
-// Tiện ích để lấy tên hiển thị cho loại phương tiện
-export const getVehicleTypeName = (type: VehicleType): string => {
-  switch (type) {
-    case 'xe-tai':
-      return 'Xe tải';
-    case 'dau-keo':
-      return 'Xe đầu kéo';
-    case 'xe-cau':
-      return 'Xe cẩu';
-    case 'mooc':
-      return 'Sơ mi rơ mooc';
-    default:
-      return 'Xe tải';
   }
 };

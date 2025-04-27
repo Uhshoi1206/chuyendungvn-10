@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VehicleType } from '@/models/TruckTypes';
@@ -145,4 +144,3 @@ const VehicleTypeTabs: React.FC<VehicleTypeTabsProps> = ({ selectedType, onTypeC
 };
 
 export default VehicleTypeTabs;
-

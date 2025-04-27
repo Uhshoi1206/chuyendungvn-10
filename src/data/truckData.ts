@@ -32,7 +32,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg',
     isHot: true,
     isNew: false,
-    type: 'truck'
+    type: 'xe-tai'
   },
   {
     id: 't2',
@@ -55,7 +55,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/thaco-ollin-350-e4.jpg',
     isHot: true,
     isNew: true,
-    type: 'truck'
+    type: 'xe-tai'
   },
   {
     id: 't3',
@@ -78,7 +78,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/isuzu-qkr-270.jpg',
     isHot: false,
     isNew: true,
-    type: 'truck'
+    type: 'xe-tai'
   },
   {
     id: 'tr1',
@@ -100,7 +100,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/so-mi-ro-mooc-doosung.jpg',
     isHot: true,
     isNew: false,
-    type: 'trailer'
+    type: 'mooc'
   },
   {
     id: 'tr2',
@@ -122,7 +122,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-hyundai.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 'c1',
@@ -145,7 +145,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-tu-hanh-5-tan.jpg',
     isHot: true,
     isNew: true,
-    type: 'crane'
+    type: 'xe-cau'
   },
   {
     id: 'c2',
@@ -167,7 +167,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-kanglim-6-tan.jpg',
     isHot: true,
     isNew: false,
-    type: 'crane'
+    type: 'xe-cau'
   },
   {
     id: 'm1',
@@ -189,7 +189,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mooc-ben-doosung.jpg',
     isHot: true,
     isNew: true,
-    type: 'trailer'
+    type: 'mooc'
   },
   {
     id: 'm2',
@@ -211,7 +211,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mooc-san-cimc.jpg',
     isHot: false,
     isNew: true,
-    type: 'trailer'
+    type: 'mooc'
   },
   {
     id: 't3',
@@ -233,7 +233,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-howo.jpg',
     isHot: true,
     isNew: false,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 't4',
@@ -255,7 +255,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-chenglong.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 't5',
@@ -275,7 +275,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-8-tan.jpg',
     isHot: true,
     isNew: true,
-    type: 'truck'
+    type: 'xe-tai'
   },
   {
     id: 'c3',
@@ -295,7 +295,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-unic-5-tan.jpg',
     isHot: true,
     isNew: true,
-    type: 'crane'
+    type: 'xe-cau'
   },
   {
     id: 'm3',
@@ -315,7 +315,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/mooc-xuong-cimc.jpg',
     isHot: false,
     isNew: true,
-    type: 'trailer'
+    type: 'mooc'
   },
   {
     id: 'tr3',
@@ -335,7 +335,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-faw.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 'tr4',
@@ -355,7 +355,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-foton.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 'tr5',
@@ -375,7 +375,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-shacman.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 'tr6',
@@ -395,7 +395,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-dayun.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   },
   {
     id: 'tr7',
@@ -415,7 +415,7 @@ export const trucks: Truck[] = [
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-camc.jpg',
     isHot: true,
     isNew: true,
-    type: 'tractor'
+    type: 'dau-keo'
   }
 ];
 
