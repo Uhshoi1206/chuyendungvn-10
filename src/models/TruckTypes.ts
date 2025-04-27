@@ -43,3 +43,35 @@ export interface TruckFilters {
   search: string | null;
   vehicleType: VehicleType | null;
 }
+
+// Tiện ích để lấy prefix URL dựa theo loại phương tiện
+export const getVehicleUrlPrefix = (type: VehicleType): string => {
+  switch (type) {
+    case 'truck':
+      return 'xe-tai';
+    case 'tractor':
+      return 'xe-dau-keo';
+    case 'crane':
+      return 'xe-cau';
+    case 'trailer':
+      return 'mooc';
+    default:
+      return 'xe-tai';
+  }
+};
+
+// Tiện ích để lấy tên hiển thị cho loại phương tiện
+export const getVehicleTypeName = (type: VehicleType): string => {
+  switch (type) {
+    case 'truck':
+      return 'Xe tải';
+    case 'tractor':
+      return 'Xe đầu kéo';
+    case 'crane':
+      return 'Xe cẩu';
+    case 'trailer':
+      return 'Sơ mi rơ mooc';
+    default:
+      return 'Xe tải';
+  }
+};

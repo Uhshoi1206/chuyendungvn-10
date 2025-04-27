@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
-import { Truck } from '@/models/TruckTypes';
+import { Truck, VehicleType, getVehicleUrlPrefix } from '@/models/TruckTypes';
 
 interface VehicleSectionProps {
   title: string;

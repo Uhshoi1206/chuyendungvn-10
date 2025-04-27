@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { trucks } from '@/data/truckData';
@@ -14,12 +15,45 @@ import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
 import { CalendarDays, Clock } from 'lucide-react';
 
+// Hàm giúp tạo đường dẫn URL đúng dựa trên loại phương tiện
+const getVehicleUrlPrefix = (type: string): string => {
+  switch (type) {
+    case 'truck':
+      return 'xe-tai';
+    case 'tractor':
+      return 'xe-dau-keo';
+    case 'crane':
+      return 'xe-cau';
+    case 'trailer':
+      return 'mooc';
+    default:
+      return 'xe-tai'; // fallback
+  }
+};
+
+// Hàm để lấy tên hiển thị cho loại phương tiện
+const getVehicleTypeName = (type: string): string => {
+  switch (type) {
+    case 'truck':
+      return 'Xe tải';
+    case 'tractor':
+      return 'Xe đầu kéo';
+    case 'crane':
+      return 'Xe cẩu';
+    case 'trailer':
+      return 'Sơ mi rơ mooc';
+    default:
+      return 'Xe tải';
+  }
+};
+
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { toast } = useToast();
   const [truck, setTruck] = useState<Truck | null>(null);
   const [relatedTrucks, setRelatedTrucks] = useState<Truck[]>([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const location = useLocation();
   
   useEffect(() => {
     if (slug) {
@@ -89,8 +123,8 @@ const TruckDetail = () => {
         <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Không tìm thấy xe tải</h2>
-            <p className="text-gray-600 mb-4">Thông tin xe tải bạn đang tìm kiếm không tồn tại.</p>
+            <h2 className="text-2xl font-bold mb-2">Không tìm thấy phương tiện</h2>
+            <p className="text-gray-600 mb-4">Thông tin phương tiện bạn đang tìm kiếm không tồn tại.</p>
             <Button asChild>
               <Link to="/danh-muc">Quay lại danh mục xe</Link>
             </Button>
@@ -117,16 +151,23 @@ const TruckDetail = () => {
     }).format(price);
   };
   
+  const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
+  const vehicleTypeName = getVehicleTypeName(truck.type);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
       <div className="container mx-auto py-8 px-4">
-        {/* Breadcrumbs */}
+        {/* Breadcrumbs - cập nhật để hiển thị đường dẫn phù hợp */}
         <div className="flex items-center mb-6 text-sm">
           <Link to="/" className="text-gray-600 hover:text-primary">Trang chủ</Link>
           <span className="mx-2">›</span>
           <Link to="/danh-muc" className="text-gray-600 hover:text-primary">Danh mục xe</Link>
+          <span className="mx-2">›</span>
+          <Link to={`/danh-muc?type=${truck.type}`} className="text-gray-600 hover:text-primary">
+            {vehicleTypeName}
+          </Link>
           <span className="mx-2">›</span>
           <span className="font-medium">{truck.name}</span>
         </div>
@@ -244,14 +285,23 @@ const TruckDetail = () => {
             <h2 className="text-xl font-bold mb-4">Mô tả chi tiết {truck.name}</h2>
             <p className="text-gray-700 mb-4">{truck.description}</p>
             <p className="text-gray-700 mb-4">
-              {truck.name} là một trong những dòng xe tải phổ biến trên thị trường Việt Nam hiện nay. 
+              {truck.name} là một trong những dòng {vehicleTypeName.toLowerCase()} phổ biến trên thị trường Việt Nam hiện nay. 
               Với thiết kế hiện đại, khả năng vận hành ổn định và độ bền cao, {truck.name} là sự lựa chọn 
               lý tưởng cho các doanh nghiệp vận tải.
             </p>
             <p className="text-gray-700">
-              Xe được trang bị động cơ {truck.engine} mạnh mẽ và tiết kiệm nhiên liệu, 
-              cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình. 
-              Thùng xe có chiều dài {truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.
+              {truck.type === 'truck' || truck.type === 'tractor' ? 
+                `Xe được trang bị động cơ ${truck.engine} mạnh mẽ và tiết kiệm nhiên liệu, 
+                cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình.` 
+                : 
+                truck.type === 'crane' ?
+                `Thiết bị được trang bị hệ thống thủy lực mạnh mẽ và linh hoạt, 
+                giúp nâng hạ hàng hóa an toàn và hiệu quả trên nhiều địa hình khác nhau.`
+                :
+                `Được thiết kế chắc chắn, bền bỉ với khả năng chịu tải cao, 
+                phù hợp cho việc vận chuyển nhiều loại hàng hóa khác nhau.`
+              }
+              {truck.type !== 'trailer' && ` Thùng xe có chiều dài ${truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.`}
             </p>
           </TabsContent>
           
@@ -274,10 +324,12 @@ const TruckDetail = () => {
                       <td className="py-2 text-gray-600">Tải trọng</td>
                       <td className="py-2 font-medium">{truck.weightText}</td>
                     </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Số chỗ ngồi</td>
-                      <td className="py-2 font-medium">3 chỗ</td>
-                    </tr>
+                    {truck.type !== 'trailer' && (
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Số chỗ ngồi</td>
+                        <td className="py-2 font-medium">3 chỗ</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -287,40 +339,64 @@ const TruckDetail = () => {
                 <table className="w-full border-collapse">
                   <tbody>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Chiều dài thùng</td>
+                      <td className="py-2 text-gray-600 w-1/3">Chiều dài {truck.type === 'trailer' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">{truck.length} m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều rộng thùng</td>
+                      <td className="py-2 text-gray-600">Chiều rộng {truck.type === 'trailer' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">2.0 m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều cao thùng</td>
+                      <td className="py-2 text-gray-600">Chiều cao {truck.type === 'trailer' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">1.8 m</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               
-              <div>
-                <h3 className="font-bold text-lg mb-2">Động cơ:</h3>
-                <table className="w-full border-collapse">
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Loại động cơ</td>
-                      <td className="py-2 font-medium">{truck.engine}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Nhiên liệu</td>
-                      <td className="py-2 font-medium">{truck.fuelType}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Tiêu chuẩn khí thải</td>
-                      <td className="py-2 font-medium">Euro IV</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {(truck.type === 'truck' || truck.type === 'tractor') && (
+                <div>
+                  <h3 className="font-bold text-lg mb-2">Động cơ:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Loại động cơ</td>
+                        <td className="py-2 font-medium">{truck.engine}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Nhiên liệu</td>
+                        <td className="py-2 font-medium">{truck.fuelType}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Tiêu chuẩn khí thải</td>
+                        <td className="py-2 font-medium">Euro IV</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              
+              {truck.type === 'crane' && (
+                <div>
+                  <h3 className="font-bold text-lg mb-2">Hệ thống cẩu:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Loại hệ thống</td>
+                        <td className="py-2 font-medium">{truck.engine}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Tầm với tối đa</td>
+                        <td className="py-2 font-medium">12-15 m</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Góc quay</td>
+                        <td className="py-2 font-medium">360°</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </TabsContent>
           

@@ -9,9 +9,27 @@ interface TruckItemProps {
   truck: Truck;
 }
 
+// Hàm giúp tạo đường dẫn URL đúng dựa trên loại phương tiện
+const getVehicleUrlPrefix = (type: string): string => {
+  switch (type) {
+    case 'truck':
+      return 'xe-tai';
+    case 'tractor':
+      return 'xe-dau-keo';
+    case 'crane':
+      return 'xe-cau';
+    case 'trailer':
+      return 'mooc';
+    default:
+      return 'xe-tai'; // fallback
+  }
+};
+
 const TruckItem: React.FC<TruckItemProps> = ({ truck }) => {
+  const urlPrefix = getVehicleUrlPrefix(truck.type);
+  
   return (
-    <Link to={`/xe-tai/${truck.slug}`} className="block">
+    <Link to={`/${urlPrefix}/${truck.slug}`} className="block">
       <Card className="overflow-hidden h-full card-hover border">
         <div className="relative">
           <img 

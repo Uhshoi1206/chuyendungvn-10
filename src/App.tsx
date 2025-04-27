@@ -28,7 +28,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/danh-muc" element={<TruckCatalog />} />
+          
+          {/* Các route riêng cho từng loại phương tiện */}
           <Route path="/xe-tai/:slug" element={<TruckDetail />} />
+          <Route path="/xe-dau-keo/:slug" element={<TruckDetail />} />
+          <Route path="/xe-cau/:slug" element={<TruckDetail />} />
+          <Route path="/mooc/:slug" element={<TruckDetail />} />
+          
           <Route path="/lien-he" element={<ContactPage />} />
           <Route path="/gioi-thieu" element={<AboutPage />} />
           <Route path="/blog" element={<BlogPage />} />
