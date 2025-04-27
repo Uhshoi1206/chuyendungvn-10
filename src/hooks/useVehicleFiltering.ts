@@ -33,7 +33,7 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       return false;
     }
     
-    // Lọc theo trọng lượng - sửa lại phần này
+    // Lọc theo trọng lượng
     if (filters.minWeight !== null && filters.maxWeight !== null) {
       console.log(`Kiểm tra xe ${truck.name} có trọng lượng ${truck.weight} tấn trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
       

@@ -77,6 +77,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     if (vehicleType) {
       newFilters.vehicleType = vehicleType;
     } else {
+      // Quan trọng: không đặt vehicleType mặc định ở đây
       newFilters.vehicleType = null;
     }
 
