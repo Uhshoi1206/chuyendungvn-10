@@ -27,8 +27,8 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
       return "8 - 15 tấn";
     } else if (weightRange[0] >= 15 && weightRange[1] <= 20) {
       return "15 - 20 tấn";
-    } else if (weightRange[1] >= 25) {
-      return "Trên 20 tấn";
+    } else if (weightRange[0] >= 20 && weightRange[1] >= 20) {
+      return "Trên 20 tấn";  // Chỉnh sửa ở đây
     } else {
       return `${weightRange[0]} - ${weightRange[1]} tấn`;
     }
@@ -59,3 +59,4 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
     </div>
   );
 };
+
