@@ -135,19 +135,26 @@ const TruckCatalog = () => {
   }, [filters]);
 
   // Xử lý thay đổi một bộ lọc cụ thể
-  const handleFilterChange = (key: keyof TruckFilters, value: any) => {
-    console.log(`Thay đổi filter ${key}:`, value);
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const handleFilterChange = (key: keyof TruckFilters | TruckFilters, value?: any) => {
+    console.log(`Thay đổi filter:`, key, value);
     
-    // Đóng sheet filter khi áp dụng trên mobile
-    if (isMobile) {
-      setIsFilterOpen(false);
+    // Kiểm tra nếu key là một đối tượng TruckFilters (trường hợp đối tượng filters đầy đủ được truyền vào)
+    if (typeof key === 'object') {
+      setFilters(key);
+      
+      // Đóng sheet filter khi áp dụng trên mobile
+      if (isMobile) {
+        setIsFilterOpen(false);
+      }
+    } else {
+      // Trường hợp là key/value riêng lẻ
+      setFilters(prev => ({ ...prev, [key]: value }));
+      
+      // Đóng sheet filter khi áp dụng trên mobile
+      if (isMobile) {
+        setIsFilterOpen(false);
+      }
     }
-  };
-
-  // Xử lý thay đổi tất cả các bộ lọc
-  const handleAllFiltersChange = (updatedFilters: TruckFilters) => {
-    setFilters(updatedFilters);
   };
 
   // Xử lý đặt lại tất cả các bộ lọc
@@ -180,7 +187,7 @@ const TruckCatalog = () => {
             <div className="w-full md:w-72 flex-shrink-0">
               <FilterSidebar
                 filters={filters}
-                onFilterChange={handleAllFiltersChange}
+                onFilterChange={handleFilterChange}
                 onResetFilters={handleResetFilters}
               />
             </div>
@@ -200,7 +207,7 @@ const TruckCatalog = () => {
                   <div className="px-1 py-4 h-full overflow-y-auto">
                     <FilterSidebar
                       filters={filters}
-                      onFilterChange={handleAllFiltersChange}
+                      onFilterChange={handleFilterChange}
                       onResetFilters={handleResetFilters}
                       className="shadow-none p-0"
                     />

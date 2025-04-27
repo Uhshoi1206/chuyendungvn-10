@@ -33,39 +33,27 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       return false;
     }
     
-    // Lọc theo trọng lượng - sửa lại triệt để phần này
+    // Lọc theo trọng lượng - sửa lại phần này
     if (filters.minWeight !== null && filters.maxWeight !== null) {
       console.log(`Kiểm tra xe ${truck.name} có trọng lượng ${truck.weight} tấn trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
       
-      // Xử lý các trường hợp cụ thể cho từng phạm vi tải trọng
-      if (filters.maxWeight >= 25 && filters.minWeight >= 20) {
-        // Trường hợp "Trên 20 tấn"
-        if (truck.weight < 20) {
-          console.log(`Xe ${truck.name} bị loại (${truck.weight} < 20 tấn)`);
-          return false;
-        }
-      } 
-      else if (filters.minWeight === 0 && filters.maxWeight <= 1) {
-        // Trường hợp "Dưới 1 tấn"
-        if (truck.weight > 1) {
-          console.log(`Xe ${truck.name} bị loại (${truck.weight} > 1 tấn)`);
-          return false;
-        }
-      }
-      else {
-        // Các trường hợp phạm vi bình thường
-        if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
-          console.log(`Xe ${truck.name} bị loại (${truck.weight} nằm ngoài [${filters.minWeight}, ${filters.maxWeight}])`);
-          return false;
-        }
+      // Chỉ hiển thị xe khi tải trọng của xe nằm trong phạm vi đã chọn
+      if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
+        console.log(`Xe ${truck.name} bị loại (${truck.weight} tấn nằm ngoài khoảng [${filters.minWeight}, ${filters.maxWeight}])`);
+        return false;
       }
       
       console.log(`Xe ${truck.name} có trọng lượng ${truck.weight} tấn phù hợp với khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
     }
     
     // Lọc theo từ khóa tìm kiếm
-    if (filters.search && filters.search !== "" && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
-      return false;
+    if (filters.search && filters.search !== "") {
+      const searchLower = filters.search.toLowerCase();
+      if (!truck.name.toLowerCase().includes(searchLower) && 
+          !truck.brand.toLowerCase().includes(searchLower) &&
+          !truck.description.toLowerCase().includes(searchLower)) {
+        return false;
+      }
     }
     
     return true;

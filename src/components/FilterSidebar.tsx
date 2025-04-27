@@ -13,7 +13,7 @@ import { WeightFilter } from './filters/WeightFilter';
 
 interface FilterSidebarProps {
   filters: TruckFilters;
-  onFilterChange: (key: keyof TruckFilters, value: any) => void;
+  onFilterChange: (key: keyof TruckFilters | TruckFilters, value?: any) => void;
   onResetFilters: () => void;
   className?: string;
 }
@@ -73,8 +73,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const handleApplyFilters = () => {
     console.log("Áp dụng bộ lọc:", localFilters);
     
-    // Sửa ở đây: Truyền toàn bộ object filters thay vì chỉ một key và value
-    onFilterChange(localFilters as any, undefined);
+    // Truyền toàn bộ object filters
+    onFilterChange(localFilters);
     
     toast({
       title: "Đã áp dụng bộ lọc",
