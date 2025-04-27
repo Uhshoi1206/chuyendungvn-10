@@ -7,7 +7,7 @@ export const truckWeights: TruckWeight[] = [
   { id: 'w4', name: '3.5 - 5 tấn', value: 5 },
   { id: 'w5', name: '5 - 8 tấn', value: 8 },
   { id: 'w6', name: '8 - 15 tấn', value: 15 },
-  { id: 'w7', name: 'Trên 15 tấn', value: 20 },
+  { id: 'w7', name: '15 - 20 tấn', value: 20 },
 ];
 
 export const truckBrands: TruckBrand[] = [
