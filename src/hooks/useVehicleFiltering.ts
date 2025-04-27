@@ -35,18 +35,18 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     
     // Lọc theo trọng lượng
     if (filters.minWeight !== null && filters.maxWeight !== null) {
-      // Trường hợp đặc biệt cho "trên 20 tấn"
-      if (filters.maxWeight >= 25 && truck.weight >= filters.minWeight) {
-        return true;
-      }
+      console.log(`Lọc xe ${truck.name} có trọng lượng ${truck.weight} với khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
       
-      if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
+      // Trường hợp đặc biệt cho "trên 20 tấn"
+      if (filters.maxWeight >= 25) {
+        if (truck.weight < filters.minWeight) {
+          return false;
+        }
+      }
+      // Các trường hợp thông thường - phải nằm trong khoảng min và max
+      else if (truck.weight < filters.minWeight || truck.weight > filters.maxWeight) {
         return false;
       }
-    } else if (filters.minWeight !== null && truck.weight < filters.minWeight) {
-      return false;
-    } else if (filters.maxWeight !== null && truck.weight > filters.maxWeight) {
-      return false;
     }
     
     // Lọc theo từ khóa tìm kiếm

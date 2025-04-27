@@ -10,25 +10,27 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
   const navigate = useNavigate();
 
   const getWeightRange = (categoryWeight: number): { min: number, max: number } => {
-    const weightCategory = truckWeights.find(w => w.value === categoryWeight);
-    if (!weightCategory) return { min: 0, max: 0 };
+    console.log(`Tính toán phạm vi trọng lượng cho: ${categoryWeight} tấn`);
     
-    if (categoryWeight === 1) {
-      return { min: 0, max: 1 };
-    }
-    
-    if (categoryWeight === 25) {
+    // Trường hợp đặc biệt: "Trên 20 tấn"
+    if (categoryWeight >= 25) {
       return { min: 20, max: 100 };
     }
     
-    if (categoryWeight === 20) {
-      return { min: 15, max: 20 };
+    // Tìm mục trong mảng trọng lượng
+    const weightCategory = truckWeights.find(w => w.value === categoryWeight);
+    if (!weightCategory) return { min: 0, max: 100 };
+    
+    // Xử lý các trường hợp cụ thể
+    if (categoryWeight === 1) {
+      return { min: 0, max: 1 };  // Dưới 1 tấn
     }
     
+    // Tìm vị trí của loại trọng lượng trong mảng
     const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
     if (categoryIndex > 0) {
-      const minWeight = truckWeights[categoryIndex - 1].value;
-      return { min: minWeight, max: categoryWeight };
+      const prevWeight = truckWeights[categoryIndex - 1].value;
+      return { min: prevWeight, max: categoryWeight };
     }
     
     return { min: 0, max: categoryWeight };
@@ -42,7 +44,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     const vehicleType = queryParams.get('type') as VehicleType | null;
     const search = queryParams.get('search');
     
-    let newFilters: TruckFilters = { ...filters };
+    let newFilters: TruckFilters = { ...initialFilters };
     
     if (brand) {
       console.log("Đọc brand từ URL:", brand);
@@ -55,11 +57,9 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       const weight = parseFloat(weightParam);
       if (!isNaN(weight)) {
         const range = getWeightRange(weight);
-        newFilters = {
-          ...newFilters,
-          minWeight: range.min,
-          maxWeight: range.max
-        };
+        console.log(`Đọc weight từ URL: ${weight}, phạm vi: [${range.min}, ${range.max}]`);
+        newFilters.minWeight = range.min;
+        newFilters.maxWeight = range.max;
       }
     } else {
       newFilters.minWeight = null;
@@ -109,16 +109,15 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       // Xử lý phạm vi tải trọng
       let weightCategory;
       if (newFilters.minWeight >= 20) {
-        weightCategory = truckWeights.find(w => w.value === 25);
+        weightCategory = 25;  // Trên 20 tấn
       } else {
+        // Tìm danh mục trọng lượng phù hợp
         weightCategory = truckWeights.find(w => 
-          w.value === newFilters.maxWeight
-        );
+          w.value >= newFilters.maxWeight! && w.value > newFilters.minWeight!
+        )?.value || newFilters.maxWeight;
       }
       
-      if (weightCategory) {
-        params.set('weight', weightCategory.value.toString());
-      }
+      params.set('weight', weightCategory.toString());
     }
 
     if (newFilters.vehicleType) {
