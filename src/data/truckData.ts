@@ -10,16 +10,6 @@ export const truckWeights: TruckWeight[] = [
   { id: 'w7', name: '15 - 20 tấn', value: 20 },
 ];
 
-export const getActiveBrands = (trucks: Truck[]): TruckBrand[] => {
-  const uniqueBrands = [...new Set(trucks.map(truck => truck.brand))];
-  return uniqueBrands.map(brandName => ({
-    id: `brand-${brandName.toLowerCase().replace(/\s+/g, '-')}`,
-    name: brandName
-  }));
-};
-
-export const truckBrands = getActiveBrands(trucks);
-
 export const trucks: Truck[] = [
   {
     id: 't1',
@@ -300,7 +290,7 @@ export const trucks: Truck[] = [
     engine: 'Thủy lực, 5 đoạn',
     fuelType: 'Dầu thủy lực',
     features: ['Tầm với xa 11.3m', 'Góc quay 360 độ', 'An toàn cao'],
-    description: 'Cẩu Unic URV553 - dòng cẩu 5 tấn đến từ Nhật Bản với độ bền cao v�� thao tác dễ dàng.',
+    description: 'Cẩu Unic URV553 - dòng cẩu 5 tấn đến từ Nhật Bản với độ bền cao v thao tác dễ dàng.',
     images: ['https://tongkhoxetai.vn/upload/images/cau-unic-5-tan.jpg'],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-unic-5-tan.jpg',
     isHot: true,
@@ -428,3 +418,13 @@ export const trucks: Truck[] = [
     type: 'tractor'
   }
 ];
+
+export const getActiveBrands = (trucks: Truck[]): TruckBrand[] => {
+  const uniqueBrands = [...new Set(trucks.map(truck => truck.brand))];
+  return uniqueBrands.map(brandName => ({
+    id: `brand-${brandName.toLowerCase().replace(/\s+/g, '-')}`,
+    name: brandName
+  }));
+};
+
+export const truckBrands = getActiveBrands(trucks);
