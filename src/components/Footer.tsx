@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react';
@@ -13,8 +12,8 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-heading text-xl font-bold mb-4">XeTaiViet</h3>
             <p className="mb-4 text-gray-300">
-              Chuyên cung cấp các dòng xe tải chất lượng cao, đa dạng tải trọng, 
-              giá cả cạnh tranh trên thị trường.
+              Chuyên cung cấp xe tải, xe đầu kéo, xe cẩu và sơ mi rơ mooc chính hãng.
+              Đa dạng tải trọng và mẫu mã, giá cả cạnh tranh trên thị trường.
             </p>
             <div className="flex flex-col space-y-2">
               <div className="flex items-center">

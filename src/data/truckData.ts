@@ -1,4 +1,3 @@
-
 import { Truck, TruckWeight, TruckBrand } from '../models/TruckTypes';
 
 export const truckWeights: TruckWeight[] = [
@@ -24,6 +23,10 @@ export const truckBrands: TruckBrand[] = [
   { id: 'b10', name: 'FAW' },
   { id: 'b11', name: 'Foton' },
   { id: 'b12', name: 'Shacman' },
+  { id: 'b13', name: 'Dayun' },
+  { id: 'b14', name: 'Camc' },
+  { id: 'b15', name: 'Yutong' },
+  { id: 'b16', name: 'Sinotruk' },
 ];
 
 export const trucks: Truck[] = [
@@ -389,6 +392,46 @@ export const trucks: Truck[] = [
     description: 'Xe đầu kéo Shacman X3000 480HP với thiết kế hiện đại, động cơ mạnh mẽ, phù hợp vận tải đường dài.',
     images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-shacman.jpg'],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-shacman.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'tractor'
+  },
+  {
+    id: 'tr6',
+    name: 'Xe Đầu Kéo Dayun N8V 460HP',
+    slug: 'xe-dau-keo-dayun-n8v-460hp',
+    brand: 'Dayun',
+    price: 1180000000,
+    priceText: '1.180.000.000 VNĐ',
+    weight: 19,
+    weightText: '19 tấn',
+    length: 7.2,
+    engine: 'Weichai WP13 460HP, Euro 5',
+    fuelType: 'Dầu Diesel',
+    features: ['Động cơ Weichai tiết kiệm', 'Cabin hiện đại', 'Hệ thống phanh ABS'],
+    description: 'Xe đầu kéo Dayun N8V 460HP - dòng xe cao cấp với thiết kế hiện đại, động cơ mạnh mẽ và tiết kiệm nhiên liệu.',
+    images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-dayun.jpg'],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-dayun.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'tractor'
+  },
+  {
+    id: 'tr7',
+    name: 'Xe Đầu Kéo CAMC H9 480HP',
+    slug: 'xe-dau-keo-camc-h9-480hp',
+    brand: 'Camc',
+    price: 1280000000,
+    priceText: '1.280.000.000 VNĐ',
+    weight: 19,
+    weightText: '19 tấn',
+    length: 7.2,
+    engine: 'Cummins X12 480HP, Euro 5',
+    fuelType: 'Dầu Diesel',
+    features: ['Động cơ Cummins mạnh mẽ', 'Cabin sang trọng', 'Tiêu chuẩn Euro 5'],
+    description: 'Xe đầu kéo CAMC H9 480HP với động cơ Cummins X12 mạnh mẽ, cabin rộng rãi và nhiều tính năng hiện đại.',
+    images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-camc.jpg'],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-camc.jpg',
     isHot: true,
     isNew: true,
     type: 'tractor'
