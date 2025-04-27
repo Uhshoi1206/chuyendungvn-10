@@ -1,3 +1,4 @@
+
 import { Truck, TruckWeight, TruckBrand } from '../models/TruckTypes';
 
 export const truckWeights: TruckWeight[] = [
@@ -25,7 +26,7 @@ export const truckBrands: TruckBrand[] = [
   { id: 'b12', name: 'Shacman' },
 ];
 
-export const trucks = [
+export const trucks: Truck[] = [
   {
     id: 't1',
     name: 'Hyundai New Porter H150',
