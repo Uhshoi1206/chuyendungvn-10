@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -27,7 +28,7 @@ const AboutPage = () => {
             <div>
               <h2 className="text-3xl font-bold mb-6">Chúng Tôi Là Ai?</h2>
               <p className="text-gray-700 mb-4">
-                XeTaiViet tự hào là nhà phân phối đa dạng các dòng xe thương mại hàng đầu tại Việt Nam. 
+                XeTaiViet tự hào là nhà phân phối đa dạng các dòng phương tiện thương mại hàng đầu tại Việt Nam. 
                 Với hơn 10 năm kinh nghiệm, chúng tôi cung cấp đầy đủ các loại xe tải, xe đầu kéo, xe cẩu và mooc 
                 từ các thương hiệu uy tín như Hyundai, Thaco, Isuzu, Hino, Chenglong, FAW, HOWO, Donfeng.
               </p>
@@ -57,7 +58,7 @@ const AboutPage = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-3">Tại Sao Chọn XeTaiViet?</h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
-              Với nhiều năm kinh nghiệm trong lĩnh vực xe tải, chúng tôi tự tin mang đến cho khách hàng 
+              Với nhiều năm kinh nghiệm trong lĩnh vực phương tiện thương mại, chúng tôi tự tin mang đến cho khách hàng 
               những sản phẩm và dịch vụ tốt nhất
             </p>
           </div>
@@ -70,7 +71,7 @@ const AboutPage = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-3">Sản phẩm chất lượng</h3>
                 <p className="text-gray-600">
-                  Cung cấp xe tải chính hãng với đầy đủ giấy tờ và bảo hành từ nhà sản xuất.
+                  Cung cấp xe chính hãng với đầy đủ giấy tờ và bảo hành từ nhà sản xuất.
                 </p>
               </CardContent>
             </Card>
@@ -124,7 +125,7 @@ const AboutPage = () => {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-3">Tầm nhìn</h3>
                 <p className="text-gray-700">
-                  Trở thành đơn vị phân phối xe tải hàng đầu Việt Nam, mang lại giá trị thiết thực cho khách hàng 
+                  Trở thành đơn vị phân phối phương tiện thương mại hàng đầu Việt Nam, mang lại giá trị thiết thực cho khách hàng 
                   và đóng góp vào sự phát triển của ngành vận tải trong nước.
                 </p>
               </div>
@@ -132,7 +133,7 @@ const AboutPage = () => {
               <div>
                 <h3 className="text-xl font-bold mb-3">Sứ mệnh</h3>
                 <p className="text-gray-700">
-                  Cung cấp những sản phẩm xe tải chất lượng nhất, dịch vụ chuyên nghiệp nhất với giá thành 
+                  Cung cấp những sản phẩm chất lượng nhất, dịch vụ chuyên nghiệp nhất với giá thành 
                   hợp lý nhất, giúp khách hàng tối ưu hóa hiệu quả kinh doanh vận tải.
                 </p>
               </div>
@@ -201,7 +202,7 @@ const AboutPage = () => {
           <h2 className="text-3xl font-bold mb-6">Bạn cần tư vấn?</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto">
             Liên hệ ngay với chúng tôi để nhận tư vấn về sản phẩm và dịch vụ. 
-            Đội ngũ chuyên viên của chúng tôi sẽ hỗ trợ bạn chọn lựa xe tải phù hợp nhất.
+            Đội ngũ chuyên viên của chúng tôi sẽ hỗ trợ bạn chọn lựa phương tiện phù hợp nhất.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button asChild size="lg" className="bg-primary hover:bg-red-700">
@@ -220,3 +221,4 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+
