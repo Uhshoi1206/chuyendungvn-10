@@ -14,8 +14,8 @@ const BrandCategories = ({ brands }: BrandCategoriesProps) => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3">Thương Hiệu Nổi Tiếng</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Chúng tôi phân phối các dòng xe tải từ những thương hiệu hàng đầu thế giới và trong nước, 
-            đảm bảo chất lượng và độ tin cậy.
+            Chúng tôi phân phối đa dạng các loại phương tiện thương mại (xe tải, xe cẩu, mooc, xe đầu kéo) 
+            từ những thương hiệu hàng đầu thế giới và trong nước, đảm bảo chất lượng và độ tin cậy.
           </p>
         </div>
         
@@ -36,3 +36,4 @@ const BrandCategories = ({ brands }: BrandCategoriesProps) => {
 };
 
 export default BrandCategories;
+
