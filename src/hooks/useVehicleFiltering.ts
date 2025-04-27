@@ -1,5 +1,22 @@
 
 import { Truck, VehicleType } from '@/models/TruckTypes';
+import { trucks } from '@/data/truckData';
+
+// Tính toán giá trị tối đa của tải trọng từ dữ liệu xe
+const calculateMaxWeight = (): number => {
+  let maxWeight = 0;
+  trucks.forEach(truck => {
+    if (truck.weight > maxWeight) {
+      maxWeight = truck.weight;
+    }
+  });
+  
+  // Làm tròn lên 5 tấn gần nhất
+  return Math.ceil(maxWeight / 5) * 5;
+};
+
+// Lưu trữ giá trị tối đa
+const MAX_WEIGHT = calculateMaxWeight();
 
 export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType | null, filters: {
   brand: string | null;
@@ -39,6 +56,11 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     
     // Lọc theo tải trọng - điều kiện quan trọng!
     if (filters.minWeight !== null && filters.maxWeight !== null) {
+      // Xử lý trường hợp đặc biệt cho giá trị tối đa (lọc tất cả tải trọng)
+      if (filters.minWeight === 0 && filters.maxWeight >= MAX_WEIGHT) {
+        return true; // Không lọc khi chọn toàn bộ phạm vi
+      }
+      
       // Kiểm tra xem xe có nằm trong phạm vi tải trọng đã chọn không
       if (vehicle.weight < filters.minWeight || vehicle.weight > filters.maxWeight) {
         console.log(`Xe ${vehicle.name} (${vehicle.weight} tấn) bị loại vì không nằm trong khoảng [${filters.minWeight}, ${filters.maxWeight}]`);
