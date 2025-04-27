@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/danh-muc?type=crane" className="text-gray-300 hover:text-primary transition-colors">
-                  Cẩu
+                  Xe Cẩu
                 </Link>
               </li>
               <li>
