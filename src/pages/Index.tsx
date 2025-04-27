@@ -18,7 +18,6 @@ const Index = () => {
   const featuredTrailers = trucks.filter(truck => truck.type === 'trailer');
   const featuredTractors = trucks.filter(truck => truck.type === 'tractor');
   
-  // Lấy bài viết mới nhất từ mỗi danh mục
   const latestPostsByCategory = Object.keys(blogCategories).map(category => {
     const categoryPosts = blogPosts.filter(post => post.category === category);
     return categoryPosts.sort((a, b) => 
@@ -31,13 +30,10 @@ const Index = () => {
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Section */}
         <Hero />
         
-        {/* Xe Tải Nổi Bật */}
         <FeaturedTrucks trucks={featuredTrucks} />
         
-        {/* Cẩu Chuyên Dụng */}
         <VehicleSection 
           title="Cẩu Chuyên Dụng"
           description="Giải pháp nâng hạ chuyên nghiệp với các dòng cẩu hiện đại, đa năng và an toàn. Đáp ứng mọi nhu cầu từ công trường xây dựng đến nhà máy sản xuất, với tầm với xa, tải trọng lớn và công nghệ tiên tiến."
@@ -47,7 +43,6 @@ const Index = () => {
           className="bg-gray-50"
         />
         
-        {/* Sơ Mi Rơ Mooc */}
         <VehicleSection 
           title="Sơ Mi Rơ Mooc"
           description="Đa dạng các loại sơ mi rơ mooc, đáp ứng mọi nhu cầu vận chuyển từ container đến hàng rời."
@@ -56,26 +51,18 @@ const Index = () => {
           linkText="Xem tất cả sơ mi rơ mooc"
         />
         
-        {/* Xe Đầu Kéo */}
         <VehicleSection 
           title="Xe Đầu Kéo"
-          description="Xe đầu kéo mạnh mẽ, phù hợp cho vận tải đường dài và hàng hóa siêu trường siêu trọng."
+          description="Giải pháp vận tải chuyên nghiệp với dòng xe đầu kéo mạnh mẽ, hiệu suất cao và tiết kiệm nhiên liệu. Phù hợp cho vận chuyển hàng siêu trường, siêu trọng trên các tuyến đường dài, với công nghệ tiên tiến và độ tin cậy cao."
           vehicles={featuredTractors}
           type="tractor"
           linkText="Xem tất cả xe đầu kéo"
           className="bg-gray-50"
         />
         
-        {/* Phân Loại Theo Tải Trọng */}
         <WeightCategories weights={truckWeights} />
-        
-        {/* Thương hiệu nổi tiếng */}
         <BrandCategories brands={truckBrands} />
-        
-        {/* Liên hệ tư vấn */}
         <ContactSection />
-        
-        {/* Tin tức & blog */}
         <BlogSection posts={latestPostsByCategory} categories={blogCategories} />
       </main>
       
