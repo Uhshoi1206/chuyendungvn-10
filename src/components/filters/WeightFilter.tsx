@@ -30,7 +30,7 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
         
         {/* Hiển thị thông tin chi tiết về phạm vi tải trọng đang chọn */}
         <div className="text-xs text-muted-foreground mt-2 text-center">
-          {weightRange[0]} - {weightRange[1] >= 25 ? "trên 20" : weightRange[1]} tấn
+          Đang chọn: {weightRange[0]} - {weightRange[1] >= 25 ? "trên 20" : weightRange[1]} tấn
         </div>
       </div>
     </div>
