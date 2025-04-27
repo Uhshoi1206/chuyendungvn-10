@@ -61,7 +61,7 @@ const Index = () => {
           className="bg-gray-50"
         />
         
-        <WeightCategories weights={truckWeights} />
+        <WeightCategories weights={[...truckWeights, {id: "weight-25", name: "Trên 20 Tấn", value: 25}]} />
         <BrandCategories brands={truckBrands} />
         <ContactSection />
         <BlogSection posts={latestPostsByCategory} categories={blogCategories} />
@@ -73,4 +73,3 @@ const Index = () => {
 };
 
 export default Index;
-

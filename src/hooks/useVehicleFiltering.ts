@@ -11,12 +11,12 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
 }) => {
   console.log("useVehicleFiltering được gọi với:", { selectedType, filters });
   
-  // Lọc xe theo loại trước tiên
-  const vehiclesByType = vehicles.filter(truck => truck.type === selectedType);
-  console.log("Số xe theo loại:", vehiclesByType.length);
+  // Lọc xe theo loại nếu loại được chọn, nếu không thì hiển thị tất cả
+  let filteredVehicles = selectedType ? vehicles.filter(truck => truck.type === selectedType) : vehicles;
+  console.log("Số xe theo loại:", filteredVehicles.length);
   
   // Áp dụng các bộ lọc khác
-  const filteredVehicles = vehiclesByType.filter(truck => {
+  filteredVehicles = filteredVehicles.filter(truck => {
     // Lọc theo thương hiệu
     if (filters.brand) {
       console.log(`So sánh brand: '${truck.brand}' với '${filters.brand}'`);
@@ -35,8 +35,8 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     
     // Lọc theo trọng lượng
     if (filters.minWeight !== null && filters.maxWeight !== null) {
-      // Trường hợp đặc biệt cho "trên 15 tấn"
-      if (filters.maxWeight >= 15 && truck.weight >= filters.minWeight) {
+      // Trường hợp đặc biệt cho "trên 20 tấn"
+      if (filters.maxWeight >= 25 && truck.weight >= filters.minWeight) {
         return true;
       }
       

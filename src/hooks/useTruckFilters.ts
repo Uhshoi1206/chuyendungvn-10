@@ -17,8 +17,12 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       return { min: 0, max: 1 };
     }
     
+    if (categoryWeight === 25) {
+      return { min: 20, max: 100 };
+    }
+    
     if (categoryWeight === 20) {
-      return { min: 15, max: 100 };
+      return { min: 15, max: 20 };
     }
     
     const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
@@ -102,9 +106,15 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     }
     
     if (newFilters.minWeight !== null && newFilters.maxWeight !== null) {
-      const weightCategory = truckWeights.find(w => 
-        w.value === newFilters.maxWeight
-      );
+      // Xử lý phạm vi tải trọng
+      let weightCategory;
+      if (newFilters.minWeight >= 20) {
+        weightCategory = truckWeights.find(w => w.value === 25);
+      } else {
+        weightCategory = truckWeights.find(w => 
+          w.value === newFilters.maxWeight
+        );
+      }
       
       if (weightCategory) {
         params.set('weight', weightCategory.value.toString());
@@ -144,4 +154,3 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     updateUrl
   };
 };
-

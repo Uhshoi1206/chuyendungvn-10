@@ -16,8 +16,8 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
       <h3 className="text-base font-medium mb-2">Tải trọng</h3>
       <div className="px-2">
         <Slider
-          defaultValue={[0, 20]}
-          max={20}
+          defaultValue={[0, 25]}
+          max={25}
           step={0.5}
           value={weightRange}
           onValueChange={onWeightChange}
@@ -25,7 +25,7 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
         />
         <div className="flex justify-between text-sm">
           <span>{weightRange[0]} tấn</span>
-          <span>{weightRange[1]} tấn</span>
+          <span>{weightRange[1] >= 25 ? "25+ tấn" : `${weightRange[1]} tấn`}</span>
         </div>
       </div>
     </div>

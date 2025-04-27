@@ -19,7 +19,7 @@ const WeightCategories = ({ weights }: WeightCategoriesProps) => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {weights.map(weight => (
             <Link 
               key={weight.id} 
@@ -27,7 +27,7 @@ const WeightCategories = ({ weights }: WeightCategoriesProps) => {
               className="bg-white p-5 rounded-lg shadow-sm text-center hover:shadow-md transition-shadow border border-gray-100"
             >
               <div className="font-bold text-lg mb-2">{weight.name}</div>
-              <p className="text-gray-600 text-sm">Xem các dòng xe</p>
+              <p className="text-gray-600 text-sm">Xem tất cả phương tiện</p>
             </Link>
           ))}
         </div>
