@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
 import { trucks } from '@/data/truckData';
 import { blogPosts } from '@/data/blogData';
-import { Truck } from '@/models/TruckTypes';
+import { Truck, VehicleType, getVehicleTypeName } from '@/models/TruckTypes';
 import { BlogPost } from '@/models/BlogPost';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +18,17 @@ const SearchPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState(query);
   const [filteredTrucks, setFilteredTrucks] = useState<Truck[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+
+  // Nhóm xe theo loại
+  const groupTrucksByType = (trucks: Truck[]): Record<VehicleType, Truck[]> => {
+    return trucks.reduce((acc, truck) => {
+      if (!acc[truck.type]) {
+        acc[truck.type] = [];
+      }
+      acc[truck.type].push(truck);
+      return acc;
+    }, {} as Record<VehicleType, Truck[]>);
+  };
 
   useEffect(() => {
     const performSearch = () => {
@@ -52,6 +63,10 @@ const SearchPage: React.FC = () => {
     window.location.href = `/search?${params.toString()}`;
   };
 
+  // Nhóm xe theo loại
+  const groupedTrucks = groupTrucksByType(filteredTrucks);
+  const vehicleTypes: VehicleType[] = ['xe-tai', 'xe-cau', 'dau-keo', 'mooc'];
+
   return (
     <Layout>
       <div className="py-12 bg-gray-50">
@@ -80,19 +95,24 @@ const SearchPage: React.FC = () => {
 
           {/* Hiển thị kết quả tìm kiếm */}
           <div className="space-y-10">
-            {/* Phần hiển thị sản phẩm */}
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Sản phẩm ({filteredTrucks.length})</h2>
-              {filteredTrucks.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {filteredTrucks.map((truck) => (
-                    <TruckItem key={truck.id} truck={truck} />
-                  ))}
+            {/* Phần hiển thị sản phẩm theo từng loại */}
+            {vehicleTypes.map(type => {
+              const vehicles = groupedTrucks[type] || [];
+              if (vehicles.length === 0) return null;
+
+              return (
+                <div key={type}>
+                  <h2 className="text-2xl font-bold mb-4">
+                    {getVehicleTypeName(type)} ({vehicles.length})
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {vehicles.map((truck) => (
+                      <TruckItem key={truck.id} truck={truck} />
+                    ))}
+                  </div>
                 </div>
-              ) : (
-                <p className="text-gray-500">Không tìm thấy sản phẩm nào phù hợp.</p>
-              )}
-            </div>
+              );
+            })}
 
             {/* Phần hiển thị bài viết */}
             <div>
