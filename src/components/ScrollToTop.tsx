@@ -5,7 +5,6 @@ import { ArrowUp } from 'lucide-react';
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Kiểm tra vị trí cuộn để hiển thị/ẩn nút
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.scrollY > 500) {
@@ -20,7 +19,6 @@ const ScrollToTop = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Hàm cuộn lên đầu trang mượt mà
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -32,7 +30,7 @@ const ScrollToTop = () => {
     <button
       onClick={scrollToTop}
       className={`
-        fixed right-4 bottom-4 z-50
+        fixed right-6 bottom-24 z-50
         w-12 h-12 rounded-full
         flex items-center justify-center
         bg-primary hover:bg-primary/90
