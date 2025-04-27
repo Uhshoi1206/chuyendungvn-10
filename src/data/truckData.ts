@@ -10,24 +10,15 @@ export const truckWeights: TruckWeight[] = [
   { id: 'w7', name: '15 - 20 tấn', value: 20 },
 ];
 
-export const truckBrands: TruckBrand[] = [
-  { id: 'b1', name: 'Thaco' },
-  { id: 'b2', name: 'Hyundai' },
-  { id: 'b3', name: 'Hino' },
-  { id: 'b4', name: 'Isuzu' },
-  { id: 'b5', name: 'Dongfeng' },
-  { id: 'b6', name: 'JAC' },
-  { id: 'b7', name: 'Mitsubishi' },
-  { id: 'b8', name: 'HOWO' },
-  { id: 'b9', name: 'Chenglong' },
-  { id: 'b10', name: 'FAW' },
-  { id: 'b11', name: 'Foton' },
-  { id: 'b12', name: 'Shacman' },
-  { id: 'b13', name: 'Dayun' },
-  { id: 'b14', name: 'Camc' },
-  { id: 'b15', name: 'Yutong' },
-  { id: 'b16', name: 'Sinotruk' },
-];
+export const getActiveBrands = (trucks: Truck[]): TruckBrand[] => {
+  const uniqueBrands = [...new Set(trucks.map(truck => truck.brand))];
+  return uniqueBrands.map(brandName => ({
+    id: `brand-${brandName.toLowerCase().replace(/\s+/g, '-')}`,
+    name: brandName
+  }));
+};
+
+export const truckBrands = getActiveBrands(trucks);
 
 export const trucks: Truck[] = [
   {
@@ -309,7 +300,7 @@ export const trucks: Truck[] = [
     engine: 'Thủy lực, 5 đoạn',
     fuelType: 'Dầu thủy lực',
     features: ['Tầm với xa 11.3m', 'Góc quay 360 độ', 'An toàn cao'],
-    description: 'Cẩu Unic URV553 - dòng cẩu 5 tấn đến từ Nhật Bản với độ bền cao và thao tác dễ dàng.',
+    description: 'Cẩu Unic URV553 - dòng cẩu 5 tấn đến từ Nhật Bản với độ bền cao v�� thao tác dễ dàng.',
     images: ['https://tongkhoxetai.vn/upload/images/cau-unic-5-tan.jpg'],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/cau-unic-5-tan.jpg',
     isHot: true,
