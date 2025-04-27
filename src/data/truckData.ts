@@ -18,9 +18,14 @@ export const truckBrands: TruckBrand[] = [
   { id: 'b5', name: 'Dongfeng' },
   { id: 'b6', name: 'JAC' },
   { id: 'b7', name: 'Mitsubishi' },
+  { id: 'b8', name: 'HOWO' },
+  { id: 'b9', name: 'Chenglong' },
+  { id: 'b10', name: 'FAW' },
+  { id: 'b11', name: 'Foton' },
+  { id: 'b12', name: 'Shacman' },
 ];
 
-export const trucks: Truck[] = [
+export const trucks = [
   {
     id: 't1',
     name: 'Hyundai New Porter H150',
@@ -235,8 +240,8 @@ export const trucks: Truck[] = [
     length: 6.8,
     engine: 'WD615.47, Euro 4, 420HP',
     fuelType: 'Dầu Diesel',
-    features: ['Công suất lớn 420HP', 'Cabin rộng rãi', 'Tiết kiệm nhiên liệu'],
-    description: 'Xe đầu kéo HOWO 420HP mạnh mẽ với động cơ Weichai công suất lớn, cabin hiện đại và nhiều tính năng an toàn.',
+    features: ['Cabin rộng rãi', 'Tiết kiệm nhiên liệu', 'Khung gầm chắc chắn'],
+    description: 'Xe Đầu Kéo HOWO 420HP - sự lựa chọn hoàn hảo cho vận tải hạng trung với khả năng vận hành bền bỉ và tiết kiệm.',
     images: [
       'https://tongkhoxetai.vn/upload/images/xe-dau-keo-howo.jpg'
     ],
@@ -258,7 +263,7 @@ export const trucks: Truck[] = [
     engine: 'ISG12, Euro 5, 460HP',
     fuelType: 'Dầu Diesel',
     features: ['Động cơ Cummins 460HP', 'Hộp số Fast 12 cấp', 'Cabin cao cấp'],
-    description: 'Xe đầu kéo Chenglong H7 460HP thế hệ mới với động cơ Cummins mạnh mẽ, cabin sang trọng và công nghệ hiện đại.',
+    description: 'Xe Đầu Kéo Chenglong H7 460HP thế hệ mới với động cơ Cummins mạnh mẽ, cabin sang trọng và công nghệ hiện đại.',
     images: [
       'https://tongkhoxetai.vn/upload/images/xe-dau-keo-chenglong.jpg'
     ],
@@ -343,6 +348,46 @@ export const trucks: Truck[] = [
     description: 'Xe đầu kéo FAW J7 480HP - dòng xe cao cấp với công nghệ tiên tiến và khả năng vận hành mạnh mẽ.',
     images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-faw.jpg'],
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-faw.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'tractor'
+  },
+  {
+    id: 'tr4',
+    name: 'Xe Đầu Kéo Foton Auman EST-M 460HP',
+    slug: 'xe-dau-keo-foton-auman-est-m-460hp',
+    brand: 'Foton',
+    price: 1280000000,
+    priceText: '1.280.000.000 VNĐ',
+    weight: 19,
+    weightText: '19 tấn',
+    length: 7.2,
+    engine: 'Cummins ISG12E5 460HP, Euro 5',
+    fuelType: 'Dầu Diesel',
+    features: ['Động cơ Cummins mạnh mẽ', 'Cabin tiện nghi', 'Tiêu chuẩn Euro 5'],
+    description: 'Xe đầu kéo Foton Auman EST-M 460HP - thế hệ mới với công nghệ tiên tiến, tiết kiệm nhiên liệu và cabin tiện nghi.',
+    images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-foton.jpg'],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-foton.jpg',
+    isHot: true,
+    isNew: true,
+    type: 'tractor'
+  },
+  {
+    id: 'tr5',
+    name: 'Xe Đầu Kéo Shacman X3000 480HP',
+    slug: 'xe-dau-keo-shacman-x3000-480hp',
+    brand: 'Shacman',
+    price: 1150000000,
+    priceText: '1.150.000.000 VNĐ',
+    weight: 19,
+    weightText: '19 tấn',
+    length: 7.2,
+    engine: 'Weichai WP13 480HP, Euro 5',
+    fuelType: 'Dầu Diesel',
+    features: ['Động cơ Weichai mạnh mẽ', 'Hệ thống phanh ABS', 'Thiết kế khí động học'],
+    description: 'Xe đầu kéo Shacman X3000 480HP với thiết kế hiện đại, động cơ mạnh mẽ, phù hợp vận tải đường dài.',
+    images: ['https://tongkhoxetai.vn/upload/images/xe-dau-keo-shacman.jpg'],
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/xe-dau-keo-shacman.jpg',
     isHot: true,
     isNew: true,
     type: 'tractor'

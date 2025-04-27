@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -16,7 +15,7 @@ const AboutPage = () => {
         <div className="container mx-auto">
           <h1 className="text-3xl font-bold mb-2">Giới Thiệu</h1>
           <p className="text-gray-300">
-            Tìm hiểu về XeTaiViet - Nhà phân phối xe tải hàng đầu Việt Nam
+            Tìm hiểu về XeTaiViet - Nhà phân phối xe tải, xe đầu kéo, xe cẩu và mooc hàng đầu Việt Nam
           </p>
         </div>
       </div>
@@ -28,12 +27,12 @@ const AboutPage = () => {
             <div>
               <h2 className="text-3xl font-bold mb-6">Chúng Tôi Là Ai?</h2>
               <p className="text-gray-700 mb-4">
-                XeTaiViet tự hào là nhà phân phối các dòng xe tải chính hãng hàng đầu tại Việt Nam. 
-                Với hơn 10 năm kinh nghiệm trong lĩnh vực ô tô tải, chúng tôi đang cung cấp đa dạng các dòng xe 
-                từ các thương hiệu uy tín như Hyundai, Thaco, Isuzu, Hino, Dongfeng, JAC và Mitsubishi.
+                XeTaiViet tự hào là nhà phân phối đa dạng các dòng xe thương mại hàng đầu tại Việt Nam. 
+                Với hơn 10 năm kinh nghiệm, chúng tôi cung cấp đầy đủ các loại xe tải, xe đầu kéo, xe cẩu và mooc 
+                từ các thương hiệu uy tín như Hyundai, Thaco, Isuzu, Hino, Chenglong, FAW, HOWO, Donfeng.
               </p>
               <p className="text-gray-700 mb-8">
-                Sứ mệnh của chúng tôi là mang đến cho khách hàng những sản phẩm chất lượng cao với giá cả hợp lý nhất, 
+                Sứ mệnh của chúng tôi là mang đến cho khách hàng những giải pháp vận tải toàn diện với giá cả hợp lý nhất, 
                 cùng dịch vụ hậu mãi chuyên nghiệp và tận tâm. Chúng tôi luôn lắng nghe và tư vấn để khách hàng 
                 lựa chọn được dòng xe phù hợp nhất với nhu cầu sử dụng và điều kiện tài chính.
               </p>
