@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -45,7 +46,7 @@ const Index = () => {
         
         <VehicleSection 
           title="Sơ Mi Rơ Mooc"
-          description="Đa dạng các loại sơ mi rơ mooc, đáp ứng mọi nhu cầu vận chuyển từ container đến hàng rời."
+          description="Giải pháp vận chuyển chuyên nghiệp với hệ thống sơ mi rơ mooc đa dạng, linh hoạt. Phục vụ tối ưu nhu cầu vận tải container, hàng rời, và các loại hàng siêu trường, siêu trọng với độ bền và an toàn vượt trội."
           vehicles={featuredTrailers}
           type="trailer"
           linkText="Xem tất cả sơ mi rơ mooc"
@@ -72,3 +73,4 @@ const Index = () => {
 };
 
 export default Index;
+
