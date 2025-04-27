@@ -12,7 +12,8 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
   console.log("useVehicleFiltering được gọi với:", { selectedType, filters });
   
   // Bắt đầu với tất cả xe
-  let filteredVehicles = [...vehicles];
+  const uniqueVehicles = [...new Map(vehicles.map(item => [item.id, item])).values()];
+  let filteredVehicles = [...uniqueVehicles];
   
   // Lọc theo loại xe
   if (selectedType) {

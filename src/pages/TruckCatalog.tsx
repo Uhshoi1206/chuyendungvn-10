@@ -155,7 +155,7 @@ const TruckCatalog = () => {
       {/* Điều hướng phân loại xe (Tabs trên cùng) */}
       <div className="container mx-auto px-4 py-8">
         <VehicleTypeTabs
-          selectedType={filters.vehicleType || 'truck'} // Hiển thị tab truck khi không có loại nào được chọn
+          selectedType={filters.vehicleType || null} // Hiển thị không có tab nào được chọn khi không chọn loại xe
           onTypeChange={(value) => handleFilterChange('vehicleType', value)}
         />
 

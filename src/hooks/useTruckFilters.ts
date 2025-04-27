@@ -82,6 +82,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     if (vehicleType) {
       newFilters.vehicleType = vehicleType;
     } else {
+      // Khi lọc tải trọng, không nên mặc định là truck để hiển thị tất cả xe phù hợp
       newFilters.vehicleType = null;
     }
 
@@ -94,7 +95,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
     
     console.log("Cập nhật filters từ URL:", newFilters);
     setFilters(newFilters);
-  }, [location.search]);
+  }, [location.search, initialFilters]);
 
   const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
     let newFilters: TruckFilters;
