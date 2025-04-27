@@ -1,82 +1,143 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import Layout from '@/components/Layout';
-import VehicleGrid from '@/components/catalog/VehicleGrid';
-import { trucks } from '@/data/truckData';
-import { Truck } from '@/models/TruckTypes';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import TruckItem from '@/components/TruckItem';
+import { trucks } from '@/data/truckData';
+import { blogPosts } from '@/data/blogData';
+import { Truck } from '@/models/TruckTypes';
+import { BlogPost } from '@/models/BlogPost';
+import { Link } from 'react-router-dom';
 
-const SearchPage = () => {
+const SearchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [filteredVehicles, setFilteredVehicles] = useState<Truck[]>([]);
-  const [loading, setLoading] = useState(true);
-  const queryString = searchParams.get('q') || '';
+  const query = searchParams.get('q') || '';
+  const [searchTerm, setSearchTerm] = useState(query);
+  const [filteredTrucks, setFilteredTrucks] = useState<Truck[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    if (queryString.trim() === '') {
-      setFilteredVehicles([]);
-      setLoading(false);
-      return;
-    }
+    const performSearch = () => {
+      if (!query) return;
 
-    // Mô phỏng tìm kiếm
-    const timer = setTimeout(() => {
-      const normalizedQuery = queryString.toLowerCase().trim();
-      
-      const results = trucks.filter(truck => 
-        truck.name.toLowerCase().includes(normalizedQuery) ||
-        truck.brand.toLowerCase().includes(normalizedQuery) ||
-        truck.description.toLowerCase().includes(normalizedQuery) ||
-        truck.weightText.toLowerCase().includes(normalizedQuery) ||
-        truck.type.toLowerCase().includes(normalizedQuery)
+      // Tìm kiếm xe
+      const trucksResult = trucks.filter(truck => 
+        truck.name.toLowerCase().includes(query.toLowerCase()) || 
+        truck.brand.toLowerCase().includes(query.toLowerCase()) || 
+        truck.description.toLowerCase().includes(query.toLowerCase())
       );
+      setFilteredTrucks(trucksResult);
 
-      setFilteredVehicles(results);
-      setLoading(false);
-    }, 300);
+      // Tìm kiếm bài viết
+      const postsResult = blogPosts.filter(post => 
+        post.title.toLowerCase().includes(query.toLowerCase()) || 
+        post.description.toLowerCase().includes(query.toLowerCase()) ||
+        post.content.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredPosts(postsResult);
+    };
 
-    return () => clearTimeout(timer);
-  }, [queryString]);
+    performSearch();
+  }, [query]);
 
-  // Xử lý đặt lại bộ lọc
-  const handleResetFilters = () => {
-    // Trong trường hợp này, chúng ta không có bộ lọc để đặt lại
-    // Nhưng cần cung cấp hàm này để truyền cho VehicleGrid
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchTerm) {
+      params.set('q', searchTerm);
+    }
+    window.location.href = `/search?${params.toString()}`;
   };
 
   return (
     <Layout>
-      <div className="bg-gray-100 py-10">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-2">Kết quả tìm kiếm</h1>
-          <p className="text-gray-600 mb-8">
-            {loading ? 'Đang tìm kiếm...' : filteredVehicles.length > 0
-              ? `Tìm thấy ${filteredVehicles.length} kết quả cho "${queryString}"`
-              : `Không tìm thấy kết quả nào cho "${queryString}"`
-            }
+      <div className="py-12 bg-gray-50">
+        <div className="container mx-auto">
+          <h1 className="text-3xl font-bold mb-2">Kết quả tìm kiếm</h1>
+          <p className="text-gray-600 mb-6">
+            Tìm kiếm cho từ khóa: <span className="font-semibold">"{query}"</span>
           </p>
 
-          {loading ? (
-            <div className="text-center py-10">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-              <p className="mt-4 text-gray-600">Đang tìm kiếm kết quả phù hợp...</p>
+          {/* Form tìm kiếm */}
+          <form onSubmit={handleSearch} className="flex mb-8 max-w-lg">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+              <Input
+                type="search"
+                placeholder="Tìm kiếm sản phẩm, bài viết..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-          ) : (
-            <>
-              {filteredVehicles.length > 0 ? (
-                <VehicleGrid vehicles={filteredVehicles} onResetFilters={handleResetFilters} />
-              ) : (
-                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-                  <div className="text-5xl mb-4">🔍</div>
-                  <h3 className="text-2xl font-bold mb-2">Không tìm thấy kết quả</h3>
-                  <p className="text-gray-600 mb-6">Vui lòng thử tìm kiếm với từ khóa khác</p>
-                  <Button asChild>
-                    <a href="/danh-muc">Xem danh mục xe</a>
-                  </Button>
+            <Button type="submit" className="ml-2">
+              Tìm kiếm
+            </Button>
+          </form>
+
+          {/* Hiển thị kết quả tìm kiếm */}
+          <div className="space-y-10">
+            {/* Phần hiển thị sản phẩm */}
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Sản phẩm ({filteredTrucks.length})</h2>
+              {filteredTrucks.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {filteredTrucks.map((truck) => (
+                    <TruckItem key={truck.id} truck={truck} />
+                  ))}
                 </div>
+              ) : (
+                <p className="text-gray-500">Không tìm thấy sản phẩm nào phù hợp.</p>
               )}
-            </>
+            </div>
+
+            {/* Phần hiển thị bài viết */}
+            <div>
+              <h2 className="text-2xl font-bold mb-4">Bài viết ({filteredPosts.length})</h2>
+              {filteredPosts.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredPosts.map((post) => (
+                    <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
+                        <div className="aspect-video relative overflow-hidden">
+                          <img
+                            src={post.images[0]}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                        <div className="p-5 flex flex-col flex-grow">
+                          <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                            {post.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                            {post.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">Không tìm thấy bài viết nào phù hợp.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Hiển thị khi không có kết quả nào */}
+          {filteredTrucks.length === 0 && filteredPosts.length === 0 && query && (
+            <div className="text-center py-12">
+              <div className="text-5xl mb-4">😢</div>
+              <h3 className="text-2xl font-bold mb-2">Không tìm thấy kết quả</h3>
+              <p className="text-gray-600 mb-4">
+                Rất tiếc, chúng tôi không tìm thấy kết quả nào cho "{query}".
+                <br />
+                Vui lòng thử với từ khóa khác.
+              </p>
+            </div>
           )}
         </div>
       </div>
