@@ -10,8 +10,8 @@ const ContactSection = () => {
           <div>
             <h2 className="text-3xl font-bold mb-6">Liên Hệ Tư Vấn</h2>
             <p className="text-gray-600 mb-6">
-              Để được tư vấn chi tiết về sản phẩm, giá cả và chương trình khuyến mãi, 
-              vui lòng để lại thông tin liên hệ. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
+              Để được tư vấn chi tiết về các dòng xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo cùng 
+              chương trình khuyến mãi, vui lòng để lại thông tin liên hệ. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
             </p>
             
             <ContactForm />
@@ -25,7 +25,7 @@ const ContactSection = () => {
                   <div className="flex-shrink-0 h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-3">1</div>
                   <div>
                     <h4 className="font-bold mb-1">Đa dạng sản phẩm</h4>
-                    <p className="text-gray-600">Cung cấp đầy đủ các dòng xe tải từ nhỏ đến lớn của nhiều thương hiệu.</p>
+                    <p className="text-gray-600">Cung cấp đầy đủ các loại xe thương mại từ xe tải, xe cẩu, mooc đến xe đầu kéo của nhiều thương hiệu.</p>
                   </div>
                 </li>
                 <li className="flex">

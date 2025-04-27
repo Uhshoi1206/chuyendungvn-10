@@ -17,7 +17,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3">Tin Tức & Chia Sẻ</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Cập nhật thông tin mới nhất về ngành vận tải và các dòng xe tải phổ biến trên thị trường
+            Cập nhật thông tin mới nhất về xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo và ngành vận tải tại Việt Nam
           </p>
         </div>
         
