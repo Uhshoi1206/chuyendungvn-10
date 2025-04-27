@@ -1,4 +1,3 @@
-
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 export type LegacyVehicleType = 'truck' | 'crane' | 'trailer' | 'tractor';
 
@@ -80,4 +79,3 @@ export const getVehicleTypeName = (type: VehicleType): string => {
       return 'Xe tải';
   }
 };
-

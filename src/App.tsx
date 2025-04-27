@@ -31,7 +31,7 @@ const App = () => (
           
           {/* Các route riêng cho từng loại phương tiện */}
           <Route path="/xe-tai/:slug" element={<TruckDetail />} />
-          <Route path="/xe-dau-keo/:slug" element={<TruckDetail />} />
+          <Route path="/dau-keo/:slug" element={<TruckDetail />} />
           <Route path="/xe-cau/:slug" element={<TruckDetail />} />
           <Route path="/mooc/:slug" element={<TruckDetail />} />
           

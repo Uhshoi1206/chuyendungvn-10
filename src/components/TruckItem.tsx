@@ -1,54 +1,61 @@
 
 import React from 'react';
-import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
 import { Link } from 'react-router-dom';
-import { Card, CardContent } from './ui/card';
-import { Badge } from './ui/badge';
+import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
+import { Badge } from '@/components/ui/badge';
 
 interface TruckItemProps {
   truck: Truck;
 }
 
-const TruckItem: React.FC<TruckItemProps> = ({ truck }) => {
-  // Sử dụng hàm từ TruckTypes.ts
-  const urlPrefix = getVehicleUrlPrefix(truck.type);
+const TruckItem = ({ truck }: TruckItemProps) => {
+  const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
   
   return (
-    <Link to={`/${urlPrefix}/${truck.slug}`} className="block">
-      <Card className="overflow-hidden h-full card-hover border">
+    <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} className="group">
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
         <div className="relative">
           <img 
             src={truck.thumbnailUrl} 
-            alt={truck.name}
-            className="w-full aspect-[4/3] object-cover"
+            alt={truck.name} 
+            className="w-full h-48 object-cover"
           />
-          <div className="absolute top-2 left-2 flex space-x-2">
+          <div className="absolute top-2 left-2 flex flex-wrap gap-1">
             {truck.isNew && (
-              <Badge className="bg-blue-600 hover:bg-blue-700">Mới</Badge>
+              <Badge className="bg-blue-500 hover:bg-blue-600">Mới</Badge>
             )}
             {truck.isHot && (
-              <Badge className="bg-primary hover:bg-primary-700">Hot</Badge>
+              <Badge className="bg-red-500 hover:bg-red-600">Hot</Badge>
             )}
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-3">
-            <div className="font-bold text-sm">{truck.brand}</div>
+        </div>
+        
+        <div className="p-4 flex-grow flex flex-col">
+          <div>
+            <span className="text-gray-500 text-sm">{truck.brand}</span>
+            <h3 className="font-bold text-lg mb-2 group-hover:text-red-600 transition-colors line-clamp-2">
+              {truck.name}
+            </h3>
+          </div>
+          
+          <div className="mt-auto pt-4">
+            <div className="text-sm text-gray-600 mb-2">
+              <div className="flex justify-between mb-1">
+                <span>Tải trọng:</span>
+                <span className="font-medium">{truck.weightText}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Kích thước:</span>
+                <span className="font-medium">{truck.length} m</span>
+              </div>
+            </div>
+            
+            <div className="text-red-600 font-bold text-lg mt-2">
+              {truck.priceText}
+            </div>
           </div>
         </div>
-        <CardContent className="p-4">
-          <h3 className="font-heading font-bold text-lg mb-2 line-clamp-2">{truck.name}</h3>
-          <div className="flex flex-col space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Tải trọng:</span>
-              <span className="font-medium">{truck.weightText}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Thùng dài:</span>
-              <span className="font-medium">{truck.length} m</span>
-            </div>
-            <div className="text-primary font-bold text-lg mt-1">{truck.priceText}</div>
-          </div>
-        </CardContent>
-      </Card>
+      </div>
     </Link>
   );
 };
