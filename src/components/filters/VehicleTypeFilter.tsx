@@ -10,10 +10,10 @@ interface VehicleTypeFilterProps {
 }
 
 const vehicleTypes: { value: VehicleType; label: string }[] = [
-  { value: 'truck', label: 'Xe Tải' },
-  { value: 'crane', label: 'Cẩu' },
-  { value: 'trailer', label: 'Sơ Mi Rơ Mooc' },
-  { value: 'tractor', label: 'Xe Đầu Kéo' },
+  { value: 'xe-tai', label: 'Xe Tải' },
+  { value: 'xe-cau', label: 'Cẩu' },
+  { value: 'mooc', label: 'Sơ Mi Rơ Mooc' },
+  { value: 'dau-keo', label: 'Xe Đầu Kéo' },
 ];
 
 export const VehicleTypeFilter: React.FC<VehicleTypeFilterProps> = ({

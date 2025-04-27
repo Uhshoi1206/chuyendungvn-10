@@ -11,7 +11,7 @@ export interface TruckBrand {
   logo?: string;
 }
 
-export type VehicleType = 'truck' | 'trailer' | 'tractor' | 'crane';
+export type VehicleType = 'xe-tai' | 'mooc' | 'dau-keo' | 'xe-cau';
 
 export interface Truck {
   id: string;
@@ -47,13 +47,13 @@ export interface TruckFilters {
 // Tiện ích để lấy prefix URL dựa theo loại phương tiện
 export const getVehicleUrlPrefix = (type: VehicleType): string => {
   switch (type) {
-    case 'truck':
+    case 'xe-tai':
       return 'xe-tai';
-    case 'tractor':
+    case 'dau-keo':
       return 'xe-dau-keo';
-    case 'crane':
+    case 'xe-cau':
       return 'xe-cau';
-    case 'trailer':
+    case 'mooc':
       return 'mooc';
     default:
       return 'xe-tai';
@@ -63,13 +63,13 @@ export const getVehicleUrlPrefix = (type: VehicleType): string => {
 // Tiện ích để lấy tên hiển thị cho loại phương tiện
 export const getVehicleTypeName = (type: VehicleType): string => {
   switch (type) {
-    case 'truck':
+    case 'xe-tai':
       return 'Xe tải';
-    case 'tractor':
+    case 'dau-keo':
       return 'Xe đầu kéo';
-    case 'crane':
+    case 'xe-cau':
       return 'Xe cẩu';
-    case 'trailer':
+    case 'mooc':
       return 'Sơ mi rơ mooc';
     default:
       return 'Xe tải';

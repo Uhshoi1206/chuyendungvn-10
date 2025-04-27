@@ -19,28 +19,28 @@ type TabInfo = {
 
 const vehicleTabs: TabInfo[] = [
   {
-    value: 'truck',
+    value: 'xe-tai',
     label: 'Xe Tải',
     color: 'text-blue-800',
     border: 'border-blue-400',
     bg: 'bg-blue-100',
   },
   {
-    value: 'crane',
+    value: 'xe-cau',
     label: 'Xe Cẩu',
     color: 'text-orange-700',
     border: 'border-orange-400',
     bg: 'bg-orange-100',
   },
   {
-    value: 'trailer',
+    value: 'mooc',
     label: 'Mooc',
     color: 'text-purple-700',
     border: 'border-purple-400',
     bg: 'bg-purple-100',
   },
   {
-    value: 'tractor',
+    value: 'dau-keo',
     label: 'Đầu Kéo',
     color: 'text-red-700',
     border: 'border-red-400',
