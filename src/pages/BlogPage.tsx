@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
+import { blogCategoryLabels } from '@/models/BlogPost';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CalendarDays, Clock, User, ChevronRight } from 'lucide-react';
+import { CalendarDays, User, ChevronRight, Clock } from 'lucide-react';
 
 const BlogPage = () => {
   // Nhóm bài viết theo danh mục
@@ -26,12 +26,12 @@ const BlogPage = () => {
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-4">Blog Xe Tải Việt</h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Thông tin hữu ích về xe tải, vận tải và ngành công nghiệp ô tô tại Việt Nam
+              Thông tin hữu ích về xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo và ngành vận tải thương mại tại Việt Nam
             </p>
           </div>
         </div>
 
-        {/* Blog Categories Sections - Tự động từ blogCategories */}
+        {/* Blog Categories Sections */}
         <div className="container mx-auto px-4 py-12">
           {Object.entries(blogCategories).map(([category, label]) => (
             <div key={category} className="mb-16">
