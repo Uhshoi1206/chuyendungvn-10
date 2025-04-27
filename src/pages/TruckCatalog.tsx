@@ -1,78 +1,225 @@
 
-import React, { useState, useEffect } from "react";
-import { trucks } from "@/data/truckData";
-import { useTruckFilters } from "@/hooks/useTruckFilters";
-import { useVehicleFiltering } from "@/hooks/useVehicleFiltering";
-import { VehicleType } from "@/models/TruckTypes";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CatalogHeader from "@/components/catalog/CatalogHeader";
-import VehicleTypeTabs from "@/components/catalog/VehicleTypeTabs";
-import VehicleGrid from "@/components/catalog/VehicleGrid";
-import FilterSidebar from "@/components/FilterSidebar";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import Layout from '@/components/Layout';
+import CatalogHeader from '@/components/catalog/CatalogHeader';
+import FilterSidebar from '@/components/FilterSidebar';
+import VehicleGrid from '@/components/catalog/VehicleGrid';
+import VehicleTypeTabs from '@/components/catalog/VehicleTypeTabs';
+import { trucks } from '@/data/truckData';
+import { TruckFilters, VehicleType, Truck } from '@/models/TruckTypes';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Filter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const TruckCatalog: React.FC = () => {
+const TruckCatalog = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const weightParam = queryParams.get('weight');
-  
-  // Nếu có tham số weight, không đặt loại xe mặc định
-  const defaultType: VehicleType | null = weightParam ? null : "truck";
+  const isMobile = useIsMobile();
 
-  // Lưu loại xe đang chọn cho tab (trong filters cũng có vehicleType nhưng ta chủ động cho hiển thị rõ ràng)
-  const [selectedType, setSelectedType] = useState<VehicleType | null>(defaultType);
-
-  // Vẫn giữ filters query như hiện tại (brand, min/max price, weight, ...)
-  const {
-    filters,
-    handleFilterChange,
-    handleResetFilters,
-    updateUrl
-  } = useTruckFilters({
+  // Sử dụng state để lưu các bộ lọc
+  const [filters, setFilters] = useState<TruckFilters>({
     brand: null,
     minPrice: null,
     maxPrice: null,
     minWeight: null,
     maxWeight: null,
-    vehicleType: null,
-    search: null,
+    vehicleType: 'truck' as VehicleType, // Mặc định hiển thị xe tải
+    search: null
   });
 
-  // Khi chuyển tab thì update vehicleType trong URL filters luôn
-  const onTabChange = (type: VehicleType) => {
-    setSelectedType(type);
-    handleFilterChange("vehicleType", type);
-    window.scrollTo?.({ top: 0, behavior: "smooth" });
+  const [filteredVehicles, setFilteredVehicles] = useState<Truck[]>([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // Xử lý các tham số từ URL khi tải trang
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    
+    const typeParam = params.get('type');
+    const brandParam = params.get('brand');
+    const weightParam = params.get('weight');
+    const searchParam = params.get('q');
+    
+    const newFilters: TruckFilters = { ...filters };
+    
+    if (typeParam) {
+      newFilters.vehicleType = typeParam as VehicleType;
+    }
+    
+    if (brandParam) {
+      newFilters.brand = brandParam;
+    }
+    
+    if (weightParam) {
+      // Xác định phạm vi tải trọng dựa trên trọng số được chọn
+      const weight = parseFloat(weightParam);
+      if (weight === 1) {
+        newFilters.minWeight = 0;
+        newFilters.maxWeight = 1;
+      } else if (weight === 2) {
+        newFilters.minWeight = 1;
+        newFilters.maxWeight = 2;
+      } else if (weight === 3.5) {
+        newFilters.minWeight = 2;
+        newFilters.maxWeight = 3.5;
+      } else if (weight === 5) {
+        newFilters.minWeight = 3.5;
+        newFilters.maxWeight = 5;
+      } else if (weight === 8) {
+        newFilters.minWeight = 5;
+        newFilters.maxWeight = 8;
+      } else if (weight === 15) {
+        newFilters.minWeight = 8;
+        newFilters.maxWeight = 15;
+      } else if (weight === 20) {
+        newFilters.minWeight = 15;
+        newFilters.maxWeight = 20;
+      } else if (weight === 25) {
+        newFilters.minWeight = 20;
+        newFilters.maxWeight = 999; // Giá trị lớn cho "trên 20 tấn"
+      }
+    }
+    
+    if (searchParam) {
+      newFilters.search = searchParam;
+    }
+    
+    setFilters(newFilters);
+    
+  }, [location.search]);
+
+  // Lọc danh sách xe mỗi khi bộ lọc thay đổi
+  useEffect(() => {
+    let result = [...trucks];
+
+    // Lọc theo loại phương tiện
+    if (filters.vehicleType) {
+      result = result.filter(vehicle => vehicle.type === filters.vehicleType);
+    }
+    
+    // Lọc theo thương hiệu
+    if (filters.brand) {
+      result = result.filter(vehicle => vehicle.brand === filters.brand);
+    }
+    
+    // Lọc theo giá
+    if (filters.minPrice !== null) {
+      result = result.filter(vehicle => vehicle.price >= (filters.minPrice || 0));
+    }
+    
+    if (filters.maxPrice !== null) {
+      result = result.filter(vehicle => vehicle.price <= (filters.maxPrice || Number.MAX_VALUE));
+    }
+    
+    // Lọc theo tải trọng - ĐÃ SỬA PHẦN NÀY
+    if (filters.minWeight !== null && filters.maxWeight !== null) {
+      result = result.filter(vehicle => 
+        vehicle.weight >= filters.minWeight! && 
+        vehicle.weight <= filters.maxWeight!
+      );
+    }
+    
+    // Lọc theo từ khóa tìm kiếm
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      result = result.filter(
+        vehicle =>
+          vehicle.name.toLowerCase().includes(searchLower) ||
+          vehicle.brand.toLowerCase().includes(searchLower) ||
+          vehicle.description.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    console.log('Các xe phù hợp với bộ lọc:', result);
+    setFilteredVehicles(result);
+  }, [filters]);
+
+  // Xử lý thay đổi một bộ lọc cụ thể
+  const handleFilterChange = (key: keyof TruckFilters, value: any) => {
+    console.log(`Thay đổi filter ${key}:`, value);
+    setFilters(prev => ({ ...prev, [key]: value }));
+    
+    // Đóng sheet filter khi áp dụng trên mobile
+    if (isMobile) {
+      setIsFilterOpen(false);
+    }
   };
 
-  // Lọc danh sách xe theo loại tab và các filter khác
-  const { filteredVehicles } = useVehicleFiltering(trucks, selectedType, filters);
+  // Xử lý thay đổi tất cả các bộ lọc
+  const handleAllFiltersChange = (updatedFilters: TruckFilters) => {
+    setFilters(updatedFilters);
+  };
+
+  // Xử lý đặt lại tất cả các bộ lọc
+  const handleResetFilters = () => {
+    setFilters({
+      brand: null,
+      minPrice: null,
+      maxPrice: null,
+      minWeight: null,
+      maxWeight: null,
+      vehicleType: 'truck',
+      search: null
+    });
+  };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
-      <Header />
+    <Layout>
       <CatalogHeader />
-      {/* Tabs danh mục xe */}
-      <div className="sticky top-0 z-40 bg-gray-50 mb-2">
-        <VehicleTypeTabs selectedType={selectedType} onTypeChange={onTabChange} />
+      
+      {/* Điều hướng phân loại xe (Tabs trên cùng) */}
+      <div className="container mx-auto px-4 py-8">
+        <VehicleTypeTabs
+          selectedType={filters.vehicleType || 'truck'}
+          onTypeChange={(value) => handleFilterChange('vehicleType', value)}
+        />
+
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Thanh lọc - Desktop */}
+          {!isMobile && (
+            <div className="w-full md:w-72 flex-shrink-0">
+              <FilterSidebar
+                filters={filters}
+                onFilterChange={handleAllFiltersChange}
+                onResetFilters={handleResetFilters}
+              />
+            </div>
+          )}
+
+          {/* Thanh lọc - Mobile */}
+          {isMobile && (
+            <div className="mb-4">
+              <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    Lọc kết quả
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] sm:w-[300px]">
+                  <div className="px-1 py-4 h-full overflow-y-auto">
+                    <FilterSidebar
+                      filters={filters}
+                      onFilterChange={handleAllFiltersChange}
+                      onResetFilters={handleResetFilters}
+                      className="shadow-none p-0"
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          )}
+
+          {/* Danh sách xe */}
+          <div className="flex-1">
+            <VehicleGrid
+              vehicles={filteredVehicles}
+              onResetFilters={handleResetFilters}
+            />
+          </div>
+        </div>
       </div>
-      <main className="container mx-auto flex flex-col lg:flex-row gap-6">
-        {/* Filter sidebar - desktop */}
-        <aside className="hidden lg:block w-80 flex-shrink-0">
-          <FilterSidebar
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onResetFilters={handleResetFilters}
-          />
-        </aside>
-        {/* Kết quả grid danh sách xe */}
-        <section className="flex-1 min-w-0">
-          <VehicleGrid vehicles={filteredVehicles} onResetFilters={handleResetFilters} />
-        </section>
-      </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

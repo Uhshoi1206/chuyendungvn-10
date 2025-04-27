@@ -72,6 +72,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const handleApplyFilters = () => {
     console.log("Áp dụng bộ lọc:", localFilters);
+    
+    // Sửa ở đây: Truyền toàn bộ object filters thay vì chỉ một key và value
     onFilterChange(localFilters as any, undefined);
     
     toast({
@@ -177,4 +179,3 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 };
 
 export default FilterSidebar;
-

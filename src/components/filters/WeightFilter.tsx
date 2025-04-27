@@ -15,6 +15,18 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
   const getWeightRangeLabel = () => {
     if (weightRange[0] === 0 && weightRange[1] <= 1) {
       return "Dưới 1 tấn";
+    } else if (weightRange[0] >= 1 && weightRange[1] <= 2) {
+      return "1 - 2 tấn";
+    } else if (weightRange[0] >= 2 && weightRange[1] <= 3.5) {
+      return "2 - 3.5 tấn";
+    } else if (weightRange[0] >= 3.5 && weightRange[1] <= 5) {
+      return "3.5 - 5 tấn";
+    } else if (weightRange[0] >= 5 && weightRange[1] <= 8) {
+      return "5 - 8 tấn";
+    } else if (weightRange[0] >= 8 && weightRange[1] <= 15) {
+      return "8 - 15 tấn";
+    } else if (weightRange[0] >= 15 && weightRange[1] <= 20) {
+      return "15 - 20 tấn";
     } else if (weightRange[1] >= 25) {
       return "Trên 20 tấn";
     } else {

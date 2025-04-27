@@ -1,219 +1,86 @@
 
-import { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Truck } from '@/models/TruckTypes';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Layout from '@/components/Layout';
+import VehicleGrid from '@/components/catalog/VehicleGrid';
 import { trucks } from '@/data/truckData';
-import TruckItem from '@/components/TruckItem';
-import { blogPosts, blogCategories } from '@/data/blogData';
-import { CalendarDays, User, Clock } from 'lucide-react';
-
-// Nhãn tiếng Việt cho danh mục xe
-const TRUCK_TYPE_LABELS: Record<string, string> = {
-  'truck': 'Xe tải',
-  'trailer': 'Mooc',
-  'tractor': 'Xe đầu kéo',
-  'crane': 'Cẩu',
-};
-
-const TRUCK_TYPES: Array<keyof typeof TRUCK_TYPE_LABELS> = ['truck', 'trailer', 'tractor', 'crane'];
+import { Truck } from '@/models/TruckTypes';
+import { Button } from '@/components/ui/button';
 
 const SearchPage = () => {
-  const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [productResultsByType, setProductResultsByType] = useState<Record<string, Truck[]>>({
-    truck: [],
-    trailer: [],
-    tractor: [],
-    crane: [],
-  });
-  const [blogResults, setBlogResults] = useState<typeof blogPosts>([]);
+  const [searchParams] = useSearchParams();
+  const [filteredVehicles, setFilteredVehicles] = useState<Truck[]>([]);
+  const [loading, setLoading] = useState(true);
+  const queryString = searchParams.get('q') || '';
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('q');
-    if (query) {
-      setSearchTerm(query);
-      performSearch(query);
+    if (queryString.trim() === '') {
+      setFilteredVehicles([]);
+      setLoading(false);
+      return;
     }
-  }, [location.search]);
 
-  const performSearch = (query: string) => {
-    const productByType: Record<string, Truck[]> = {
-      truck: [],
-      trailer: [],
-      tractor: [],
-      crane: [],
-    };
+    // Mô phỏng tìm kiếm
+    const timer = setTimeout(() => {
+      const normalizedQuery = queryString.toLowerCase().trim();
+      
+      const results = trucks.filter(truck => 
+        truck.name.toLowerCase().includes(normalizedQuery) ||
+        truck.brand.toLowerCase().includes(normalizedQuery) ||
+        truck.description.toLowerCase().includes(normalizedQuery) ||
+        truck.weightText.toLowerCase().includes(normalizedQuery) ||
+        truck.type.toLowerCase().includes(normalizedQuery)
+      );
 
-    // Phân loại sản phẩm tìm thấy theo type
-    trucks.forEach(truck => {
-      const lowerQuery = query.toLowerCase();
-      if (
-        truck.name.toLowerCase().includes(lowerQuery) ||
-        truck.brand.toLowerCase().includes(lowerQuery) ||
-        truck.description.toLowerCase().includes(lowerQuery) ||
-        truck.features.some(feature => feature.toLowerCase().includes(lowerQuery)) ||
-        truck.engine.toLowerCase().includes(lowerQuery) ||
-        truck.fuelType.toLowerCase().includes(lowerQuery)
-      ) {
-        if (productByType[truck.type]) {
-          productByType[truck.type].push(truck);
-        }
-      }
-    });
+      setFilteredVehicles(results);
+      setLoading(false);
+    }, 300);
 
-    // Tìm kiếm bài viết blog
-    const blogFiltered = blogPosts.filter(post => {
-      const lowerQuery = query.toLowerCase();
-      if (post.title.toLowerCase().includes(lowerQuery)) return true;
-      if (post.description.toLowerCase().includes(lowerQuery)) return true;
-      if (post.content.toLowerCase().includes(lowerQuery)) return true;
-      if ((post.tags || []).some(tag => tag.toLowerCase().includes(lowerQuery))) return true;
-      return false;
-    });
+    return () => clearTimeout(timer);
+  }, [queryString]);
 
-    setProductResultsByType(productByType);
-    setBlogResults(blogFiltered);
+  // Xử lý đặt lại bộ lọc
+  const handleResetFilters = () => {
+    // Trong trường hợp này, chúng ta không có bộ lọc để đặt lại
+    // Nhưng cần cung cấp hàm này để truyền cho VehicleGrid
   };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set('q', searchTerm);
-    window.history.pushState({}, '', `/search?${newSearchParams.toString()}`);
-    performSearch(searchTerm);
-  };
-
-  // Tổng số kết quả sản phẩm tìm được (tất cả nhóm)
-  const totalProductResults = Object.values(productResultsByType).reduce(
-    (acc, arr) => acc + arr.length,
-    0
-  );
-  const totalResults = totalProductResults + blogResults.length;
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+    <Layout>
+      <div className="bg-gray-100 py-10">
+        <div className="container mx-auto px-4">
+          <h1 className="text-2xl font-bold mb-2">Kết quả tìm kiếm</h1>
+          <p className="text-gray-600 mb-8">
+            {loading ? 'Đang tìm kiếm...' : filteredVehicles.length > 0
+              ? `Tìm thấy ${filteredVehicles.length} kết quả cho "${queryString}"`
+              : `Không tìm thấy kết quả nào cho "${queryString}"`
+            }
+          </p>
 
-      <div className="container mx-auto px-4 py-8 flex-1">
-        <div className="max-w-4xl mx-auto mb-8">
-          <h1 className="text-3xl font-bold mb-6">Tìm kiếm</h1>
-          <form onSubmit={handleSearch} className="flex gap-2 mb-8">
-            <Input
-              type="search"
-              placeholder="Nhập từ khóa tìm kiếm..."
-              className="flex-1"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Button type="submit">Tìm kiếm</Button>
-          </form>
-          {searchTerm && (
-            <p className="text-lg mb-4">
-              {totalResults} kết quả tìm kiếm cho <span className="font-medium">"{searchTerm}"</span>
-            </p>
-          )}
-        </div>
-
-        {/* Nếu không có kết quả cả hai nhóm */}
-        {totalResults === 0 && searchTerm ? (
-          <div className="text-center py-16">
-            <h2 className="text-2xl font-bold mb-2">Không tìm thấy kết quả</h2>
-            <p className="text-gray-600 mb-6">Không có kết quả phù hợp với từ khóa "{searchTerm}"</p>
-            <p className="mb-6">Hãy thử:</p>
-            <ul className="list-disc list-inside text-gray-600 mb-6 max-w-md mx-auto">
-              <li>Kiểm tra lại chính tả</li>
-              <li>Sử dụng các từ khóa ngắn hơn</li>
-              <li>Sử dụng từ khóa khác</li>
-            </ul>
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setSearchTerm('');
-                setProductResultsByType({
-                  truck: [],
-                  trailer: [],
-                  tractor: [],
-                  crane: [],
-                });
-                setBlogResults([]);
-                window.history.pushState({}, '', '/search');
-              }}
-            >
-              Xóa tìm kiếm
-            </Button>
-          </div>
-        ) : (
-          <div className="max-w-5xl mx-auto">
-            {/* DANH SÁCH SẢN PHẨM THEO NHÓM TYPE */}
-            {TRUCK_TYPES.map(type => (
-              productResultsByType[type] && productResultsByType[type].length > 0 && (
-                <div key={type} className="mb-12">
-                  <h2 className="text-2xl font-semibold mb-4">{TRUCK_TYPE_LABELS[type]}</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {productResultsByType[type].map(truck => (
-                      <TruckItem key={truck.id} truck={truck} />
-                    ))}
-                  </div>
-                </div>
-              )
-            ))}
-
-            {/* DANH SÁCH BÀI VIẾT BLOG */}
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Bài viết Blog</h2>
-              {blogResults.length === 0 ? (
-                <p className="text-gray-600">Không tìm thấy bài viết phù hợp.</p>
+          {loading ? (
+            <div className="text-center py-10">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              <p className="mt-4 text-gray-600">Đang tìm kiếm kết quả phù hợp...</p>
+            </div>
+          ) : (
+            <>
+              {filteredVehicles.length > 0 ? (
+                <VehicleGrid vehicles={filteredVehicles} onResetFilters={handleResetFilters} />
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {blogResults.map(post => (
-                    <Link key={post.id} to={`/blog/${post.slug}`} className="group">
-                      <div className="bg-white rounded-lg overflow-hidden shadow-sm transition hover:shadow-md h-full flex flex-col">
-                        <div className="aspect-video relative overflow-hidden">
-                          <img
-                            src={post.images[0]}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                        <div className="p-5 flex flex-col flex-grow">
-                          <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm text-gray-500 flex items-center">
-                              <CalendarDays className="h-4 w-4 mr-1" />
-                              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
-                            </span>
-                            <span className="text-sm text-gray-500 flex items-center">
-                              <Clock className="h-4 w-4 mr-1" />
-                              {post.readTime} phút
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                            {post.title}
-                          </h3>
-                          <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                            {post.description}
-                          </p>
-                          <div className="mt-auto flex items-center text-sm">
-                            <User className="h-4 w-4 mr-1 text-primary" />
-                            <span className="text-gray-700">{post.author}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                  <div className="text-5xl mb-4">🔍</div>
+                  <h3 className="text-2xl font-bold mb-2">Không tìm thấy kết quả</h3>
+                  <p className="text-gray-600 mb-6">Vui lòng thử tìm kiếm với từ khóa khác</p>
+                  <Button asChild>
+                    <a href="/danh-muc">Xem danh mục xe</a>
+                  </Button>
                 </div>
               )}
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </div>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 
