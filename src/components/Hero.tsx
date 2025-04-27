@@ -16,10 +16,10 @@ const Hero: React.FC = () => {
       <div className="container mx-auto relative z-10 py-16 md:py-24">
         <div className="max-w-xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
-            Chuyên Cung Cấp Các Loại <span className="text-primary-400">Xe Tải</span> Chính Hãng
+            Chuyên Cung Cấp <span className="text-primary-400">Xe Tải, Cẩu, Mooc & Đầu Kéo</span> Chính Hãng
           </h1>
           <p className="text-lg md:text-xl mb-6 text-gray-200">
-            Đa dạng tải trọng từ 500kg đến 20 tấn với nhiều thương hiệu uy tín.
+            Đa dạng sản phẩm từ xe tải nhẹ 500kg đến đầu kéo 40 tấn, với nhiều thương hiệu uy tín như Hyundai, Thaco, Isuzu, Hino. 
             Cam kết giá tốt nhất thị trường và dịch vụ sau bán hàng chuyên nghiệp.
           </p>
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
