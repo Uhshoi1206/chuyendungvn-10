@@ -1,7 +1,7 @@
 
 import { Truck, VehicleType } from '@/models/TruckTypes';
 
-export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType, filters: {
+export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType | null, filters: {
   brand: string | null;
   minPrice: number | null;
   maxPrice: number | null;

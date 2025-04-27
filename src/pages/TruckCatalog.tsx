@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { trucks } from "@/data/truckData";
 import { useTruckFilters } from "@/hooks/useTruckFilters";
 import { useVehicleFiltering } from "@/hooks/useVehicleFiltering";
@@ -10,20 +10,25 @@ import CatalogHeader from "@/components/catalog/CatalogHeader";
 import VehicleTypeTabs from "@/components/catalog/VehicleTypeTabs";
 import VehicleGrid from "@/components/catalog/VehicleGrid";
 import FilterSidebar from "@/components/FilterSidebar";
-
-// Gán màu khi chưa chọn loại filter nào
-const defaultType: VehicleType = "truck";
+import { useLocation } from "react-router-dom";
 
 const TruckCatalog: React.FC = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const weightParam = queryParams.get('weight');
+  
+  // Nếu có tham số weight, không đặt loại xe mặc định
+  const defaultType: VehicleType | null = weightParam ? null : "truck";
+
   // Lưu loại xe đang chọn cho tab (trong filters cũng có vehicleType nhưng ta chủ động cho hiển thị rõ ràng)
-  const [selectedType, setSelectedType] = useState<VehicleType>(defaultType);
+  const [selectedType, setSelectedType] = useState<VehicleType | null>(defaultType);
 
   // Vẫn giữ filters query như hiện tại (brand, min/max price, weight, ...)
   const {
     filters,
     handleFilterChange,
     handleResetFilters,
-    updateUrl,
+    updateUrl
   } = useTruckFilters({
     brand: null,
     minPrice: null,

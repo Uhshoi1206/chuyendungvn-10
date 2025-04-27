@@ -1,3 +1,4 @@
+
 export interface TruckWeight {
   id: string;
   name: string;
