@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 overflow-hidden">
         <img 
           src="https://tongkhoxetai.vn/upload/images/banner-xe-tai.jpg" 
-          alt="Xe tải hạng nặng" 
+          alt="Các loại xe thương mại" 
           className="w-full h-full object-cover opacity-30"
         />
       </div>
