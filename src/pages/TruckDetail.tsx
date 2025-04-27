@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { trucks } from '@/data/truckData';
-import { Truck } from '@/models/TruckTypes';
+import { Truck, VehicleType, getVehicleUrlPrefix, getVehicleTypeName } from '@/models/TruckTypes';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import ContactForm from '@/components/ContactForm';
 import TruckItem from '@/components/TruckItem';
@@ -15,37 +14,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
 import { CalendarDays, Clock } from 'lucide-react';
 
-// Hàm giúp tạo đường dẫn URL đúng dựa trên loại phương tiện
-const getVehicleUrlPrefix = (type: string): string => {
-  switch (type) {
-    case 'truck':
-      return 'xe-tai';
-    case 'tractor':
-      return 'xe-dau-keo';
-    case 'crane':
-      return 'xe-cau';
-    case 'trailer':
-      return 'mooc';
-    default:
-      return 'xe-tai'; // fallback
-  }
-};
-
-// Hàm để lấy tên hiển thị cho loại phương tiện
-const getVehicleTypeName = (type: string): string => {
-  switch (type) {
-    case 'truck':
-      return 'Xe tải';
-    case 'tractor':
-      return 'Xe đầu kéo';
-    case 'crane':
-      return 'Xe cẩu';
-    case 'trailer':
-      return 'Sơ mi rơ mooc';
-    default:
-      return 'Xe tải';
-  }
-};
+// Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
 
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -290,18 +259,18 @@ const TruckDetail = () => {
               lý tưởng cho các doanh nghiệp vận tải.
             </p>
             <p className="text-gray-700">
-              {truck.type === 'truck' || truck.type === 'tractor' ? 
+              {truck.type === 'xe-tai' || truck.type === 'dau-keo' ? 
                 `Xe được trang bị động cơ ${truck.engine} mạnh mẽ và tiết kiệm nhiên liệu, 
                 cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình.` 
                 : 
-                truck.type === 'crane' ?
+                truck.type === 'xe-cau' ?
                 `Thiết bị được trang bị hệ thống thủy lực mạnh mẽ và linh hoạt, 
                 giúp nâng hạ hàng hóa an toàn và hiệu quả trên nhiều địa hình khác nhau.`
                 :
                 `Được thiết kế chắc chắn, bền bỉ với khả năng chịu tải cao, 
                 phù hợp cho việc vận chuyển nhiều loại hàng hóa khác nhau.`
               }
-              {truck.type !== 'trailer' && ` Thùng xe có chiều dài ${truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.`}
+              {truck.type !== 'mooc' && ` Thùng xe có chiều dài ${truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.`}
             </p>
           </TabsContent>
           
@@ -324,7 +293,7 @@ const TruckDetail = () => {
                       <td className="py-2 text-gray-600">Tải trọng</td>
                       <td className="py-2 font-medium">{truck.weightText}</td>
                     </tr>
-                    {truck.type !== 'trailer' && (
+                    {truck.type !== 'mooc' && (
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Số chỗ ngồi</td>
                         <td className="py-2 font-medium">3 chỗ</td>
@@ -339,22 +308,22 @@ const TruckDetail = () => {
                 <table className="w-full border-collapse">
                   <tbody>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Chiều dài {truck.type === 'trailer' ? '' : 'thùng'}</td>
+                      <td className="py-2 text-gray-600 w-1/3">Chiều dài {truck.type === 'mooc' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">{truck.length} m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều rộng {truck.type === 'trailer' ? '' : 'thùng'}</td>
+                      <td className="py-2 text-gray-600">Chiều rộng {truck.type === 'mooc' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">2.0 m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều cao {truck.type === 'trailer' ? '' : 'thùng'}</td>
+                      <td className="py-2 text-gray-600">Chiều cao {truck.type === 'mooc' ? '' : 'thùng'}</td>
                       <td className="py-2 font-medium">1.8 m</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               
-              {(truck.type === 'truck' || truck.type === 'tractor') && (
+              {(truck.type === 'xe-tai' || truck.type === 'dau-keo') && (
                 <div>
                   <h3 className="font-bold text-lg mb-2">Động cơ:</h3>
                   <table className="w-full border-collapse">
@@ -376,7 +345,7 @@ const TruckDetail = () => {
                 </div>
               )}
               
-              {truck.type === 'crane' && (
+              {truck.type === 'xe-cau' && (
                 <div>
                   <h3 className="font-bold text-lg mb-2">Hệ thống cẩu:</h3>
                   <table className="w-full border-collapse">

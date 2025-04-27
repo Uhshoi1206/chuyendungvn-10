@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
-import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
+import { Truck } from '@/models/TruckTypes';
 
 interface FeaturedTrucksProps {
   trucks: Truck[];
@@ -29,7 +29,7 @@ const FeaturedTrucks = ({ trucks }: FeaturedTrucksProps) => {
         
         <div className="text-center mt-10">
           <Button asChild variant="outline" className="px-6">
-            <Link to="/danh-muc?type=truck">Xem tất cả xe tải</Link>
+            <Link to="/danh-muc?type=xe-tai">Xem tất cả xe tải</Link>
           </Button>
         </div>
       </div>

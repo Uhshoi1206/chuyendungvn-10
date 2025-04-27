@@ -1,14 +1,15 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
-import { Truck, VehicleType, getVehicleUrlPrefix } from '@/models/TruckTypes';
+import { Truck, VehicleType } from '@/models/TruckTypes';
 
 interface VehicleSectionProps {
   title: string;
   description: string;
   vehicles: Truck[];
-  type: string;
+  type: VehicleType;
   linkText: string;
   className?: string;
 }

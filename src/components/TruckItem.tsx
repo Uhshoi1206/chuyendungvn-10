@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Truck } from '@/models/TruckTypes';
+import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
@@ -9,23 +9,8 @@ interface TruckItemProps {
   truck: Truck;
 }
 
-// Hàm giúp tạo đường dẫn URL đúng dựa trên loại phương tiện
-const getVehicleUrlPrefix = (type: string): string => {
-  switch (type) {
-    case 'truck':
-      return 'xe-tai';
-    case 'tractor':
-      return 'xe-dau-keo';
-    case 'crane':
-      return 'xe-cau';
-    case 'trailer':
-      return 'mooc';
-    default:
-      return 'xe-tai'; // fallback
-  }
-};
-
 const TruckItem: React.FC<TruckItemProps> = ({ truck }) => {
+  // Sử dụng hàm từ TruckTypes.ts
   const urlPrefix = getVehicleUrlPrefix(truck.type);
   
   return (
