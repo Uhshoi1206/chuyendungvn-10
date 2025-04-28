@@ -4,10 +4,19 @@ import { MessageCircle, Phone, Mail, FileText, X } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
 import { SiZalo } from '@icons-pack/react-simple-icons';
 
-const QuickContact = () => {
+interface QuickContactProps {
+  isOpen?: boolean;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const QuickContact: React.FC<QuickContactProps> = ({ isOpen: externalIsOpen, setIsOpen: externalSetIsOpen }) => {
   const [activeIconIndex, setActiveIconIndex] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setInternalIsOpen] = useState(false);
   const timeoutRef = useRef<number | null>(null);
+  
+  // Sử dụng state từ props nếu có, nếu không thì sử dụng state nội bộ
+  const actualIsOpen = externalIsOpen !== undefined ? externalIsOpen : isOpen;
+  const setActualIsOpen = externalSetIsOpen || setInternalIsOpen;
   
   const contactLinks = [
     {
@@ -58,7 +67,7 @@ const QuickContact = () => {
 
   // Xử lý tự động đóng sau 6 giây nếu không có tương tác
   useEffect(() => {
-    if (isOpen) {
+    if (actualIsOpen) {
       // Xóa timeout cũ nếu có
       if (timeoutRef.current !== null) {
         window.clearTimeout(timeoutRef.current);
@@ -66,7 +75,7 @@ const QuickContact = () => {
       
       // Tạo timeout mới
       timeoutRef.current = window.setTimeout(() => {
-        setIsOpen(false);
+        setActualIsOpen(false);
       }, 6000);
       
       // Hàm cleanup
@@ -76,7 +85,7 @@ const QuickContact = () => {
         }
       };
     }
-  }, [isOpen]);
+  }, [actualIsOpen, setActualIsOpen]);
   
   // Reset timeout khi người dùng tương tác với menu
   const handleInteraction = () => {
@@ -84,7 +93,7 @@ const QuickContact = () => {
       window.clearTimeout(timeoutRef.current);
       
       timeoutRef.current = window.setTimeout(() => {
-        setIsOpen(false);
+        setActualIsOpen(false);
       }, 6000);
     }
   };
@@ -95,10 +104,10 @@ const QuickContact = () => {
       onMouseMove={handleInteraction}
       onClick={handleInteraction}
     >
-      {!isOpen && (
+      {!actualIsOpen && (
         <div 
           className="relative w-[66px] h-[66px] bg-[#00aeef] rounded-full shadow-lg cursor-pointer"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setActualIsOpen(true)}
         >
           <div className="absolute inset-0 rounded-full border border-[#00aeef] animate-[widgetPulse_1.5s_infinite]" />
           
@@ -118,7 +127,7 @@ const QuickContact = () => {
         </div>
       )}
 
-      {isOpen && (
+      {actualIsOpen && (
         <div className="flex flex-col items-end">
           <div className="flex flex-col gap-3 mb-3">
             {contactLinks.map((contact, index) => (
@@ -146,7 +155,7 @@ const QuickContact = () => {
           </div>
           
           <button 
-            onClick={() => setIsOpen(false)}
+            onClick={() => setActualIsOpen(false)}
             className="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-700 flex items-center justify-center text-white shadow-lg transition-all duration-300"
             aria-label="Đóng menu liên hệ"
           >
