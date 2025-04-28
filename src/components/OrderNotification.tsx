@@ -10,7 +10,7 @@ interface OrderNotificationProps {
 const OrderNotification: React.FC<OrderNotificationProps> = ({ onOpenQuickContact }) => {
   const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const timeoutRef = useRef<number | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   // Hiệu ứng chạy khi component được mount
