@@ -94,10 +94,10 @@ const OrderNotification: React.FC<OrderNotificationProps> = ({ onOpenQuickContac
 
   return (
     <div 
-      className={`fixed bottom-20 right-4 max-w-xs sm:max-w-sm w-full z-50 transform transition-all duration-500 ${
+      className={`fixed bottom-2 left-4 max-w-xs sm:max-w-sm w-full z-50 transform transition-all duration-500 ${
         isVisible 
           ? 'translate-x-0 opacity-100' 
-          : 'translate-x-full opacity-0'
+          : '-translate-x-full opacity-0'
       }`}
       onClick={handleNotificationClick}
     >
