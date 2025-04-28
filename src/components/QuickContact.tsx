@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Phone, Mail, FileText, X } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
 import { SiZalo } from '@icons-pack/react-simple-icons';
@@ -6,7 +7,8 @@ import { SiZalo } from '@icons-pack/react-simple-icons';
 const QuickContact = () => {
   const [activeIconIndex, setActiveIconIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-
+  const timeoutRef = useRef<number | null>(null);
+  
   const contactLinks = [
     {
       href: "https://m.me/",
@@ -45,6 +47,7 @@ const QuickContact = () => {
     }
   ];
 
+  // Thay đổi biểu tượng hiển thị sau mỗi 1.5 giây
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIconIndex((prev) => (prev + 1) % contactLinks.length);
@@ -53,8 +56,45 @@ const QuickContact = () => {
     return () => clearInterval(interval);
   }, [contactLinks.length]);
 
+  // Xử lý tự động đóng sau 6 giây nếu không có tương tác
+  useEffect(() => {
+    if (isOpen) {
+      // Xóa timeout cũ nếu có
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+      
+      // Tạo timeout mới
+      timeoutRef.current = window.setTimeout(() => {
+        setIsOpen(false);
+      }, 6000);
+      
+      // Hàm cleanup
+      return () => {
+        if (timeoutRef.current !== null) {
+          window.clearTimeout(timeoutRef.current);
+        }
+      };
+    }
+  }, [isOpen]);
+  
+  // Reset timeout khi người dùng tương tác với menu
+  const handleInteraction = () => {
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current);
+      
+      timeoutRef.current = window.setTimeout(() => {
+        setIsOpen(false);
+      }, 6000);
+    }
+  };
+
   return (
-    <div className="fixed right-4 bottom-20 z-50">
+    <div 
+      className="fixed left-4 bottom-32 z-50" 
+      onMouseMove={handleInteraction}
+      onClick={handleInteraction}
+    >
       {!isOpen && (
         <div 
           className="relative w-[66px] h-[66px] bg-[#00aeef] rounded-full shadow-lg cursor-pointer"
@@ -97,7 +137,7 @@ const QuickContact = () => {
                   {contact.icon}
                 </div>
 
-                <span className="absolute right-full mr-2 px-2 py-1 bg-gray-800 text-white text-sm rounded 
+                <span className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded 
                   opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap">
                   {contact.label}
                 </span>
