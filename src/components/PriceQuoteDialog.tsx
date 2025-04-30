@@ -6,6 +6,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { useToast } from './ui/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PriceQuoteDialogProps {
   productName: string;
@@ -19,6 +20,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
   onOpenChange
 }) => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -106,102 +108,106 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
       <DialogTrigger asChild>
         {trigger || <Button>Nhận báo giá</Button>}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center">Yêu cầu báo giá</DialogTitle>
+      <DialogContent 
+        className={`sm:max-w-[500px] max-h-[95vh] ${isMobile ? 'p-3' : 'p-6'}`}
+        style={{ 
+          overflowY: isMobile ? 'auto' : 'visible',
+          height: isMobile ? 'auto' : undefined,
+          maxHeight: isMobile ? '95vh' : '90vh'
+        }}
+      >
+        <DialogHeader className={isMobile ? 'mb-2 pb-0' : ''}>
+          <DialogTitle className={`text-xl font-bold text-center ${isMobile ? 'mb-0' : 'mb-2'}`}>Yêu cầu báo giá</DialogTitle>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-3 py-2">
-          <div className="p-3 bg-gray-50 rounded-md mb-3">
-            <div className="text-sm text-gray-700 mb-1">Sản phẩm quan tâm:</div>
+        <form onSubmit={handleSubmit} className={`space-y-2 ${isMobile ? 'py-0' : 'py-1'}`}>
+          <div className={`${isMobile ? 'p-2' : 'p-3'} bg-gray-50 rounded-md mb-2`}>
+            <div className="text-sm text-gray-700 mb-0">Sản phẩm quan tâm:</div>
             <div className="font-semibold text-primary">{productName}</div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label htmlFor="fullName">
-                Họ và tên <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className={errors.fullName ? "border-red-500" : ""}
-              />
-              {errors.fullName && (
-                <p className="text-red-500 text-xs">{errors.fullName}</p>
-              )}
-            </div>
-            
-            <div className="space-y-1">
-              <Label htmlFor="phone">
-                Số điện thoại <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className={errors.phone ? "border-red-500" : ""}
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-xs">{errors.phone}</p>
-              )}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={errors.email ? "border-red-500" : ""}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs">{errors.email}</p>
-              )}
-            </div>
-            
-            <div className="space-y-1">
-              <Label htmlFor="company">Công ty</Label>
-              <Input
-                id="company"
-                name="company"
-                value={formData.company}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-1">
-            <Label htmlFor="message">Nội dung</Label>
-            <Textarea
-              id="message"
-              name="message"
-              rows={2}
-              value={formData.message}
+          <div className="space-y-0">
+            <Label htmlFor="fullName" className="text-sm">
+              Họ và tên <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="fullName"
+              name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
-              placeholder="Nhu cầu của bạn, thời gian cần báo giá..."
-              className="resize-none"
+              className={`${errors.fullName ? "border-red-500" : ""} h-9 mt-1`}
+            />
+            {errors.fullName && (
+              <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+            )}
+          </div>
+            
+          <div className="space-y-0">
+            <Label htmlFor="phone" className="text-sm">
+              Số điện thoại <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleInputChange}
+              className={`${errors.phone ? "border-red-500" : ""} h-9 mt-1`}
+            />
+            {errors.phone && (
+              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+            )}
+          </div>
+          
+          <div className="space-y-0">
+            <Label htmlFor="email" className="text-sm">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={`${errors.email ? "border-red-500" : ""} h-9 mt-1`}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
+          </div>
+            
+          <div className="space-y-0">
+            <Label htmlFor="company" className="text-sm">Công ty</Label>
+            <Input
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleInputChange}
+              className="h-9 mt-1"
             />
           </div>
           
-          <DialogFooter className="mt-4 pt-2 border-t">
+          <div className="space-y-0">
+            <Label htmlFor="message" className="text-sm">Nội dung</Label>
+            <Textarea
+              id="message"
+              name="message"
+              rows={1}
+              value={formData.message}
+              onChange={handleInputChange}
+              placeholder="Nhu cầu của bạn, thời gian cần báo giá..."
+              className="resize-none min-h-[50px] mt-1"
+            />
+          </div>
+          
+          <DialogFooter className={`mt-3 ${isMobile ? 'pt-1' : 'pt-2'} ${isMobile ? 'border-t-0' : 'border-t'}`}>
             <div className="w-full flex flex-row sm:justify-end gap-2">
               <DialogClose asChild>
-                <Button type="button" variant="outline">
+                <Button type="button" variant="outline" className="h-8 text-sm">
                   Hủy
                 </Button>
               </DialogClose>
               <Button 
                 type="submit" 
-                className="bg-primary hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 h-8 text-sm"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Đang gửi...' : 'Gửi yêu cầu'}
