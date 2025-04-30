@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
-import { CalendarDays, Clock } from 'lucide-react';
+import { CalendarDays, Clock, Phone } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 
 // Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
