@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
 import { CalendarDays, Clock } from 'lucide-react';
+import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 
 // Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
 
@@ -183,7 +184,7 @@ const TruckDetail = () => {
               <Badge variant="outline">{truck.brand}</Badge>
             </div>
             
-            <h1 className="text-3xl font-bold mb-3">{truck.name}</h1>
+            <h1 className="text-3xl font-bold">{truck.name}</h1>
             
             <div className="text-2xl font-bold text-primary mb-6">
               {truck.priceText}
@@ -228,15 +229,24 @@ const TruckDetail = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3">
+              <PriceQuoteDialog 
+                productName={truck.name}
+                trigger={
+                  <Button className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
+                    Nhận báo giá
+                  </Button>
+                }
+              />
+              
               <Button 
-                className="flex-1 bg-primary hover:bg-red-700" 
-                size="lg"
-                onClick={handleRequestPrice}
+                variant="outline" 
+                className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                asChild
               >
-                Nhận báo giá
-              </Button>
-              <Button asChild variant="outline" size="lg" className="flex-1">
-                <a href="tel:0764678901" aria-label="Gọi ngay: 0764678901">Gọi ngay: 0764678901</a>
+                <a href="tel:0764678901">
+                  <Phone className="w-4 h-4" /> 
+                  0764.678.901
+                </a>
               </Button>
             </div>
           </div>
@@ -244,7 +254,7 @@ const TruckDetail = () => {
         
         {/* Product Details Tabs */}
         <Tabs defaultValue="description">
-          <TabsList className="w-full grid grid-cols-2 md:grid-cols-3">
+          <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 mb-8">
             <TabsTrigger value="description">Mô tả chi tiết</TabsTrigger>
             <TabsTrigger value="specifications">Thông số kỹ thuật</TabsTrigger>
             <TabsTrigger value="contact">Liên hệ tư vấn</TabsTrigger>
