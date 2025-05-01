@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { useCompare } from '@/contexts/CompareContext';
 import { GitCompare } from 'lucide-react';
 
@@ -35,6 +34,29 @@ const TruckItem = ({ truck }: TruckItemProps) => {
             className="w-full h-48 object-cover"
           />
         </Link>
+        
+        {/* Di chuyển nút so sánh vào bên trong hình ảnh */}
+        <button
+          onClick={handleToggleCompare}
+          className={`
+            absolute bottom-2 right-2
+            flex items-center justify-center gap-1
+            px-2 py-1 rounded
+            transition-all duration-300
+            ${isInCompare(truck.id) 
+              ? 'bg-blue-600 text-white hover:bg-blue-700' 
+              : 'bg-white/90 hover:bg-white border border-gray-200 text-gray-700 hover:text-blue-600'
+            }
+            shadow-md hover:shadow-lg
+            opacity-0 group-hover:opacity-100
+          `}
+          title={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}
+          aria-label={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}
+        >
+          <GitCompare className="h-4 w-4" />
+          <span className="text-xs font-medium">{isInCompare(truck.id) ? "Đã thêm" : "So sánh"}</span>
+        </button>
+        
         <div className="absolute top-2 left-2 flex flex-wrap gap-1">
           {truck.isNew && (
             <Badge className="bg-blue-500 hover:bg-blue-600">Mới</Badge>
@@ -48,7 +70,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
       <div className="p-4 flex-grow flex flex-col">
         <div>
           <span className="text-gray-500 text-sm">{truck.brand}</span>
-          <Link to={`/${vehicleUrlPrefix}/${truck.slug}`}>
+          <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} className="group">
             <h3 className="font-bold text-lg mb-2 hover:text-red-600 transition-colors line-clamp-2">
               {truck.name}
             </h3>
@@ -67,22 +89,8 @@ const TruckItem = ({ truck }: TruckItemProps) => {
             </div>
           </div>
           
-          <div className="text-red-600 font-bold text-lg mt-2 mb-3">
+          <div className="text-red-600 font-bold text-lg mt-2">
             {truck.priceText}
-          </div>
-
-          <div className="mt-2">
-            <Button 
-              variant={isInCompare(truck.id) ? "default" : "outline"} 
-              size="sm"
-              onClick={handleToggleCompare}
-              className={`w-full flex items-center justify-center gap-1 ${
-                isInCompare(truck.id) ? 'bg-blue-600 hover:bg-blue-700' : ''
-              }`}
-            >
-              <GitCompare className="h-4 w-4" />
-              {isInCompare(truck.id) ? 'Đã thêm vào so sánh' : 'So sánh'}
-            </Button>
           </div>
         </div>
       </div>
