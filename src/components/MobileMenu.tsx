@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { Search } from 'lucide-react';
+import { Search, GitCompare } from 'lucide-react';
+import CompareBadge from './CompareBadge';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +45,7 @@ const MobileMenu: React.FC = () => {
         <div className="px-4 pt-8 pb-6 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
             <span className="text-xl font-bold text-primary">XeTaiViet</span>
+            <CompareBadge />
           </div>
           
           <div className="mb-6">
@@ -72,6 +75,14 @@ const MobileMenu: React.FC = () => {
               onClick={() => setIsOpen(false)}
             >
               Danh mục xe
+            </Link>
+            <Link 
+              to="/so-sanh-xe"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
+              <GitCompare className="h-4 w-4" />
+              So sánh xe
             </Link>
             <Link 
               to="/gioi-thieu" 

@@ -14,6 +14,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
 import { CalendarDays, Clock, Phone } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
+import CompareButton from '@/components/CompareButton';
 
 // Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
 
@@ -248,6 +249,10 @@ const TruckDetail = () => {
                   0764.678.901
                 </a>
               </Button>
+            </div>
+
+            <div className="mt-4">
+              <CompareButton truck={truck} className="w-full" />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Phone } from 'lucide-react';
+import { Search, Phone, GitCompare } from 'lucide-react';
 import { Button } from './ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileMenu from './MobileMenu';
@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from './ui/popover';
+import CompareBadge from './CompareBadge';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -37,12 +38,16 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-6">
               <Link to="/" className="font-medium hover:text-primary transition-colors">
                 Trang chủ
               </Link>
               <Link to="/danh-muc" className="font-medium hover:text-primary transition-colors">
                 Danh mục xe
+              </Link>
+              <Link to="/so-sanh-xe" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <GitCompare className="h-4 w-4" />
+                So sánh xe
               </Link>
               <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
                 Giới thiệu
@@ -58,16 +63,23 @@ const Header: React.FC = () => {
 
           {/* Contact & Search Button */}
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2">
-              <Phone className="h-4 w-4 text-primary" />
-              <a
-                href="tel:0764678901"
-                className="font-bold hover:underline text-black"
-                aria-label="Gọi ngay: 0764678901"
-              >
-                0764678901
-              </a>
-            </div>
+            {!isMobile && (
+              <div className="hidden md:flex items-center space-x-2">
+                <Phone className="h-4 w-4 text-primary" />
+                <a
+                  href="tel:0764678901"
+                  className="font-bold hover:underline text-black"
+                  aria-label="Gọi ngay: 0764678901"
+                >
+                  0764678901
+                </a>
+              </div>
+            )}
+            
+            {!isMobile && (
+              <CompareBadge className="mr-2" />
+            )}
+            
             {!isMobile ? (
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>

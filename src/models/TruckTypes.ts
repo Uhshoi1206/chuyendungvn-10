@@ -1,37 +1,7 @@
+
+// Types for truck data
+
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
-export type LegacyVehicleType = 'truck' | 'crane' | 'trailer' | 'tractor';
-
-export interface Truck {
-  id: string;
-  name: string;
-  slug: string;
-  brand: string;
-  price: number;
-  priceText: string;
-  weight: number;
-  weightText: string;
-  length: number;
-  engine: string;
-  fuelType: string;
-  features: string[];
-  description: string;
-  images: string[];
-  thumbnailUrl: string;
-  isHot: boolean;
-  isNew: boolean;
-  type: VehicleType;
-}
-
-export interface TruckWeight {
-  id: string;
-  name: string;
-  value: number;
-}
-
-export interface TruckBrand {
-  id: string;
-  name: string;
-}
 
 export interface TruckFilters {
   brand: string | null;
@@ -43,39 +13,87 @@ export interface TruckFilters {
   search: string | null;
 }
 
-// Hàm chuyển đổi loại xe thành đường dẫn URL
-export const getVehicleUrlPrefix = (type: VehicleType): string => {
-  return type; // Vì type đã là chuỗi URL nên không cần chuyển đổi
-};
+export interface TruckBrand {
+  id: string;
+  name: string;
+  logo?: string;
+}
 
-// Hàm chuyển đổi từ các giá trị cũ sang mới
-export const convertLegacyVehicleType = (legacyType: LegacyVehicleType): VehicleType => {
-  switch (legacyType) {
-    case 'truck':
+export interface TruckWeight {
+  id: string;
+  name: string;
+  value: string; // Giá trị để lọc (ví dụ: "0-1", "1-2")
+  min: number; // Giá trị tối thiểu (tấn)
+  max: number; // Giá trị tối đa (tấn)
+}
+
+export interface Truck {
+  id: string;
+  name: string;
+  slug: string;
+  brand: string;
+  description: string;
+  type: VehicleType;
+  price: number;
+  priceText: string;
+  weight: number;
+  weightText: string;
+  length: number;
+  width?: number;
+  height?: number;
+  wheelbase?: number; // Chiều dài cơ sở
+  thumbnailUrl: string;
+  images: string[];
+  isHot: boolean;
+  isNew: boolean;
+  features?: string[];
+  specifications?: Record<string, string>;
+  
+  // Thêm các thuộc tính mới cho so sánh xe
+  engineType?: string; // Loại động cơ
+  engineCapacity?: string; // Dung tích động cơ
+  horsePower?: string; // Công suất
+  torque?: string; // Mô-men xoắn
+  transmission?: string; // Hộp số
+  fuelConsumption?: string; // Mức tiêu thụ nhiên liệu
+  origin?: string; // Xuất xứ
+  dimensions?: string; // Kích thước tổng thể
+  seats?: number; // Số chỗ ngồi
+  emission?: string; // Tiêu chuẩn khí thải
+  payload?: string; // Tải trọng
+  year?: number; // Năm sản xuất
+  warranty?: string; // Bảo hành
+}
+
+// Hàm trợ giúp để lấy tiền tố URL dựa trên loại xe
+export function getVehicleUrlPrefix(type: VehicleType): string {
+  switch (type) {
+    case 'xe-tai':
       return 'xe-tai';
-    case 'crane':
+    case 'xe-cau':
       return 'xe-cau';
-    case 'trailer':
+    case 'mooc':
       return 'mooc';
-    case 'tractor':
+    case 'dau-keo':
       return 'dau-keo';
     default:
       return 'xe-tai';
   }
-};
+}
 
-// Hàm để lấy tên hiển thị cho loại phương tiện
-export const getVehicleTypeName = (type: VehicleType): string => {
+// Hàm trợ giúp để lấy tên loại xe theo tiếng Việt
+export function getVehicleTypeName(type: VehicleType): string {
   switch (type) {
     case 'xe-tai':
-      return 'Xe tải';
+      return 'Xe Tải';
     case 'xe-cau':
-      return 'Xe cẩu';
+      return 'Xe Cẩu';
     case 'mooc':
-      return 'Sơ mi rơ mooc';
+      return 'Sơ Mi Rơ Mooc';
     case 'dau-keo':
-      return 'Xe đầu kéo';
+      return 'Xe Đầu Kéo';
     default:
-      return 'Xe tải';
+      return 'Xe Tải';
   }
-};
+}
+
