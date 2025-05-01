@@ -97,12 +97,8 @@
   position: relative;
 }
 
-.card-hover:hover .hover-show {
-  opacity: 1;
-}
-
-/* Ẩn nút so sánh mặc định */
-.hover-show {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* Hiệu ứng hiển thị văn bản khi hover */
+.card-hover:hover .max-w-0 {
+  max-width: 80px !important;
+  padding-left: 4px !important;
 }

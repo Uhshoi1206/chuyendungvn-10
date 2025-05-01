@@ -35,26 +35,27 @@ const TruckItem = ({ truck }: TruckItemProps) => {
           />
         </Link>
         
-        {/* Di chuyển nút so sánh vào bên trong hình ảnh */}
+        {/* Nút so sánh với icon luôn hiển thị và văn bản chỉ hiển thị khi hover */}
         <button
           onClick={handleToggleCompare}
           className={`
             absolute bottom-2 right-2
             flex items-center justify-center gap-1
-            px-2 py-1 rounded
+            py-1 rounded
             transition-all duration-300
             ${isInCompare(truck.id) 
               ? 'bg-blue-600 text-white hover:bg-blue-700' 
-              : 'bg-white/90 hover:bg-white border border-gray-200 text-gray-700 hover:text-blue-600'
+              : 'bg-white/80 hover:bg-white border border-gray-200 text-gray-700 hover:text-blue-600'
             }
             shadow-md hover:shadow-lg
-            hover-show
           `}
           title={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}
           aria-label={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}
         >
-          <GitCompare className="h-4 w-4" />
-          <span className="text-xs font-medium">{isInCompare(truck.id) ? "Đã thêm" : "So sánh"}</span>
+          <GitCompare className="h-5 w-5" style={{color: isInCompare(truck.id) ? 'white' : '#ef4444'}} />
+          <span className={`text-xs font-medium transition-all duration-300 max-w-0 overflow-hidden whitespace-nowrap hover:max-w-[80px] group-hover:max-w-[80px] ${isInCompare(truck.id) ? 'pl-0 group-hover:pl-1 hover:pl-1' : 'pl-0 group-hover:pl-1 hover:pl-1'}`}>
+            {isInCompare(truck.id) ? "Đã thêm" : "So sánh"}
+          </span>
         </button>
         
         <div className="absolute top-2 left-2 flex flex-wrap gap-1">
