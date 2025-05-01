@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -12,9 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 import { blogPosts } from '@/data/blogData';
-import { CalendarDays, Clock, Phone } from 'lucide-react';
+import { CalendarDays, Clock, Phone, GitCompare } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
-import CompareButton from '@/components/CompareButton';
+import { useCompare } from '@/contexts/CompareContext';
 
 // Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
 
@@ -25,6 +26,7 @@ const TruckDetail = () => {
   const [relatedTrucks, setRelatedTrucks] = useState<Truck[]>([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const location = useLocation();
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   
   useEffect(() => {
     if (slug) {
@@ -106,20 +108,20 @@ const TruckDetail = () => {
     );
   }
   
-  const handleRequestPrice = () => {
-    toast({
-      title: "Yêu cầu báo giá thành công!",
-      description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
-    });
-  };
-  
-  // Format price to Vietnamese Dong
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      maximumFractionDigits: 0
-    }).format(price);
+  const handleToggleCompare = () => {
+    if (isInCompare(truck.id)) {
+      removeFromCompare(truck.id);
+      toast({
+        title: "Đã xóa khỏi danh sách so sánh",
+        description: `${truck.name} đã được xóa khỏi danh sách so sánh`,
+      });
+    } else {
+      addToCompare(truck);
+      toast({
+        title: "Đã thêm vào danh sách so sánh",
+        description: `${truck.name} đã được thêm vào danh sách so sánh`,
+      });
+    }
   };
   
   const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
@@ -230,14 +232,13 @@ const TruckDetail = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3">
-              <PriceQuoteDialog 
-                productName={truck.name}
-                trigger={
-                  <Button className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
-                    Nhận báo giá
-                  </Button>
-                }
-              />
+              <Button 
+                className={`flex items-center justify-center gap-2 w-full sm:w-auto ${isInCompare(truck.id) ? 'bg-blue-600 hover:bg-blue-700' : 'bg-primary hover:bg-primary/90'}`}
+                onClick={handleToggleCompare}
+              >
+                <GitCompare className="w-5 h-5" />
+                {isInCompare(truck.id) ? 'Đã thêm vào so sánh' : 'So sánh'}
+              </Button>
               
               <Button 
                 variant="outline" 
@@ -249,10 +250,6 @@ const TruckDetail = () => {
                   0764.678.901
                 </a>
               </Button>
-            </div>
-
-            <div className="mt-4">
-              <CompareButton truck={truck} className="w-full" />
             </div>
           </div>
         </div>

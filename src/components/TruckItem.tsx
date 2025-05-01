@@ -3,7 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
 import { Badge } from '@/components/ui/badge';
-import CompareButton from './CompareButton';
+import { Button } from '@/components/ui/button';
+import { useCompare } from '@/contexts/CompareContext';
+import { GitCompare } from 'lucide-react';
 
 interface TruckItemProps {
   truck: Truck;
@@ -11,6 +13,17 @@ interface TruckItemProps {
 
 const TruckItem = ({ truck }: TruckItemProps) => {
   const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+  
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.preventDefault(); // Ngăn chặn sự kiện click lan tỏa đến thành phần cha
+    
+    if (isInCompare(truck.id)) {
+      removeFromCompare(truck.id);
+    } else {
+      addToCompare(truck);
+    }
+  };
   
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
@@ -59,7 +72,17 @@ const TruckItem = ({ truck }: TruckItemProps) => {
           </div>
 
           <div className="mt-2">
-            <CompareButton truck={truck} className="w-full" />
+            <Button 
+              variant={isInCompare(truck.id) ? "default" : "outline"} 
+              size="sm"
+              onClick={handleToggleCompare}
+              className={`w-full flex items-center justify-center gap-1 ${
+                isInCompare(truck.id) ? 'bg-blue-600 hover:bg-blue-700' : ''
+              }`}
+            >
+              <GitCompare className="h-4 w-4" />
+              {isInCompare(truck.id) ? 'Đã thêm vào so sánh' : 'So sánh'}
+            </Button>
           </div>
         </div>
       </div>
