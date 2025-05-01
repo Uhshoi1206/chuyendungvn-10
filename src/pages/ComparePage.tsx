@@ -67,7 +67,7 @@ const ComparePage = () => {
     
     // Nếu tìm thấy ít nhất một xe, cập nhật danh sách so sánh
     if (trucksFromUrl.length > 0) {
-      loadTrucksFromUrl(trucksFromUrl);
+      loadTrucksFromUrl(trucksFromUrl); // Đây là dòng lỗi - cần truyền đúng kiểu dữ liệu
     }
   };
 

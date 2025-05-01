@@ -11,7 +11,7 @@ interface CompareContextType {
   clearCompare: () => void;
   isInCompare: (truckId: string) => boolean;
   generateCompareUrl: () => string;
-  loadTrucksFromUrl: (trucksParam: string) => void;
+  loadTrucksFromUrl: (trucks: Truck[]) => void; // Thay đổi kiểu dữ liệu ở đây
 }
 
 const CompareContext = createContext<CompareContextType | undefined>(undefined);
@@ -121,10 +121,13 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return `/so-sanh-xe/${trucksSlug}`;
   };
   
-  // Tải danh sách xe từ tham số URL
-  const loadTrucksFromUrl = (trucksParam: string) => {
-    // Hàm này sẽ được thực hiện trong trang ComparePage
-    console.log("Đang tải xe từ URL param:", trucksParam);
+  // Tải danh sách xe từ tham số URL - thay đổi kiểu tham số
+  const loadTrucksFromUrl = (trucksToLoad: Truck[]) => {
+    // Cập nhật danh sách so sánh từ dữ liệu xe đã tải
+    if (trucksToLoad.length > 0) {
+      setCompareItems(trucksToLoad);
+      console.log("Đã tải xe từ URL param:", trucksToLoad.length, "xe");
+    }
   };
 
   return (
