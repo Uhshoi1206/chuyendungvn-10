@@ -4,28 +4,42 @@ import { Button } from '@/components/ui/button';
 import { useCompare } from '@/contexts/CompareContext';
 import { Truck } from '@/models/TruckTypes';
 import { GitCompare } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface CompareButtonProps {
   truck: Truck;
   variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
   size?: "default" | "sm" | "lg" | "icon";
   className?: string;
+  showCompareNow?: boolean;
 }
 
 const CompareButton: React.FC<CompareButtonProps> = ({ 
   truck, 
   variant = "outline", 
   size = "sm",
-  className = ""
+  className = "",
+  showCompareNow = false
 }) => {
-  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+  const { addToCompare, removeFromCompare, isInCompare, compareItems } = useCompare();
   const isAdded = isInCompare(truck.id);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     if (isAdded) {
       removeFromCompare(truck.id);
     } else {
       addToCompare(truck);
+      
+      // Nếu có ít nhất một xe khác trong danh sách so sánh
+      if (compareItems.length >= 1 && showCompareNow) {
+        setTimeout(() => {
+          const shouldNavigate = window.confirm('Bạn đã thêm xe vào danh sách so sánh. Bạn có muốn đi đến trang so sánh ngay bây giờ không?');
+          if (shouldNavigate) {
+            navigate('/so-sanh-xe');
+          }
+        }, 300);
+      }
     }
   };
 

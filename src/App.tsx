@@ -50,6 +50,8 @@ const App = () => {
               
               {/* Route cho trang so sánh xe */}
               <Route path="/so-sanh-xe" element={<ComparePage />} />
+              {/* Thêm route cho so sánh xe với URL thân thiện với SEO */}
+              <Route path="/so-sanh-xe/:trucks" element={<ComparePage />} />
               
               <Route path="/lien-he" element={<ContactPage />} />
               <Route path="/gioi-thieu" element={<AboutPage />} />

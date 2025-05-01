@@ -2,6 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Truck } from '@/models/TruckTypes';
 import { toast } from '@/components/ui/use-toast';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface CompareContextType {
   compareItems: Truck[];
@@ -9,6 +10,8 @@ interface CompareContextType {
   removeFromCompare: (truckId: string) => void;
   clearCompare: () => void;
   isInCompare: (truckId: string) => boolean;
+  generateCompareUrl: () => string;
+  loadTrucksFromUrl: (trucksParam: string) => void;
 }
 
 const CompareContext = createContext<CompareContextType | undefined>(undefined);
@@ -18,7 +21,9 @@ const STORAGE_KEY = 'xetaiviet_compare_items';
 
 export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [compareItems, setCompareItems] = useState<Truck[]>([]);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   // Load từ localStorage khi khởi tạo
   useEffect(() => {
     const storedItems = localStorage.getItem(STORAGE_KEY);
@@ -36,6 +41,17 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(compareItems));
   }, [compareItems]);
+  
+  // Cập nhật URL khi danh sách xe so sánh thay đổi và nếu đang ở trang so sánh
+  useEffect(() => {
+    if (location.pathname.startsWith('/so-sanh-xe') && compareItems.length > 0) {
+      const compareUrl = generateCompareUrl();
+      // Chỉ chuyển hướng nếu URL khác với URL hiện tại
+      if (location.pathname !== compareUrl) {
+        navigate(compareUrl, { replace: true });
+      }
+    }
+  }, [compareItems, location.pathname]);
 
   const addToCompare = (truck: Truck) => {
     // Kiểm tra xe đã có trong danh sách chưa
@@ -58,7 +74,9 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     // Thêm xe vào danh sách so sánh
-    setCompareItems(prev => [...prev, truck]);
+    const newCompareItems = [...compareItems, truck];
+    setCompareItems(newCompareItems);
+    
     toast({
       title: "Thêm thành công",
       description: `Đã thêm ${truck.name} vào danh sách so sánh`,
@@ -79,10 +97,32 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
       title: "Đã xóa tất cả",
       description: "Danh sách so sánh đã được làm trống",
     });
+    // Nếu đang ở trang so sánh, điều hướng về trang so sánh trống
+    if (location.pathname.startsWith('/so-sanh-xe')) {
+      navigate('/so-sanh-xe', { replace: true });
+    }
   };
 
   const isInCompare = (truckId: string) => {
     return compareItems.some(item => item.id === truckId);
+  };
+  
+  // Tạo URL so sánh xe thân thiện với SEO
+  const generateCompareUrl = () => {
+    if (compareItems.length === 0) return '/so-sanh-xe';
+    
+    // Tạo đoạn URL từ slug của các xe
+    const trucksSlug = compareItems
+      .map(truck => truck.slug)
+      .join('-vs-');
+      
+    return `/so-sanh-xe/${trucksSlug}`;
+  };
+  
+  // Tải danh sách xe từ tham số URL
+  const loadTrucksFromUrl = (trucksParam: string) => {
+    // Hàm này sẽ được thực hiện trong trang ComparePage
+    console.log("Đang tải xe từ URL param:", trucksParam);
   };
 
   return (
@@ -91,7 +131,9 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
       addToCompare, 
       removeFromCompare, 
       clearCompare, 
-      isInCompare 
+      isInCompare,
+      generateCompareUrl,
+      loadTrucksFromUrl
     }}>
       {children}
     </CompareContext.Provider>

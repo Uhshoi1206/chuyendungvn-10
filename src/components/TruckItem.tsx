@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
 import { Badge } from '@/components/ui/badge';
 import { useCompare } from '@/contexts/CompareContext';
@@ -12,7 +12,8 @@ interface TruckItemProps {
 
 const TruckItem = ({ truck }: TruckItemProps) => {
   const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
-  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+  const { addToCompare, removeFromCompare, isInCompare, compareItems } = useCompare();
+  const navigate = useNavigate();
   
   const handleToggleCompare = (e: React.MouseEvent) => {
     e.preventDefault(); // Ngăn chặn sự kiện click lan tỏa đến thành phần cha
@@ -21,6 +22,17 @@ const TruckItem = ({ truck }: TruckItemProps) => {
       removeFromCompare(truck.id);
     } else {
       addToCompare(truck);
+      
+      // Nếu đã thêm 2 xe trở lên, hiển thị thông báo và tùy chọn đi đến trang so sánh
+      if (compareItems.length >= 1) {
+        // Tạo một timeout để đảm bảo state đã được cập nhật
+        setTimeout(() => {
+          const shouldNavigate = window.confirm('Bạn đã thêm xe vào danh sách so sánh. Bạn có muốn đi đến trang so sánh ngay bây giờ không?');
+          if (shouldNavigate) {
+            navigate('/so-sanh-xe');
+          }
+        }, 300);
+      }
     }
   };
   

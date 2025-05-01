@@ -12,12 +12,14 @@ import {
   PopoverTrigger,
 } from './ui/popover';
 import CompareBadge from './CompareBadge';
+import { useCompare } from '@/contexts/CompareContext';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
+  const { generateCompareUrl } = useCompare();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +27,11 @@ const Header: React.FC = () => {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
       setOpen(false);
     }
+  };
+  
+  const handleCompareClick = () => {
+    const compareUrl = generateCompareUrl();
+    navigate(compareUrl);
   };
 
   return (
@@ -45,12 +52,15 @@ const Header: React.FC = () => {
               <Link to="/danh-muc" className="font-medium hover:text-primary transition-colors">
                 Danh mục xe
               </Link>
-              <Link to="/so-sanh-xe" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
+              <div 
+                className="font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
+                onClick={handleCompareClick}
+              >
                 <span className="relative">
                   So sánh xe
                   <CompareBadge className="absolute -top-2 -right-6" />
                 </span>
-              </Link>
+              </div>
               <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
                 Giới thiệu
               </Link>

@@ -5,11 +5,13 @@ import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Search, GitCompare } from 'lucide-react';
 import CompareBadge from './CompareBadge';
+import { useCompare } from '@/contexts/CompareContext';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { generateCompareUrl } = useCompare();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +19,12 @@ const MobileMenu: React.FC = () => {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
       setIsOpen(false);
     }
+  };
+  
+  const handleCompareClick = () => {
+    const compareUrl = generateCompareUrl();
+    navigate(compareUrl);
+    setIsOpen(false);
   };
 
   return (
@@ -75,15 +83,14 @@ const MobileMenu: React.FC = () => {
             >
               Danh mục xe
             </Link>
-            <Link 
-              to="/so-sanh-xe"
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 relative"
-              onClick={() => setIsOpen(false)}
+            <div 
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 relative cursor-pointer"
+              onClick={handleCompareClick}
             >
               <GitCompare className="h-4 w-4" />
               <span>So sánh xe</span>
               <CompareBadge className="absolute right-2" />
-            </Link>
+            </div>
             <Link 
               to="/gioi-thieu" 
               className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
