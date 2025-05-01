@@ -34,18 +34,19 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         // Fallback - tìm phạm vi phù hợp nhất
         const weightCategory = truckWeights.find(w => {
           // Chuyển đổi w.value sang number để so sánh
-          const numValue = parseFloat(w.value);
+          const numValue = typeof w.value === 'string' ? parseFloat(w.value) : w.value;
           return !isNaN(numValue) && numValue === categoryWeight;
         });
         if (!weightCategory) return { min: 0, max: 25 };
         
         const categoryIndex = truckWeights.findIndex(w => {
-          const numValue = parseFloat(w.value);
+          const numValue = typeof w.value === 'string' ? parseFloat(w.value) : w.value;
           return !isNaN(numValue) && numValue === categoryWeight;
         });
         if (categoryIndex > 0) {
           // Chuyển đổi sang number
-          const prevWeight = parseFloat(truckWeights[categoryIndex - 1].value);
+          const prevWeightValue = truckWeights[categoryIndex - 1].value;
+          const prevWeight = typeof prevWeightValue === 'string' ? parseFloat(prevWeightValue) : prevWeightValue;
           return { min: prevWeight, max: categoryWeight };
         }
         return { min: 0, max: categoryWeight };

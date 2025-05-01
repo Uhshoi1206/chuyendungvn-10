@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -16,8 +15,7 @@ import { blogPosts } from '@/data/blogData';
 import { CalendarDays, Clock, Phone, GitCompare } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 import { useCompare } from '@/contexts/CompareContext';
-
-// Không cần các hàm này nữa vì đã định nghĩa trong TruckTypes.ts
+import TruckActions from '@/components/TruckDetail/TruckActions';
 
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -213,11 +211,11 @@ const TruckDetail = () => {
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
                   <div className="text-gray-600 text-sm">Động cơ</div>
-                  <div className="font-medium">{truck.engine}</div>
+                  <div className="font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</div>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
                   <div className="text-gray-600 text-sm">Nhiên liệu</div>
-                  <div className="font-medium">{truck.fuelType}</div>
+                  <div className="font-medium">{truck.fuelType || 'Diesel'}</div>
                 </div>
               </div>
             </div>
@@ -225,9 +223,13 @@ const TruckDetail = () => {
             <div className="mb-6">
               <h2 className="text-lg font-bold mb-2">Tính năng nổi bật:</h2>
               <ul className="list-disc list-inside space-y-1">
-                {truck.features.map((feature, index) => (
-                  <li key={index} className="text-gray-700">{feature}</li>
-                ))}
+                {truck.features && truck.features.length > 0 ? (
+                  truck.features.map((feature, index) => (
+                    <li key={index} className="text-gray-700">{feature}</li>
+                  ))
+                ) : (
+                  <li className="text-gray-700">Thông tin đang được cập nhật</li>
+                )}
               </ul>
             </div>
             
@@ -272,7 +274,7 @@ const TruckDetail = () => {
             </p>
             <p className="text-gray-700">
               {truck.type === 'xe-tai' || truck.type === 'dau-keo' ? 
-                `Xe được trang bị động cơ ${truck.engine} mạnh mẽ và tiết kiệm nhiên liệu, 
+                `Xe được trang bị động cơ ${truck.engineType || truck.engine || 'hiện đại'} mạnh mẽ và tiết kiệm nhiên liệu, 
                 cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình.` 
                 : 
                 truck.type === 'xe-cau' ?
@@ -299,7 +301,7 @@ const TruckDetail = () => {
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Xuất xứ</td>
-                      <td className="py-2 font-medium">Việt Nam/Nhập khẩu</td>
+                      <td className="py-2 font-medium">{truck.origin || 'Việt Nam/Nhập khẩu'}</td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Tải trọng</td>
@@ -308,7 +310,7 @@ const TruckDetail = () => {
                     {truck.type !== 'mooc' && (
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Số chỗ ngồi</td>
-                        <td className="py-2 font-medium">3 chỗ</td>
+                        <td className="py-2 font-medium">{truck.seats || 3} chỗ</td>
                       </tr>
                     )}
                   </tbody>
@@ -325,11 +327,11 @@ const TruckDetail = () => {
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Chiều rộng {truck.type === 'mooc' ? '' : 'thùng'}</td>
-                      <td className="py-2 font-medium">2.0 m</td>
+                      <td className="py-2 font-medium">{truck.width || 2.0} m</td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Chiều cao {truck.type === 'mooc' ? '' : 'thùng'}</td>
-                      <td className="py-2 font-medium">1.8 m</td>
+                      <td className="py-2 font-medium">{truck.height || 1.8} m</td>
                     </tr>
                   </tbody>
                 </table>
@@ -342,15 +344,15 @@ const TruckDetail = () => {
                     <tbody>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600 w-1/3">Loại động cơ</td>
-                        <td className="py-2 font-medium">{truck.engine}</td>
+                        <td className="py-2 font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Nhiên liệu</td>
-                        <td className="py-2 font-medium">{truck.fuelType}</td>
+                        <td className="py-2 font-medium">{truck.fuelType || 'Diesel'}</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Tiêu chuẩn khí thải</td>
-                        <td className="py-2 font-medium">Euro IV</td>
+                        <td className="py-2 font-medium">{truck.emission || 'Euro IV'}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -364,7 +366,7 @@ const TruckDetail = () => {
                     <tbody>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600 w-1/3">Loại hệ thống</td>
-                        <td className="py-2 font-medium">{truck.engine}</td>
+                        <td className="py-2 font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Tầm với tối đa</td>

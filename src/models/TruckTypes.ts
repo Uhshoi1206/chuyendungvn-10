@@ -20,6 +20,21 @@ export interface Truck {
   isNew?: boolean;
   isHot?: boolean;
   specifications?: Record<string, string>;
+  // Thêm các trường bị thiếu
+  wheelbase?: number;
+  engine?: string;
+  engineType?: string;
+  engineCapacity?: string;
+  horsePower?: string;
+  torque?: string;
+  transmission?: string;
+  fuelType?: string;
+  fuelConsumption?: string;
+  origin?: string;
+  dimensions?: string;
+  seats?: number;
+  emission?: string;
+  features?: string[];
 }
 
 export interface TruckBrand {
@@ -30,7 +45,9 @@ export interface TruckBrand {
 export interface TruckWeight {
   id: string;
   name: string;
-  value: [number, number];
+  value: number | string;
+  min: number;
+  max: number;
 }
 
 export interface TruckFilters {

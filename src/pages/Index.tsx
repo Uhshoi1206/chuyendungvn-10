@@ -31,7 +31,7 @@ const Index = () => {
   const overTwentyTonsWeight: TruckWeight = {
     id: "weight-25",
     name: "Trên 20 Tấn",
-    value: "25", // Chuyển thành string để phù hợp với TruckWeight interface
+    value: 25,  // Đã sửa lại từ string sang number
     min: 20,
     max: 100
   };
