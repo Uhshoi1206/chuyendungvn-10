@@ -63,6 +63,10 @@ export interface Truck {
   payload?: string; // Tải trọng
   year?: number; // Năm sản xuất
   warranty?: string; // Bảo hành
+  
+  // Thêm các thuộc tính còn thiếu cho trang chi tiết
+  engine?: string; // Loại động cơ hiển thị
+  fuelType?: string; // Loại nhiên liệu
 }
 
 // Hàm trợ giúp để lấy tiền tố URL dựa trên loại xe
@@ -96,4 +100,3 @@ export function getVehicleTypeName(type: VehicleType): string {
       return 'Xe Tải';
   }
 }
-

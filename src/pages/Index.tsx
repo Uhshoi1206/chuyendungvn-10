@@ -12,6 +12,7 @@ import BlogSection from '@/components/home/BlogSection';
 import { trucks } from '@/data/truckData';
 import { truckBrands, truckWeights } from '@/data/truckData';
 import { blogPosts, blogCategories } from '@/data/blogData';
+import { TruckWeight } from '@/models/TruckTypes';
 
 const Index = () => {
   const featuredTrucks = trucks.filter(truck => truck.type === 'xe-tai' && truck.isHot);
@@ -25,6 +26,15 @@ const Index = () => {
       new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
     )[0];
   });
+
+  // Tạo một đối tượng TruckWeight mới cho "Trên 20 Tấn"
+  const overTwentyTonsWeight: TruckWeight = {
+    id: "weight-25",
+    name: "Trên 20 Tấn",
+    value: "25", // Chuyển thành string để phù hợp với TruckWeight interface
+    min: 20,
+    max: 100
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -61,7 +71,7 @@ const Index = () => {
           className="bg-gray-50"
         />
         
-        <WeightCategories weights={[...truckWeights, {id: "weight-25", name: "Trên 20 Tấn", value: 25}]} />
+        <WeightCategories weights={[...truckWeights, overTwentyTonsWeight]} />
         <BrandCategories brands={truckBrands} />
         <ContactSection />
         <BlogSection posts={latestPostsByCategory} categories={blogCategories} />

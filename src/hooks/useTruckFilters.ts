@@ -32,12 +32,20 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         return { min: 20, max: 100 }; // Trên 20 tấn
       default:
         // Fallback - tìm phạm vi phù hợp nhất
-        const weightCategory = truckWeights.find(w => w.value === categoryWeight);
+        const weightCategory = truckWeights.find(w => {
+          // Chuyển đổi w.value sang number để so sánh
+          const numValue = parseFloat(w.value);
+          return !isNaN(numValue) && numValue === categoryWeight;
+        });
         if (!weightCategory) return { min: 0, max: 25 };
         
-        const categoryIndex = truckWeights.findIndex(w => w.value === categoryWeight);
+        const categoryIndex = truckWeights.findIndex(w => {
+          const numValue = parseFloat(w.value);
+          return !isNaN(numValue) && numValue === categoryWeight;
+        });
         if (categoryIndex > 0) {
-          const prevWeight = truckWeights[categoryIndex - 1].value;
+          // Chuyển đổi sang number
+          const prevWeight = parseFloat(truckWeights[categoryIndex - 1].value);
           return { min: prevWeight, max: categoryWeight };
         }
         return { min: 0, max: categoryWeight };
@@ -146,12 +154,13 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         weightCategory = 2;       // 1-2 tấn
       } else {
         // Fallback - tìm danh mục trọng lượng phù hợp nhất
-        weightCategory = truckWeights.find(w => 
-          w.value >= newFilters.maxWeight!
-        )?.value || newFilters.maxWeight;
+        weightCategory = truckWeights.find(w => {
+          const maxWeightValue = parseFloat(String(w.value));
+          return maxWeightValue >= newFilters.maxWeight!;
+        })?.value || newFilters.maxWeight;
       }
       
-      params.set('weight', weightCategory.toString());
+      params.set('weight', String(weightCategory));
     }
 
     // Thêm tham số loại xe nếu có
