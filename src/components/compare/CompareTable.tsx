@@ -3,7 +3,7 @@ import React from 'react';
 import { Truck, getVehicleTypeName } from '@/models/TruckTypes';
 import { Button } from '@/components/ui/button';
 import { useCompare } from '@/contexts/CompareContext';
-import { X } from 'lucide-react';
+import { X, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface CompareTableProps {
@@ -59,7 +59,7 @@ const specGroups = [
 ];
 
 const CompareTable: React.FC<CompareTableProps> = ({ trucks }) => {
-  const { removeFromCompare } = useCompare();
+  const { removeFromCompare, clearCompare } = useCompare();
 
   // Hàm format giá tiền
   const formatPrice = (price: number) => {
@@ -93,70 +93,86 @@ const CompareTable: React.FC<CompareTableProps> = ({ trucks }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm text-left border-collapse">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-4 w-1/4 border-r-2">Thông tin</th>
-            {trucks.map((truck, index) => (
-              <th key={truck.id} className="p-4 relative">
-                <Button 
-                  className="absolute top-2 right-2 h-6 w-6 p-0 rounded-full"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => removeFromCompare(truck.id)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-                
-                <div className="pt-4">
-                  <div className="mb-3 flex justify-center">
-                    <img 
-                      src={truck.thumbnailUrl} 
-                      alt={truck.name}
-                      className="w-40 h-28 object-contain"
-                    />
-                  </div>
-                  <Link to={`/${truck.type}/${truck.slug}`} className="font-bold text-lg hover:text-primary transition-colors">
-                    {truck.name}
-                  </Link>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {getVehicleTypeName(truck.type)}
-                  </div>
-                  <div className="text-lg font-bold text-primary mt-2">
-                    {truck.priceText}
-                  </div>
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {specGroups.map((group) => (
-            <React.Fragment key={group.id}>
-              <tr className="bg-gray-50">
-                <td colSpan={trucks.length + 1} className="p-3 font-semibold text-base">
-                  {group.title}
-                </td>
-              </tr>
-              
-              {group.specs.map((spec) => (
-                <tr key={spec.id} className="border-b">
-                  <td className="p-3 font-medium border-r-2">{spec.label}</td>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">Đang so sánh {trucks.length} xe</h2>
+        <Button 
+          onClick={clearCompare}
+          variant="destructive"
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Trash2 className="h-4 w-4" />
+          Xóa tất cả
+        </Button>
+      </div>
+      
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-4 w-1/4 border-r-2">Thông tin</th>
+              {trucks.map((truck, index) => (
+                <th key={truck.id} className="p-4 relative">
+                  <Button 
+                    className="absolute top-2 right-2 h-6 w-6 p-0 rounded-full"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => removeFromCompare(truck.id)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
                   
-                  {trucks.map((truck) => (
-                    <td key={`${truck.id}-${spec.id}`} className="p-3 text-center">
-                      {getPropertyValue(truck, spec.id, spec.isPrice, spec.unit)}
-                    </td>
-                  ))}
-                </tr>
+                  <div className="pt-4">
+                    <div className="mb-3 flex justify-center">
+                      <img 
+                        src={truck.thumbnailUrl} 
+                        alt={truck.name}
+                        className="w-40 h-28 object-contain"
+                      />
+                    </div>
+                    <Link to={`/${truck.type}/${truck.slug}`} className="font-bold text-lg hover:text-primary transition-colors">
+                      {truck.name}
+                    </Link>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {getVehicleTypeName(truck.type)}
+                    </div>
+                    <div className="text-lg font-bold text-primary mt-2">
+                      {truck.priceText}
+                    </div>
+                  </div>
+                </th>
               ))}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {specGroups.map((group) => (
+              <React.Fragment key={group.id}>
+                <tr className="bg-gray-50">
+                  <td colSpan={trucks.length + 1} className="p-3 font-semibold text-base">
+                    {group.title}
+                  </td>
+                </tr>
+                
+                {group.specs.map((spec) => (
+                  <tr key={spec.id} className="border-b">
+                    <td className="p-3 font-medium border-r-2">{spec.label}</td>
+                    
+                    {trucks.map((truck) => (
+                      <td key={`${truck.id}-${spec.id}`} className="p-3 text-center">
+                        {getPropertyValue(truck, spec.id, spec.isPrice, spec.unit)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
 export default CompareTable;
+
