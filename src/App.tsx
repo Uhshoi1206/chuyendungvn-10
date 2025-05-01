@@ -31,11 +31,11 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CompareProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <CompareProvider>
             <QuickContact isOpen={isQuickContactOpen} setIsOpen={setIsQuickContactOpen} />
             <OrderNotification onOpenQuickContact={handleOpenQuickContact} />
             <Routes>
@@ -61,9 +61,9 @@ const App = () => {
               <Route path="/search" element={<SearchPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CompareProvider>
+          </CompareProvider>
+        </BrowserRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };

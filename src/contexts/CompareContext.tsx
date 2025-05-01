@@ -21,6 +21,8 @@ const STORAGE_KEY = 'xetaiviet_compare_items';
 
 export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [compareItems, setCompareItems] = useState<Truck[]>([]);
+  
+  // Đảm bảo hooks này chỉ được gọi trong context của Router
   const navigate = useNavigate();
   const location = useLocation();
   
