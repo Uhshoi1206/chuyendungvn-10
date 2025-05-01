@@ -48,7 +48,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
               : 'bg-white/90 hover:bg-white border border-gray-200 text-gray-700 hover:text-blue-600'
             }
             shadow-md hover:shadow-lg
-            opacity-0 group-hover:opacity-100
+            hover-show
           `}
           title={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}
           aria-label={isInCompare(truck.id) ? "Đã thêm vào so sánh" : "Thêm vào so sánh"}

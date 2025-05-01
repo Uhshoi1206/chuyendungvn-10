@@ -94,9 +94,15 @@
 
 /* Thêm lớp group cho các card sản phẩm để hiện nút khi hover */
 .card-hover {
-  @apply relative group;
+  position: relative;
 }
 
-.card-hover:hover .group-hover\:opacity-100 {
-  @apply opacity-100;
+.card-hover:hover .hover-show {
+  opacity: 1;
+}
+
+/* Ẩn nút so sánh mặc định */
+.hover-show {
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
