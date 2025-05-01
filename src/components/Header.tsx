@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Phone, GitCompare } from 'lucide-react';
+import { Search, Phone } from 'lucide-react';
 import { Button } from './ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileMenu from './MobileMenu';
@@ -46,8 +46,10 @@ const Header: React.FC = () => {
                 Danh mục xe
               </Link>
               <Link to="/so-sanh-xe" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
-                <GitCompare className="h-4 w-4" />
-                So sánh xe
+                <span className="relative">
+                  So sánh xe
+                  <CompareBadge className="absolute -top-2 -right-6" />
+                </span>
               </Link>
               <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
                 Giới thiệu
@@ -74,10 +76,6 @@ const Header: React.FC = () => {
                   0764678901
                 </a>
               </div>
-            )}
-            
-            {!isMobile && (
-              <CompareBadge className="mr-2" />
             )}
             
             {!isMobile ? (

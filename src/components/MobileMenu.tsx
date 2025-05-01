@@ -45,7 +45,6 @@ const MobileMenu: React.FC = () => {
         <div className="px-4 pt-8 pb-6 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
             <span className="text-xl font-bold text-primary">XeTaiViet</span>
-            <CompareBadge />
           </div>
           
           <div className="mb-6">
@@ -78,11 +77,12 @@ const MobileMenu: React.FC = () => {
             </Link>
             <Link 
               to="/so-sanh-xe"
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 relative"
               onClick={() => setIsOpen(false)}
             >
               <GitCompare className="h-4 w-4" />
-              So sánh xe
+              <span>So sánh xe</span>
+              <CompareBadge className="absolute right-2" />
             </Link>
             <Link 
               to="/gioi-thieu" 
