@@ -1,520 +1,645 @@
 
-import { Truck, TruckBrand, TruckWeight, VehicleType } from '@/models/TruckTypes';
+import { Truck, TruckBrand, TruckWeight } from '@/models/TruckTypes';
 
+// Dữ liệu danh sách thương hiệu xe
 export const truckBrands: TruckBrand[] = [
-  { id: '1', name: 'Hyundai' },
-  { id: '2', name: 'Isuzu' },
-  { id: '3', name: 'Hino' },
-  { id: '4', name: 'Thaco' },
-  { id: '5', name: 'Dongfeng' },
-  { id: '6', name: 'JAC' },
-  { id: '7', name: 'Mitsubishi' },
-  { id: '8', name: 'FUSO' },
-  { id: '9', name: 'Foton' },
-  { id: '10', name: 'Suzuki' },
+  { id: 'hyundai', name: 'Hyundai' },
+  { id: 'isuzu', name: 'Isuzu' },
+  { id: 'hino', name: 'Hino' },
+  { id: 'dongfeng', name: 'Dongfeng' },
+  { id: 'faw', name: 'FAW' },
+  { id: 'thaco', name: 'Thaco' },
+  { id: 'suzuki', name: 'Suzuki' },
+  { id: 'jac', name: 'JAC' },
 ];
 
+// Dữ liệu phân loại tải trọng xe
 export const truckWeights: TruckWeight[] = [
-  { id: '1', name: 'Dưới 1 tấn', value: '0-1', min: 0, max: 1 },
-  { id: '2', name: '1 - 2 tấn', value: '1-2', min: 1, max: 2 },
-  { id: '3', name: '2 - 3.5 tấn', value: '2-3.5', min: 2, max: 3.5 },
-  { id: '4', name: '3.5 - 5 tấn', value: '3.5-5', min: 3.5, max: 5 },
-  { id: '5', name: '5 - 8 tấn', value: '5-8', min: 5, max: 8 },
-  { id: '6', name: '8 - 15 tấn', value: '8-15', min: 8, max: 15 },
-  { id: '7', name: 'Trên 15 tấn', value: '15+', min: 15, max: 50 },
+  { id: '0-1', name: 'Dưới 1 tấn', value: '0-1', range: [0, 1] },
+  { id: '1-2', name: '1 - 2 tấn', value: '1-2', range: [1, 2] },
+  { id: '2-3.5', name: '2 - 3.5 tấn', value: '2-3.5', range: [2, 3.5] },
+  { id: '3.5-5', name: '3.5 - 5 tấn', value: '3.5-5', range: [3.5, 5] },
+  { id: '5-8', name: '5 - 8 tấn', value: '5-8', range: [5, 8] },
+  { id: '8-15', name: '8 - 15 tấn', value: '8-15', range: [8, 15] },
+  { id: '15-20', name: '15 - 20 tấn', value: '15-20', range: [15, 20] },
+  { id: '20+', name: 'Trên 20 tấn', value: '20+', range: [20, 100] },
 ];
 
+// Danh sách xe tải với thông số kỹ thuật chi tiết
 export const trucks: Truck[] = [
   {
     id: '1',
-    name: 'Hyundai New Porter H150',
-    slug: 'hyundai-new-porter-h150',
-    brand: 'Hyundai',
-    description: 'Hyundai New Porter H150 - dòng xe tải nhẹ phổ biến với khả năng vận hành linh hoạt trong đô thị, tải trọng 1.5 tấn, phù hợp giao hàng nội thành.',
+    name: 'Xe Tải Suzuki Carry Pro',
+    slug: 'xe-tai-suzuki-carry-pro',
     type: 'xe-tai',
-    price: 410000000,
-    priceText: '410.000.000 VNĐ',
-    weight: 1.5,
-    weightText: '1.5 tấn',
-    length: 3.2,
-    width: 1.8,
-    height: 2.0,
-    wheelbase: 2.64,
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg',
+    brand: 'Suzuki',
+    price: 319000000,
+    priceText: '319.000.000 VNĐ',
+    weight: 0.95,
+    weightText: '950 kg',
+    length: 4.2,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/suzuki-carry-pro-thung-kin.jpg',
     images: [
-      'https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg',
-      'https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg',
-      'https://images.unsplash.com/photo-1519003722824-194d4455a60c',
-      'https://images.unsplash.com/photo-1597733336794-12d05021d510'
+      'https://tongkhoxetai.vn/assets/images/products/suzuki-carry-pro-thung-kin.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/suzuki-carry-pro-750kg.jpg'
     ],
-    isHot: true,
     isNew: true,
-    engineType: 'Hyundai D4CB Diesel 2.5L',
-    engineCapacity: '2.5L',
-    horsePower: '130PS',
-    torque: '255 Nm',
-    transmission: 'Số sàn 6 cấp',
-    fuelConsumption: '8.5L/100km',
-    origin: 'Hàn Quốc',
-    dimensions: '4,850 x 1,740 x 1,970 mm',
-    seats: 3,
-    emission: 'Euro 4',
-    features: [
-      'Động cơ tiết kiệm nhiên liệu',
-      'Khả năng vận hành linh hoạt trong đô thị',
-      'Trang bị phanh ABS tiêu chuẩn',
-      'Cabin rộng rãi, thoải mái',
-      'Tải trọng 1.5 tấn phù hợp với nhiều nhu cầu vận chuyển'
-    ],
+    isHot: true,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Hyundai D4CB Diesel 2.5L',
-      'Công suất': '130PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 6 cấp',
-      'Tự trọng': '1,720 kg',
-      'Tải trọng': '1,500 kg'
-    }
+      engineType: 'K14B-A, 4 xy-lanh thẳng hàng',
+      engineCapacity: '1373cc',
+      horsePower: '97 mã lực tại 6000 vòng/phút',
+      torque: '130 Nm tại 4000 vòng/phút',
+      transmission: 'Số sàn 5 cấp',
+      fuelConsumption: '7L/100km',
+      emission: 'Euro 4',
+      dimensions: '4.195 x 1.675 x 1.870 mm',
+      wheelbase: '2.5 m',
+      payload: '950 kg',
+      origin: 'Indonesia, lắp ráp tại Việt Nam',
+      seats: '2 chỗ',
+      warranty: '3 năm hoặc 100.000 km',
+      year: '2024'
+    },
+    description: 'Suzuki Carry Pro là dòng xe tải nhỏ được ưa chuộng tại thị trường Việt Nam, với thiết kế nhỏ gọn, linh hoạt, phù hợp để vận chuyển hàng hóa trong thành phố và khu vực đông dân cư. Xe có tải trọng cho phép 950kg, động cơ 1.4L mạnh mẽ và tiết kiệm nhiên liệu.',
+    features: [
+      'Khả năng vận hành ổn định',
+      'Tiết kiệm nhiên liệu',
+      'Đa dạng lựa chọn thùng xe',
+      'Kích thước nhỏ gọn, dễ dàng di chuyển trong phố',
+      'Cabin thoải mái, tiện nghi',
+      'Khung gầm chắc chắn'
+    ]
   },
   {
     id: '2',
-    name: 'Isuzu QKR 270',
-    slug: 'isuzu-qkr-270',
-    brand: 'Isuzu',
-    description: 'Isuzu QKR 270 - dòng xe tải nhẹ của Nhật Bản, nổi tiếng với sự bền bỉ và tiết kiệm nhiên liệu.',
+    name: 'Hyundai New Porter H150',
+    slug: 'hyundai-porter-h150',
     type: 'xe-tai',
-    price: 472000000,
-    priceText: '472.000.000 VNĐ',
-    weight: 2.7,
-    weightText: '2.7 tấn',
-    length: 4.4,
-    width: 1.85,
-    height: 2.1,
-    wheelbase: 2.66,
-    thumbnailUrl: 'https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg',
+    brand: 'Hyundai',
+    price: 509000000,
+    priceText: '509.000.000 VNĐ',
+    weight: 1.5, 
+    weightText: '1.5 tấn',
+    length: 6.2,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/hyundai-h150.jpg',
     images: [
-      'https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg',
-      'https://otoisuzu.com.vn/uploads/images/2020/12/03/isuzu-qkr-270-thung-dai.jpeg',
-      'https://isuzutentien.vn/wp-content/uploads/2021/12/xe-tai-isuzu-qkr-2701.jpg',
-      'https://ototruonggiang.com.vn/wp-content/uploads/2020/09/qkr270.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/hyundai-h150.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/hyundai-h150-2.jpg'
     ],
+    isNew: true,
     isHot: true,
-    isNew: false,
-    engineType: 'Isuzu 4JH1-E4NC Diesel 2.8L',
-    engineCapacity: '2.8L',
-    horsePower: '110PS',
-    torque: '260 Nm',
-    transmission: 'Số sàn 5 cấp',
-    fuelConsumption: '8L/100km',
-    origin: 'Nhật Bản',
-    dimensions: '6,170 x 1,850 x 2,180 mm',
-    seats: 3,
-    emission: 'Euro 4',
-    features: [
-      'Độ bền cao, hiệu suất ổn định',
-      'Tiết kiệm nhiên liệu vượt trội',
-      'Khả năng chịu tải tốt',
-      'Bảo dưỡng đơn giản, chi phí thấp',
-      'Hệ thống phanh ABS tiêu chuẩn'
-    ],
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Isuzu 4JH1-E4NC Diesel 2.8L',
-      'Công suất': '110PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 5 cấp',
-      'Tự trọng': '1,980 kg',
-      'Tải trọng': '2,700 kg'
-    }
+      engineType: 'D4CB, 4 xy-lanh thẳng hàng',
+      engineCapacity: '2497cc',
+      horsePower: '130 mã lực tại 3800 vòng/phút',
+      torque: '255 Nm tại 1500-3500 vòng/phút',
+      transmission: 'Số sàn 6 cấp',
+      fuelConsumption: '9L/100km',
+      emission: 'Euro 5',
+      dimensions: '6.200 x 2.000 x 2.300 mm',
+      wheelbase: '3.2 m',
+      payload: '1.5 tấn',
+      origin: 'Hàn Quốc, lắp ráp tại Việt Nam',
+      seats: '3 chỗ',
+      warranty: '5 năm hoặc 150.000 km',
+      year: '2024'
+    },
+    description: 'Hyundai New Porter H150 là dòng xe tải nhẹ được thiết kế với những đường nét hiện đại, cabin thoải mái và rộng rãi. Xe được trang bị động cơ D4CB mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. Với tải trọng 1.5 tấn, xe là lựa chọn lý tưởng cho vận chuyển hàng hóa trong thành phố và khu đông dân cư.',
+    features: [
+      'Cabin rộng rãi, thoáng mát',
+      'Động cơ mạnh mẽ, bền bỉ',
+      'Tiêu chuẩn khí thải Euro 5',
+      'Hệ thống phanh ABS, EBD',
+      'Khung gầm vững chắc',
+      'Đa dạng lựa chọn thùng xe'
+    ]
   },
   {
     id: '3',
-    name: 'Xe Đầu Kéo Hyundai HD1000',
-    slug: 'dau-keo-hyundai-hd1000',
-    brand: 'Hyundai',
-    description: 'Xe đầu kéo Hyundai HD1000 thương hiệu Hàn Quốc, mạnh mẽ và bền bỉ với động cơ công suất lớn.',
-    type: 'dau-keo',
-    price: 1850000000,
-    priceText: '1.850.000.000 VNĐ',
-    weight: 18,
-    weightText: '18 tấn',
-    length: 7.2,
-    width: 2.5,
-    height: 3.4,
-    wheelbase: 4.27,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/dau-keo-hyundai-hd1000.jpg',
+    name: 'Isuzu QKR 270',
+    slug: 'isuzu-qkr-270',
+    type: 'xe-tai',
+    brand: 'Isuzu',
+    price: 487000000,
+    priceText: '487.000.000 VNĐ',
+    weight: 2.7,
+    weightText: '2.7 tấn',
+    length: 6.2,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/isuzu-qkr.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/dau-keo-hyundai-hd1000.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-hyundai-hd1000-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-hyundai-hd1000-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-hyundai-hd1000-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/isuzu-qkr.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/isuzu-qkr-2.jpg'
     ],
-    isHot: true,
     isNew: true,
-    engineType: 'Hyundai D6CC Diesel 12.7L',
-    engineCapacity: '12.7L',
-    horsePower: '410PS',
-    torque: '1,750 Nm',
-    transmission: 'Số sàn 12 cấp',
-    fuelConsumption: '35L/100km',
-    origin: 'Hàn Quốc',
-    dimensions: '7,150 x 2,490 x 3,390 mm',
-    seats: 2,
-    emission: 'Euro 5',
-    features: [
-      'Động cơ công suất lớn 410PS',
-      'Khả năng kéo tải trọng cao',
-      'Cabin rộng rãi với tầm nhìn tốt',
-      'Hệ thống phanh ABS/ASR/ESP',
-      'Tiêu chuẩn khí thải Euro 5'
-    ],
+    isHot: false,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Hyundai D6CC Diesel 12.7L',
-      'Công suất': '410PS',
-      'Tiêu chuẩn khí thải': 'Euro 5',
-      'Hộp số': 'Số sàn 12 cấp',
-      'Tự trọng': '8,200 kg',
-      'Tải trọng kéo': '40,000 kg'
-    }
+      engineType: 'JE493ZLQ4, 4 xy-lanh thẳng hàng',
+      engineCapacity: '2771cc',
+      horsePower: '106 mã lực tại 3400 vòng/phút',
+      torque: '230 Nm tại 1600-2600 vòng/phút',
+      transmission: 'Số sàn 5 cấp',
+      fuelConsumption: '9L/100km',
+      emission: 'Euro 4',
+      dimensions: '6.190 x 1.985 x 2.280 mm',
+      wheelbase: '3.3 m',
+      payload: '2.7 tấn',
+      origin: 'Nhật Bản, lắp ráp tại Việt Nam',
+      seats: '3 chỗ',
+      warranty: '3 năm không giới hạn km',
+      year: '2024'
+    },
+    description: 'Isuzu QKR 270 là dòng xe tải nhẹ có tải trọng 2.7 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ JE493ZLQ4 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 4. Isuzu QKR 270 là lựa chọn lý tưởng cho các doanh nghiệp vận tải nhỏ và vừa.',
+    features: [
+      'Khả năng vận hành bền bỉ',
+      'Tiết kiệm nhiên liệu',
+      'Chi phí bảo dưỡng thấp',
+      'Cabin thoải mái, tiện nghi',
+      'Khung gầm chắc chắn',
+      'Hệ thống phanh an toàn'
+    ]
   },
   {
     id: '4',
-    name: 'Xe Tải Hyundai HD800',
-    slug: 'hyundai-hd800',
-    brand: 'Hyundai',
-    description: 'Xe tải Hyundai HD800 tải trọng 8 tấn, động cơ mạnh mẽ, tiết kiệm nhiên liệu và khả năng vận hành ổn định.',
+    name: 'Hino 500 Series',
+    slug: 'hino-500-series',
     type: 'xe-tai',
-    price: 725000000,
-    priceText: '725.000.000 VNĐ',
-    weight: 8,
-    weightText: '8 tấn',
-    length: 6.2,
-    width: 2.2,
-    height: 2.3,
-    wheelbase: 3.9,
-    thumbnailUrl: 'https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg',
+    brand: 'Hino',
+    price: 1350000000,
+    priceText: '1.350.000.000 VNĐ',
+    weight: 8.8,
+    weightText: '8.8 tấn',
+    length: 9.1,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/hino-500.jpg',
     images: [
-      'https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg',
-      'https://xetaisaigon.vn/wp-content/uploads/2019/03/hyundai-hd800.jpg',
-      'https://xetaiquangngai.com.vn/wp-content/uploads/2020/12/xe-tai-hyundai-hd800-thung-dai.jpg',
-      'https://xeototai.vn/wp-content/uploads/2020/09/hd800-noi-that.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/hino-500.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/hino-500-2.jpg'
     ],
-    isHot: true,
     isNew: false,
-    engineType: 'Hyundai D4DB Diesel 4.0L',
-    engineCapacity: '4.0L',
-    horsePower: '140PS',
-    torque: '372 Nm',
-    transmission: 'Số sàn 5 cấp',
-    fuelConsumption: '13L/100km',
-    origin: 'Hàn Quốc',
-    dimensions: '6,800 x 2,200 x 2,300 mm',
-    seats: 3,
-    emission: 'Euro 4',
+    isHot: true,
+    isSoldOut: false,
+    specifications: {
+      engineType: 'J08E-UG, 6 xy-lanh thẳng hàng',
+      engineCapacity: '7684cc',
+      horsePower: '280 mã lực tại 2500 vòng/phút',
+      torque: '824 Nm tại 1500 vòng/phút',
+      transmission: 'Số sàn 6 cấp',
+      fuelConsumption: '14L/100km',
+      emission: 'Euro 5',
+      dimensions: '9.120 x 2.490 x 3.340 mm',
+      wheelbase: '5.3 m',
+      payload: '8.8 tấn',
+      origin: 'Nhật Bản, lắp ráp tại Việt Nam',
+      seats: '3 chỗ',
+      warranty: '3 năm hoặc 200.000 km',
+      year: '2024'
+    },
+    description: 'Hino 500 Series là dòng xe tải hạng trung với tải trọng 8.8 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ J08E-UG mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. Hino 500 Series là lựa chọn lý tưởng cho các doanh nghiệp vận tải cỡ vừa và lớn.',
     features: [
       'Động cơ mạnh mẽ, bền bỉ',
-      'Tải trọng lớn đến 8 tấn',
-      'Khả năng leo dốc tốt',
       'Tiết kiệm nhiên liệu',
-      'Cabin tiện nghi, thoải mái'
-    ],
-    specifications: {
-      'Động cơ': 'Hyundai D4DB Diesel 4.0L',
-      'Công suất': '140PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 5 cấp',
-      'Tự trọng': '3,790 kg',
-      'Tải trọng': '8,000 kg'
-    }
+      'Cabin thoải mái, tiện nghi',
+      'Hệ thống phanh ABS, ASR',
+      'Khung gầm vững chắc',
+      'Đa dạng lựa chọn thùng xe'
+    ]
   },
   {
     id: '5',
-    name: 'Xe Cẩu Dongfeng 8 Tấn 5 Đoạn',
-    slug: 'xe-cau-dongfeng-8-tan-5-doan',
+    name: 'Dongfeng Hoàng Huy B180',
+    slug: 'dongfeng-hoang-huy-b180',
+    type: 'xe-tai',
     brand: 'Dongfeng',
-    description: 'Xe cẩu Dongfeng 8 tấn 5 đoạn - phương tiện vận chuyển và nâng hạ hàng hóa hiệu quả với cẩu tự hành 5 đoạn.',
-    type: 'xe-cau',
-    price: 1250000000,
-    priceText: '1.250.000.000 VNĐ',
-    weight: 8,
-    weightText: '8 tấn',
+    price: 600000000,
+    priceText: '600.000.000 VNĐ',
+    weight: 7.6,
+    weightText: '7.6 tấn',
     length: 9.5,
-    width: 2.5,
-    height: 3.2,
-    wheelbase: 5.7,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/xe-cau-dongfeng.jpg',
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/dongfeng-b180.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/xe-cau-dongfeng.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-dongfeng-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-dongfeng-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-dongfeng-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/dongfeng-b180.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/dongfeng-b180-2.jpg'
     ],
+    isNew: false,
     isHot: false,
-    isNew: true,
-    engineType: 'Dongfeng Cummins 6.7L Diesel',
-    engineCapacity: '6.7L',
-    horsePower: '180PS',
-    torque: '700 Nm',
-    transmission: 'Số sàn 6 cấp',
-    fuelConsumption: '15L/100km',
-    origin: 'Trung Quốc',
-    dimensions: '9,500 x 2,500 x 3,200 mm',
-    seats: 2,
-    emission: 'Euro 4',
-    features: [
-      'Cẩu tự hành 5 đoạn, nâng tối đa 8 tấn',
-      'Tầm với cẩu lên tới 16 mét',
-      'Hệ thống cân bằng tự động',
-      'Động cơ mạnh mẽ và ổn định',
-      'Khung gầm chắc chắn, chịu lực tốt'
-    ],
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Dongfeng Cummins 6.7L Diesel',
-      'Công suất': '180PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 6 cấp',
-      'Tải trọng cẩu': '8,000 kg',
-      'Tầm với cẩu': '16 mét'
-    }
+      engineType: 'Cummins ISF3.8, 4 xy-lanh thẳng hàng',
+      engineCapacity: '3760cc',
+      horsePower: '180 mã lực tại 2600 vòng/phút',
+      torque: '600 Nm tại 1300-1700 vòng/phút',
+      transmission: 'Số sàn 6 cấp',
+      fuelConsumption: '13L/100km',
+      emission: 'Euro 5',
+      dimensions: '9.500 x 2.500 x 3.000 mm',
+      wheelbase: '6.0 m',
+      payload: '7.6 tấn',
+      origin: 'Trung Quốc',
+      seats: '3 chỗ',
+      warranty: '3 năm hoặc 150.000 km',
+      year: '2024'
+    },
+    description: 'Dongfeng Hoàng Huy B180 là dòng xe tải hạng trung với tải trọng 7.6 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ Cummins ISF3.8 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. Dongfeng Hoàng Huy B180 là lựa chọn lý tưởng cho các doanh nghiệp vận tải cỡ vừa.',
+    features: [
+      'Động cơ Cummins bền bỉ',
+      'Tiết kiệm nhiên liệu',
+      'Cabin thoải mái, tiện nghi',
+      'Khung gầm chắc chắn',
+      'Hệ thống phanh an toàn',
+      'Chi phí bảo dưỡng thấp'
+    ]
   },
   {
     id: '6',
-    name: 'Sơ Mi Rơ Mooc Chở Container 40 Feet',
-    slug: 'so-mi-ro-mooc-container-40-feet',
-    brand: 'CIMC',
-    description: 'Sơ mi rơ mooc chở container 40 feet chất lượng cao, cấu trúc chắc chắn, tải trọng lớn phù hợp vận chuyển container.',
-    type: 'mooc',
-    price: 350000000,
-    priceText: '350.000.000 VNĐ',
-    weight: 34,
-    weightText: '34 tấn',
-    length: 12.4,
-    width: 2.5,
-    height: 1.5,
-    wheelbase: 7.6,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/mooc-container.jpg',
+    name: 'XCMG QY25K5-I Truck Crane',
+    slug: 'xcmg-qy25k5-i-truck-crane',
+    type: 'xe-cau',
+    brand: 'XCMG',
+    price: 3500000000,
+    priceText: 'Liên hệ',
+    weight: 25,
+    weightText: '25 tấn',
+    length: 12.1,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/xcmg-qy25.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/mooc-container.jpg',
-      'https://xetaiviet.vn/assets/uploads/mooc-container-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/mooc-container-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/mooc-container-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/xcmg-qy25.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/xcmg-qy25-2.jpg'
     ],
-    isHot: false,
-    isNew: false,
-    origin: 'Trung Quốc',
-    dimensions: '12,400 x 2,500 x 1,500 mm',
-    emission: 'Không áp dụng',
-    features: [
-      'Khả năng chở container 40 feet',
-      'Cấu trúc khung thép chắc chắn',
-      'Tải trọng lớn đến 34 tấn',
-      'Trục chịu tải cao, mâm lốp bền bỉ',
-      'Thiết kế chống trượt, chống lật'
-    ],
+    isNew: true,
+    isHot: true,
+    isSoldOut: false,
     specifications: {
-      'Tải trọng': '34,000 kg',
-      'Chiều dài': '12.4 mét',
-      'Số trục': '3 trục',
-      'Vật liệu': 'Thép hợp kim',
-      'Khả năng chở': 'Container 40 feet'
-    }
+      engineType: 'Cummins ISLe340 30, 6 xy-lanh thẳng hàng',
+      engineCapacity: '8900cc',
+      horsePower: '340 mã lực tại 2100 vòng/phút',
+      torque: '1425 Nm tại 1300-1400 vòng/phút',
+      transmission: 'Số sàn 9 cấp',
+      fuelConsumption: '28L/100km',
+      emission: 'Euro 5',
+      dimensions: '12.100 x 2.550 x 3.650 mm',
+      wheelbase: '6.955 m',
+      payload: 'Cẩu 25 tấn',
+      origin: 'Trung Quốc',
+      seats: '2 chỗ',
+      warranty: '2 năm hoặc 100.000 km',
+      year: '2024'
+    },
+    description: 'XCMG QY25K5-I là xe cẩu tự hành có sức nâng 25 tấn, được thiết kế với công nghệ tiên tiến và khả năng vận hành ổn định. Xe được trang bị động cơ Cummins ISLe340 30 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. XCMG QY25K5-I là lựa chọn lý tưởng cho các công trình xây dựng, lắp đặt thiết bị và cứu hộ.',
+    features: [
+      'Sức nâng tối đa 25 tấn',
+      'Chiều dài cần tối đa 39.5m',
+      'Hệ thống điều khiển thông minh',
+      'Hệ thống giám sát tải trọng',
+      'Cabin cẩu thoải mái, tiện nghi',
+      'Hệ thống ổn định tự động'
+    ]
   },
   {
     id: '7',
-    name: 'Xe Tải Suzuki Carry Pro',
-    slug: 'suzuki-carry-pro',
-    brand: 'Suzuki',
-    description: 'Suzuki Carry Pro - xe tải nhỏ linh hoạt, tiết kiệm nhiên liệu phù hợp với đường phố đông đúc và các tuyến đường nhỏ.',
-    type: 'xe-tai',
-    price: 334000000,
-    priceText: '334.000.000 VNĐ',
-    weight: 0.8,
-    weightText: '750 kg',
-    length: 2.5,
-    width: 1.6,
-    height: 1.9,
-    wheelbase: 2.2,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/suzuki-carry-pro.jpg',
+    name: 'Tadano GT-750EL Truck Crane',
+    slug: 'tadano-gt-750el-truck-crane',
+    type: 'xe-cau',
+    brand: 'Tadano',
+    price: 4800000000,
+    priceText: 'Liên hệ',
+    weight: 75,
+    weightText: '75 tấn',
+    length: 14.5,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/tadano-gt-750.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/suzuki-carry-pro.jpg',
-      'https://xetaiviet.vn/assets/uploads/suzuki-carry-pro-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/suzuki-carry-pro-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/suzuki-carry-pro-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/tadano-gt-750.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/tadano-gt-750-2.jpg'
     ],
-    isHot: false,
     isNew: false,
-    engineType: 'Suzuki K15B Xăng 1.5L',
-    engineCapacity: '1.5L',
-    horsePower: '96PS',
-    torque: '135 Nm',
-    transmission: 'Số sàn 5 cấp',
-    fuelConsumption: '7L/100km',
-    origin: 'Nhật Bản',
-    dimensions: '4,195 x 1,765 x 1,910 mm',
-    seats: 2,
-    emission: 'Euro 4',
-    features: [
-      'Động cơ xăng tiết kiệm nhiên liệu',
-      'Khả năng vận hành linh hoạt trong đô thị',
-      'Cabin rộng rãi, thoải mái',
-      'Bán kính quay vòng nhỏ 4.3m',
-      'Dễ dàng bảo dưỡng với chi phí thấp'
-    ],
+    isHot: true,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Suzuki K15B Xăng 1.5L',
-      'Công suất': '96PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 5 cấp',
-      'Tự trọng': '900 kg',
-      'Tải trọng': '750 kg'
-    }
+      engineType: 'Mitsubishi 6M60-TL, 6 xy-lanh thẳng hàng',
+      engineCapacity: '12882cc',
+      horsePower: '420 mã lực tại 1800 vòng/phút',
+      torque: '1990 Nm tại 1100-1300 vòng/phút',
+      transmission: 'Số tự động 6 cấp',
+      fuelConsumption: '35L/100km',
+      emission: 'Euro 5',
+      dimensions: '14.500 x 3.315 x 3.795 mm',
+      wheelbase: '8.405 m',
+      payload: 'Cẩu 75 tấn',
+      origin: 'Nhật Bản',
+      seats: '2 chỗ',
+      warranty: '3 năm hoặc 100.000 km',
+      year: '2024'
+    },
+    description: 'Tadano GT-750EL là xe cẩu tự hành có sức nâng 75 tấn, được thiết kế với công nghệ tiên tiến và khả năng vận hành ổn định. Xe được trang bị động cơ Mitsubishi 6M60-TL mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. Tadano GT-750EL là lựa chọn lý tưởng cho các công trình xây dựng lớn, lắp đặt thiết bị nặng và cứu hộ.',
+    features: [
+      'Sức nâng tối đa 75 tấn',
+      'Chiều dài cần tối đa 44m',
+      'Hệ thống điều khiển thông minh',
+      'Hệ thống giám sát tải trọng',
+      'Cabin cẩu thoải mái, tiện nghi',
+      'Hệ thống ổn định tự động'
+    ]
   },
   {
     id: '8',
-    name: 'Xe Tải Thaco Ollin 350.E4',
-    slug: 'thaco-ollin-350e4',
-    brand: 'Thaco',
-    description: 'Xe tải Thaco Ollin 350.E4 với tải trọng 3.5 tấn, thiết kế hiện đại, động cơ tiêu chuẩn Euro 4 thân thiện môi trường.',
-    type: 'xe-tai',
-    price: 485000000,
-    priceText: '485.000.000 VNĐ',
-    weight: 3.5,
-    weightText: '3.5 tấn',
-    length: 6.0,
-    width: 2.0,
-    height: 2.1,
-    wheelbase: 3.3,
-    thumbnailUrl: 'https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg',
+    name: 'CIMC 3 Axle Flatbed Trailer',
+    slug: 'cimc-3-axle-flatbed-trailer',
+    type: 'mooc',
+    brand: 'CIMC',
+    price: 420000000,
+    priceText: '420.000.000 VNĐ',
+    weight: 32,
+    weightText: '32 tấn',
+    length: 12.4,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/cimc-flatbed.jpg',
     images: [
-      'https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg',
-      'https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-e4-thung-dai.jpg',
-      'https://xetaiso1.com/wp-content/uploads/2019/02/xetaiollin.jpg',
-      'https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-cabin.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/cimc-flatbed.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/cimc-flatbed-2.jpg'
     ],
-    isHot: true,
-    isNew: true,
-    engineType: 'Yuchai YC4F90-50 Diesel 2.8L',
-    engineCapacity: '2.8L',
-    horsePower: '115PS',
-    torque: '245 Nm',
-    transmission: 'Số sàn 6 cấp',
-    fuelConsumption: '10L/100km',
-    origin: 'Việt Nam',
-    dimensions: '6,000 x 2,000 x 2,100 mm',
-    seats: 3,
-    emission: 'Euro 4',
-    features: [
-      'Động cơ Yuchai tiết kiệm nhiên liệu',
-      'Đạt tiêu chuẩn khí thải Euro 4',
-      'Cabin rộng rãi với 3 chỗ ngồi',
-      'Khung gầm chắc chắn, chịu tải tốt',
-      'Phù hợp vận chuyển đường dài và nội thành'
-    ],
+    isNew: false,
+    isHot: false,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Yuchai YC4F90-50 Diesel 2.8L',
-      'Công suất': '115PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 6 cấp',
-      'Tự trọng': '2,600 kg',
-      'Tải trọng': '3,500 kg'
-    }
+      dimensions: '12.400 x 2.500 x 1.580 mm',
+      wheelbase: '7.7 m',
+      payload: '32 tấn',
+      origin: 'Trung Quốc',
+      warranty: '2 năm',
+      year: '2024'
+    },
+    description: 'CIMC 3 Axle Flatbed Trailer là sơ mi rơ mooc sàn phẳng 3 trục có tải trọng 32 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Sơ mi rơ mooc này là lựa chọn lý tưởng cho việc vận chuyển hàng hóa cồng kềnh, container và vật liệu xây dựng.',
+    features: [
+      'Khung gầm chắc chắn',
+      'Tải trọng lớn',
+      'Dễ dàng bốc xếp hàng hóa',
+      'Tuổi thọ cao',
+      'Chi phí bảo dưỡng thấp',
+      'Linh hoạt trong việc vận chuyển nhiều loại hàng hóa'
+    ]
   },
   {
     id: '9',
-    name: 'Xe Cẩu Hino 5 Tấn 3 Đoạn',
-    slug: 'xe-cau-hino-5-tan-3-doan',
-    brand: 'Hino',
-    description: 'Xe cẩu Hino 5 tấn 3 đoạn, kết hợp giữa xe tải và cẩu nâng hạ, phù hợp với công trình xây dựng và vận chuyển thiết bị nặng.',
-    type: 'xe-cau',
-    price: 950000000,
-    priceText: '950.000.000 VNĐ',
-    weight: 5,
-    weightText: '5 tấn',
-    length: 8.3,
-    width: 2.3,
-    height: 3.0,
-    wheelbase: 4.9,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/xe-cau-hino.jpg',
+    name: 'Doosung 45ft Container Trailer',
+    slug: 'doosung-45ft-container-trailer',
+    type: 'mooc',
+    brand: 'Doosung',
+    price: 450000000,
+    priceText: '450.000.000 VNĐ',
+    weight: 35,
+    weightText: '35 tấn',
+    length: 13.7,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/doosung-container.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/xe-cau-hino.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-hino-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-hino-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/xe-cau-hino-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/doosung-container.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/doosung-container-2.jpg'
     ],
-    isHot: true,
-    isNew: false,
-    engineType: 'Hino J05E Diesel 5.1L',
-    engineCapacity: '5.1L',
-    horsePower: '150PS',
-    torque: '450 Nm',
-    transmission: 'Số sàn 6 cấp',
-    fuelConsumption: '14L/100km',
-    origin: 'Nhật Bản',
-    dimensions: '8,300 x 2,300 x 3,000 mm',
-    seats: 3,
-    emission: 'Euro 4',
-    features: [
-      'Tay cẩu 3 đoạn, tầm với lên tới 12 mét',
-      'Khả năng nâng tối đa 5 tấn',
-      'Động cơ Hino bền bỉ, mạnh mẽ',
-      'Hệ thống thủy lực Nhật Bản chất lượng cao',
-      'Cabin rộng rãi, thoải mái'
-    ],
+    isNew: true,
+    isHot: false,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Hino J05E Diesel 5.1L',
-      'Công suất': '150PS',
-      'Tiêu chuẩn khí thải': 'Euro 4',
-      'Hộp số': 'Số sàn 6 cấp',
-      'Tải trọng cẩu': '5,000 kg',
-      'Tầm với cẩu': '12 mét'
-    }
+      dimensions: '13.700 x 2.500 x 1.650 mm',
+      wheelbase: '8.12 m',
+      payload: '35 tấn',
+      origin: 'Hàn Quốc',
+      warranty: '3 năm',
+      year: '2024'
+    },
+    description: 'Doosung 45ft Container Trailer là sơ mi rơ mooc chở container 3 trục có tải trọng 35 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Sơ mi rơ mooc này là lựa chọn lý tưởng cho việc vận chuyển container 20ft, 40ft và 45ft.',
+    features: [
+      'Khung gầm chắc chắn',
+      'Tải trọng lớn',
+      'Thiết kế chuyên dụng cho container',
+      'Tuổi thọ cao',
+      'Chi phí bảo dưỡng thấp',
+      'Dễ dàng kết nối với đầu kéo'
+    ]
   },
   {
     id: '10',
-    name: 'Xe Đầu Kéo JAC 380HP',
-    slug: 'dau-keo-jac-380hp',
-    brand: 'JAC',
-    description: 'Xe đầu kéo JAC 380HP mạnh mẽ với động cơ công suất cao, phù hợp kéo các loại sơ mi rơ mooc nặng trên đường trường.',
+    name: 'FAW J6P Tractor Truck',
+    slug: 'faw-j6p-tractor-truck',
     type: 'dau-keo',
-    price: 1380000000,
-    priceText: '1.380.000.000 VNĐ',
-    weight: 16,
-    weightText: '16 tấn',
+    brand: 'FAW',
+    price: 1050000000,
+    priceText: '1.050.000.000 VNĐ',
+    weight: 40,
+    weightText: '40 tấn',
     length: 6.8,
-    width: 2.5,
-    height: 3.2,
-    wheelbase: 3.8,
-    thumbnailUrl: 'https://xetaiviet.vn/assets/uploads/dau-keo-jac.jpg',
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/faw-j6p.jpg',
     images: [
-      'https://xetaiviet.vn/assets/uploads/dau-keo-jac.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-jac-2.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-jac-3.jpg',
-      'https://xetaiviet.vn/assets/uploads/dau-keo-jac-4.jpg'
+      'https://tongkhoxetai.vn/assets/images/products/faw-j6p.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/faw-j6p-2.jpg'
     ],
-    isHot: false,
-    isNew: true,
-    engineType: 'Cummins ISLe 8.9L Diesel',
-    engineCapacity: '8.9L',
-    horsePower: '380PS',
-    torque: '1,600 Nm',
-    transmission: 'Số tự động 12 cấp',
-    fuelConsumption: '32L/100km',
-    origin: 'Trung Quốc',
-    dimensions: '6,800 x 2,500 x 3,200 mm',
-    seats: 2,
-    emission: 'Euro 5',
-    features: [
-      'Động cơ Cummins mạnh mẽ 380HP',
-      'Hộp số tự động 12 cấp tiên tiến',
-      'Cabin hiện đại với khoang ngủ thoải mái',
-      'Hệ thống phanh ABS/ASR/EBS tiêu chuẩn',
-      'Thiết kế khí động học tiết kiệm nhiên liệu'
-    ],
+    isNew: false,
+    isHot: true,
+    isSoldOut: false,
     specifications: {
-      'Động cơ': 'Cummins ISLe 8.9L Diesel',
-      'Công suất': '380PS',
-      'Tiêu chuẩn khí thải': 'Euro 5',
-      'Hộp số': 'Số tự động 12 cấp',
-      'Tự trọng': '7,900 kg',
-      'Tải trọng kéo': '40,000 kg'
-    }
+      engineType: 'Weichai WP12.430, 6 xy-lanh thẳng hàng',
+      engineCapacity: '11596cc',
+      horsePower: '430 mã lực tại 1900 vòng/phút',
+      torque: '1750 Nm tại 1200-1400 vòng/phút',
+      transmission: 'Số sàn 12 cấp',
+      fuelConsumption: '30L/100km',
+      emission: 'Euro 5',
+      dimensions: '6.800 x 2.490 x 3.720 mm',
+      wheelbase: '3.9 m',
+      payload: '40 tấn',
+      origin: 'Trung Quốc',
+      seats: '2 chỗ',
+      warranty: '3 năm hoặc 200.000 km',
+      year: '2024'
+    },
+    description: 'FAW J6P là xe đầu kéo có tải trọng kéo 40 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ Weichai WP12.430 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. FAW J6P là lựa chọn lý tưởng cho các doanh nghiệp vận tải container và hàng hóa nặng.',
+    features: [
+      'Động cơ mạnh mẽ, bền bỉ',
+      'Tiết kiệm nhiên liệu',
+      'Cabin thoải mái, tiện nghi',
+      'Hệ thống phanh ABS, ASR',
+      'Khung gầm vững chắc',
+      'Chi phí bảo dưỡng thấp'
+    ]
+  },
+  {
+    id: '11',
+    name: 'Howo 2 Chân 4x2',
+    slug: 'howo-2-chan-4x2',
+    type: 'dau-keo',
+    brand: 'Howo',
+    price: 950000000,
+    priceText: '950.000.000 VNĐ',
+    weight: 35,
+    weightText: '35 tấn',
+    length: 6.2,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/howo-4x2.jpg',
+    images: [
+      'https://tongkhoxetai.vn/assets/images/products/howo-4x2.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/howo-4x2-2.jpg'
+    ],
+    isNew: true,
+    isHot: false,
+    isSoldOut: false,
+    specifications: {
+      engineType: 'Sinotruk WD615, 6 xy-lanh thẳng hàng',
+      engineCapacity: '9726cc',
+      horsePower: '380 mã lực tại 2200 vòng/phút',
+      torque: '1460 Nm tại 1100-1600 vòng/phút',
+      transmission: 'Số sàn 10 cấp',
+      fuelConsumption: '28L/100km',
+      emission: 'Euro 4',
+      dimensions: '6.200 x 2.495 x 3.650 mm',
+      wheelbase: '3.5 m',
+      payload: '35 tấn',
+      origin: 'Trung Quốc',
+      seats: '2 chỗ',
+      warranty: '2 năm hoặc 150.000 km',
+      year: '2024'
+    },
+    description: 'Howo 2 Chân 4x2 là xe đầu kéo có tải trọng kéo 35 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ Sinotruk WD615 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 4. Howo 2 Chân 4x2 là lựa chọn lý tưởng cho các doanh nghiệp vận tải container và hàng hóa nặng.',
+    features: [
+      'Động cơ mạnh mẽ, bền bỉ',
+      'Tiết kiệm nhiên liệu',
+      'Cabin thoải mái, tiện nghi',
+      'Hệ thống phanh ABS, ASR',
+      'Khung gầm vững chắc',
+      'Chi phí bảo dưỡng thấp'
+    ]
+  },
+  {
+    id: '12',
+    name: 'Dongfeng 3 Chân 6x4',
+    slug: 'dongfeng-3-chan-6x4',
+    type: 'dau-keo',
+    brand: 'Dongfeng',
+    price: 1150000000,
+    priceText: '1.150.000.000 VNĐ',
+    weight: 45,
+    weightText: '45 tấn',
+    length: 7.0,
+    thumbnailUrl: 'https://tongkhoxetai.vn/assets/images/products/dongfeng-6x4.jpg',
+    images: [
+      'https://tongkhoxetai.vn/assets/images/products/dongfeng-6x4.jpg',
+      'https://tongkhoxetai.vn/assets/images/products/dongfeng-6x4-2.jpg'
+    ],
+    isNew: false,
+    isHot: true,
+    isSoldOut: false,
+    specifications: {
+      engineType: 'Cummins ISLe400 40, 6 xy-lanh thẳng hàng',
+      engineCapacity: '10800cc',
+      horsePower: '400 mã lực tại 1900 vòng/phút',
+      torque: '1850 Nm tại 1100-1300 vòng/phút',
+      transmission: 'Số sàn 12 cấp',
+      fuelConsumption: '32L/100km',
+      emission: 'Euro 5',
+      dimensions: '7.000 x 2.500 x 3.750 mm',
+      wheelbase: '4.1 m',
+      payload: '45 tấn',
+      origin: 'Trung Quốc',
+      seats: '2 chỗ',
+      warranty: '3 năm hoặc 200.000 km',
+      year: '2024'
+    },
+    description: 'Dongfeng 3 Chân 6x4 là xe đầu kéo có tải trọng kéo 45 tấn, được thiết kế với độ bền cao và khả năng vận hành ổn định. Xe được trang bị động cơ Cummins ISLe400 40 mạnh mẽ, tiết kiệm nhiên liệu và đáp ứng tiêu chuẩn khí thải Euro 5. Dongfeng 3 Chân 6x4 là lựa chọn lý tưởng cho các doanh nghiệp vận tải container và hàng hóa siêu nặng.',
+    features: [
+      'Động cơ Cummins mạnh mẽ, bền bỉ',
+      'Tiết kiệm nhiên liệu',
+      'Cabin thoải mái, tiện nghi',
+      'Hệ thống phanh ABS, ASR',
+      'Khung gầm vững chắc',
+      'Chi phí bảo dưỡng thấp'
+    ]
+  }
+];
+
+// Các tin tức, thông báo
+export const notifications = [
+  {
+    id: 'n1',
+    customerName: 'Nguyễn Văn A',
+    phone: '09x.xxx.xxx',
+    productId: '1',
+    timestamp: Date.now() - 2 * 60 * 60 * 1000, // 2 giờ trước
+  },
+  {
+    id: 'n2',
+    customerName: 'Trần Thị B',
+    phone: '08x.xxx.xxx',
+    productId: '4',
+    timestamp: Date.now() - 38 * 60 * 1000, // 38 phút trước
+  },
+  {
+    id: 'n3',
+    customerName: 'Lê Văn C',
+    phone: '07x.xxx.xxx',
+    productId: '6',
+    timestamp: Date.now() - 12 * 60 * 1000, // 12 phút trước
+  },
+  {
+    id: 'n4',
+    customerName: 'Phạm Thị D',
+    phone: '03x.xxx.xxx',
+    productId: '10',
+    timestamp: Date.now() - 4 * 60 * 1000, // 4 phút trước
   },
 ];
+
+export const getProductNameById = (id: string): string => {
+  const product = trucks.find(truck => truck.id === id);
+  return product ? product.name : 'Sản phẩm không xác định';
+};
+
+// Lọc xe tải theo bộ lọc
+export const filterTrucks = (filters: any) => {
+  return trucks.filter(truck => {
+    // Lọc theo loại xe
+    if (filters.vehicleType && truck.type !== filters.vehicleType) {
+      return false;
+    }
+
+    // Lọc theo thương hiệu
+    if (filters.brand && truck.brand !== filters.brand) {
+      return false;
+    }
+
+    // Lọc theo khoảng giá
+    if (filters.minPrice !== null && filters.minPrice !== undefined && truck.price < filters.minPrice) {
+      return false;
+    }
+    if (filters.maxPrice !== null && filters.maxPrice !== undefined && truck.price > filters.maxPrice) {
+      return false;
+    }
+
+    // Lọc theo khoảng tải trọng
+    if (filters.minWeight !== null && filters.minWeight !== undefined && truck.weight < filters.minWeight) {
+      return false;
+    }
+    if (filters.maxWeight !== null && filters.maxWeight !== undefined && truck.weight > filters.maxWeight) {
+      return false;
+    }
+
+    // Lọc theo từ khóa tìm kiếm
+    if (filters.search && !truck.name.toLowerCase().includes(filters.search.toLowerCase())) {
+      return false;
+    }
+
+    // Lọc theo tham số weight từ URL
+    if (filters.weight) {
+      const weightRange = filters.weight.split('-');
+      const minWeight = parseFloat(weightRange[0]);
+      const maxWeight = weightRange.length > 1 ? parseFloat(weightRange[1]) : 100;
+
+      // Nếu là "20+", xử lý đặc biệt
+      if (filters.weight === '20+' && truck.weight < 20) {
+        return false;
+      }
+      // Ngược lại, kiểm tra trong khoảng
+      else if (filters.weight !== '20+' && (truck.weight < minWeight || truck.weight > maxWeight)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+};
