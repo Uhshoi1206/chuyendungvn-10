@@ -67,9 +67,9 @@ export const truckWeights: TruckWeight[] = [
   { 
     id: 'over-20', 
     name: 'Trên 20 tấn',
-    value: '20-100',
+    value: '20-100', // Thay đổi từ '20-100' để tương thích với giá trị MAX_WEIGHT mới
     minWeight: 20,
-    maxWeight: 100
+    maxWeight: 100 // Thay đổi từ 100
   },
 ];
 

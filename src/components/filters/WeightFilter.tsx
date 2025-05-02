@@ -22,7 +22,7 @@ const calculateMaxWeight = (): number => {
 };
 
 // Lưu trữ giá trị tải trọng tối đa để tránh tính toán lại
-const MAX_WEIGHT = calculateMaxWeight() > 20 ? calculateMaxWeight() : 100;
+const MAX_WEIGHT = 100; // Thay đổi từ 20 lên 100 tấn
 
 export const WeightFilter: React.FC<WeightFilterProps> = ({
   weightRange,

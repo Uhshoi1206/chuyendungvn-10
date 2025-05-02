@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TruckFilters, VehicleType } from '@/models/TruckTypes';
@@ -138,7 +137,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       
       // Xác định đúng danh mục tải trọng dựa trên phạm vi đã chọn
       if (newFilters.minWeight >= 20) {
-        weightCategory = 25;      // Trên 20 tấn
+        weightCategory = 25;      // Trên 20 tấn (giá trị biểu diễn, không phải thực tế)
       } else if (newFilters.maxWeight <= 1) {
         weightCategory = 1;       // Dưới 1 tấn
       } else if (newFilters.minWeight >= 15 && newFilters.maxWeight <= 20) {
@@ -156,9 +155,9 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       } else {
         // Fallback - tìm danh mục trọng lượng phù hợp nhất
         weightCategory = truckWeights.find(w => {
-          const maxWeightValue = parseFloat(String(w.value));
+          const maxWeightValue = parseFloat(String(w.value).split('-')[1]);
           return maxWeightValue >= newFilters.maxWeight!;
-        })?.value || newFilters.maxWeight;
+        })?.value.split('-')[1] || newFilters.maxWeight;
       }
       
       params.set('weight', String(weightCategory));

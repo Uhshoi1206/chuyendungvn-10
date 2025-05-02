@@ -16,7 +16,7 @@ const calculateMaxWeight = (): number => {
 };
 
 // Lưu trữ giá trị tối đa
-const MAX_WEIGHT = calculateMaxWeight();
+const MAX_WEIGHT = 100; // Thay đổi từ giá trị tính toán thành cố định 100 tấn
 
 export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType | null, filters: {
   brand: string | null;

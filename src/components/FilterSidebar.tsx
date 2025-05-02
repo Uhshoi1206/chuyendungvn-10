@@ -26,7 +26,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 }) => {
   const [localFilters, setLocalFilters] = useState<TruckFilters>(filters);
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000000000]);
-  const [weightRange, setWeightRange] = useState<number[]>([0, 20]);
+  const [weightRange, setWeightRange] = useState<number[]>([0, 100]); // Thay đổi từ [0, 20] thành [0, 100]
   const [searchInput, setSearchInput] = useState<string>(filters.search || '');
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       search: null
     });
     setPriceRange([0, 1000000000]);
-    setWeightRange([0, 20]);
+    setWeightRange([0, 100]); // Thay đổi từ [0, 20] thành [0, 100]
     setSearchInput('');
     onResetFilters();
     

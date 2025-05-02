@@ -108,5 +108,9 @@ export const parseWeightParam = (weightParam: string | null): { minWeight: numbe
 
 // Hàm tạo tham số weight cho URL từ giá trị min và max
 export const createWeightParam = (minWeight: number, maxWeight: number): string => {
+  // Nếu maxWeight lớn hơn hoặc bằng 100, coi như là giá trị tối đa
+  if (maxWeight >= 100) {
+    return `${minWeight}-100`;
+  }
   return `${minWeight}-${maxWeight}`;
 };
