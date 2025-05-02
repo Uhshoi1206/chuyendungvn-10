@@ -32,6 +32,7 @@ export interface TruckFilters {
   maxWeight: number | null;
   search: string | null;
   weight?: string | null;
+  [key: string]: VehicleType | string | number | null | undefined;
 }
 
 export interface TruckBrand {

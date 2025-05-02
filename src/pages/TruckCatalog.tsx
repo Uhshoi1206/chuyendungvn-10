@@ -74,28 +74,28 @@ const TruckCatalog = () => {
   };
 
   // Xử lý thay đổi bộ lọc
-  const handleFilterChange = (key: keyof TruckFilters | TruckFilters, value?: any) => {
+  const handleFilterChange = (keyOrFilters: keyof TruckFilters | TruckFilters, value?: any) => {
     let newFilters: TruckFilters;
     
     // Nếu là toàn bộ object filters
-    if (typeof key === 'object') {
-      newFilters = key;
+    if (typeof keyOrFilters === 'object') {
+      newFilters = keyOrFilters;
     } else {
       newFilters = { ...filters };
-      newFilters[key] = value;
+      (newFilters[keyOrFilters] as any) = value;
     }
     
     setFilters(newFilters);
     
     // Cập nhật URL khi cần thiết
-    if (typeof key === 'string') {
-      if (key === 'vehicleType' && value) {
+    if (typeof keyOrFilters === 'string') {
+      if (keyOrFilters === 'vehicleType' && value) {
         searchParams.set('type', value);
-      } else if (key === 'brand' && value) {
+      } else if (keyOrFilters === 'brand' && value) {
         searchParams.set('brand', value);
-      } else if (key === 'search' && value) {
+      } else if (keyOrFilters === 'search' && value) {
         searchParams.set('q', value);
-      } else if (key === 'weight' && value) {
+      } else if (keyOrFilters === 'weight' && value) {
         searchParams.set('weight', value);
       }
       setSearchParams(searchParams);
