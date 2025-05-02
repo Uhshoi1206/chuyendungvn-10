@@ -47,6 +47,7 @@ const Index = () => {
         description="Đa dạng các loại mooc với nhiều kích thước và chủng loại, từ mooc phẳng, mooc lồng, mooc ben đến mooc xitec."
         vehicles={moocTrucks}
         type="mooc"
+        linkText="Xem tất cả loại mooc"
         className="bg-gray-50"
       />
       <SectionDivider style="curved" bgTop="bg-gray-50" bgBottom="bg-white" className="h-16" />
@@ -56,6 +57,7 @@ const Index = () => {
         description="Xe đầu kéo từ nhiều thương hiệu uy tín, phù hợp cho vận tải đường dài và vận chuyển hàng hóa nặng."
         vehicles={headTrucks}
         type="dau-keo"
+        linkText="Xem tất cả xe đầu kéo"
       />
       <SectionDivider style="wave" bgTop="bg-white" bgBottom="bg-gray-50" className="h-16" />
       
