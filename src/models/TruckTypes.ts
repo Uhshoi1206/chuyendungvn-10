@@ -21,6 +21,14 @@ export interface Truck {
   description: string;
   specifications?: Record<string, string>;
   relatedProducts?: string[];
+  // Thêm các thuộc tính còn thiếu
+  engineType?: string;
+  engine?: string;
+  fuelType?: string;
+  origin?: string;
+  seats?: number;
+  emission?: string;
+  features?: string[];
 }
 
 export interface TruckBrand {
