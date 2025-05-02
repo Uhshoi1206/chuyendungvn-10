@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
-import { trucks } from '@/data/truckData';
+import { trucks, truckWeights } from '@/data/truckData';
 
 interface WeightFilterProps {
   weightRange: number[];
@@ -22,7 +22,7 @@ const calculateMaxWeight = (): number => {
 };
 
 // Lưu trữ giá trị tải trọng tối đa để tránh tính toán lại
-const MAX_WEIGHT = calculateMaxWeight();
+const MAX_WEIGHT = calculateMaxWeight() > 20 ? calculateMaxWeight() : 100;
 
 export const WeightFilter: React.FC<WeightFilterProps> = ({
   weightRange,
@@ -47,25 +47,18 @@ export const WeightFilter: React.FC<WeightFilterProps> = ({
       return "Tất cả tải trọng";
     }
     
-    if (weightRange[0] === 0 && weightRange[1] <= 1) {
-      return "Dưới 1 tấn";
-    } else if (weightRange[0] >= 1 && weightRange[1] <= 2) {
-      return "1 - 2 tấn";
-    } else if (weightRange[0] >= 2 && weightRange[1] <= 3.5) {
-      return "2 - 3.5 tấn";
-    } else if (weightRange[0] >= 3.5 && weightRange[1] <= 5) {
-      return "3.5 - 5 tấn";
-    } else if (weightRange[0] >= 5 && weightRange[1] <= 8) {
-      return "5 - 8 tấn";
-    } else if (weightRange[0] >= 8 && weightRange[1] <= 15) {
-      return "8 - 15 tấn";
-    } else if (weightRange[0] >= 15 && weightRange[1] <= 20) {
-      return "15 - 20 tấn";
-    } else if (weightRange[0] >= 20) {
-      return "Trên 20 tấn";
-    } else {
-      return `${weightRange[0]} - ${weightRange[1]} tấn`;
+    // Tìm xem phạm vi trọng lượng hiện tại có khớp với một trong các phạm vi đã định nghĩa không
+    const matchingWeight = truckWeights.find(
+      w => Math.abs(w.minWeight - weightRange[0]) < 0.1 && 
+           Math.abs(w.maxWeight - weightRange[1]) < 0.1
+    );
+    
+    if (matchingWeight) {
+      return matchingWeight.name;
     }
+    
+    // Các trường hợp khác, hiển thị theo khoảng giá trị
+    return `${weightRange[0]} - ${weightRange[1]} tấn`;
   };
 
   return (

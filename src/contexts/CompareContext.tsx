@@ -11,7 +11,7 @@ interface CompareContextType {
   clearCompare: () => void;
   isInCompare: (truckId: string) => boolean;
   generateCompareUrl: () => string;
-  loadTrucksFromUrl: (trucks: Truck[]) => void; // Thay đổi kiểu dữ liệu ở đây
+  loadTrucksFromUrl: (trucks: Truck[]) => void;
 }
 
 const CompareContext = createContext<CompareContextType | undefined>(undefined);
@@ -31,115 +31,101 @@ export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const storedItems = localStorage.getItem(STORAGE_KEY);
     if (storedItems) {
       try {
-        setCompareItems(JSON.parse(storedItems));
+        const parsedItems = JSON.parse(storedItems);
+        setCompareItems(parsedItems);
       } catch (error) {
-        console.error("Không thể đọc dữ liệu so sánh từ localStorage:", error);
-        localStorage.removeItem(STORAGE_KEY);
+        console.error('Error parsing stored compare items', error);
       }
     }
   }, []);
 
-  // Lưu vào localStorage mỗi khi có thay đổi
+  // Lưu vào localStorage khi state thay đổi
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(compareItems));
   }, [compareItems]);
-  
-  // Cập nhật URL khi danh sách xe so sánh thay đổi và nếu đang ở trang so sánh
-  useEffect(() => {
-    if (location.pathname.startsWith('/so-sanh-xe') && compareItems.length > 0) {
-      const compareUrl = generateCompareUrl();
-      // Chỉ chuyển hướng nếu URL khác với URL hiện tại
-      if (location.pathname !== compareUrl) {
-        navigate(compareUrl, { replace: true });
-      }
-    }
-  }, [compareItems, location.pathname]);
 
+  // Thêm xe vào danh sách so sánh
   const addToCompare = (truck: Truck) => {
-    // Kiểm tra xe đã có trong danh sách chưa
-    if (isInCompare(truck.id)) {
-      toast({
-        title: "Thông báo",
-        description: `${truck.name} đã có trong danh sách so sánh`,
-      });
-      return;
-    }
-
-    // Kiểm tra đã đạt giới hạn chưa
     if (compareItems.length >= MAX_COMPARE_ITEMS) {
       toast({
-        title: "Thông báo",
-        description: `Bạn chỉ có thể so sánh tối đa ${MAX_COMPARE_ITEMS} xe cùng lúc`,
-        variant: "destructive"
+        title: "Danh sách so sánh đã đầy",
+        description: `Bạn chỉ có thể so sánh tối đa ${MAX_COMPARE_ITEMS} xe cùng lúc.`,
+        variant: "destructive",
       });
       return;
     }
-
-    // Thêm xe vào danh sách so sánh
-    const newCompareItems = [...compareItems, truck];
-    setCompareItems(newCompareItems);
+    
+    if (isInCompare(truck.id)) {
+      toast({
+        title: "Đã có trong danh sách",
+        description: "Xe này đã được thêm vào danh sách so sánh.",
+      });
+      return;
+    }
+    
+    setCompareItems(prev => [...prev, truck]);
     
     toast({
-      title: "Thêm thành công",
-      description: `Đã thêm ${truck.name} vào danh sách so sánh`,
+      title: "Đã thêm vào so sánh",
+      description: `${truck.name} đã được thêm vào danh sách so sánh.`,
     });
   };
 
+  // Xóa xe khỏi danh sách so sánh
   const removeFromCompare = (truckId: string) => {
     setCompareItems(prev => prev.filter(item => item.id !== truckId));
+    
     toast({
-      title: "Đã xóa",
-      description: "Đã xóa xe khỏi danh sách so sánh",
+      title: "Đã xóa khỏi so sánh",
+      description: "Xe đã được xóa khỏi danh sách so sánh.",
     });
   };
 
+  // Xóa toàn bộ danh sách
   const clearCompare = () => {
     setCompareItems([]);
+    
     toast({
       title: "Đã xóa tất cả",
-      description: "Danh sách so sánh đã được làm trống",
+      description: "Danh sách so sánh đã được xóa.",
     });
-    // Nếu đang ở trang so sánh, điều hướng về trang so sánh trống
-    if (location.pathname.startsWith('/so-sanh-xe')) {
-      navigate('/so-sanh-xe', { replace: true });
-    }
   };
 
+  // Kiểm tra xe đã có trong danh sách chưa
   const isInCompare = (truckId: string) => {
     return compareItems.some(item => item.id === truckId);
   };
   
-  // Tạo URL so sánh xe thân thiện với SEO
+  // Tạo URL cho trang so sánh
   const generateCompareUrl = () => {
-    if (compareItems.length === 0) return '/so-sanh-xe';
+    if (compareItems.length === 0) {
+      return '/so-sanh-xe';
+    }
     
-    // Tạo đoạn URL từ slug của các xe
-    const trucksSlug = compareItems
-      .map(truck => truck.slug)
-      .join('-vs-');
-      
-    return `/so-sanh-xe/${trucksSlug}`;
+    // Tạo URL với ID các xe được chọn
+    const truckIds = compareItems.map(truck => truck.id).join('-');
+    return `/so-sanh-xe/${truckIds}`;
   };
   
-  // Tải danh sách xe từ tham số URL - thay đổi kiểu tham số
-  const loadTrucksFromUrl = (trucksToLoad: Truck[]) => {
-    // Cập nhật danh sách so sánh từ dữ liệu xe đã tải
-    if (trucksToLoad.length > 0) {
-      setCompareItems(trucksToLoad);
-      console.log("Đã tải xe từ URL param:", trucksToLoad.length, "xe");
+  // Load danh sách xe từ URL
+  const loadTrucksFromUrl = (trucks: Truck[]) => {
+    if (trucks.length > 0) {
+      setCompareItems(trucks);
     }
+  };
+  
+  const value = {
+    compareItems,
+    addToCompare,
+    removeFromCompare,
+    clearCompare,
+    isInCompare,
+    generateCompareUrl,
+    loadTrucksFromUrl
   };
 
   return (
-    <CompareContext.Provider value={{ 
-      compareItems, 
-      addToCompare, 
-      removeFromCompare, 
-      clearCompare, 
-      isInCompare,
-      generateCompareUrl,
-      loadTrucksFromUrl
-    }}>
+    <CompareContext.Provider value={value}>
       {children}
     </CompareContext.Provider>
   );

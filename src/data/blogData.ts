@@ -1,261 +1,257 @@
-import { BlogPost, BlogCategory } from '@/models/BlogPost';
 
-// Định nghĩa các danh mục blog - Chỉ cần sửa object này để thêm/xóa danh mục
-const blogCategories: Record<BlogCategory, string> = {
-  'xe-tai': 'Xe Tải',
-  'cau': 'Cẩu',
-  'mooc': 'Mooc',
-  'xe-dau-keo': 'Xe Đầu Kéo'
+import { BlogPost } from '../models/BlogPost';
+
+// Categories
+export const blogCategories: Record<string, string> = {
+  'industry-news': 'Tin Ngành',
+  'product-review': 'Đánh Giá Xe',
+  'driver-tips': 'Lái Xe',
+  'maintenance': 'Bảo Dưỡng'
 };
 
-// Hàm tạo bài viết - giúp tạo nhiều bài viết dễ dàng
-const createBlogPost = (
-  id: string,
-  slug: string,
-  title: string,
-  description: string,
-  category: BlogCategory,
-  publishDate: string,
-  isFeatured: boolean = false
-): BlogPost => {
-  // Tạo nội dung mẫu dựa trên title
-  const content = `
-    <p>${description} Đây là bài viết chi tiết về ${title.toLowerCase()}...</p>
-    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c" alt="${title}" className="w-full h-auto my-4 rounded-lg" />
-    <p>Thông tin chi tiết và phân tích chuyên sâu về ${title.toLowerCase()}. Chúng tôi sẽ tìm hiểu các ưu điểm, nhược điểm và ứng dụng thực tế.</p>
-    <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec" alt="${title}" className="w-full h-auto my-4 rounded-lg" />
-    <p>Các yếu tố cần xem xét khi lựa chọn ${title.toLowerCase()} phù hợp với nhu cầu của bạn...</p>
-    <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59" alt="${title}" className="w-full h-auto my-4 rounded-lg" />
-    <p>Kết luận về ${title.toLowerCase()} và lời khuyên cho người mua.</p>
-    <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510" alt="${title}" className="w-full h-auto my-4 rounded-lg" />
-  `;
-
-  // Tạo danh sách hình ảnh ngẫu nhiên cho bài viết
-  const imageIds = [
-    "1519003722824-194d4455a60c",
-    "1578575437130-527eed3abbec", 
-    "1580674285054-bed31e145f59",
-    "1597733336794-12d05021d510",
-    "1541625602330-2277a4c46182",
-    "1565008447742-97f6f38c985c",
-    "1566576721346-d4a3b4eaeb55",
-    "1573046706408-dd2ab8e73088",
-    "1586191582056-b7f0372a3bd6",
-    "1505369430934-a0be1aa5bce3"
-  ];
-  
-  // Lấy ngẫu nhiên 4 ảnh từ danh sách
-  const randomImages = [];
-  for (let i = 0; i < 4; i++) {
-    const randomIndex = Math.floor(Math.random() * imageIds.length);
-    randomImages.push(`https://images.unsplash.com/photo-${imageIds[randomIndex]}`);
-  }
-
-  // Tạo đối tượng bài viết
-  return {
-    id,
-    slug,
-    title,
-    description,
-    content,
-    images: randomImages,
-    publishDate,
-    readTime: Math.floor(Math.random() * 10) + 3, // 3-12 phút
-    category,
-    author: ['Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C', 'Phạm Thị D'][Math.floor(Math.random() * 4)],
-    tags: [`${category}`, 'vận tải', 'logistic', 'xe chuyên dụng'],
-    featured: isFeatured
-  };
-};
-
-// Tạo dữ liệu bài viết cho mỗi danh mục
-const generateBlogPosts = () => {
-  let allPosts: BlogPost[] = [];
-  let idCounter = 1;
-
-  // Tự động tạo 6 bài viết cho mỗi danh mục
-  Object.keys(blogCategories).forEach((category, categoryIndex) => {
-    for (let i = 0; i < 6; i++) {
-      const postId = idCounter.toString();
-      idCounter++;
-      const isFeatured = i === 0; // Bài đầu tiên của mỗi danh mục được đánh dấu là nổi bật
-
-      // Tạo ngày đăng bài ngẫu nhiên trong 30 ngày gần đây
-      const date = new Date();
-      date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-      const publishDate = date.toISOString().split('T')[0];
-
-      const post = createBlogPost(
-        postId,
-        `${category}-bai-viet-${i+1}`,
-        `${blogCategories[category as BlogCategory]} - Bài ${i+1}: Kiến thức cơ bản và ứng dụng`,
-        `Tìm hiểu về các thông tin quan trọng liên quan đến ${blogCategories[category as BlogCategory].toLowerCase()} và cách ứng dụng trong thực tế vận tải.`,
-        category as BlogCategory,
-        publishDate,
-        isFeatured
-      );
+// Blog posts
+export const blogPosts: BlogPost[] = [
+  {
+    id: '1',
+    title: 'Top 5 xe tải bán chạy nhất năm 2023',
+    slug: 'top-5-xe-tai-ban-chay-nhat-nam-2023',
+    description: 'Điểm qua những mẫu xe tải bán chạy nhất thị trường Việt Nam trong năm 2023, phân tích ưu nhược điểm và lý do được ưa chuộng.',
+    content: `
+      <h2>Những mẫu xe tải bán chạy nhất thị trường Việt Nam năm 2023</h2>
+      <p>Thị trường xe tải Việt Nam năm 2023 chứng kiến sự cạnh tranh gay gắt giữa các thương hiệu lớn như Hyundai, Thaco, Isuzu, Hino và các hãng xe Trung Quốc. Trong đó, 5 mẫu xe tải sau đây đã dẫn đầu về doanh số bán hàng:</p>
       
-      allPosts.push(post);
-    }
-  });
-
-  // Sắp xếp tất cả bài viết theo ngày đăng, mới nhất lên đầu
-  return allPosts.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
-};
-
-// Tạo danh sách bài viết
-let blogPosts: BlogPost[] = generateBlogPosts();
-
-// ======= Thêm bài viết blog chi tiết về Hyundai New Porter H150 =======
-
-const hyundaiH150Post: BlogPost = {
-  id: (blogPosts.length + 1).toString(),
-  slug: "hyundai-new-porter-h150-danh-gia-chi-tiet",
-  title: "Hyundai New Porter H150 – Đánh giá chi tiết dòng xe tải nhỏ linh hoạt",
-  description: "Khám phá ưu điểm nổi bật của Hyundai New Porter H150 – xe tải nhẹ hiện đại, tiết kiệm nhiên liệu, vận hành linh hoạt trong đô thị và phù hợp với mọi doanh nghiệp vận tải.",
-  content: `
-    <h2>Giới thiệu về Hyundai New Porter H150</h2>
-    <p>Hyundai New Porter H150 là một trong những dòng xe tải nhỏ thành công nhất tại Việt Nam, nổi bật với thiết kế nhỏ gọn, động cơ mạnh mẽ và khả năng hoạt động ổn định trên mọi cung đường đô thị. Xe phù hợp cho cả cá nhân kinh doanh vận chuyển và doanh nghiệp cần phương tiện giao nhận có tính linh hoạt cao.</p>
-    <img src="https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg" alt="Xe tải Hyundai New Porter H150" className="w-full h-auto my-4 rounded-lg" />
-    <h3>Thiết kế hiện đại, tối ưu không gian</h3>
-    <p>Cabin rộng rãi thoải mái cho 3 người, bảng điều khiển dễ sử dụng, tầm nhìn thoáng đãng và nhiều hộc để đồ tiện lợi. Ngoại thất trẻ trung, mạnh mẽ và bền bỉ với vật liệu cao cấp.</p>
-    <img src="https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg" alt="Nội thất Hyundai H150" className="w-full h-auto my-4 rounded-lg" />
-    <h3>Động cơ vận hành mạnh mẽ & tiết kiệm nhiên liệu</h3>
-    <p>Xe được trang bị động cơ D4CB Diesel 2.5L công suất 130PS, đạt tiêu chuẩn khí thải Euro 4, vận hành êm ái, tiết kiệm nhiên liệu và thân thiện với môi trường. Khả năng leo dốc tốt, tải trọng 1.5 tấn và bền bỉ theo thời gian.</p>
-    <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c" alt="Xe tải Hyundai H150 động cơ mạnh mẽ" className="w-full h-auto my-4 rounded-lg" />
-    <h3>An toàn tối ưu – Trang bị tiện nghi</h3>
-    <p>Trang bị phanh ABS, hệ thống giảm xóc, điều hòa hai chiều, giải trí Bluetooth/CD và các tính năng hỗ trợ an toàn vượt trội, giúp lái xe luôn an tâm trên mọi quãng đường.</p>
-    <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510" alt="Hyundai H150 thùng xe" className="w-full h-auto my-4 rounded-lg" />
-    <h3>Kết luận</h3>
-    <p>Hyundai New Porter H150 xứng đáng là lựa chọn hàng đầu trong phân khúc xe tải nhẹ: kinh tế, tiện dụng, bền bỉ, dễ bảo dưỡng và linh hoạt phù hợp với nhu cầu vận tải tại Việt Nam.</p>
-  `,
-  images: [
-    "https://tongkhoxetai.vn/upload/images/hyundai-new-porter-h150.jpg",
-    "https://tongkhoxetai.vn/upload/images/xe-tai-hyundai-new-porter-h150-gia-bao-nhieu.jpg",
-    "https://images.unsplash.com/photo-1519003722824-194d4455a60c",
-    "https://images.unsplash.com/photo-1597733336794-12d05021d510"
-  ],
-  publishDate: new Date().toISOString().split('T')[0],
-  readTime: 7,
-  category: "xe-tai",
-  author: "Nguyễn Văn A",
-  tags: ["xe-tai", "hyundai", "porter-h150", "xe tải nhẹ", "đô thị"],
-  featured: true
-};
-
-// Đảm bảo chỉ có một bài featured cho mỗi danh mục (thay bài mới vào nếu là xe-tai)
-const updatedBlogPosts: BlogPost[] = [
-  ...blogPosts.filter((post) => !(post.category === "xe-tai" && post.featured)),
-  hyundaiH150Post,
-  ...blogPosts.filter((post) => post.category !== "xe-tai"),
-].sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
-
-blogPosts = updatedBlogPosts;
-
-// ======= Thêm 3 bài viết mới về Thaco Ollin 350.E4, Isuzu QKR 270, Hyundai HD800 =======
-const customPosts: BlogPost[] = [
-  {
-    id: (blogPosts.length + 1).toString(),
-    slug: "thaco-ollin-350e4-danh-gia-uu-nhuoc-diem",
-    title: "Thaco Ollin 350.E4 – Đánh giá ưu nhược điểm thực tế",
-    description:
-      "Khám phá chi tiết về Thaco Ollin 350.E4: xe tải nhẹ động cơ mạnh mẽ, tiết kiệm nhiên liệu và giá thành hợp lý dành cho doanh nghiệp vừa và nhỏ.",
-    content: `
-      <h2>Giới thiệu Thaco Ollin 350.E4</h2>
-      <p>Thaco Ollin 350.E4 là dòng xe tải nhẹ ứng dụng công nghệ hiện đại, động cơ Euro 4 giúp tiết kiệm nhiên liệu và bảo vệ môi trường. Xe có tải trọng 3.49 tấn, thích hợp cho vận chuyển hàng tại nội thành và liên tỉnh.</p>
-      <img src="https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg" alt="Thaco Ollin 350.E4" className="w-full h-auto my-4 rounded-lg" />
-      <h3>Đặc điểm nổi bật</h3>
-      <ul>
-        <li>Động cơ Yuchai tiết kiệm nhiên liệu, bền bỉ</li>
-        <li>Thiết kế nhỏ gọn, phù hợp đường phố Việt Nam</li>
-        <li>Khung gầm chắc chắn, nội thất tiện nghi</li>
-      </ul>
-      <h3>Nhược điểm cần lưu ý</h3>
-      <p>Trang bị tiêu chuẩn còn khá cơ bản, khả năng chống ồn ở tốc độ cao chưa thực sự ấn tượng, tuy nhiên với tầm giá thì Ollin 350.E4 vẫn là lựa chọn xứng đáng.</p>
-      <h3>Kết luận</h3>
-      <p>Cạnh tranh trực tiếp với các dòng xe Nhật, Ollin 350.E4 nổi bật ở chi phí đầu tư thấp, bảo dưỡng thuận tiện và linh hoạt vận hành.</p>
+      <h3>1. Hyundai Porter H150</h3>
+      <p>Hyundai Porter H150 tiếp tục là mẫu xe tải nhẹ bán chạy nhất thị trường với doanh số hơn 5,000 xe được bán ra trong năm 2023. Ưu điểm nổi bật của H150 là thiết kế cabin rộng rãi, động cơ mạnh mẽ, tiết kiệm nhiên liệu, và chi phí bảo dưỡng hợp lý.</p>
+      
+      <h3>2. Thaco Kia K200</h3>
+      <p>Với giá bán cạnh tranh và chất lượng ổn định, Thaco Kia K200 đã giành vị trí thứ 2 về doanh số. Xe được lắp ráp trong nước, dễ dàng tìm kiếm phụ tùng thay thế và có mạng lưới dịch vụ rộng khắp trên toàn quốc.</p>
+      
+      <h3>3. Isuzu QKR</h3>
+      <p>Isuzu QKR với độ bền cao và chi phí vận hành thấp tiếp tục là lựa chọn hàng đầu của nhiều doanh nghiệp vận tải. Động cơ Isuzu nổi tiếng bền bỉ và khả năng vận hành ổn định trên mọi địa hình.</p>
+      
+      <h3>4. Dongfeng Hoang Huy B180</h3>
+      <p>Đại diện đến từ Trung Quốc, Dongfeng Hoang Huy B180 gây ấn tượng với giá bán hợp lý cùng tải trọng lớn. Xe được trang bị động cơ Cummins mạnh mẽ và nhiều tính năng an toàn, tạo nên sức hút lớn trên thị trường.</p>
+      
+      <h3>5. Hino 300 Series</h3>
+      <p>Đến từ Nhật Bản, Hino 300 Series khẳng định chất lượng với độ bền cao và hiệu suất ổn định. Mặc dù giá cao hơn so với các đối thủ, nhưng chất lượng đã được kiểm chứng khiến nhiều khách hàng sẵn sàng chi trả.</p>
+      
+      <h2>Xu hướng thị trường xe tải năm 2024</h2>
+      <p>Dự báo trong năm 2024, thị trường xe tải sẽ tiếp tục phát triển với xu hướng tăng cường các tính năng an toàn, thân thiện với môi trường và tiết kiệm nhiên liệu. Các dòng xe hybrid và điện cũng đang dần xuất hiện, mở ra một kỷ nguyên mới cho ngành vận tải đường bộ tại Việt Nam.</p>
     `,
+    category: 'industry-news',
     images: [
-      "https://xetaipo.com.vn/wp-content/uploads/2022/08/xe-tai-thaco-ollin-350-e4.jpg",
-      "https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-e4-thung-dai.jpg",
-      "https://xetaiso1.com/wp-content/uploads/2019/02/xetaiollin.jpg",
-      "https://autoth.com.vn/wp-content/uploads/2020/06/ollin-350-cabin.jpg"
+      'https://tongkhoxetai.vn/upload/images/blog/top-5-xe-tai.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/hyundai-porter-h150-blog.jpg'
     ],
-    publishDate: new Date().toISOString().split("T")[0],
-    readTime: 6,
-    category: "xe-tai",
-    author: "Nguyễn Văn A",
-    tags: ["xe-tai", "thaco", "ollin-350-e4", "xe tải nhẹ"],
-    featured: false,
+    publishDate: Date.now() - 5 * 24 * 60 * 60 * 1000, // 5 days ago
+    readTime: 8,
+    author: 'Nguyễn Văn A'
   },
   {
-    id: (blogPosts.length + 2).toString(),
-    slug: "isuzu-qkr-270-dong-co-ben-bi-thich-hop-do-thi",
-    title: "Isuzu QKR 270 – Dòng xe tải bền bỉ, phù hợp đô thị Việt",
-    description:
-      "Isuzu QKR 270 là lựa chọn xe tải nhẹ lý tưởng cho các tuyến đường nội thành: tiết kiệm nhiên liệu, độ bền cao, thương hiệu Nhật uy tín.",
+    id: '2',
+    title: 'Đánh giá chi tiết Hyundai Mighty EX8 GTL - Xe tải 8 tấn đáng mua nhất 2023',
+    slug: 'danh-gia-hyundai-mighty-ex8-gtl',
+    description: 'Phân tích chi tiết ưu nhược điểm của dòng xe tải Hyundai Mighty EX8 GTL, từ thiết kế, động cơ đến khả năng vận hành thực tế.',
     content: `
-      <h2>Giới thiệu Isuzu QKR 270</h2>
-      <p>Dòng xe QKR 270 của Isuzu nổi bật ở khả năng vận hành ổn định, động cơ Common Rail tiết kiệm nhiên liệu, đáp ứng tiêu chuẩn khí thải Euro 4. Thiết kế cabin vuông hiện đại với tầm nhìn rộng rãi.</p>
-      <img src="https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg" alt="Isuzu QKR 270" className="w-full h-auto my-4 rounded-lg" />
-      <h3>Ưu điểm nổi bật</h3>
+      <h2>Tổng quan về xe tải Hyundai Mighty EX8 GTL</h2>
+      <p>Hyundai Mighty EX8 GTL là dòng xe tải trung được Hyundai Thành Công lắp ráp và phân phối tại Việt Nam. Với tải trọng 8 tấn, đây là mẫu xe nằm ở phân khúc giữa dòng Mighty EX6 và HD700, đáp ứng nhu cầu vận chuyển hàng hóa trên nhiều cung đường.</p>
+      
+      <h3>Ngoại thất</h3>
+      <p>EX8 GTL sở hữu thiết kế ngoại thất hiện đại, góc cạnh với cabin rộng rãi theo phong cách Euro. Đầu xe nổi bật với lưới tản nhiệt cỡ lớn mạ chrome sáng bóng, cụm đèn pha halogen thiết kế tinh tế kết hợp với đèn sương mù, mang đến khả năng chiếu sáng tối ưu trong mọi điều kiện thời tiết.</p>
+      
+      <h3>Nội thất</h3>
+      <p>Không gian nội thất của EX8 GTL được thiết kế theo hướng tiện nghi như một mẫu SUV với bảng điều khiển ergonomic, vô lăng gật gù, điều hòa công suất lớn, hệ thống giải trí đa phương tiện tích hợp màn hình cảm ứng 7 inch, kết nối bluetooth, USB. Ghế lái có thể điều chỉnh nhiều hướng, tích hợp tựa đầu và tựa tay mang lại sự thoải mái cho tài xế trong những hành trình dài.</p>
+      
+      <h3>Động cơ và vận hành</h3>
+      <p>EX8 GTL được trang bị động cơ diesel D4DD dung tích 4.0L, sản sinh công suất 160 mã lực tại 2,500 vòng/phút và mô-men xoắn 500 Nm tại 1,400 vòng/phút. Kết hợp với hộp số sàn 6 cấp, xe vận hành mạnh mẽ, linh hoạt trên nhiều địa hình. Đặc biệt, mức tiêu thụ nhiên liệu chỉ khoảng 12L/100km, khá tiết kiệm cho một mẫu xe tải 8 tấn.</p>
+      
+      <h3>Độ an toàn</h3>
+      <p>Về an toàn, EX8 GTL được trang bị hệ thống phanh thủy lực, trợ lực chân không, phanh đĩa cho bánh trước và phanh tang trống cho bánh sau. Ngoài ra, xe còn có tính năng chống bó cứng phanh ABS, hỗ trợ phanh khẩn cấp BA, phân phối lực phanh điện tử EBD giúp tăng cường an toàn khi vận hành.</p>
+      
+      <h2>Ưu và nhược điểm</h2>
+      <p><strong>Ưu điểm:</strong></p>
       <ul>
-        <li>Thương hiệu nổi tiếng Nhật Bản, độ bền vượt trội</li>
-        <li>Vận hành tiết kiệm, bảo dưỡng dễ dàng</li>
-        <li>Thùng xe đa dạng, tải trọng linh động</li>
+        <li>Thiết kế cabin hiện đại, tiện nghi như xe du lịch</li>
+        <li>Động cơ mạnh mẽ, bền bỉ, tiết kiệm nhiên liệu</li>
+        <li>Hệ thống an toàn đầy đủ</li>
+        <li>Mạng lưới dịch vụ rộng khắp</li>
+        <li>Giá trị bán lại cao</li>
       </ul>
-      <h3>Có phù hợp với doanh nghiệp vận tải nhỏ?</h3>
-      <p>Với chi phí sử dụng hợp lý, Isuzu QKR 270 đặc biệt thích hợp cho các doanh nghiệp kinh doanh vận chuyển nội thành hoặc giao nhận hàng hóa tần suất lớn.</p>
+      
+      <p><strong>Nhược điểm:</strong></p>
+      <ul>
+        <li>Giá bán cao hơn so với các đối thủ cùng phân khúc</li>
+        <li>Chi phí bảo dưỡng định kỳ khá tốn kém</li>
+        <li>Một số phụ tùng thay thế đắt đỏ</li>
+      </ul>
+      
+      <h2>Kết luận</h2>
+      <p>Với những ưu điểm vượt trội về thiết kế, động cơ và độ an toàn, Hyundai Mighty EX8 GTL xứng đáng là lựa chọn hàng đầu trong phân khúc xe tải 8 tấn tại Việt Nam. Mặc dù có mức giá cao hơn đôi chút so với các đối thủ, nhưng những gì mà EX8 GTL mang lại hoàn toàn xứng đáng với số tiền bỏ ra, đặc biệt là về lâu dài khi tính đến chi phí vận hành tổng thể và giá trị bán lại.</p>
     `,
+    category: 'product-review',
     images: [
-      "https://isuzudongnam.vn/wp-content/uploads/2021/09/isuzu-qkr-270.jpg",
-      "https://otoisuzu.com.vn/uploads/images/2020/12/03/isuzu-qkr-270-thung-dai.jpeg",
-      "https://isuzutentien.vn/wp-content/uploads/2021/12/xe-tai-isuzu-qkr-2701.jpg",
-      "https://ototruonggiang.com.vn/wp-content/uploads/2020/09/qkr270.jpg"
+      'https://tongkhoxetai.vn/upload/images/blog/hyundai-mighty-ex8.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/hyundai-ex8-cabin.jpg'
     ],
-    publishDate: new Date().toISOString().split("T")[0],
-    readTime: 5,
-    category: "xe-tai",
-    author: "Phạm Thị D",
-    tags: ["xe-tai", "isuzu", "qkr-270", "vận tải"],
-    featured: false,
+    publishDate: Date.now() - 10 * 24 * 60 * 60 * 1000, // 10 days ago
+    readTime: 12,
+    author: 'Trần Văn B'
   },
   {
-    id: (blogPosts.length + 3).toString(),
-    slug: "danh-gia-xe-tai-hyundai-hd800",
-    title: "Đánh giá xe tải Hyundai HD800: Động cơ mạnh mẽ, độ bền vượt trội",
-    description:
-      "Hyundai HD800 gây ấn tượng ở động cơ mạnh mẽ, khả năng chịu tải tốt và chi phí vận hành hợp lý – lựa chọn hàng đầu trong phân khúc tầm trung.",
+    id: '3',
+    title: '7 kỹ năng vượt xe tải an toàn trên đường cao tốc',
+    slug: '7-ky-nang-vuot-xe-tai-an-toan',
+    description: 'Những kỹ năng vượt xe tải cần thiết giúp đảm bảo an toàn cho bạn và những người tham gia giao thông khác trên đường cao tốc.',
     content: `
-      <h2>Giới thiệu xe tải Hyundai HD800</h2>
-      <p>Hyundai HD800 là dòng xe tải tầm trung có lịch sử lâu đời, nổi tiếng với độ bền cao, khả năng vận hành mạnh mẽ và tiết kiệm nhiên liệu nhờ động cơ D4DB 4.0L.</p>
-      <img src="https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg" alt="Hyundai HD800" className="w-full h-auto my-4 rounded-lg" />
-      <h3>Lý do nên chọn HD800</h3>
+      <h2>Tại sao vượt xe tải lại nguy hiểm?</h2>
+      <p>Xe tải có kích thước lớn, tạo ra nhiều điểm mù và cần khoảng cách phanh dài hơn xe con. Khi vượt xe tải, bạn cần đặc biệt chú ý vì:</p>
       <ul>
-        <li>Động cơ bền bỉ, tải trọng lớn đến 8 tấn</li>
-        <li>Khung gầm chắc chắn, vận hành ổn định mọi địa hình</li>
-        <li>Chi phí bảo trì thấp, phụ tùng phổ biến</li>
+        <li>Tài xế xe tải khó nhìn thấy xe nhỏ di chuyển gần họ</li>
+        <li>Luồng gió từ xe tải có thể ảnh hưởng đến khả năng điều khiển xe của bạn</li>
+        <li>Xe tải thường di chuyển chậm hơn khi lên dốc và nhanh hơn khi xuống dốc</li>
       </ul>
-      <h3>Kết luận</h3>
-      <p>Hyundai HD800 xứng đáng là bạn đồng hành tin cậy của các doanh nghiệp vận tải với độ bền, hiệu suất và giá trị đầu tư lâu dài.</p>
+      
+      <h3>Kỹ năng 1: Giữ khoảng cách an toàn</h3>
+      <p>Trước khi vượt xe tải, hãy giữ khoảng cách tối thiểu 3-4 giây sau xe tải. Điều này giúp bạn có tầm nhìn tốt hơn về con đường phía trước và có thời gian phản ứng nếu xe tải phanh đột ngột.</p>
+      
+      <h3>Kỹ năng 2: Kiểm tra điều kiện đường</h3>
+      <p>Chỉ vượt khi đảm bảo:</p>
+      <ul>
+        <li>Đường phía trước thông thoáng với tầm nhìn rõ ràng</li>
+        <li>Không có biển cấm vượt và vạch liền trên đường</li>
+        <li>Không đang ở đoạn đường cong, dốc cao hoặc gần giao lộ</li>
+        <li>Thời tiết tốt, đủ ánh sáng</li>
+      </ul>
+      
+      <h3>Kỹ năng 3: Báo hiệu rõ ràng</h3>
+      <p>Trước khi vượt, luôn bật đèn xi-nhan để báo hiệu cho tài xế xe tải và những người tham gia giao thông khác biết ý định của bạn. Nếu cần, có thể nhấn còi nhẹ để thông báo.</p>
+      
+      <h3>Kỹ năng 4: Tăng tốc đúng cách</h3>
+      <p>Khi quyết định vượt, hãy về số thích hợp và tăng tốc mạnh dứt khoát, không do dự. Điều này giúp rút ngắn thời gian bạn ở làn đối diện, giảm thiểu rủi ro va chạm.</p>
+      
+      <h3>Kỹ năng 5: Không vượt bên phải</h3>
+      <p>Tuyệt đối không vượt xe tải từ bên phải (trừ trường hợp đường cao tốc nhiều làn và cho phép). Bên phải xe tải có điểm mù lớn, tài xế khó phát hiện bạn ở vị trí này.</p>
+      
+      <h3>Kỹ năng 6: Hoàn thành việc vượt an toàn</h3>
+      <p>Chỉ trở lại làn đường của xe tải khi bạn đã nhìn thấy toàn bộ xe tải trong gương chiếu hậu. Đảm bảo giữ khoảng cách an toàn trước khi chuyển làn.</p>
+      
+      <h3>Kỹ năng 7: Xử lý tình huống đặc biệt</h3>
+      <p>Khi gặp đoàn xe tải, chỉ vượt từng chiếc một và đảm bảo có đủ không gian giữa các xe tải để bạn có thể trở lại làn đường an toàn nếu cần thiết.</p>
+      
+      <h2>Lưu ý đặc biệt khi vượt xe tải</h2>
+      <p>Ngoài những kỹ năng trên, bạn cần chú ý thêm:</p>
+      <ul>
+        <li>Không vượt khi thấy xe tải có dấu hiệu đổi làn đường</li>
+        <li>Đề phòng gió mạnh khi vượt qua xe tải, đặc biệt là xe nhẹ như xe máy</li>
+        <li>Không nấn ná ở vị trí điểm mù của xe tải</li>
+        <li>Kiên nhẫn, không vội vàng vượt nếu chưa đảm bảo an toàn</li>
+      </ul>
+      
+      <p>Áp dụng 7 kỹ năng này khi vượt xe tải sẽ giúp bạn di chuyển an toàn hơn trên đường. Hãy nhớ rằng, an toàn giao thông là trên hết, việc đến nơi sớm vài phút không quan trọng bằng việc đến nơi an toàn.</p>
     `,
+    category: 'driver-tips',
     images: [
-      "https://hyundaivic.vn/wp-content/uploads/2021/11/xe-tai-hyundai-hd800.jpg",
-      "https://xetaisaigon.vn/wp-content/uploads/2019/03/hyundai-hd800.jpg",
-      "https://xetaiquangngai.com.vn/wp-content/uploads/2020/12/xe-tai-hyundai-hd800-thung-dai.jpg",
-      "https://xeototai.vn/wp-content/uploads/2020/09/hd800-noi-that.jpg"
+      'https://tongkhoxetai.vn/upload/images/blog/vuot-xe-an-toan.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/ky-nang-lai-xe.jpg'
     ],
-    publishDate: new Date().toISOString().split("T")[0],
-    readTime: 6,
-    category: "xe-tai",
-    author: "Lê Văn C",
-    tags: ["xe-tai", "hyundai", "hd800", "xe tải trung"],
-    featured: false,
+    publishDate: Date.now() - 15 * 24 * 60 * 60 * 1000, // 15 days ago
+    readTime: 9,
+    author: 'Lê Văn C'
+  },
+  {
+    id: '4',
+    title: 'Hướng dẫn bảo dưỡng xe tải đúng cách để kéo dài tuổi thọ',
+    slug: 'huong-dan-bao-duong-xe-tai',
+    description: 'Các bước bảo dưỡng xe tải cơ bản và chuyên sâu, giúp kéo dài tuổi thọ xe và giảm chi phí sửa chữa lớn.',
+    content: `
+      <h2>Tầm quan trọng của việc bảo dưỡng xe tải</h2>
+      <p>Bảo dưỡng định kỳ xe tải không chỉ giúp đảm bảo an toàn khi vận hành mà còn kéo dài tuổi thọ của xe, giảm thiểu chi phí sửa chữa đột xuất. Theo thống kê, một chiếc xe tải được bảo dưỡng đúng cách có thể hoạt động hiệu quả trong khoảng 10-15 năm, trong khi những xe không được chăm sóc thường xuyên có thể gặp sự cố nghiêm trọng chỉ sau 5-7 năm.</p>
+      
+      <h3>1. Lịch bảo dưỡng định kỳ</h3>
+      <p>Đây là yếu tố quan trọng nhất trong việc chăm sóc xe tải. Lịch bảo dưỡng điển hình bao gồm:</p>
+      <ul>
+        <li><strong>Bảo dưỡng 5,000km:</strong> Thay dầu nhớt, kiểm tra dầu phanh, nước làm mát</li>
+        <li><strong>Bảo dưỡng 10,000km:</strong> Thay dầu nhớt, lọc nhớt, kiểm tra hệ thống phanh</li>
+        <li><strong>Bảo dưỡng 20,000km:</strong> Thay tất cả các loại dầu, kiểm tra hệ thống truyền động, hệ thống phanh</li>
+        <li><strong>Bảo dưỡng 40,000km:</strong> Thay dầu hộp số, dầu cầu, kiểm tra hệ thống treo</li>
+        <li><strong>Bảo dưỡng 80,000-100,000km:</strong> Đại tu nhỏ, kiểm tra toàn diện</li>
+      </ul>
+      
+      <h3>2. Kiểm tra hàng ngày trước khi vận hành</h3>
+      <p>Trước mỗi chuyến đi, tài xế nên dành 10-15 phút để kiểm tra:</p>
+      <ul>
+        <li>Mức dầu động cơ</li>
+        <li>Mức nước làm mát</li>
+        <li>Áp suất lốp xe</li>
+        <li>Hệ thống đèn chiếu sáng, đèn tín hiệu</li>
+        <li>Hệ thống phanh</li>
+        <li>Mức nhiên liệu</li>
+      </ul>
+      
+      <h3>3. Chăm sóc động cơ xe tải</h3>
+      <p>Động cơ là "trái tim" của xe tải, cần được chăm sóc đặc biệt:</p>
+      <ul>
+        <li>Thay dầu nhớt và lọc nhớt đúng định kỳ, sử dụng loại dầu phù hợp với khuyến cáo của nhà sản xuất</li>
+        <li>Kiểm tra và thay thế lọc gió khi cần thiết</li>
+        <li>Kiểm tra hệ thống làm mát, đảm bảo két nước không bị tắc nghẽn</li>
+        <li>Duy trì hệ thống nhiên liệu sạch sẽ, thay lọc nhiên liệu định kỳ</li>
+        <li>Kiểm tra và điều chỉnh căng đai cam, đai quạt gió</li>
+      </ul>
+      
+      <h3>4. Chăm sóc hệ thống phanh</h3>
+      <p>Hệ thống phanh là yếu tố quyết định đến an toàn:</p>
+      <ul>
+        <li>Kiểm tra mức dầu phanh và chất lượng dầu phanh</li>
+        <li>Kiểm tra độ mòn của má phanh, đĩa phanh hoặc tang trống</li>
+        <li>Điều chỉnh khoảng cách giữa má phanh và tang trống (với hệ thống phanh tang trống)</li>
+        <li>Kiểm tra hệ thống ABS nếu xe có trang bị</li>
+      </ul>
+      
+      <h3>5. Bảo dưỡng hệ thống treo</h3>
+      <p>Hệ thống treo tốt giúp xe vận hành ổn định và bảo vệ hàng hóa:</p>
+      <ul>
+        <li>Kiểm tra tình trạng nhíp, lò xo treo</li>
+        <li>Bôi trơn các khớp nối, bạc đạn bánh xe</li>
+        <li>Kiểm tra giảm xóc, thay thế khi có dấu hiệu hỏng hóc</li>
+      </ul>
+      
+      <h3>6. Chăm sóc lốp xe</h3>
+      <p>Lốp xe là bộ phận tiếp xúc trực tiếp với mặt đường:</p>
+      <ul>
+        <li>Duy trì áp suất lốp theo khuyến cáo của nhà sản xuất</li>
+        <li>Kiểm tra độ mòn gai lốp định kỳ</li>
+        <li>Đảo lốp mỗi 10,000-15,000km</li>
+        <li>Cân chỉnh góc đặt bánh xe khi cần thiết</li>
+      </ul>
+      
+      <h3>7. Bảo dưỡng hệ thống điện</h3>
+      <p>Hệ thống điện ổn định giúp xe khởi động và vận hành trơn tru:</p>
+      <ul>
+        <li>Kiểm tra và vệ sinh bình ắc quy</li>
+        <li>Kiểm tra các cầu chì, công tắc điện</li>
+        <li>Kiểm tra máy phát điện và bộ điều chỉnh điện áp</li>
+        <li>Kiểm tra hệ thống đèn chiếu sáng, đèn tín hiệu</li>
+      </ul>
+      
+      <h2>Lời khuyên từ chuyên gia</h2>
+      <p>Ngoài việc tuân thủ lịch bảo dưỡng định kỳ, chủ xe tải nên:</p>
+      <ul>
+        <li>Đào tạo tài xế về cách vận hành xe đúng cách</li>
+        <li>Không chở quá tải trọng cho phép</li>
+        <li>Sử dụng phụ tùng chính hãng khi thay thế</li>
+        <li>Lựa chọn gara, trung tâm bảo dưỡng uy tín</li>
+        <li>Lưu giữ sổ bảo dưỡng đầy đủ</li>
+      </ul>
+      
+      <p>Bảo dưỡng xe tải đúng cách không chỉ giúp tiết kiệm chi phí lâu dài mà còn đảm bảo an toàn cho người lái và những người tham gia giao thông khác. Hãy coi việc bảo dưỡng xe là một khoản đầu tư chứ không phải chi phí!</p>
+    `,
+    category: 'maintenance',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/blog/bao-duong-xe-tai.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/sua-chua-xe-tai.jpg'
+    ],
+    publishDate: Date.now() - 20 * 24 * 60 * 60 * 1000, // 20 days ago
+    readTime: 11,
+    author: 'Phạm Văn D'
   }
 ];
-
-// Thêm các bài viết mới vào mảng blogPosts
-blogPosts = [...blogPosts, ...customPosts];
-
-// Xuất dữ liệu duy nhất một lần ở cuối file
-export { blogPosts, blogCategories, generateBlogPosts };
