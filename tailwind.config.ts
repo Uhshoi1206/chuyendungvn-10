@@ -1,21 +1,22 @@
 
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}"],
-  prefix: "",
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
-      padding: "1rem",
+      padding: "2rem",
       screens: {
         "2xl": "1400px",
       },
-    },
-    fontFamily: {
-      sans: ['Roboto', 'system-ui', 'sans-serif'],
-      heading: ['"Roboto Condensed"', 'system-ui', 'sans-serif'],
     },
     extend: {
       colors: {
@@ -25,16 +26,16 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-          100: "#ffeded",
-          200: "#ffd1d1",
-          300: "#ffa8a8",
-          400: "#ff7e7e",
-          500: "#d90000",
-          600: "#c20000",
-          700: "#a10000",
-          800: "#7a0000",
+          DEFAULT: "#ef4444",
+          100: "#fef2f2",
+          200: "#fee2e2",
+          300: "#fecaca",
+          400: "#fca5a5",
+          500: "#ef4444",
+          600: "#dc2626",
+          700: "#b91c1c",
+          800: "#991b1b",
+          900: "#7f1d1d",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -76,33 +77,53 @@ const config = {
           to: { height: "0" },
         },
         "widgetPulse": {
-          "0%, 100%": { 
-            opacity: "1",
-            transform: "scale(1)" 
+          '0%': {
+            transform: 'scale(0.95)',
+            opacity: '1',
           },
-          "50%": { 
-            opacity: "0.5",
-            transform: "scale(1.2)" 
+          '70%': {
+            transform: 'scale(1.2)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'scale(0.95)',
+            opacity: '0',
           },
         },
         "fade-in": {
-          "0%": {
-            opacity: "0"
+          from: {
+            opacity: '0',
+            transform: 'translateY(10px)',
           },
-          "100%": {
-            opacity: "1"
-          }
-        }
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        "ping": {
+          '0%': {
+            opacity: '1',
+            transform: 'scale(1)',
+          },
+          '75%, 100%': {
+            opacity: '0',
+            transform: 'scale(2)',
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "widgetPulse": "widgetPulse 1.5s infinite",
-        "fade-in": "fade-in 0.3s ease-in-out forwards"
+        "fade-in": "fade-in 0.5s ease-out forwards",
+        "ping": "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
+      },
+      fontFamily: {
+        heading: ["Montserrat", ...fontFamily.sans],
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

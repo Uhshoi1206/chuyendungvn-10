@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import TruckItem from '@/components/TruckItem';
 import { Truck } from '@/models/TruckTypes';
+import SectionTitle from '@/components/SectionTitle';
 
 interface FeaturedTrucksProps {
   trucks: Truck[];
@@ -12,14 +13,11 @@ interface FeaturedTrucksProps {
 const FeaturedTrucks = ({ trucks }: FeaturedTrucksProps) => {
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Xe Tải Nổi Bật</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Những dòng xe tải bán chạy nhất với chất lượng vượt trội và giá thành hợp lý, 
-            đang được nhiều doanh nghiệp vận tải lựa chọn.
-          </p>
-        </div>
+      <div className="container mx-auto px-4">
+        <SectionTitle 
+          title="Xe Tải Nổi Bật"
+          description="Những dòng xe tải bán chạy nhất với chất lượng vượt trội và giá thành hợp lý, đang được nhiều doanh nghiệp vận tải lựa chọn."
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {trucks.slice(0, 3).map(truck => (
@@ -28,8 +26,11 @@ const FeaturedTrucks = ({ trucks }: FeaturedTrucksProps) => {
         </div>
         
         <div className="text-center mt-10">
-          <Button asChild variant="outline" className="px-6">
-            <Link to="/danh-muc?type=xe-tai">Xem tất cả xe tải</Link>
+          <Button asChild variant="outline" className="px-6 border-primary text-primary hover:bg-primary/10">
+            <Link to="/danh-muc?type=xe-tai" className="flex items-center gap-2">
+              Xem tất cả xe tải
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Link>
           </Button>
         </div>
       </div>

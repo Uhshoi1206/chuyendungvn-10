@@ -1,14 +1,19 @@
 
 import React from 'react';
 import ContactForm from '@/components/ContactForm';
+import SectionTitle from '@/components/SectionTitle';
 
 const ContactSection = () => {
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
+        <SectionTitle 
+          title="Liên Hệ Tư Vấn"
+          description="Để được tư vấn chi tiết về các dòng xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo cùng chương trình khuyến mãi, vui lòng để lại thông tin liên hệ."
+        />
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <h2 className="text-3xl font-bold mb-6">Liên Hệ Tư Vấn</h2>
             <p className="text-gray-600 mb-6">
               Để được tư vấn chi tiết về các dòng xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo cùng 
               chương trình khuyến mãi, vui lòng để lại thông tin liên hệ. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.

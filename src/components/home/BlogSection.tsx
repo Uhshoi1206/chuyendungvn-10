@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BlogPost } from '@/models/BlogPost';
+import SectionTitle from '@/components/SectionTitle';
 
 interface BlogSectionProps {
   posts: BlogPost[];
@@ -12,14 +13,12 @@ interface BlogSectionProps {
 
 const BlogSection = ({ posts, categories }: BlogSectionProps) => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Tin Tức & Chia Sẻ</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Cập nhật thông tin mới nhất về xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo và ngành vận tải tại Việt Nam
-          </p>
-        </div>
+        <SectionTitle 
+          title="Tin Tức & Chia Sẻ"
+          description="Cập nhật thông tin mới nhất về xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo và ngành vận tải tại Việt Nam"
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {posts.map((post, index) => (
@@ -65,7 +64,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
         </div>
 
         <div className="text-center mt-10">
-          <Button asChild variant="outline" className="px-6">
+          <Button asChild variant="outline" className="px-6 border-primary text-primary hover:bg-primary/10">
             <Link to="/blog" className="flex items-center gap-2">
               Xem tất cả bài viết
               <ChevronRight className="h-4 w-4" />
