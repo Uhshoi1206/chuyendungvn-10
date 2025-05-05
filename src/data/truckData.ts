@@ -1,3 +1,4 @@
+
 import { Truck, TruckBrand, VehicleType, TruckWeight } from '@/models/TruckTypes';
 
 // Dữ liệu thương hiệu xe
@@ -643,3 +644,33 @@ export const trucks: Truck[] = [
     dimensions: '6.8 x 2.5 x 3.6 m',
     type: 'dau-keo',
     isNew: true,
+    isHot: true,
+    origin: 'Hàn Quốc',
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Dau-Keo/hd1000.jpg',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/Dau-Keo/hd1000.jpg',
+      'https://tongkhoxetai.vn/upload/images/Dau-Keo/hd1000-2.jpg',
+      'https://tongkhoxetai.vn/upload/images/Dau-Keo/hd1000-3.jpg',
+    ],
+    specifications: {
+      engineType: 'Diesel',
+      engineCapacity: '12.7L',
+      horsePower: '520 HP',
+      torque: '2500 Nm',
+      transmission: 'Số tự động 12 cấp',
+      fuelConsumption: '30L/100km',
+      emission: 'Euro 5',
+      warranty: '3 năm hoặc 200.000 km',
+      seats: 2,
+      year: 2023
+    },
+    description: 'Hyundai HD1000 là dòng xe đầu kéo cao cấp của Hyundai, được thiết kế để kéo các loại sơ mi rơ mooc nặng với hiệu suất cao và độ bền vượt trội. Xe được trang bị động cơ mạnh mẽ cùng hệ thống an toàn tiên tiến.',
+    features: [
+      'Động cơ công suất lớn, mạnh mẽ',
+      'Cabin thiết kế sang trọng, tiện nghi cao cấp',
+      'Hệ thống an toàn tiên tiến',
+      'Hệ thống phanh hiện đại ABS/EBD/ESP',
+      'Tiêu chuẩn khí thải Euro 5'
+    ]
+  }
+];
