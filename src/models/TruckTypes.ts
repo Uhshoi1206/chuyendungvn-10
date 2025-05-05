@@ -11,6 +11,7 @@ export interface TruckWeight {
   name: string;
   minWeight: number;
   maxWeight: number;
+  value?: number | string; // Thêm thuộc tính value để hỗ trợ mã trong useTruckFilters
 }
 
 export interface TruckFilters {
@@ -24,7 +25,7 @@ export interface TruckFilters {
 }
 
 export interface Truck {
-  id: number;
+  id: string; // Thay đổi từ number sang string
   name: string;
   slug: string;
   brand: string;

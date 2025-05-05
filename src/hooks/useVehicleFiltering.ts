@@ -73,7 +73,7 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
       const searchLower = filters.search.toLowerCase();
       const nameMatch = vehicle.name.toLowerCase().includes(searchLower);
       const brandMatch = vehicle.brand.toLowerCase().includes(searchLower);
-      const descriptionMatch = vehicle.description.toLowerCase().includes(searchLower);
+      const descriptionMatch = vehicle.description?.toLowerCase().includes(searchLower);
       
       if (!nameMatch && !brandMatch && !descriptionMatch) {
         return false;

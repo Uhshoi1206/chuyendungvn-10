@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TruckFilters, VehicleType } from '@/models/TruckTypes';
@@ -31,24 +32,10 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         return { min: 20, max: 100 }; // Trên 20 tấn
       default:
         // Fallback - tìm phạm vi phù hợp nhất
-        const weightCategory = truckWeights.find(w => {
-          // Chuyển đổi w.value sang number để so sánh
-          const numValue = typeof w.value === 'string' ? parseFloat(w.value) : w.value;
-          return !isNaN(numValue) && numValue === categoryWeight;
-        });
+        const weightCategory = truckWeights.find(w => w.id === Math.round(categoryWeight));
         if (!weightCategory) return { min: 0, max: 25 };
         
-        const categoryIndex = truckWeights.findIndex(w => {
-          const numValue = typeof w.value === 'string' ? parseFloat(w.value) : w.value;
-          return !isNaN(numValue) && numValue === categoryWeight;
-        });
-        if (categoryIndex > 0) {
-          // Chuyển đổi sang number
-          const prevWeightValue = truckWeights[categoryIndex - 1].value;
-          const prevWeight = typeof prevWeightValue === 'string' ? parseFloat(prevWeightValue) : prevWeightValue;
-          return { min: prevWeight, max: categoryWeight };
-        }
-        return { min: 0, max: categoryWeight };
+        return { min: weightCategory.minWeight, max: weightCategory.maxWeight };
     }
   };
 
@@ -154,10 +141,12 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
         weightCategory = 2;       // 1-2 tấn
       } else {
         // Fallback - tìm danh mục trọng lượng phù hợp nhất
-        weightCategory = truckWeights.find(w => {
-          const maxWeightValue = parseFloat(String(w.value).split('-')[1]);
-          return maxWeightValue >= newFilters.maxWeight!;
-        })?.value.split('-')[1] || newFilters.maxWeight;
+        const matchingWeight = truckWeights.find(w => 
+          w.minWeight <= newFilters.maxWeight! && 
+          w.maxWeight >= newFilters.minWeight!
+        );
+        
+        weightCategory = matchingWeight ? matchingWeight.maxWeight : newFilters.maxWeight;
       }
       
       params.set('weight', String(weightCategory));

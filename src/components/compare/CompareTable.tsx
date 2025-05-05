@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Truck, getVehicleTypeName } from '@/models/TruckTypes';
 import { Button } from '@/components/ui/button';
@@ -175,4 +174,3 @@ const CompareTable: React.FC<CompareTableProps> = ({ trucks }) => {
 };
 
 export default CompareTable;
-

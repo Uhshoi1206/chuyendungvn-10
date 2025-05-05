@@ -1,4 +1,3 @@
-
 import { Truck, TruckBrand, VehicleType, TruckWeight } from '@/models/TruckTypes';
 
 // Dữ liệu thương hiệu xe
@@ -25,10 +24,10 @@ export const truckWeights: TruckWeight[] = [
   { id: 8, name: 'Trên 20 tấn', minWeight: 20, maxWeight: 100 },
 ];
 
-// Dữ liệu xe
+// Dữ liệu xe - đổi id từ number sang string
 export const trucks: Truck[] = [
   {
-    id: 1,
+    id: "1",
     name: 'Hyundai Porter H150 1.5 Tấn',
     slug: 'hyundai-porter-h150-1-5-tan',
     brand: 'Hyundai',
@@ -72,7 +71,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 2,
+    id: "2", 
     name: 'Suzuki Super Carry Pro 940kg',
     slug: 'suzuki-super-carry-pro-940kg',
     brand: 'Suzuki',
@@ -116,7 +115,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 3,
+    id: "3",
     name: 'Hyundai Mighty EX8 GTL 8 Tấn',
     slug: 'hyundai-mighty-ex8-gtl-8-tan',
     brand: 'Hyundai',
@@ -160,7 +159,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 4,
+    id: "4",
     name: 'Isuzu QKR 2.9 Tấn',
     slug: 'isuzu-qkr-2-9-tan',
     brand: 'Isuzu',
@@ -204,7 +203,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 5,
+    id: "5",
     name: 'Thaco Kia K200 1.9 Tấn',
     slug: 'thaco-kia-k200-1-9-tan',
     brand: 'Kia',
@@ -248,7 +247,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 6,
+    id: "6",
     name: 'Dongfeng Hoàng Huy 7 Tấn',
     slug: 'dongfeng-hoang-huy-7-tan',
     brand: 'Dongfeng',
@@ -292,7 +291,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 7,
+    id: "7",
     name: 'Hino 500 Series 16 Tấn',
     slug: 'hino-500-series-16-tan',
     brand: 'Hino',
@@ -336,7 +335,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 8,
+    id: "8",
     name: 'Hyundai Xcient 25 Tấn',
     slug: 'hyundai-xcient-25-tan',
     brand: 'Hyundai',
@@ -380,7 +379,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 9,
+    id: "9",
     name: 'TADANO 5 Tấn',
     slug: 'tadano-5-tan',
     brand: 'Tadano',
@@ -424,7 +423,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 10,
+    id: "10",
     name: 'UNIC 3 Tấn',
     slug: 'unic-3-tan',
     brand: 'UNIC',
@@ -468,7 +467,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 11,
+    id: "11",
     name: 'Soosan 10 Tấn',
     slug: 'soosan-10-tan',
     brand: 'Soosan',
@@ -512,7 +511,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 12,
+    id: "12",
     name: 'DOOSUNG 3 Trục',
     slug: 'doosung-3-truc',
     brand: 'DOOSUNG',
@@ -551,7 +550,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 13,
+    id: "13",
     name: 'CIMC Xitec Chở Xăng Dầu',
     slug: 'cimc-xitec-cho-xang-dau',
     brand: 'CIMC',
@@ -591,7 +590,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 14,
+    id: "14",
     name: 'KOKSAN Ben 3 Trục',
     slug: 'koksan-ben-3-truc',
     brand: 'KOKSAN',
@@ -622,7 +621,7 @@ export const trucks: Truck[] = [
     },
     description: 'KOKSAN Ben 3 trục là loại sơ mi rơ mooc ben cao cấp từ Hàn Quốc, được thiết kế để vận chuyển và đổ các vật liệu rời như cát, đá, xi măng. Sản phẩm có cấu trúc chắc chắn với hệ thống ben thủy lực mạnh mẽ.',
     features: [
-      'Hệ thống ben thủy lực công suất lớn',
+      'Hệ thống ben thủy lực mạnh mẽ',
       'Thùng hàng có độ bền cao',
       'Khung gầm cứng cáp',
       'Hệ thống 3 trục chắc chắn',
@@ -630,7 +629,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: 15,
+    id: "15",
     name: 'Hyundai HD1000 Đầu Kéo',
     slug: 'hyundai-hd1000-dau-keo',
     brand: 'Hyundai',
@@ -644,121 +643,3 @@ export const trucks: Truck[] = [
     dimensions: '6.8 x 2.5 x 3.6 m',
     type: 'dau-keo',
     isNew: true,
-    isHot: true,
-    origin: 'Hàn Quốc',
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Dau-keo/hyundai-hd1000.jpg',
-    images: [
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/hyundai-hd1000.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/hyundai-hd1000-2.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/hyundai-hd1000-3.jpg',
-    ],
-    specifications: {
-      engineType: 'Diesel',
-      engineCapacity: '12.7L',
-      horsePower: '520 HP',
-      torque: '2500 Nm',
-      transmission: 'Số tự động 12 cấp',
-      fuelConsumption: '35L/100km',
-      emission: 'Euro 5',
-      warranty: '3 năm hoặc 300.000 km',
-      seats: 2,
-      year: 2023
-    },
-    description: 'Hyundai HD1000 là dòng xe đầu kéo hạng nặng cao cấp của Hyundai, được thiết kế để kéo các loại sơ mi rơ mooc với tải trọng lớn. Xe được trang bị động cơ mạnh mẽ, tiết kiệm nhiên liệu và cabin tiện nghi.',
-    features: [
-      'Động cơ công suất lớn, mạnh mẽ',
-      'Cabin rộng rãi, tiện nghi cao cấp',
-      'Hệ thống phanh ABS/EBD/ESP',
-      'Khung gầm chắc chắn, chịu lực tốt',
-      'Hệ thống treo khí nén, tăng độ êm ái'
-    ]
-  },
-  {
-    id: 16,
-    name: 'HOWO 375HP Đầu Kéo',
-    slug: 'howo-375hp-dau-keo',
-    brand: 'HOWO',
-    price: 1300000000,
-    priceText: '1.300.000.000 đ',
-    weightText: '35 Tấn',
-    weight: 35,
-    length: 6.5,
-    width: 2.5,
-    height: 3.5,
-    dimensions: '6.5 x 2.5 x 3.5 m',
-    type: 'dau-keo',
-    isNew: false,
-    isHot: false,
-    origin: 'Trung Quốc',
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Dau-keo/howo-375.jpg',
-    images: [
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/howo-375.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/howo-375-2.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/howo-375-3.jpg',
-    ],
-    specifications: {
-      engineType: 'Diesel',
-      engineCapacity: '9.7L',
-      horsePower: '375 HP',
-      torque: '1600 Nm',
-      transmission: 'Số sàn 12 cấp',
-      fuelConsumption: '32L/100km',
-      emission: 'Euro 4',
-      warranty: '2 năm hoặc 200.000 km',
-      seats: 2,
-      year: 2023
-    },
-    description: 'HOWO 375HP là dòng xe đầu kéo giá rẻ nhưng chất lượng tốt đến từ Trung Quốc. Xe được thiết kế để kéo các loại sơ mi rơ mooc với tải trọng vừa và lớn, với ưu điểm về giá thành và chi phí bảo dưỡng thấp.',
-    features: [
-      'Động cơ mạnh mẽ, bền bỉ',
-      'Cabin tiện nghi cơ bản',
-      'Hệ thống phanh ABS',
-      'Khung gầm chắc chắn',
-      'Giá thành cạnh tranh'
-    ]
-  },
-  {
-    id: 17,
-    name: 'Deawoo đầu kéo 2 cầu',
-    slug: 'deawoo-dau-keo-2-cau',
-    brand: 'Daewoo',
-    price: 1750000000,
-    priceText: '1.750.000.000 đ',
-    weightText: '43 Tấn',
-    weight: 43,
-    length: 7.0,
-    width: 2.5,
-    height: 3.7,
-    dimensions: '7.0 x 2.5 x 3.7 m',
-    type: 'dau-keo',
-    isNew: false,
-    isHot: true,
-    origin: 'Hàn Quốc',
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Dau-keo/daewoo-2-cau.jpg',
-    images: [
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/daewoo-2-cau.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/daewoo-2-cau-2.jpg',
-      'https://tongkhoxetai.vn/upload/images/Dau-keo/daewoo-2-cau-3.jpg',
-    ],
-    specifications: {
-      engineType: 'Diesel',
-      engineCapacity: '14.0L',
-      horsePower: '480 HP',
-      torque: '2200 Nm',
-      transmission: 'Số tự động 16 cấp',
-      fuelConsumption: '38L/100km',
-      emission: 'Euro 4',
-      warranty: '3 năm hoặc 250.000 km',
-      seats: 2,
-      year: 2023
-    },
-    description: 'Daewoo đầu kéo 2 cầu là dòng xe đầu kéo hạng nặng cao cấp với hệ thống 2 cầu chủ động, mang lại khả năng vận hành mạnh mẽ trên mọi địa hình. Xe được thiết kế để kéo các loại sơ mi rơ mooc với tải trọng siêu nặng.',
-    features: [
-      'Hệ thống 2 cầu chủ động, vượt địa hình khó',
-      'Động cơ công suất lớn, mạnh mẽ',
-      'Cabin tiện nghi cao cấp',
-      'Hệ thống phanh hiện đại ABS/EBD/ESP',
-      'Khả năng chịu tải cao'
-    ]
-  }
-];
