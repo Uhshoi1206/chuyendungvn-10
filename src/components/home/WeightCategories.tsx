@@ -1,36 +1,41 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { TruckWeight } from '@/models/TruckTypes';
+import { truckWeights } from '@/data/truckData';
 import SectionTitle from '@/components/SectionTitle';
 
-interface WeightCategoriesProps {
-  weights: TruckWeight[];
-}
-
-const WeightCategories = ({ weights }: WeightCategoriesProps) => {
+const WeightCategories: React.FC = () => {
+  const getWeightIcon = (id: number) => {
+    // Chọn biểu tượng dựa trên mức tải trọng (có thể thay bằng SVG hoặc FontAwesome)
+    const icons = ['🚚', '🚛', '📦', '🏭', '🏢', '🏗️', '⚡', '🔥'];
+    return icons[id - 1] || '🚚';
+  };
+  
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="container mx-auto px-4">
         <SectionTitle 
           title="Phân Loại Theo Tải Trọng"
-          description="Chúng tôi cung cấp đa dạng các loại phương tiện thương mại với nhiều tải trọng khác nhau, từ xe tải nhẹ đến xe đầu kéo hạng nặng, đáp ứng mọi nhu cầu vận chuyển của khách hàng."
+          description="Lựa chọn phương tiện vận tải phù hợp với nhu cầu vận chuyển của bạn dựa theo tải trọng"
         />
         
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {weights.map(weight => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          {truckWeights.map(weight => (
             <Link 
               key={weight.id} 
               to={`/danh-muc?minWeight=${weight.minWeight}&maxWeight=${weight.maxWeight}`}
-              className="relative bg-white rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105 group"
+              className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md border border-gray-100 hover:border-primary/20 transition-all group"
             >
-              <div className="p-5 flex flex-col items-center">
-                <div className="h-16 w-16 mb-3 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect width="18" height="12" x="3" y="8" rx="2"/><path d="M10 8V5c0-.6.4-1 1-1h2c.6 0 1 .4 1 1v3"/><path d="M5 14h14"/><path d="M5 8v12"/><path d="M19 8v12"/></svg>
-                </div>
-                <h3 className="font-bold text-lg mb-1">{weight.name}</h3>
+              <div className="flex flex-col items-center text-center space-y-3">
+                <div className="text-3xl mb-2">{getWeightIcon(weight.id)}</div>
+                <h3 className="font-bold group-hover:text-primary transition-colors">{weight.name}</h3>
                 <p className="text-sm text-gray-500">
-                  {weight.minWeight} - {weight.maxWeight < 100 ? weight.maxWeight : '> 100'} tấn
+                  {weight.minWeight === 0 
+                    ? `Tối đa ${weight.maxWeight} tấn` 
+                    : weight.maxWeight >= 100
+                      ? `Trên ${weight.minWeight} tấn`
+                      : `${weight.minWeight} - ${weight.maxWeight} tấn`
+                  }
                 </p>
               </div>
             </Link>

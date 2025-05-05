@@ -1,47 +1,14 @@
 
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 
-export interface Truck {
-  id: string;
-  name: string;
-  slug: string;
-  brand: string;
-  type: VehicleType;
-  price: number;
-  priceText: string;
-  weight: number;
-  weightText: string;
-  length: number;
-  width?: number;
-  height?: number;
-  isNew?: boolean;
-  isHot?: boolean;
-  thumbnailUrl: string;
-  images: string[];
-  description: string;
-  specifications?: Record<string, string>;
-  relatedProducts?: string[];
-  // Thêm các thuộc tính còn thiếu
-  engineType?: string;
-  engine?: string;
-  fuelType?: string;
-  origin?: string;
-  seats?: number;
-  emission?: string;
-  features?: string[];
-}
-
 export interface TruckBrand {
-  id: string;
+  id: number;
   name: string;
-  image?: string;
-  description?: string;
 }
 
 export interface TruckWeight {
-  id: string;
+  id: number;
   name: string;
-  value: string;
   minWeight: number;
   maxWeight: number;
 }
@@ -56,8 +23,32 @@ export interface TruckFilters {
   search: string | null;
 }
 
-// Hàm hỗ trợ lấy tiền tố URL dựa trên loại xe
-export const getVehicleUrlPrefix = (type: VehicleType): string => {
+export interface Truck {
+  id: number;
+  name: string;
+  slug: string;
+  brand: string;
+  price: number;
+  priceText: string;
+  weightText: string;
+  weight: number;
+  length: number;
+  width: number;
+  height: number;
+  dimensions: string;
+  type: VehicleType;
+  isNew?: boolean;
+  isHot?: boolean;
+  origin?: string;
+  thumbnailUrl: string;
+  images: string[];
+  specifications?: Record<string, any>;
+  description?: string;
+  features?: string[];
+  [key: string]: any;
+}
+
+export function getVehicleUrlPrefix(type: VehicleType): string {
   switch (type) {
     case 'xe-tai':
       return 'xe-tai';
@@ -68,12 +59,11 @@ export const getVehicleUrlPrefix = (type: VehicleType): string => {
     case 'dau-keo':
       return 'dau-keo';
     default:
-      return 'xe-tai';
+      return '';
   }
-};
+}
 
-// Hàm hỗ trợ lấy tên hiển thị của loại xe
-export const getVehicleTypeName = (type: VehicleType): string => {
+export function getVehicleTypeName(type: VehicleType): string {
   switch (type) {
     case 'xe-tai':
       return 'Xe Tải';
@@ -84,33 +74,6 @@ export const getVehicleTypeName = (type: VehicleType): string => {
     case 'dau-keo':
       return 'Xe Đầu Kéo';
     default:
-      return 'Xe Tải';
+      return '';
   }
-};
-
-// Hàm phân tích tham số weight từ URL thành dải tải trọng
-export const parseWeightParam = (weightParam: string | null): { minWeight: number, maxWeight: number } | null => {
-  if (!weightParam) return null;
-  
-  const parts = weightParam.split('-');
-  
-  if (parts.length === 2) {
-    const minWeight = parseFloat(parts[0]);
-    const maxWeight = parseFloat(parts[1]);
-    
-    if (!isNaN(minWeight) && !isNaN(maxWeight)) {
-      return { minWeight, maxWeight };
-    }
-  }
-  
-  return null;
-};
-
-// Hàm tạo tham số weight cho URL từ giá trị min và max
-export const createWeightParam = (minWeight: number, maxWeight: number): string => {
-  // Nếu maxWeight lớn hơn hoặc bằng 100, coi như là giá trị tối đa
-  if (maxWeight >= 100) {
-    return `${minWeight}-100`;
-  }
-  return `${minWeight}-${maxWeight}`;
-};
+}
