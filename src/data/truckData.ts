@@ -1,4 +1,3 @@
-
 import { Truck, TruckBrand, VehicleType, TruckWeight } from '@/models/TruckTypes';
 
 // Dữ liệu thương hiệu xe
@@ -219,7 +218,7 @@ export const trucks: Truck[] = [
     type: 'xe-tai',
     isNew: false,
     isHot: true,
-    origin: 'Hàn Quốc/Việt Nam',
+    origin: 'Hàn Quốc/Vi���t Nam',
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Kia/k200.jpg',
     images: [
       'https://tongkhoxetai.vn/upload/images/Kia/k200.jpg',
@@ -674,3 +673,24 @@ export const trucks: Truck[] = [
     ]
   }
 ];
+
+// Phân loại xe theo từng danh mục
+// Xe tải nổi bật
+export const featuredTrucks: Truck[] = trucks.filter(truck => 
+  truck.type === 'xe-tai' && (truck.isHot || truck.isNew)
+).slice(0, 8);
+
+// Xe cẩu chuyên dụng
+export const specializedCranes: Truck[] = trucks.filter(truck => 
+  truck.type === 'xe-cau'
+);
+
+// Sơ mi rơ mooc
+export const semiTrailers: Truck[] = trucks.filter(truck => 
+  truck.type === 'mooc'
+);
+
+// Xe đầu kéo
+export const tractors: Truck[] = trucks.filter(truck => 
+  truck.type === 'dau-keo'
+);
