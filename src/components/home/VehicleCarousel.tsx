@@ -188,6 +188,7 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
           <Link
             to={viewAllUrl}
             className="inline-block border border-primary text-primary px-6 py-2 rounded-md hover:bg-primary-50 transition-colors"
+            onClick={() => window.scrollTo(0, 0)}
           >
             {viewAllText} <ChevronRight className="inline-block h-4 w-4 ml-1" />
           </Link>

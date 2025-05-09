@@ -30,6 +30,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
           const shouldNavigate = window.confirm('Bạn đã thêm xe vào danh sách so sánh. Bạn có muốn đi đến trang so sánh ngay bây giờ không?');
           if (shouldNavigate) {
             navigate('/so-sanh-xe');
+            window.scrollTo(0, 0);
           }
         }, 300);
       }
@@ -39,7 +40,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
       <div className="relative">
-        <Link to={`/${vehicleUrlPrefix}/${truck.slug}`}>
+        <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} onClick={() => window.scrollTo(0, 0)}>
           <img 
             src={truck.thumbnailUrl} 
             alt={truck.name} 
@@ -83,7 +84,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
       <div className="p-4 flex-grow flex flex-col">
         <div>
           <span className="text-gray-500 text-sm">{truck.brand}</span>
-          <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} className="group">
+          <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} className="group" onClick={() => window.scrollTo(0, 0)}>
             <h3 className="font-bold text-lg mb-2 hover:text-red-600 transition-colors line-clamp-2">
               {truck.name}
             </h3>
