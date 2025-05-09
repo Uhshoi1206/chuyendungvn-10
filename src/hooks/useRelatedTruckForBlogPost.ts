@@ -14,6 +14,7 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
     // Xử lý tìm gần đúng tên xe xuất hiện ở đầu tiêu đề hoặc tag chứa slug
     const normalizedTitle = post.title.toLowerCase();
     const normalizedDesc = post.description.toLowerCase();
+    const normalizedContent = post.content?.toLowerCase() || '';
     const tags = post.tags?.map(t => t.toLowerCase()) || [];
 
     // Ưu tiên khớp theo slug xe nằm ở tiêu đề hoặc tag
@@ -43,6 +44,14 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
       if (
         normalizedDesc.includes(truckName) ||
         normalizedDesc.includes(truckSlugWords)
+      ) {
+        return truck;
+      }
+      
+      // Kiểm tra trong nội dung bài viết
+      if (
+        normalizedContent.includes(truckName) ||
+        normalizedContent.includes(truckSlugWords)
       ) {
         return truck;
       }

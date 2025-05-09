@@ -1,15 +1,16 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { blogCategoryLabels, blogCategorySlugs, slugToBlogCategory } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
-import { CalendarDays, ChevronRight, Clock, Share2, User, ThumbsUp, MessageCircle, BookmarkPlus, Facebook, Twitter, Linkedin, Copy, ArrowLeft } from 'lucide-react';
+import { CalendarDays, ChevronRight, Clock, Share2, User, ThumbsUp, MessageCircle, BookmarkPlus, Facebook, Twitter, Linkedin, Copy, ArrowLeft, ExternalLink } from 'lucide-react';
 import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from '@/components/ui/use-toast';
+import { getVehicleUrlPrefix } from '@/models/TruckTypes';
 
 const BlogPostPage = () => {
   const { slug, category } = useParams();
@@ -88,6 +89,17 @@ const BlogPostPage = () => {
 
   // Lấy ra category slug hiện tại
   const currentCategorySlug = getCategorySlug(post.category);
+
+  // Theo dõi analytics
+  useEffect(() => {
+    // Tăng lượt xem bài viết (giả lập, thực tế cần API)
+    console.log(`Đã xem bài viết: ${post.title}`);
+    
+    // Ghi nhận nếu có sản phẩm liên quan
+    if (relatedTruck) {
+      console.log(`Bài viết có đề cập sản phẩm: ${relatedTruck.name}`);
+    }
+  }, [post.title, relatedTruck]);
 
   return (
     <Layout>
@@ -261,35 +273,76 @@ const BlogPostPage = () => {
                 </div>
               </div>
               
-              {/* --- Section Mua ngay nếu có sản phẩm --- */}
+              {/* --- Section Sản phẩm đề xuất --- */}
               {relatedTruck && (
                 <div className="mt-8">
-                  <div className="bg-gradient-to-tr from-primary/10 to-white border border-primary/10 rounded-xl shadow-md p-6 flex flex-col md:flex-row items-center gap-6">
-                    <div className="w-full md:w-48 h-28 flex-shrink-0 rounded-lg overflow-hidden shadow">
-                      <img
-                        src={relatedTruck.images[0]}
-                        alt={relatedTruck.name}
-                        className="object-cover w-full h-full"
-                      />
+                  <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-xl shadow-md p-6">
+                    <h2 className="text-2xl font-bold mb-6 text-center">
+                      <span className="relative">
+                        Sản phẩm đề xuất từ bài viết
+                        <span className="absolute -bottom-1 left-0 w-full h-1 bg-primary/70"></span>
+                      </span>
+                    </h2>
+                    
+                    <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row items-center gap-6 border border-primary/20">
+                      <div className="w-full md:w-48 h-28 flex-shrink-0 rounded-lg overflow-hidden shadow-md relative group">
+                        <img
+                          src={relatedTruck.images[0]}
+                          alt={relatedTruck.name}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+                      
+                      <div className="flex-1 min-w-0 text-center md:text-left">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                          <h3 className="text-xl font-semibold text-primary mb-1 md:mb-0">
+                            {relatedTruck.name}
+                          </h3>
+                          <div className="text-rose-600 font-bold text-lg">
+                            {relatedTruck.priceText}
+                          </div>
+                        </div>
+                        
+                        <div className="text-gray-700 mb-3 line-clamp-2">
+                          {relatedTruck.description}
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-3 mb-4 justify-center md:justify-start">
+                          <span className="inline-flex items-center bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                            <span className="font-semibold mr-1">Tải trọng:</span> {relatedTruck.weightText}
+                          </span>
+                          <span className="inline-flex items-center bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                            <span className="font-semibold mr-1">Kích thước:</span> {relatedTruck.dimensions}
+                          </span>
+                          <span className="inline-flex items-center bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                            <span className="font-semibold mr-1">Xuất xứ:</span> {relatedTruck.origin || 'Chính hãng'}
+                          </span>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                          <Button asChild size="lg">
+                            <Link 
+                              to={`/${getVehicleUrlPrefix(relatedTruck.type)}/${relatedTruck.slug}`}
+                              className="flex items-center gap-2"
+                              onClick={() => window.scrollTo(0, 0)}
+                            >
+                              Xem chi tiết xe
+                              <ChevronRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button variant="outline" size="lg" asChild>
+                            <Link to="/lien-he" className="flex items-center gap-2">
+                              Liên hệ tư vấn
+                              <ExternalLink className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0 text-center md:text-left">
-                      <div className="text-lg font-semibold text-primary mb-1">
-                        {relatedTruck.name}
-                      </div>
-                      <div className="text-gray-700 mb-2 line-clamp-2">
-                        {relatedTruck.description}
-                      </div>
-                      <div className="font-bold text-xl text-rose-600 mb-2">
-                        {relatedTruck.priceText}
-                      </div>
-                      <Button asChild size="lg">
-                        <a 
-                          href={`/xe-tai/${relatedTruck.slug}`}
-                          className="flex items-center gap-2"
-                        >
-                          Xem chi tiết xe này
-                        </a>
-                      </Button>
+                    
+                    <div className="mt-3 text-sm text-gray-600 text-center">
+                      <p>Sản phẩm được đề xuất dựa trên nội dung bài viết bạn đang đọc.</p>
                     </div>
                   </div>
                 </div>
