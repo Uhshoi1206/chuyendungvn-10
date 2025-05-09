@@ -21,19 +21,11 @@ const WeightCategories: React.FC = () => {
               to={`/danh-muc?minWeight=${weight.minWeight}&maxWeight=${weight.maxWeight}`}
               className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md border border-gray-100 hover:border-primary/20 transition-all group"
             >
-              <div className="flex flex-col items-center text-center space-y-3">
+              <div className="flex flex-col items-center text-center">
                 <div className="text-primary mb-2">
                   <Truck className="h-8 w-8" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-bold group-hover:text-primary transition-colors">{weight.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {weight.minWeight === 0 
-                    ? `Tối đa ${weight.maxWeight} tấn` 
-                    : weight.maxWeight >= 100
-                      ? `Trên ${weight.minWeight} tấn`
-                      : `${weight.minWeight} - ${weight.maxWeight} tấn`
-                  }
-                </p>
+                <h3 className="font-bold group-hover:text-primary transition-colors mb-1">{weight.name}</h3>
               </div>
             </Link>
           ))}
