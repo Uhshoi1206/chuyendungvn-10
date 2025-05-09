@@ -5,6 +5,7 @@ import { blogPosts, blogCategories } from '@/data/blogData';
 import { BlogCategory, blogCategoryLabels, slugToBlogCategory } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
 import { CalendarDays, Clock, User, ChevronRight, ArrowLeft, Tag, TrendingUp, Lightbulb, Zap, Eye } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const BlogCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -59,9 +60,31 @@ const BlogCategoryPage = () => {
         return 'Tổng hợp các bài viết liên quan đến ngành vận tải và phương tiện thương mại tại Việt Nam.';
     }
   };
+  
+  // Lấy slug tiếng Việt cho danh mục
+  const getCategorySlug = (category: string) => {
+    return slug || category;
+  };
+  
+  // Tạo URL cho bài viết dựa trên danh mục hiện tại
+  const getPostUrl = (blogPost: any) => {
+    return `/${slug}/${blogPost.slug}`;
+  };
+  
+  // Tính toán canonical URL
+  const canonicalUrl = `https://preview--ban-xe-tai-viet-78.lovable.app/danh-muc-bai-viet/${slug}`;
 
   return (
     <Layout>
+      <Helmet>
+        <title>{categoryLabel} - Blog Xe Tải Việt</title>
+        <meta 
+          name="description" 
+          content={getCategoryDescription()} 
+        />
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
+      
       {/* Hero Section cho danh mục */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12">
         <div className="container mx-auto px-4">
@@ -90,7 +113,7 @@ const BlogCategoryPage = () => {
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-6">Bài Viết Nổi Bật</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <Link to={`/blog/${categoryPosts[0].slug}`} className="group">
+              <Link to={getPostUrl(categoryPosts[0])} className="group">
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col">
                   <div className="aspect-video relative overflow-hidden">
                     <img
@@ -129,7 +152,7 @@ const BlogCategoryPage = () => {
               
               <div className="flex flex-col space-y-4">
                 {categoryPosts.slice(1, 4).map(post => (
-                  <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                  <Link key={post.id} to={getPostUrl(post)} className="group">
                     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex items-start">
                       <div className="w-1/3 aspect-square relative overflow-hidden">
                         <img
@@ -164,7 +187,7 @@ const BlogCategoryPage = () => {
           {categoryPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {categoryPosts.map(post => (
-                <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                <Link key={post.id} to={getPostUrl(post)} className="group">
                   <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
                     <div className="aspect-video relative overflow-hidden">
                       <img

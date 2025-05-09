@@ -30,6 +30,12 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
   const getCategorySlug = (category: string) => {
     return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
   };
+  
+  // Tạo URL cho bài viết dựa trên danh mục
+  const getPostUrl = (blogPost: BlogPost) => {
+    const categorySlug = getCategorySlug(blogPost.category);
+    return `/${categorySlug}/${blogPost.slug}`;
+  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -42,7 +48,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
           {/* Bài viết nổi bật - chiếm 2/3 không gian */}
           <div className="lg:col-span-2">
-            <Link to={`/blog/${featuredPost.slug}`} className="group">
+            <Link to={getPostUrl(featuredPost)} className="group">
               <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
                 <div className="aspect-[16/9] relative overflow-hidden">
                   <img
@@ -106,7 +112,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
           {/* Các bài viết mới - chiếm 1/3 không gian */}
           <div className="flex flex-col space-y-4">
             {recentPosts.map((post) => (
-              <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+              <Link key={post.id} to={getPostUrl(post)} className="group">
                 <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 h-full flex">
                   <div className="w-1/3 aspect-square relative overflow-hidden">
                     <img
@@ -160,7 +166,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
               <CarouselContent className="-ml-2 md:-ml-4">
                 {shuffledPosts.map((post) => (
                   <CarouselItem key={post.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                    <Link to={`/blog/${post.slug}`} className="group h-full">
+                    <Link to={getPostUrl(post)} className="group h-full">
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm h-full hover:shadow-md transition duration-300 flex flex-col">
                         <div className="aspect-video relative overflow-hidden">
                           <img

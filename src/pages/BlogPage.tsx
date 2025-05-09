@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -56,6 +55,12 @@ const BlogPage = () => {
   // Lấy slug tiếng Việt cho danh mục
   const getCategorySlug = (category: string) => {
     return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
+  
+  // Tạo URL cho bài viết dựa trên danh mục
+  const getPostUrl = (blogPost: BlogPost) => {
+    const categorySlug = getCategorySlug(blogPost.category);
+    return `/${categorySlug}/${blogPost.slug}`;
   };
   
   // Lọc bài viết dựa trên tab đang active và từ khóa tìm kiếm
@@ -136,7 +141,7 @@ const BlogPage = () => {
             <div className="md:w-1/2 mt-6 md:mt-0">
               <div className="flex flex-col space-y-4">
                 {latestPosts.slice(0, 1).map(post => (
-                  <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                  <Link key={post.id} to={getPostUrl(post)} className="group">
                     <div className="flex items-center bg-gray-800/40 rounded-lg p-3 hover:bg-gray-800 transition">
                       <div className="hidden sm:block w-16 h-16 flex-shrink-0 mr-4">
                         <img 
@@ -159,7 +164,7 @@ const BlogPage = () => {
                 ))}
                 <div className="grid grid-cols-2 gap-3">
                   {latestPosts.slice(1, 5).map(post => (
-                    <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                    <Link key={post.id} to={getPostUrl(post)} className="group">
                       <div className="bg-gray-800/40 p-3 rounded-lg hover:bg-gray-800 transition">
                         <span className="text-xs text-primary font-medium mb-1 block">
                           {blogCategories[post.category]}
@@ -239,7 +244,7 @@ const BlogPage = () => {
               {filteredPosts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredPosts.map(post => (
-                    <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                    <Link key={post.id} to={getPostUrl(post)} className="group">
                       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
                         <div className="aspect-video relative overflow-hidden">
                           <img
@@ -317,7 +322,7 @@ const BlogPage = () => {
             </h3>
             <div className="space-y-4">
               {mostViewedPosts.map((post, index) => (
-                <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                <Link key={post.id} to={getPostUrl(post)} className="group">
                   <div className="flex gap-3 items-center p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition">
                     <span className="font-bold text-xl text-gray-400 group-hover:text-primary transition-colors">{index + 1}</span>
                     <div className="flex-shrink-0 w-16 h-16">
@@ -351,7 +356,7 @@ const BlogPage = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {mostCommentedPosts.map(post => (
-                <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                <Link key={post.id} to={getPostUrl(post)} className="group">
                   <div className="flex gap-3 items-center p-3 rounded-lg bg-white shadow-sm hover:shadow-md transition h-full">
                     <div className="flex-shrink-0 w-20 h-20">
                       <img 

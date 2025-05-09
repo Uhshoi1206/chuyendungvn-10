@@ -1,16 +1,22 @@
+
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { blogCategoryLabels, blogCategorySlugs } from '@/models/BlogPost';
+import { blogCategoryLabels, blogCategorySlugs, slugToBlogCategory } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
 import { CalendarDays, ChevronRight, Clock, Share2, User, ThumbsUp, MessageCircle, BookmarkPlus, Facebook, Twitter, Linkedin, Copy, ArrowLeft } from 'lucide-react';
 import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from '@/components/ui/use-toast';
 
 const BlogPostPage = () => {
-  const { slug } = useParams();
+  const { slug, category } = useParams();
+  const location = useLocation();
+  const { toast } = useToast();
+  
+  // Tìm bài viết dựa trên slug
   const post = blogPosts.find(post => post.slug === slug);
 
   if (!post) {
@@ -47,6 +53,41 @@ const BlogPostPage = () => {
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
+  
+  // Tạo URL cho bài viết dựa trên danh mục
+  const getPostUrl = (blogPost: typeof post) => {
+    const categorySlug = getCategorySlug(blogPost.category);
+    return `/${categorySlug}/${blogPost.slug}`;
+  };
+  
+  // Xử lý chia sẻ bài viết
+  const handleShareClick = (platform: string) => {
+    const url = window.location.href;
+    const title = post.title;
+    
+    switch (platform) {
+      case 'copy':
+        navigator.clipboard.writeText(url).then(() => {
+          toast({
+            title: 'Đã sao chép đường dẫn',
+            description: 'Đường dẫn bài viết đã được sao chép vào clipboard',
+          });
+        });
+        break;
+      case 'facebook':
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        break;
+      case 'twitter':
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+        break;
+      case 'linkedin':
+        window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank');
+        break;
+    }
+  };
+
+  // Lấy ra category slug hiện tại
+  const currentCategorySlug = getCategorySlug(post.category);
 
   return (
     <Layout>
@@ -58,7 +99,7 @@ const BlogPostPage = () => {
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
             <Link to="/blog" className="text-gray-500 hover:text-primary">Blog</Link>
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
-            <Link to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} className="text-gray-500 hover:text-primary">
+            <Link to={`/danh-muc-bai-viet/${currentCategorySlug}`} className="text-gray-500 hover:text-primary">
               {blogCategoryLabels[post.category]}
             </Link>
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
@@ -71,14 +112,14 @@ const BlogPostPage = () => {
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 {/* Quay lại button */}
                 <div className="p-4 md:p-6">
-                  <Link to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} className="inline-flex items-center text-primary hover:underline mb-4">
+                  <Link to={`/danh-muc-bai-viet/${currentCategorySlug}`} className="inline-flex items-center text-primary hover:underline mb-4">
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Quay lại {blogCategoryLabels[post.category]}
                   </Link>
                   
                   {/* Category badge */}
                   <Link 
-                    to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} 
+                    to={`/danh-muc-bai-viet/${currentCategorySlug}`} 
                     className="inline-block bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium mb-4"
                   >
                     {blogCategoryLabels[post.category]}
@@ -164,16 +205,28 @@ const BlogPostPage = () => {
                       
                       <div className="flex gap-3">
                         <span className="text-sm text-gray-500 mr-2 hidden sm:block">Chia sẻ:</span>
-                        <button className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90">
+                        <button 
+                          className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90"
+                          onClick={() => handleShareClick('facebook')}
+                        >
                           <Facebook className="h-4 w-4" />
                         </button>
-                        <button className="w-8 h-8 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:opacity-90">
+                        <button 
+                          className="w-8 h-8 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:opacity-90"
+                          onClick={() => handleShareClick('twitter')}
+                        >
                           <Twitter className="h-4 w-4" />
                         </button>
-                        <button className="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:opacity-90">
+                        <button 
+                          className="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:opacity-90"
+                          onClick={() => handleShareClick('linkedin')}
+                        >
                           <Linkedin className="h-4 w-4" />
                         </button>
-                        <button className="w-8 h-8 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center hover:bg-gray-300">
+                        <button 
+                          className="w-8 h-8 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center hover:bg-gray-300"
+                          onClick={() => handleShareClick('copy')}
+                        >
                           <Copy className="h-4 w-4" />
                         </button>
                       </div>
@@ -248,7 +301,7 @@ const BlogPostPage = () => {
                   <h2 className="text-2xl font-bold mb-4">Bài viết liên quan</h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {relatedPosts.map(relatedPost => (
-                      <Link key={relatedPost.id} to={`/blog/${relatedPost.slug}`} className="group">
+                      <Link key={relatedPost.id} to={getPostUrl(relatedPost)} className="group">
                         <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
                           <div className="aspect-video relative overflow-hidden">
                             <img
@@ -309,7 +362,7 @@ const BlogPostPage = () => {
                   <h3 className="text-lg font-bold mb-4">Bài Viết Đề Xuất</h3>
                   <div className="space-y-4">
                     {recommendedPosts.map(recPost => (
-                      <Link key={recPost.id} to={`/blog/${recPost.slug}`} className="flex gap-3 group">
+                      <Link key={recPost.id} to={getPostUrl(recPost)} className="flex gap-3 group">
                         <div className="w-1/3 aspect-square rounded-md overflow-hidden flex-shrink-0">
                           <img 
                             src={recPost.images[0]} 

@@ -61,7 +61,13 @@ const App = () => {
                 
                 {/* Cập nhật URL cho danh mục blog */}
                 <Route path="/danh-muc-bai-viet/:slug" element={<BlogCategoryPage />} />
+                
+                {/* Cập nhật URL cho bài viết blog theo cấu trúc mới */}
+                <Route path="/:category/:slug" element={<BlogPostPage />} />
+                
+                {/* Giữ lại URL cũ cho bài viết blog để đảm bảo các liên kết cũ vẫn hoạt động */}
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
+                
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
