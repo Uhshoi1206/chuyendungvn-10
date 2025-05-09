@@ -18,6 +18,7 @@ import VehicleCarousel from '@/components/home/VehicleCarousel';
 import BrandCategories from '@/components/home/BrandCategories';
 import ContactSection from '@/components/home/ContactSection';
 import BlogSection from '@/components/home/BlogSection';
+import WeightCategories from '@/components/home/WeightCategories';
 
 const Index = () => {
   return (
@@ -70,29 +71,9 @@ const Index = () => {
       />
       
       {/* Phân Loại Theo Tải Trọng */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <SectionTitle 
-            title="Phân Loại Theo Tải Trọng"
-            description="Dễ dàng tìm kiếm phương tiện phù hợp với nhu cầu vận chuyển của bạn"
-          />
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {truckWeights.map((weight, index) => (
-              <a 
-                key={index}
-                href={`/danh-muc?minWeight=${weight.minWeight}&maxWeight=${weight.maxWeight}`}
-                className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 p-4 text-center"
-              >
-                <div className="text-lg font-bold mb-2">{weight.name}</div>
-                <div className="text-gray-600 text-sm">
-                  {weight.minWeight} - {weight.maxWeight} tấn
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="bg-gray-50">
+        <WeightCategories />
+      </div>
       
       {/* Thương Hiệu Nổi Tiếng */}
       <BrandCategories brands={truckBrands} />
