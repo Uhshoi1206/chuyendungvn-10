@@ -78,9 +78,16 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden; /* Ngăn chặn thanh cuộn ngang */
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  }
+  
+  /* Đảm bảo các container không gây tràn ngang */
+  .container {
+    @apply overflow-x-hidden;
+    width: 100%;
   }
 }
 
@@ -147,4 +154,26 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 0.5rem;
+}
+
+/* Fix cho các container để tránh tràn ngang */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Đảm bảo các mũi tên trong carousel luôn hiển thị đúng */
+@media (max-width: 640px) {
+  .carousel-controls-mobile {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .carousel-button-mobile {
+    position: static;
+    transform: none;
+    display: inline-flex;
+  }
 }

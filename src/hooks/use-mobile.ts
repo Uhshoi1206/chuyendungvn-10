@@ -22,3 +22,5 @@ export const useIsMobile = () => {
 
   return isMobile;
 };
+
+export default useIsMobile;

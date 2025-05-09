@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Truck } from '@/models/TruckTypes';
 import TruckItem from '../TruckItem';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VehicleCarouselProps {
   vehicles: Truck[];
@@ -24,6 +25,7 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   // Tính toán số trang dựa trên số lượng sản phẩm và số lượng sản phẩm mỗi trang
   useEffect(() => {
@@ -68,7 +70,7 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
   const showNavigation = totalPages > 1;
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white w-full overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold relative inline-block mb-2">
@@ -79,29 +81,50 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
         </div>
 
         <div className="relative" ref={containerRef}>
-          {/* Nút điều hướng trước */}
-          {showNavigation && (
-            <button
-              onClick={goToPrevPage}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-5 md:-translate-x-8"
-              aria-label="Xem sản phẩm trước đó"
-              style={{
-                background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                border: '2px solid white'
-              }}
-            >
-              <ChevronLeft className="h-6 w-6 text-white" />
-            </button>
+          {/* Hiển thị nút điều hướng cho desktop */}
+          {!isMobile && showNavigation && (
+            <>
+              <button
+                onClick={goToPrevPage}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 md:-translate-x-5 lg:-translate-x-8"
+                aria-label="Xem sản phẩm trước đó"
+                style={{
+                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  border: '2px solid white'
+                }}
+              >
+                <ChevronLeft className="h-6 w-6 text-white" />
+              </button>
+              
+              <button
+                onClick={goToNextPage}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 md:translate-x-5 lg:translate-x-8"
+                aria-label="Xem sản phẩm tiếp theo"
+                style={{
+                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  border: '2px solid white'
+                }}
+              >
+                <ChevronRight className="h-6 w-6 text-white" />
+              </button>
+            </>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {currentVehicles.map((vehicle, index) => (
               <div 
                 key={vehicle.id} 
@@ -117,26 +140,47 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
             ))}
           </div>
 
-          {/* Nút điều hướng sau */}
-          {showNavigation && (
-            <button
-              onClick={goToNextPage}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-5 md:translate-x-8"
-              aria-label="Xem sản phẩm tiếp theo"
-              style={{
-                background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                border: '2px solid white'
-              }}
-            >
-              <ChevronRight className="h-6 w-6 text-white" />
-            </button>
+          {/* Hiển thị nút điều hướng cho mobile dạng inline */}
+          {isMobile && showNavigation && (
+            <div className="carousel-controls-mobile mt-4 flex justify-center gap-4">
+              <button
+                onClick={goToPrevPage}
+                className="carousel-button-mobile"
+                aria-label="Xem sản phẩm trước đó"
+                style={{
+                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  border: '2px solid white'
+                }}
+              >
+                <ChevronLeft className="h-6 w-6 text-white" />
+              </button>
+              
+              <button
+                onClick={goToNextPage}
+                className="carousel-button-mobile"
+                aria-label="Xem sản phẩm tiếp theo"
+                style={{
+                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  border: '2px solid white'
+                }}
+              >
+                <ChevronRight className="h-6 w-6 text-white" />
+              </button>
+            </div>
           )}
         </div>
 

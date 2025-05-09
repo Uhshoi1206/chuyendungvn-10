@@ -7,14 +7,14 @@ import { Truck } from 'lucide-react';
 
 const WeightCategories: React.FC = () => {
   return (
-    <section className="py-16">
+    <section className="py-16 w-full overflow-hidden">
       <div className="container mx-auto px-4">
         <SectionTitle 
           title="Phân Loại Theo Tải Trọng"
           description="Lựa chọn phương tiện vận tải phù hợp với nhu cầu vận chuyển của bạn dựa theo tải trọng"
         />
         
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {truckWeights.map(weight => (
             <Link 
               key={weight.id} 
@@ -25,7 +25,7 @@ const WeightCategories: React.FC = () => {
                 <div className="text-primary mb-2">
                   <Truck className="h-8 w-8" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-bold group-hover:text-primary transition-colors mb-1">{weight.name}</h3>
+                <h3 className="font-bold group-hover:text-primary transition-colors mb-1 text-sm sm:text-base">{weight.name}</h3>
               </div>
             </Link>
           ))}
