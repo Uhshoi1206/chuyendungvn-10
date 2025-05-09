@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { blogCategoryLabels } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
-import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Shield, Eye } from 'lucide-react';
+import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, Lightbulb, Zap } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -27,8 +27,20 @@ const BlogPage = () => {
   const categoryIcons = {
     'industry-news': <TrendingUp className="h-6 w-6" />,
     'product-review': <Tag className="h-6 w-6" />,
-    'driver-tips': <Shield className="h-6 w-6" />,
-    'maintenance': <Eye className="h-6 w-6" />
+    'driver-tips': <User className="h-6 w-6" />,
+    'maintenance': <Eye className="h-6 w-6" />,
+    'buying-guide': <Lightbulb className="h-6 w-6" />,
+    'technology': <Zap className="h-6 w-6" />
+  };
+
+  // Mô tả cho mỗi danh mục
+  const categoryDescriptions = {
+    'industry-news': 'Tin tức mới nhất về ngành vận tải',
+    'product-review': 'Đánh giá chi tiết các dòng xe',
+    'driver-tips': 'Kỹ năng và kinh nghiệm lái xe',
+    'maintenance': 'Bảo dưỡng và chăm sóc xe',
+    'buying-guide': 'Hướng dẫn mua xe phù hợp nhu cầu',
+    'technology': 'Công nghệ mới trong ngành vận tải'
   };
   
   return (
@@ -99,7 +111,7 @@ const BlogPage = () => {
       {/* Danh mục Blog với biểu tượng đẹp mắt */}
       <div className="bg-gray-50 py-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {Object.entries(blogCategories).map(([category, label]) => (
               <Link 
                 key={category} 
@@ -109,15 +121,14 @@ const BlogPage = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
                   {category === 'industry-news' && <TrendingUp className="h-6 w-6" />}
                   {category === 'product-review' && <Tag className="h-6 w-6" />}
-                  {category === 'driver-tips' && <Shield className="h-6 w-6" />}
+                  {category === 'driver-tips' && <User className="h-6 w-6" />}
                   {category === 'maintenance' && <Eye className="h-6 w-6" />}
+                  {category === 'buying-guide' && <Lightbulb className="h-6 w-6" />}
+                  {category === 'technology' && <Zap className="h-6 w-6" />}
                 </div>
                 <h2 className="text-xl font-bold">{label}</h2>
                 <p className="text-gray-600 text-sm mt-2">
-                  {category === 'industry-news' && 'Tin tức mới nhất về ngành vận tải'}
-                  {category === 'product-review' && 'Đánh giá chi tiết các dòng xe'}
-                  {category === 'driver-tips' && 'Kỹ năng và kinh nghiệm lái xe'}
-                  {category === 'maintenance' && 'Bảo dưỡng và chăm sóc xe'}
+                  {categoryDescriptions[category]}
                 </p>
               </Link>
             ))}
@@ -134,8 +145,10 @@ const BlogPage = () => {
                 <div className="bg-primary/10 p-2 rounded-lg text-primary mr-3">
                   {category === 'industry-news' && <TrendingUp />}
                   {category === 'product-review' && <Tag />}
-                  {category === 'driver-tips' && <Shield />}
+                  {category === 'driver-tips' && <User />}
                   {category === 'maintenance' && <Eye />}
+                  {category === 'buying-guide' && <Lightbulb />}
+                  {category === 'technology' && <Zap />}
                 </div>
                 <h2 className="text-2xl font-bold">{label}</h2>
               </div>

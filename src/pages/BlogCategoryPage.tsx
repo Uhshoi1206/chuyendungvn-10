@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { BlogCategory } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
-import { CalendarDays, Clock, User, ChevronRight, ArrowLeft, Tag, TrendingUp, Shield, Eye } from 'lucide-react';
+import { CalendarDays, Clock, User, ChevronRight, ArrowLeft, Tag, TrendingUp, Lightbulb, Zap, Eye } from 'lucide-react';
 
 const BlogCategoryPage = () => {
   const { category } = useParams();
@@ -18,8 +18,10 @@ const BlogCategoryPage = () => {
     switch(currentCategory) {
       case 'industry-news': return <TrendingUp className="h-6 w-6" />;
       case 'product-review': return <Tag className="h-6 w-6" />;
-      case 'driver-tips': return <Shield className="h-6 w-6" />;
+      case 'driver-tips': return <User className="h-6 w-6" />;
       case 'maintenance': return <Eye className="h-6 w-6" />;
+      case 'buying-guide': return <Lightbulb className="h-6 w-6" />;
+      case 'technology': return <Zap className="h-6 w-6" />;
       default: return <Tag className="h-6 w-6" />;
     }
   };
@@ -35,6 +37,10 @@ const BlogCategoryPage = () => {
         return 'Chia sẻ các kỹ năng, kinh nghiệm lái xe an toàn và hiệu quả. Các mẹo hữu ích giúp tài xế làm việc chuyên nghiệp hơn.';
       case 'maintenance': 
         return 'Hướng dẫn bảo dưỡng, chăm sóc xe đúng cách để kéo dài tuổi thọ phương tiện. Các biện pháp phòng ngừa và xử lý sự cố thường gặp.';
+      case 'buying-guide':
+        return 'Hướng dẫn chi tiết về cách lựa chọn xe phù hợp với từng nhu cầu kinh doanh, so sánh các mẫu xe, phân tích chi phí đầu tư và vận hành.';
+      case 'technology':
+        return 'Cập nhật công nghệ mới trong ngành xe tải và vận tải như xe điện, hybrid, hệ thống an toàn tiên tiến, công nghệ theo dõi và các giải pháp tiết kiệm nhiên liệu.';
       default: 
         return 'Tổng hợp các bài viết liên quan đến ngành vận tải và phương tiện thương mại tại Việt Nam.';
     }
@@ -220,7 +226,7 @@ const BlogCategoryPage = () => {
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-6">Khám Phá Danh Mục Khác</h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {Object.entries(blogCategories)
               .filter(([key]) => key !== currentCategory)
               .map(([key, label]) => (
@@ -232,8 +238,10 @@ const BlogCategoryPage = () => {
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-primary group-hover:bg-primary/10 mb-3">
                     {key === 'industry-news' && <TrendingUp className="h-5 w-5" />}
                     {key === 'product-review' && <Tag className="h-5 w-5" />}
-                    {key === 'driver-tips' && <Shield className="h-5 w-5" />}
+                    {key === 'driver-tips' && <User className="h-5 w-5" />}
                     {key === 'maintenance' && <Eye className="h-5 w-5" />}
+                    {key === 'buying-guide' && <Lightbulb className="h-5 w-5" />}
+                    {key === 'technology' && <Zap className="h-5 w-5" />}
                   </div>
                   <h3 className="font-medium">{label}</h3>
                 </Link>

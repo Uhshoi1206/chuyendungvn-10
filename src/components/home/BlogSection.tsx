@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye } from 'lucide-react';
+import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BlogPost } from '@/models/BlogPost';
 import SectionTitle from '@/components/SectionTitle';
@@ -129,7 +129,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
           <div className="mb-6 flex items-center justify-between">
             <h3 className="text-xl font-bold">Danh Mục Phổ Biến</h3>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {Object.entries(categories).map(([key, label]) => (
               <Link 
                 key={key} 
@@ -141,6 +141,8 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                   {key === 'product-review' && <Tag className="mx-auto" />}
                   {key === 'driver-tips' && <User className="mx-auto" />}
                   {key === 'maintenance' && <Eye className="mx-auto" />}
+                  {key === 'buying-guide' && <Lightbulb className="mx-auto" />}
+                  {key === 'technology' && <Zap className="mx-auto" />}
                 </div>
                 <h4 className="font-medium">{label}</h4>
                 <p className="text-sm text-gray-500 mt-1">Xem tất cả bài viết</p>

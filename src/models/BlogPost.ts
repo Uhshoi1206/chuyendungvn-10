@@ -14,12 +14,14 @@ export interface BlogPost {
 }
 
 // Định nghĩa các danh mục blog
-export type BlogCategory = 'industry-news' | 'product-review' | 'driver-tips' | 'maintenance';
+export type BlogCategory = 'industry-news' | 'product-review' | 'driver-tips' | 'maintenance' | 'buying-guide' | 'technology';
 
 // Nhãn hiển thị cho các danh mục
 export const blogCategoryLabels: Record<BlogCategory, string> = {
   'industry-news': 'Tin Ngành',
   'product-review': 'Đánh Giá Xe',
   'driver-tips': 'Lái Xe',
-  'maintenance': 'Bảo Dưỡng'
+  'maintenance': 'Bảo Dưỡng',
+  'buying-guide': 'Tư Vấn Mua Xe',
+  'technology': 'Công Nghệ & Đổi Mới'
 };

@@ -6,7 +6,9 @@ export const blogCategories: Record<string, string> = {
   'industry-news': 'Tin Ngành',
   'product-review': 'Đánh Giá Xe',
   'driver-tips': 'Lái Xe',
-  'maintenance': 'Bảo Dưỡng'
+  'maintenance': 'Bảo Dưỡng',
+  'buying-guide': 'Tư Vấn Mua Xe',
+  'technology': 'Công Nghệ & Đổi Mới'
 };
 
 // Blog posts
@@ -253,5 +255,194 @@ export const blogPosts: BlogPost[] = [
     publishDate: Date.now() - 20 * 24 * 60 * 60 * 1000, // 20 days ago
     readTime: 11,
     author: 'Phạm Văn D'
+  },
+  {
+    id: '5',
+    title: 'Cách chọn xe tải phù hợp với nhu cầu kinh doanh của bạn',
+    slug: 'cach-chon-xe-tai-phu-hop-nhu-cau-kinh-doanh',
+    description: 'Hướng dẫn chi tiết về cách lựa chọn xe tải phù hợp với từng loại hình kinh doanh, tối ưu chi phí đầu tư và vận hành.',
+    content: `
+      <h2>Phân tích nhu cầu vận chuyển</h2>
+      <p>Trước khi quyết định mua xe tải, bạn cần phân tích kỹ các yếu tố sau:</p>
+      <ul>
+        <li>Loại hàng hóa vận chuyển: kích thước, trọng lượng, đặc tính (dễ vỡ, đông lạnh, hàng rời...)</li>
+        <li>Khối lượng hàng hóa trung bình mỗi chuyến</li>
+        <li>Tần suất vận chuyển</li>
+        <li>Địa hình, cung đường vận chuyển (nội thành, liên tỉnh, miền núi)</li>
+        <li>Yêu cầu về tốc độ giao hàng</li>
+        <li>Ngân sách đầu tư</li>
+      </ul>
+      
+      <h3>Phân loại xe tải theo tải trọng</h3>
+      <p>Dựa vào tải trọng, xe tải được chia thành các nhóm sau:</p>
+      <ul>
+        <li><strong>Xe tải nhẹ (dưới 3.5 tấn)</strong>: Phù hợp cho vận chuyển trong nội thành, khu vực hạn chế tải trọng, khối lượng hàng ít.</li>
+        <li><strong>Xe tải trung (3.5 - 8 tấn)</strong>: Phù hợp cho vận chuyển liên tỉnh gần, khối lượng hàng trung bình.</li>
+        <li><strong>Xe tải nặng (trên 8 tấn)</strong>: Phù hợp cho vận chuyển liên tỉnh xa, khối lượng hàng lớn.</li>
+        <li><strong>Xe đầu kéo + sơ mi rơ mooc</strong>: Phù hợp cho vận chuyển container, hàng siêu trường siêu trọng.</li>
+      </ul>
+      
+      <h2>Hướng dẫn chọn xe theo loại hình kinh doanh</h2>
+      
+      <h3>1. Kinh doanh vận chuyển hàng nội thành</h3>
+      <p><strong>Đặc thù:</strong> Di chuyển nhiều trong khu đông dân cư, nhiều điểm giao nhận, cần tính linh hoạt cao.</p>
+      <p><strong>Xe phù hợp:</strong></p>
+      <ul>
+        <li>Xe tải nhẹ 500kg - 1.5 tấn: Suzuki Carry, Thaco Towner</li>
+        <li>Xe tải 1.5 - 2.5 tấn: Kia K200, Hyundai Porter</li>
+        <li>Ưu tiên xe có kích thước nhỏ gọn, bán kính quay vòng nhỏ, tiết kiệm nhiên liệu</li>
+      </ul>
+      
+      <h3>2. Kinh doanh vận chuyển hàng liên tỉnh</h3>
+      <p><strong>Đặc thù:</strong> Quãng đường dài, thời gian vận chuyển lâu, cần độ bền và thoải mái.</p>
+      <p><strong>Xe phù hợp:</strong></p>
+      <ul>
+        <li>Xe tải 5 - 9 tấn: Hyundai Mighty, Hino 500 Series</li>
+        <li>Xe tải 10 - 15 tấn: Hyundai HD, Isuzu FVR</li>
+        <li>Xe đầu kéo + sơ mi rơ mooc: Thaco Foton, Hyundai Xcient</li>
+        <li>Ưu tiên xe có cabin rộng rãi, động cơ mạnh mẽ, tiết kiệm nhiên liệu</li>
+      </ul>
+      
+      <h3>3. Kinh doanh vận chuyển hàng đông lạnh</h3>
+      <p><strong>Đặc thù:</strong> Cần duy trì nhiệt độ ổn định, bảo quản hàng hóa.</p>
+      <p><strong>Xe phù hợp:</strong></p>
+      <ul>
+        <li>Xe tải đông lạnh 1 - 3 tấn: Kia K165 đông lạnh, Hyundai Porter đông lạnh</li>
+        <li>Xe tải đông lạnh 5 - 10 tấn: Isuzu FRR Euro 4 đông lạnh</li>
+        <li>Ưu tiên xe có hệ thống làm lạnh hiệu quả, cách nhiệt tốt</li>
+      </ul>
+      
+      <h3>4. Kinh doanh vận chuyển vật liệu xây dựng</h3>
+      <p><strong>Đặc thù:</strong> Hàng hóa nặng, cần sức kéo và chịu tải lớn.</p>
+      <p><strong>Xe phù hợp:</strong></p>
+      <ul>
+        <li>Xe tải ben 2.5 - 5 tấn: Howo Ben, Dongfeng Ben</li>
+        <li>Xe tải ben 7 - 15 tấn: Hyundai HD270, Thaco Auman</li>
+        <li>Ưu tiên xe có hệ thống thủy lực mạnh, khung gầm chắc chắn</li>
+      </ul>
+      
+      <h2>Cân nhắc chi phí</h2>
+      <p>Khi mua xe tải, bạn cần tính toán tổng chi phí sở hữu (TCO), bao gồm:</p>
+      <ul>
+        <li><strong>Chi phí ban đầu:</strong> Giá xe, thuế trước bạ, đăng ký, đăng kiểm, bảo hiểm</li>
+        <li><strong>Chi phí vận hành:</strong> Nhiên liệu, phí cầu đường, bảo dưỡng định kỳ</li>
+        <li><strong>Chi phí sửa chữa:</strong> Chi phí phụ tùng, thời gian sửa chữa</li>
+        <li><strong>Chi phí khấu hao:</strong> Giá trị xe giảm theo thời gian</li>
+        <li><strong>Chi phí cơ hội:</strong> Khi xe dừng hoạt động để bảo dưỡng, sửa chữa</li>
+      </ul>
+      
+      <h2>Lời khuyên từ chuyên gia</h2>
+      <p>Sau khi đã xác định được loại xe phù hợp với nhu cầu, bạn nên:</p>
+      <ul>
+        <li>Tham khảo ý kiến của những người đã sử dụng xe cùng loại</li>
+        <li>So sánh tối thiểu 3 thương hiệu khác nhau</li>
+        <li>Lái thử xe trước khi quyết định</li>
+        <li>Tìm hiểu về chính sách bảo hành, hậu mãi</li>
+        <li>Kiểm tra mạng lưới dịch vụ sau bán hàng</li>
+        <li>Cân nhắc các hình thức tài chính: mua trả góp, thuê tài chính</li>
+      </ul>
+      
+      <p>Việc lựa chọn xe tải phù hợp sẽ giúp doanh nghiệp tối ưu chi phí vận hành, nâng cao hiệu quả kinh doanh và đảm bảo hoạt động vận tải diễn ra thuận lợi. Đừng chỉ nhìn vào giá ban đầu mà hãy tính toán chi phí lâu dài để đưa ra quyết định sáng suốt.</p>
+    `,
+    category: 'buying-guide',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/blog/chon-xe-tai.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/tu-van-mua-xe.jpg'
+    ],
+    publishDate: Date.now() - 8 * 24 * 60 * 60 * 1000, // 8 days ago
+    readTime: 10,
+    author: 'Nguyễn Văn A'
+  },
+  {
+    id: '6',
+    title: 'Xe tải điện: Tương lai của vận tải thương mại tại Việt Nam',
+    slug: 'xe-tai-dien-tuong-lai-van-tai-thuong-mai',
+    description: 'Phân tích triển vọng phát triển của xe tải điện tại Việt Nam, những lợi ích, thách thức và lộ trình chuyển đổi từ xe tải truyền thống.',
+    content: `
+      <h2>Xu hướng phát triển xe tải điện trên thế giới</h2>
+      <p>Trong bối cảnh biến đổi khí hậu toàn cầu, xe tải điện đang trở thành xu hướng phát triển tất yếu của ngành vận tải thương mại. Nhiều quốc gia phát triển như Mỹ, Đức, Trung Quốc đã và đang đẩy mạnh sử dụng xe tải điện, với mục tiêu giảm phát thải khí nhà kính và ô nhiễm không khí.</p>
+      
+      <p>Các hãng xe lớn như Tesla, BYD, Volvo, Mercedes-Benz đều đã cho ra mắt các dòng xe tải điện với công nghệ ngày càng tiên tiến. Đặc biệt, xe tải điện đang dần khẳng định ưu thế về chi phí vận hành thấp và hiệu suất cao trong vận chuyển ngắn và trung bình.</p>
+      
+      <h3>Tiềm năng phát triển xe tải điện tại Việt Nam</h3>
+      <p>Tại Việt Nam, xe tải điện đang ở giai đoạn sơ khai nhưng có tiềm năng phát triển lớn nhờ:</p>
+      <ul>
+        <li>Chính sách ưu đãi từ Chính phủ cho phương tiện điện</li>
+        <li>Cam kết giảm phát thải của Việt Nam tại COP26</li>
+        <li>Sự phát triển của cơ sở hạ tầng sạc điện</li>
+        <li>Chi phí điện năng tương đối ổn định</li>
+      </ul>
+      
+      <p>Theo các chuyên gia, đến năm 2030, xe tải điện có thể chiếm khoảng 10-15% thị phần xe tải tại Việt Nam, tập trung vào phân khúc xe tải nhẹ dưới 5 tấn hoạt động trong đô thị.</p>
+      
+      <h2>Ưu điểm của xe tải điện</h2>
+      
+      <h3>1. Lợi ích về môi trường</h3>
+      <ul>
+        <li>Không phát thải khí CO2 trực tiếp</li>
+        <li>Giảm ô nhiễm không khí trong đô thị</li>
+        <li>Giảm ô nhiễm tiếng ồn</li>
+      </ul>
+      
+      <h3>2. Lợi ích về kinh tế</h3>
+      <ul>
+        <li>Chi phí năng lượng thấp hơn 40-60% so với xe diesel</li>
+        <li>Chi phí bảo dưỡng thấp hơn do ít chi tiết cơ khí</li>
+        <li>Tuổi thọ động cơ điện cao hơn</li>
+        <li>Được ưu đãi về thuế phí, đặc biệt là trong tương lai</li>
+      </ul>
+      
+      <h3>3. Hiệu suất vận hành</h3>
+      <ul>
+        <li>Mô-men xoắn cao ngay từ đầu, tăng tốc tốt</li>
+        <li>Vận hành êm ái, ít rung lắc</li>
+        <li>Hệ thống phanh tái tạo năng lượng</li>
+        <li>Khả năng leo dốc tốt</li>
+      </ul>
+      
+      <h2>Thách thức đối với xe tải điện</h2>
+      
+      <h3>1. Hạ tầng sạc điện</h3>
+      <p>Một trong những rào cản lớn nhất là hệ thống trạm sạc điện còn hạn chế, đặc biệt là trạm sạc nhanh cho xe tải. Hiện nay, hầu hết trạm sạc tập trung ở các thành phố lớn, chưa phủ sóng các tuyến đường liên tỉnh.</p>
+      
+      <h3>2. Phạm vi hoạt động</h3>
+      <p>Xe tải điện hiện nay có phạm vi hoạt động từ 150-300km/lần sạc, thấp hơn so với xe diesel. Điều này phù hợp cho vận chuyển trong đô thị nhưng chưa đáp ứng được nhu cầu vận tải liên tỉnh xa.</p>
+      
+      <h3>3. Chi phí đầu tư ban đầu</h3>
+      <p>Giá thành xe tải điện cao hơn 30-50% so với xe diesel cùng phân khúc, chủ yếu do chi phí pin. Mặc dù chi phí vận hành thấp hơn nhưng thời gian hoàn vốn còn dài, khoảng 5-7 năm tùy vào cường độ sử dụng.</p>
+      
+      <h3>4. Thói quen sử dụng</h3>
+      <p>Người dùng còn e ngại về thời gian sạc, độ bền pin và giá trị bán lại. Việc chuyển đổi từ xe truyền thống sang xe điện đòi hỏi thay đổi thói quen vận hành và bảo dưỡng.</p>
+      
+      <h2>Các mẫu xe tải điện tiềm năng tại Việt Nam</h2>
+      
+      <h3>1. VinFast VF e35T</h3>
+      <p>Mẫu xe tải nhẹ điện đầu tiên của VinFast, dự kiến ra mắt năm 2023-2024, tải trọng 1.5-2 tấn, phạm vi hoạt động 250-300km, phù hợp cho vận chuyển nội thành.</p>
+      
+      <h3>2. THACO - BYD T3</h3>
+      <p>Sản phẩm hợp tác giữa THACO và BYD (Trung Quốc), xe tải điện 1 tấn, phạm vi 300km, đã được thử nghiệm tại một số thành phố lớn.</p>
+      
+      <h3>3. Dongfeng E70</h3>
+      <p>Xe tải điện nhập khẩu từ Trung Quốc, tải trọng 2.5 tấn, phạm vi hoạt động 270km, đang được một số đối tác logistic thử nghiệm tại Việt Nam.</p>
+      
+      <h2>Lộ trình chuyển đổi sang xe tải điện</h2>
+      <p>Để chuyển đổi hiệu quả sang xe tải điện, doanh nghiệp vận tải nên:</p>
+      <ul>
+        <li><strong>Giai đoạn 1 (2023-2025):</strong> Thử nghiệm xe tải điện cho vận chuyển ngắn trong đô thị</li>
+        <li><strong>Giai đoạn 2 (2025-2028):</strong> Mở rộng đội xe điện lên 30-50% cho vận chuyển nội thành</li>
+        <li><strong>Giai đoạn 3 (sau 2028):</strong> Chuyển đổi toàn diện khi công nghệ pin tiến bộ và hạ tầng sạc điện phát triển</li>
+      </ul>
+      
+      <p>Xe tải điện là xu hướng tất yếu trong tương lai của ngành vận tải thương mại tại Việt Nam. Mặc dù còn nhiều thách thức, nhưng với sự phát triển nhanh chóng của công nghệ pin và hạ tầng sạc, cùng với các chính sách hỗ trợ từ Chính phủ, xe tải điện sẽ sớm trở nên phổ biến, đặc biệt là trong môi trường đô thị.</p>
+    `,
+    category: 'technology',
+    images: [
+      'https://tongkhoxetai.vn/upload/images/blog/xe-tai-dien.jpg',
+      'https://tongkhoxetai.vn/upload/images/blog/cong-nghe-xe-tai.jpg'
+    ],
+    publishDate: Date.now() - 12 * 24 * 60 * 60 * 1000, // 12 days ago
+    readTime: 13,
+    author: 'Trần Văn B'
   }
 ];
+
