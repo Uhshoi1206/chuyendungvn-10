@@ -70,9 +70,9 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
   const showNavigation = totalPages > 1;
 
   return (
-    <section className="py-16 bg-white w-full overflow-hidden">
+    <section className="py-8 bg-white w-full overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h2 className="text-3xl font-bold relative inline-block mb-2">
             {title}
             <div className="absolute bottom-0 left-0 w-full h-1 bg-primary"></div>
@@ -184,10 +184,10 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
           )}
         </div>
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-6">
           <Link
             to={viewAllUrl}
-            className="inline-block border border-primary text-primary px-6 py-2 rounded-md hover:bg-primary-50 transition-colors"
+            className="inline-block border border-primary text-primary px-6 py-2 rounded-md hover:bg-primary/10 transition-colors"
             onClick={() => window.scrollTo(0, 0)}
           >
             {viewAllText} <ChevronRight className="inline-block h-4 w-4 ml-1" />
