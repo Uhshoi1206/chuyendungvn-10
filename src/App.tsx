@@ -58,7 +58,9 @@ const App = () => {
                 <Route path="/lien-he" element={<ContactPage />} />
                 <Route path="/gioi-thieu" element={<AboutPage />} />
                 <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/category/:category" element={<BlogCategoryPage />} />
+                
+                {/* Cập nhật URL cho danh mục blog */}
+                <Route path="/danh-muc-bai-viet/:slug" element={<BlogCategoryPage />} />
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="*" element={<NotFound />} />

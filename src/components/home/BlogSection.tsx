@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { BlogPost } from '@/models/BlogPost';
+import { BlogPost, blogCategorySlugs } from '@/models/BlogPost';
 import SectionTitle from '@/components/SectionTitle';
 import {
   Carousel,
@@ -25,6 +25,11 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
   
   // Chọn ngẫu nhiên 6 bài viết cho carousel
   const shuffledPosts = [...posts].sort(() => 0.5 - Math.random()).slice(0, 6);
+
+  // Lấy slug tiếng Việt cho danh mục
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -56,7 +61,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                     </h3>
                     <div className="flex flex-wrap items-center gap-4 text-white/90">
                       <Link 
-                        to={`/blog/category/${featuredPost.category}`}
+                        to={`/danh-muc-bai-viet/${getCategorySlug(featuredPost.category)}`}
                         className="bg-primary/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium hover:bg-primary/50 transition-colors"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -119,7 +124,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                   </div>
                   <div className="w-2/3 p-4 flex flex-col">
                     <Link 
-                      to={`/blog/category/${post.category}`}
+                      to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
                       className="text-xs text-primary font-medium mb-1 hover:underline"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -171,7 +176,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                         </div>
                         <div className="p-4 flex flex-col flex-grow">
                           <Link 
-                            to={`/blog/category/${post.category}`}
+                            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
                             className="text-xs font-medium text-primary mb-2 hover:underline"
                             onClick={(e) => e.stopPropagation()}
                           >
@@ -211,7 +216,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
             {Object.entries(categories).map(([key, label]) => (
               <Link 
                 key={key} 
-                to={`/blog/category/${key}`}
+                to={`/danh-muc-bai-viet/${getCategorySlug(key)}`}
                 className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-primary/30 hover:shadow-md transition group text-center"
               >
                 <div className="text-3xl mb-2 text-primary/80 group-hover:text-primary transition-colors">

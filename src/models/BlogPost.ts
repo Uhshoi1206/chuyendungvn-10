@@ -11,8 +11,8 @@ export interface BlogPost {
   readTime: number;
   author: string;
   tags?: string[];
-  views?: number; // Thêm trường lượt xem
-  comments?: number; // Thêm trường số bình luận
+  views?: number;
+  comments?: number;
 }
 
 // Định nghĩa các danh mục blog
@@ -26,4 +26,24 @@ export const blogCategoryLabels: Record<BlogCategory, string> = {
   'maintenance': 'Bảo Dưỡng',
   'buying-guide': 'Tư Vấn Mua Xe',
   'technology': 'Công Nghệ & Đổi Mới'
+};
+
+// Slug tiếng Việt không dấu cho các danh mục
+export const blogCategorySlugs: Record<BlogCategory, string> = {
+  'industry-news': 'tin-nganh',
+  'product-review': 'danh-gia-xe',
+  'driver-tips': 'lai-xe',
+  'maintenance': 'bao-duong',
+  'buying-guide': 'tu-van-mua-xe',
+  'technology': 'cong-nghe-doi-moi'
+};
+
+// Ánh xạ ngược từ slug tiếng Việt sang BlogCategory
+export const slugToBlogCategory: Record<string, BlogCategory> = {
+  'tin-nganh': 'industry-news',
+  'danh-gia-xe': 'product-review',
+  'lai-xe': 'driver-tips',
+  'bao-duong': 'maintenance',
+  'tu-van-mua-xe': 'buying-guide',
+  'cong-nghe-doi-moi': 'technology'
 };

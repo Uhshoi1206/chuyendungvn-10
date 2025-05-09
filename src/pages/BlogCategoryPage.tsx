@@ -2,16 +2,30 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { BlogCategory } from '@/models/BlogPost';
+import { BlogCategory, blogCategoryLabels, slugToBlogCategory } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
 import { CalendarDays, Clock, User, ChevronRight, ArrowLeft, Tag, TrendingUp, Lightbulb, Zap, Eye } from 'lucide-react';
 
 const BlogCategoryPage = () => {
-  const { category } = useParams();
-  const currentCategory = category as BlogCategory;
+  const { slug } = useParams<{ slug: string }>();
+  const categoryKey = slug ? slugToBlogCategory[slug] : undefined;
   
-  const categoryPosts = blogPosts.filter(post => post.category === currentCategory);
+  // Nếu không tìm thấy danh mục từ slug, hiển thị trang lỗi
+  if (!categoryKey || !slug) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 text-center py-12">
+          <h1 className="text-3xl font-bold mb-4">Danh mục không tồn tại</h1>
+          <p className="mb-8">Danh mục bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+          <Link to="/blog" className="text-primary hover:underline">Quay lại trang Blog</Link>
+        </div>
+      </Layout>
+    );
+  }
+  
+  const currentCategory = categoryKey as BlogCategory;
   const categoryLabel = blogCategories[currentCategory];
+  const categoryPosts = blogPosts.filter(post => post.category === currentCategory);
 
   // Biểu tượng cho mỗi danh mục
   const getCategoryIcon = () => {
@@ -46,18 +60,6 @@ const BlogCategoryPage = () => {
     }
   };
 
-  if (!currentCategory || !categoryLabel) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 text-center py-12">
-          <h1 className="text-3xl font-bold mb-4">Danh mục không tồn tại</h1>
-          <p className="mb-8">Danh mục bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
-          <Link to="/blog" className="text-primary hover:underline">Quay lại trang Blog</Link>
-        </div>
-      </Layout>
-    );
-  }
-
   return (
     <Layout>
       {/* Hero Section cho danh mục */}
@@ -81,6 +83,7 @@ const BlogCategoryPage = () => {
         </div>
       </div>
       
+      {/* Giữ nguyên phần còn lại của component */}
       <div className="container mx-auto px-4 py-12">
         {/* Hiển thị bài viết nổi bật của danh mục (bài mới nhất) */}
         {categoryPosts.length > 0 && (
@@ -229,23 +232,27 @@ const BlogCategoryPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {Object.entries(blogCategories)
               .filter(([key]) => key !== currentCategory)
-              .map(([key, label]) => (
-                <Link
-                  key={key}
-                  to={`/blog/category/${key}`}
-                  className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 hover:border-primary/20 hover:shadow-md transition group text-center"
-                >
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-primary group-hover:bg-primary/10 mb-3">
-                    {key === 'industry-news' && <TrendingUp className="h-5 w-5" />}
-                    {key === 'product-review' && <Tag className="h-5 w-5" />}
-                    {key === 'driver-tips' && <User className="h-5 w-5" />}
-                    {key === 'maintenance' && <Eye className="h-5 w-5" />}
-                    {key === 'buying-guide' && <Lightbulb className="h-5 w-5" />}
-                    {key === 'technology' && <Zap className="h-5 w-5" />}
-                  </div>
-                  <h3 className="font-medium">{label}</h3>
-                </Link>
-              ))
+              .map(([key, label]) => {
+                const categorySlug = slugToBlogCategory[key] ? key : 
+                  Object.entries(slugToBlogCategory).find(([_, val]) => val === key)?.[0];
+                return (
+                  <Link
+                    key={key}
+                    to={`/danh-muc-bai-viet/${categorySlug}`}
+                    className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 hover:border-primary/20 hover:shadow-md transition group text-center"
+                  >
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-primary group-hover:bg-primary/10 mb-3">
+                      {key === 'industry-news' && <TrendingUp className="h-5 w-5" />}
+                      {key === 'product-review' && <Tag className="h-5 w-5" />}
+                      {key === 'driver-tips' && <User className="h-5 w-5" />}
+                      {key === 'maintenance' && <Eye className="h-5 w-5" />}
+                      {key === 'buying-guide' && <Lightbulb className="h-5 w-5" />}
+                      {key === 'technology' && <Zap className="h-5 w-5" />}
+                    </div>
+                    <h3 className="font-medium">{label}</h3>
+                  </Link>
+                );
+              })
             }
           </div>
         </div>

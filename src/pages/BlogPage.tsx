@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { blogCategoryLabels, BlogPost } from '@/models/BlogPost';
+import { blogCategoryLabels, BlogPost, blogCategorySlugs } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
 import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, Lightbulb, Zap, MessageCircle, BookOpen, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -51,6 +51,11 @@ const BlogPage = () => {
     'maintenance': 'Bảo dưỡng và chăm sóc xe',
     'buying-guide': 'Hướng dẫn mua xe phù hợp nhu cầu',
     'technology': 'Công nghệ mới trong ngành vận tải'
+  };
+  
+  // Lấy slug tiếng Việt cho danh mục
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
   };
   
   // Lọc bài viết dựa trên tab đang active và từ khóa tìm kiếm
@@ -179,7 +184,7 @@ const BlogPage = () => {
             {Object.entries(blogCategories).map(([category, label]) => (
               <Link 
                 key={category} 
-                to={`/blog/category/${category}`}
+                to={`/danh-muc-bai-viet/${getCategorySlug(category)}`}
                 className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition text-center border border-gray-100 hover:border-primary/20 group"
               >
                 <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
@@ -245,7 +250,7 @@ const BlogPage = () => {
                           />
                           <div className="absolute top-3 left-3">
                             <Link 
-                              to={`/blog/category/${post.category}`}
+                              to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
                               className="inline-block bg-white/80 backdrop-blur-sm text-primary rounded-full px-3 py-1 text-xs font-medium"
                               onClick={(e) => e.stopPropagation()}
                             >

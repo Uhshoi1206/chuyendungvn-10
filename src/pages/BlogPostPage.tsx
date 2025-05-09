@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { blogCategoryLabels } from '@/models/BlogPost';
+import { blogCategoryLabels, blogCategorySlugs } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
 import { CalendarDays, ChevronRight, Clock, Share2, User, ThumbsUp, MessageCircle, BookmarkPlus, Facebook, Twitter, Linkedin, Copy, ArrowLeft } from 'lucide-react';
 import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
@@ -25,6 +24,11 @@ const BlogPostPage = () => {
       </Layout>
     );
   }
+
+  // Lấy slug tiếng Việt cho danh mục
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
 
   // Tìm sản phẩm liên quan nếu bài viết tập trung vào 1 sản phẩm cụ thể
   const relatedTruck = useRelatedTruckForBlogPost(post);
@@ -54,7 +58,7 @@ const BlogPostPage = () => {
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
             <Link to="/blog" className="text-gray-500 hover:text-primary">Blog</Link>
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
-            <Link to={`/blog/category/${post.category}`} className="text-gray-500 hover:text-primary">
+            <Link to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} className="text-gray-500 hover:text-primary">
               {blogCategoryLabels[post.category]}
             </Link>
             <ChevronRight className="h-4 w-4 mx-1 text-gray-400" />
@@ -67,14 +71,14 @@ const BlogPostPage = () => {
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 {/* Quay lại button */}
                 <div className="p-4 md:p-6">
-                  <Link to={`/blog/category/${post.category}`} className="inline-flex items-center text-primary hover:underline mb-4">
+                  <Link to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} className="inline-flex items-center text-primary hover:underline mb-4">
                     <ArrowLeft className="h-4 w-4 mr-1" />
                     Quay lại {blogCategoryLabels[post.category]}
                   </Link>
                   
                   {/* Category badge */}
                   <Link 
-                    to={`/blog/category/${post.category}`} 
+                    to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`} 
                     className="inline-block bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium mb-4"
                   >
                     {blogCategoryLabels[post.category]}
@@ -285,7 +289,7 @@ const BlogPostPage = () => {
                   {Object.entries(blogCategories).map(([key, label]) => (
                     <Link 
                       key={key} 
-                      to={`/blog/category/${key}`}
+                      to={`/danh-muc-bai-viet/${getCategorySlug(key)}`}
                       className={`flex items-center justify-between px-3 py-2 rounded-md transition-colors ${
                         key === post.category 
                           ? 'bg-primary/20 text-primary font-medium' 
