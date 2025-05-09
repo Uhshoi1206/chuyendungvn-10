@@ -20,6 +20,11 @@ import BlogSection from '@/components/home/BlogSection';
 import WeightCategories from '@/components/home/WeightCategories';
 
 const Index = () => {
+  // Sắp xếp bài viết theo thời gian mới nhất
+  const sortedPosts = [...blogPosts].sort((a, b) => 
+    new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+  );
+
   return (
     <Layout>
       <Helmet>
@@ -82,7 +87,7 @@ const Index = () => {
         <ContactSection />
         
         {/* Tin Tức & Chia Sẻ */}
-        <BlogSection posts={blogPosts.slice(0, 4)} categories={blogCategories} />
+        <BlogSection posts={sortedPosts.slice(0, 6)} categories={blogCategories} />
       </div>
       
     </Layout>

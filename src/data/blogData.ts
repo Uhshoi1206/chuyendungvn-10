@@ -47,7 +47,10 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 5 * 24 * 60 * 60 * 1000, // 5 days ago
     readTime: 8,
-    author: 'Nguyễn Văn A'
+    author: 'Nguyễn Văn A',
+    views: 298,
+    comments: 12,
+    tags: ['Hyundai', 'Thaco', 'Isuzu', 'Hino', 'Dongfeng', 'Xe tải bán chạy']
   },
   {
     id: '2',
@@ -97,7 +100,10 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 10 * 24 * 60 * 60 * 1000, // 10 days ago
     readTime: 12,
-    author: 'Trần Văn B'
+    author: 'Trần Văn B',
+    views: 345,
+    comments: 18,
+    tags: ['Hyundai', 'Mighty EX8', 'Xe tải 8 tấn', 'Đánh giá xe']
   },
   {
     id: '3',
@@ -158,7 +164,10 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 15 * 24 * 60 * 60 * 1000, // 15 days ago
     readTime: 9,
-    author: 'Lê Văn C'
+    author: 'Lê Văn C',
+    views: 521,
+    comments: 25,
+    tags: ['Lái xe an toàn', 'Vượt xe', 'Kỹ năng lái xe', 'Đường cao tốc']
   },
   {
     id: '4',
@@ -254,7 +263,10 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 20 * 24 * 60 * 60 * 1000, // 20 days ago
     readTime: 11,
-    author: 'Phạm Văn D'
+    author: 'Phạm Văn D',
+    views: 412,
+    comments: 15,
+    tags: ['Bảo dưỡng xe', 'Kéo dài tuổi thọ', 'Chi phí sửa chữa', 'Động cơ']
   },
   {
     id: '5',
@@ -351,7 +363,10 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 8 * 24 * 60 * 60 * 1000, // 8 days ago
     readTime: 10,
-    author: 'Nguyễn Văn A'
+    author: 'Nguyễn Văn A',
+    views: 275,
+    comments: 8,
+    tags: ['Mua xe tải', 'Kinh doanh vận tải', 'Chi phí vận hành', 'Tư vấn mua xe']
   },
   {
     id: '6',
@@ -442,7 +457,9 @@ export const blogPosts: BlogPost[] = [
     ],
     publishDate: Date.now() - 12 * 24 * 60 * 60 * 1000, // 12 days ago
     readTime: 13,
-    author: 'Trần Văn B'
+    author: 'Trần Văn B',
+    views: 187,
+    comments: 9,
+    tags: ['Xe tải điện', 'Vận tải xanh', 'Công nghệ mới', 'Môi trường']
   }
 ];
-

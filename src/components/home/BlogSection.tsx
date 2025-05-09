@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap } from 'lucide-react';
+import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap, MessageCircle, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BlogPost } from '@/models/BlogPost';
 import SectionTitle from '@/components/SectionTitle';
@@ -22,6 +22,9 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
   // Phân loại bài viết nổi bật và mới nhất
   const featuredPost = posts[0]; // Bài viết đầu tiên sẽ là bài nổi bật
   const recentPosts = posts.slice(1, 4); // 3 bài viết tiếp theo
+  
+  // Chọn ngẫu nhiên 6 bài viết cho carousel
+  const shuffledPosts = [...posts].sort(() => 0.5 - Math.random()).slice(0, 6);
 
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -31,7 +34,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
           description="Cập nhật thông tin mới nhất về xe tải, xe cẩu, sơ mi rơ mooc, xe đầu kéo và ngành vận tải tại Việt Nam"
         />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
           {/* Bài viết nổi bật - chiếm 2/3 không gian */}
           <div className="lg:col-span-2">
             <Link to={`/blog/${featuredPost.slug}`} className="group">
@@ -41,13 +44,14 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                     src={featuredPost.images[0]}
                     alt={featuredPost.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
                   />
                   <div className="absolute top-0 left-0 bg-gradient-to-r from-primary to-primary/70 text-white px-4 py-2 rounded-br-lg rounded-tl-lg flex items-center font-medium">
                     <TrendingUp className="h-4 w-4 mr-1" />
                     Nổi Bật
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
                       {featuredPost.title}
                     </h3>
                     <div className="flex flex-wrap items-center gap-4 text-white/90">
@@ -69,14 +73,24 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                   <p className="text-gray-600 mb-4 line-clamp-2">
                     {featuredPost.description}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex flex-wrap items-center justify-between text-sm text-gray-600 gap-2">
+                    <div className="flex items-center">
                       <User className="h-4 w-4 mr-1 text-primary/80" />
-                      <span>{featuredPost.author}</span>
+                      <span className="mr-4">{featuredPost.author}</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-1" />
-                      <span>{featuredPost.readTime} phút đọc</span>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center">
+                        <Clock className="h-4 w-4 mr-1" />
+                        <span>{featuredPost.readTime} phút đọc</span>
+                      </div>
+                      <div className="flex items-center text-primary/80">
+                        <Eye className="h-4 w-4 mr-1" />
+                        <span>{featuredPost.views || '28'}</span>
+                      </div>
+                      <div className="flex items-center text-primary/80">
+                        <MessageCircle className="h-4 w-4 mr-1" />
+                        <span>{featuredPost.comments || '5'}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -94,7 +108,14 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                       src={post.images[0]}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
+                    <div className="absolute bottom-0 left-0 bg-gradient-to-r from-primary/90 to-primary/50 text-white text-xs px-2 py-1">
+                      <div className="flex items-center">
+                        <Eye className="h-3 w-3 mr-1" />
+                        <span>{post.views || Math.floor(Math.random() * 50) + 10}</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="w-2/3 p-4 flex flex-col">
                     <Link 
@@ -113,14 +134,71 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                         {new Date(post.publishDate).toLocaleDateString('vi-VN')}
                       </span>
                       <span className="flex items-center">
-                        <Clock className="h-3 w-3 mr-1" />
-                        {post.readTime} phút
+                        <User className="h-3 w-3 mr-1" />
+                        {post.author}
                       </span>
                     </div>
                   </div>
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+        
+        {/* Carousel cho các bài viết khác */}
+        <div className="mt-8 mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold">Bài Viết Đọc Nhiều</h3>
+          </div>
+          <div className="relative">
+            <Carousel className="mx-auto">
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {shuffledPosts.map((post) => (
+                  <CarouselItem key={post.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                    <Link to={`/blog/${post.slug}`} className="group h-full">
+                      <div className="bg-white rounded-lg overflow-hidden shadow-sm h-full hover:shadow-md transition duration-300 flex flex-col">
+                        <div className="aspect-video relative overflow-hidden">
+                          <img
+                            src={post.images[0]}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                          <div className="absolute bottom-0 right-0 bg-black/60 text-white text-xs px-2 py-1 rounded-tl-md flex items-center">
+                            <BookOpen className="h-3 w-3 mr-1" />
+                            <span>{post.readTime} phút</span>
+                          </div>
+                        </div>
+                        <div className="p-4 flex flex-col flex-grow">
+                          <Link 
+                            to={`/blog/category/${post.category}`}
+                            className="text-xs font-medium text-primary mb-2 hover:underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {categories[post.category]}
+                          </Link>
+                          <h4 className="font-bold line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+                            {post.title}
+                          </h4>
+                          <div className="mt-auto pt-2 flex items-center justify-between text-xs text-gray-500">
+                            <span className="flex items-center">
+                              <CalendarDays className="h-3 w-3 mr-1" />
+                              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+                            </span>
+                            <span className="flex items-center">
+                              <MessageCircle className="h-3 w-3 mr-1" />
+                              <span>{post.comments || Math.floor(Math.random() * 10) + 1}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 bg-white/80 hover:bg-white" />
+              <CarouselNext className="right-0 bg-white/80 hover:bg-white" />
+            </Carousel>
           </div>
         </div>
 
@@ -136,7 +214,7 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
                 to={`/blog/category/${key}`}
                 className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:border-primary/30 hover:shadow-md transition group text-center"
               >
-                <div className="text-3xl mb-2 text-primary/80 group-hover:text-primary">
+                <div className="text-3xl mb-2 text-primary/80 group-hover:text-primary transition-colors">
                   {key === 'industry-news' && <TrendingUp className="mx-auto" />}
                   {key === 'product-review' && <Tag className="mx-auto" />}
                   {key === 'driver-tips' && <User className="mx-auto" />}

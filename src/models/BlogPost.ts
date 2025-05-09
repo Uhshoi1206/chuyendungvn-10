@@ -10,7 +10,9 @@ export interface BlogPost {
   publishDate: number;
   readTime: number;
   author: string;
-  tags?: string[]; // Thêm thuộc tính tags là một mảng string tùy chọn
+  tags?: string[];
+  views?: number; // Thêm trường lượt xem
+  comments?: number; // Thêm trường số bình luận
 }
 
 // Định nghĩa các danh mục blog
