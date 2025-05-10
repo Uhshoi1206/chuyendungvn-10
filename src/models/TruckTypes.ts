@@ -1,5 +1,4 @@
 
-
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 
 export interface TruckBrand {
@@ -160,7 +159,6 @@ export interface Truck {
   
   // Thông số kỹ thuật phổ biến
   engineType?: string;
-  engineCapacity?: string;
   fuel?: string;
   transmission?: string;
   wheelbase?: number;
