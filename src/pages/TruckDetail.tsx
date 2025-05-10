@@ -126,6 +126,51 @@ const TruckDetail = () => {
   const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
   const vehicleTypeName = getVehicleTypeName(truck.type);
   const boxTypeName = truck.boxType ? getBoxTypeName(truck.boxType) : '';
+
+  // Xác định các tab cần hiển thị dựa trên loại xe
+  const getTabs = () => {
+    const baseTabs = [
+      { value: "description", label: "Mô tả chi tiết" },
+      { value: "specifications", label: "Thông số kỹ thuật" }
+    ];
+
+    // Thêm tab dựa vào loại xe
+    if (truck.boxType === 'đông-lạnh') {
+      baseTabs.push({ value: "refrigeration", label: "Thông số thùng đông lạnh" });
+    } 
+    else if (truck.boxType === 'bảo-ôn') {
+      baseTabs.push({ value: "insulated", label: "Thông số thùng bảo ôn" });
+    } 
+    else if (truck.boxType === 'kín') {
+      baseTabs.push({ value: "closed", label: "Thông số thùng kín" });
+    } 
+    else if (truck.boxType === 'bạt') {
+      baseTabs.push({ value: "tarpaulin", label: "Thông số thùng bạt" });
+    } 
+    else if (truck.boxType === 'lửng') {
+      baseTabs.push({ value: "flatbed", label: "Thông số thùng lửng" });
+    } 
+    else if (truck.boxType === 'xi-téc') {
+      baseTabs.push({ value: "tank", label: "Thông số xi téc" });
+    }
+
+    if (truck.type === 'xe-cau') {
+      baseTabs.push({ value: "crane", label: "Thông số cẩu" });
+    } 
+    else if (truck.type === 'mooc') {
+      baseTabs.push({ value: "trailer", label: "Thông số sơ mi rơ mooc" });
+    } 
+    else if (truck.type === 'dau-keo') {
+      baseTabs.push({ value: "tractor", label: "Thông số đầu kéo" });
+    }
+
+    // Tab liên hệ luôn có
+    baseTabs.push({ value: "contact", label: "Liên hệ tư vấn" });
+
+    return baseTabs;
+  };
+
+  const tabs = getTabs();
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -283,11 +328,10 @@ const TruckDetail = () => {
         
         {/* Product Details Tabs */}
         <Tabs defaultValue="description">
-          <TabsList className="w-full grid grid-cols-3 md:grid-cols-4 mb-8">
-            <TabsTrigger value="description">Mô tả chi tiết</TabsTrigger>
-            <TabsTrigger value="specifications">Thông số kỹ thuật</TabsTrigger>
-            <TabsTrigger value="coolingbox">Thông số thùng đông lạnh</TabsTrigger>
-            <TabsTrigger value="contact">Liên hệ tư vấn</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-8">
+            {tabs.map(tab => (
+              <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+            ))}
           </TabsList>
           
           <TabsContent value="description" className="p-6 bg-white border rounded-b-lg mt-2">
@@ -619,189 +663,893 @@ const TruckDetail = () => {
             </div>
           </TabsContent>
           
-          <TabsContent value="coolingbox" className="p-6 bg-white border rounded-b-lg mt-2">
+          {/* Tab thùng đông lạnh */}
+          <TabsContent value="refrigeration" className="p-6 bg-white border rounded-b-lg mt-2">
             <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng đông lạnh</h2>
-            
-            {truck.boxType === 'đông-lạnh' ? (
-              <div className="space-y-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thùng đông lạnh:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu vỏ ngoài</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.outsideMaterial || 'Composite cao cấp'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu vỏ trong</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.insideMaterial || 'Inox 304 dập sóng / FRP kháng khuẩn'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu sàn</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.floorMaterial || 'Inox chống trượt / FRP chống trượt'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khung xương</td>
+                      <td className="py-2 font-medium">Hợp kim nhôm / FRP</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cách nhiệt</td>
+                      <td className="py-2 font-medium">Polyurethane (PU) cao cấp</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày vách</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.insulationThickness || '80mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày sàn</td>
+                      <td className="py-2 font-medium">100mm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày trần</td>
+                      <td className="py-2 font-medium">80mm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cửa sau</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.doorType || '2 cánh mở 270 độ'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Kích thước cửa sau</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.doorSize || `Rộng ${truck.width}m x Cao ${truck.height - 0.1}m`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Ron cao su cửa</td>
+                      <td className="py-2 font-medium">2 lớp, chịu nhiệt, chống thoát lạnh</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Bản lề</td>
+                      <td className="py-2 font-medium">Inox chống rỉ</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khóa cửa</td>
+                      <td className="py-2 font-medium">Inox chống rỉ, kèm chốt an toàn</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống làm lạnh:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Đơn vị làm lạnh</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.coolingUnit || 'THERMO-KING/CARRIER'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Xuất xứ máy lạnh</td>
+                      <td className="py-2 font-medium">Nhật Bản/Mỹ</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Công suất làm lạnh</td>
+                      <td className="py-2 font-medium">3,500 - 5,000 kcal/h</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại máy nén</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.compressorType || 'Piston/Scroll/Rotary'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Môi chất lạnh</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.refrigerantType || 'R404A/R134A (thân thiện môi trường)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Nhiệt độ làm lạnh</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.temperatureRange || '-18°C đến +5°C (tùy chỉnh)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống điều khiển</td>
+                      <td className="py-2 font-medium">{truck.coolingBox?.temperatureControl || 'Bộ điều khiển nhiệt độ kỹ thuật số'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Nguồn cấp</td>
+                      <td className="py-2 font-medium">Từ động cơ xe</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tùy chọn nguồn điện</td>
+                      <td className="py-2 font-medium">380V/220V (tùy chọn thêm)</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Dàn lạnh</td>
+                      <td className="py-2 font-medium">Lắp trên trần thùng</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Dàn nóng</td>
+                      <td className="py-2 font-medium">Lắp phía trên cabin</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống chiếu sáng</td>
+                      <td className="py-2 font-medium">Đèn LED bên trong thùng</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Rèm cửa</td>
+                      <td className="py-2 font-medium">Màn nhựa PVC chống thoát lạnh</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống thoát nước</td>
+                      <td className="py-2 font-medium">Có van xả nước đáy thùng</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Thanh chèn hàng</td>
+                      <td className="py-2 font-medium">Có (tùy chọn thêm)</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Sàn nhôm</td>
+                      <td className="py-2 font-medium">Tùy chọn thêm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống ghi nhiệt độ</td>
+                      <td className="py-2 font-medium">Tùy chọn thêm</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab thùng bảo ôn */}
+          <TabsContent value="insulated" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng bảo ôn</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thùng bảo ôn:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu vỏ ngoài</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.outerMaterial || 'Composite cao cấp / Inox'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu vỏ trong</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.innerMaterial || 'Inox 304 / FRP kháng khuẩn'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu cách nhiệt</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.insulationMaterial || 'Foam PU cách nhiệt'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày vách</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.wallThickness || '50mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày sàn</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.floorThickness || '50mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày mái</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.roofThickness || '50mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cửa sau</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.doorType || '2 cánh mở 270 độ'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Ron cửa</td>
+                      <td className="py-2 font-medium">Ron cao su kép chống thấm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khung xương</td>
+                      <td className="py-2 font-medium">Khung thép mạ kẽm / nhôm định hình</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Phụ kiện</td>
+                      <td className="py-2 font-medium">Bản lề, khóa Inox 304 chống rỉ</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tính năng bảo ôn:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Khả năng cách nhiệt</td>
+                      <td className="py-2 font-medium">Duy trì nhiệt độ 2-8°C trong 8-10 giờ</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Nhiệt độ bảo quản</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.temperatureRange || '2°C đến +8°C'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khả năng chống thấm nước</td>
+                      <td className="py-2 font-medium">Hoàn toàn kín nước</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khả năng chịu tải</td>
+                      <td className="py-2 font-medium">{truck.insulatedBox?.loadingCapacity || 'Tối đa theo tải trọng xe'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống thoát nước</td>
+                      <td className="py-2 font-medium">Van xả đáy thùng</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống chiếu sáng</td>
+                      <td className="py-2 font-medium">Đèn LED bên trong thùng</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Kệ chứa hàng</td>
+                      <td className="py-2 font-medium">Tùy chọn thêm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Sàn chống trượt</td>
+                      <td className="py-2 font-medium">Sàn nhám, chống trơn trượt</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Thanh chèn hàng</td>
+                      <td className="py-2 font-medium">Tùy chọn thêm</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab thùng kín */}
+          <TabsContent value="closed" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng kín</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số thùng kín:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cấu trúc khung</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.frameStructure || 'Khung thép mạ kẽm, sơn tĩnh điện'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu vách</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.panelMaterial || 'Tôn mạ kẽm / Composite / Inox'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày vách</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.thickness || '1.0 - 1.2 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu sàn</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.floorMaterial || 'Gỗ/Thép chống trượt'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu mái</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.roofType || 'Tôn mạ kẽm / Composite / Inox'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cửa sau</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.doorType || '2 cánh mở 270 độ'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống chống thấm</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.waterproofing || 'Gioăng cao su kín nước'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống gia cường</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.reinforcement || 'Xương thép gia cường'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Sơn</td>
+                      <td className="py-2 font-medium">Sơn tĩnh điện chống gỉ</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống chiếu sáng</td>
+                      <td className="py-2 font-medium">Đèn LED bên trong thùng</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống chằng buộc</td>
+                      <td className="py-2 font-medium">{truck.closedBox?.loadingSecurity || 'Móc chằng buộc hàng hóa'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Bậc lên xuống</td>
+                      <td className="py-2 font-medium">Bậc nhôm chống trượt</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab thùng bạt */}
+          <TabsContent value="tarpaulin" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng bạt</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số thùng bạt:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cấu trúc khung</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.frameStructure || 'Khung thép mạ kẽm, sơn tĩnh điện'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu bạt</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.tarpaulinMaterial || 'Bạt nhựa PVC cao cấp, chống thấm nước'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày bạt</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.tarpaulinThickness || '0.8 - 1.0 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại khung</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.frameType || 'Khung thép chữ U'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu sàn</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.floorMaterial || 'Sàn gỗ/thép'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Kiểu mui phủ</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.coverType || 'Bạt phủ toàn bộ, có thể mở bên hông'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tiếp cận bên hông</td>
+                      <td className="py-2 font-medium">{truck.tarpaulinBox?.sideAccess ? 'Có, mở được hai bên hông' : 'Không, chỉ mở phía sau'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Khả năng chống thấm</td>
+                      <td className="py-2 font-medium">Bạt chống thấm nước 100%</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống chằng buộc</td>
+                      <td className="py-2 font-medium">Móc chằng buộc hàng hóa</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Bậc lên xuống</td>
+                      <td className="py-2 font-medium">Bậc nhôm chống trượt</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab thùng lửng */}
+          <TabsContent value="flatbed" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng lửng</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số thùng lửng:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.flatbedBox?.sideHeight || 0.4}m (Bên trong)`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu sàn</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.floorMaterial || 'Thép / Gỗ cứng'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày sàn</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.floorThickness || '4 - 5 mm (thép) / 20mm (gỗ)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều cao thành</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.sideHeight || 400} mm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại thành bên</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.sideType || 'Thép hợp kim, có thể tháo rời'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khả năng tiếp cận</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.sideAccess || 'Mở được cả 3 bên (trừ phía cabin)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống gia cường</td>
+                      <td className="py-2 font-medium">{truck.flatbedBox?.reinforcement || 'Dầm thép chữ I chạy dọc thùng xe'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống chốt khóa</td>
+                      <td className="py-2 font-medium">Chốt khóa thành bên chắc chắn</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống chằng buộc</td>
+                      <td className="py-2 font-medium">Móc chằng buộc hàng hóa</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Bậc lên xuống</td>
+                      <td className="py-2 font-medium">Bậc nhôm chống trượt</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab xi téc */}
+          <TabsContent value="tank" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết xi téc chở xăng dầu</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số xi téc:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Dung tích bồn</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.capacityText || truck.tankSpec?.capacity + ' lít' || '6,000 - 10,000 lít'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Số khoang</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.compartments || '2-3 khoang'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu bồn</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.material || 'Thép carbon Q235B / Thép không gỉ SUS304'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Độ dày thành bồn</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.thickness || '4-5 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Vật liệu lót trong</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.liningMaterial || 'Epoxy chống ăn mòn (cho xăng dầu)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống van</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.valveSystem || 'Van đáy và van xả API tiêu chuẩn'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Áp suất làm việc</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.pressureRating || '0.2 - 0.3 MPa'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống xả</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.dischargingSystem || 'Bơm xả và hệ thống xả trọng lực'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống đo lường</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.measurementSystem || 'Đồng hồ đo cơ khí / kỹ thuật số'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Thiết bị an toàn</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.safetyEquipment || 'Van an toàn, dây tiếp mát, thoát hơi'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống bơm</td>
+                      <td className="py-2 font-medium">Bơm tự hút hoặc bơm ly tâm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống làm nóng</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.heatingSystem || 'Tùy chọn cho dầu nặng'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống cách nhiệt</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.insulationPresent ? 'Có' : 'Tùy chọn thêm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Thang và đường đi</td>
+                      <td className="py-2 font-medium">Thang leo và đường đi chống trượt</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiêu chuẩn và chứng nhận:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Chứng nhận áp lực</td>
+                      <td className="py-2 font-medium">Đạt tiêu chuẩn áp lực làm việc an toàn</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chứng nhận chống cháy nổ</td>
+                      <td className="py-2 font-medium">Hệ thống điện chống cháy nổ EX</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tiêu chuẩn vận chuyển</td>
+                      <td className="py-2 font-medium">Đạt tiêu chuẩn vận chuyển xăng dầu</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab xe cẩu */}
+          <TabsContent value="crane" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết cẩu</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số cơ bản cẩu:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Sức nâng tối đa</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.liftingCapacityText || `${truck.craneSpec?.liftingCapacity || 3.5} tấn`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tầm với xa nhất</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.reachLengthText || `${truck.craneSpec?.reachLength || 8} m`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Số đốt cần cẩu</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.boomSections || '3-4'} đốt</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều cao nâng tối đa</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.maxWorkingHeight || '10-12 m'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Góc quay</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.rotationAngle || '360°'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Kiểu gắn cẩu</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.mountingType || 'Gắn sau cabin'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều cao gập</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.foldedHeight || '2.2 m'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống thủy lực:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống thủy lực</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.hydraulicSystem || 'Thủy lực cân bằng áp lực'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Áp suất làm việc</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.operatingPressure || '21 - 24 MPa'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chân chống</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.stabilizers || 'Chân chống thủy lực mở rộng'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Nguồn năng lượng</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.powerSource || 'Từ động cơ xe'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Sức nâng tời</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.winchCapacity || 'Tùy theo model'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống điều khiển:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống điều khiển</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.controlSystem || 'Điều khiển thủy lực cơ'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Điều khiển từ xa</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.remoteControl ? 'Có' : 'Không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cabin điều khiển</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.cabinPresent ? 'Có' : 'Không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống an toàn</td>
+                      <td className="py-2 font-medium">{truck.craneSpec?.safetySystem || 'Hệ thống chống quá tải, báo áp suất'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          {/* Tab mooc */}
+          <TabsContent value="trailer" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết sơ mi rơ mooc</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số cơ bản:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Chiều dài tổng thể</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.totalLength || '12.4 m'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Số trục</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.axleCount || '3'} trục</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại trục</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.axleType || 'Trục rút JOST (Đức)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tải trọng trục</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.axleWeight || '13'} tấn/trục</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều cao sàn</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.loadingHeight || '1.5 m'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tải chốt kéo</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.kingpinLoad || '14'} tấn</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số khung gầm:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống treo</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.suspensionType || 'Nhíp lá / Hệ thống treo hơi'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khoảng cách trục bánh</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.wheelbase || '1310 + 1310 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống phanh</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.brakeSystem || 'Hệ thống phanh khí nén 2 dòng'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Bán kính quay vòng</td>
+                      <td className="py-2 font-medium">{truck.trailerSpec?.turningRadius || '12 m'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Thông số đặc biệt theo loại mooc */}
+              {truck.trailerType === 'ben' && (
                 <div>
-                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thùng đông lạnh:</h3>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số đặc biệt mooc ben:</h3>
                   <table className="w-full border-collapse">
                     <tbody>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
-                        <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
+                        <td className="py-2 text-gray-600 w-1/3">Hệ thống thủy lực</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.hydraulicSystem || 'Hệ thống thủy lực HYVA'}</td>
                       </tr>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600">Vật liệu vỏ ngoài</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.outsideMaterial || 'Composite cao cấp'}</td>
+                        <td className="py-2 text-gray-600">Góc nâng thùng</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.liftingAngle || '45-50°'}</td>
                       </tr>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600">Vật liệu vỏ trong</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.insideMaterial || 'Inox 304 dập sóng / FRP kháng khuẩn'}</td>
+                        <td className="py-2 text-gray-600">Thời gian đổ</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.dumpingTime || '35-45 giây'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Vật liệu thùng</td>
+                        <td className="py-2 font-medium">Thép cường lực Q345B</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              
+              {truck.trailerType === 'xương' && (
+                <div>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số đặc biệt mooc xương:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Khóa container</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.containerLock || '4 bộ khóa xoay'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Kích thước container</td>
+                        <td className="py-2 font-medium">20ft, 40ft</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Chiều cao khung gầm</td>
+                        <td className="py-2 font-medium">1.4 m (tiêu chuẩn)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              
+              {truck.trailerType === 'sàn-rút' && (
+                <div>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số đặc biệt mooc sàn rút:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Chiều dài mở rộng</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.extensionLength || '2-3 m'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Hệ thống rút/kéo</td>
+                        <td className="py-2 font-medium">Thủy lực hoặc cơ khí</td>
                       </tr>
                       <tr className="border-b">
                         <td className="py-2 text-gray-600">Vật liệu sàn</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.floorMaterial || 'Inox chống trượt / FRP chống trượt'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Khung xương</td>
-                        <td className="py-2 font-medium">Hợp kim nhôm / FRP</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Cách nhiệt</td>
-                        <td className="py-2 font-medium">Polyurethane (PU) cao cấp</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Độ dày vách</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.insulationThickness || '80mm'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Độ dày sàn</td>
-                        <td className="py-2 font-medium">100mm</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Độ dày trần</td>
-                        <td className="py-2 font-medium">80mm</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Cửa sau</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.doorType || '2 cánh mở 270 độ'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Kích thước cửa sau</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.doorSize || `Rộng ${truck.width}m x Cao ${truck.height - 0.1}m`}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Ron cao su cửa</td>
-                        <td className="py-2 font-medium">2 lớp, chịu nhiệt, chống thoát lạnh</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Bản lề</td>
-                        <td className="py-2 font-medium">Inox chống rỉ</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Khóa cửa</td>
-                        <td className="py-2 font-medium">Inox chống rỉ, kèm chốt an toàn</td>
+                        <td className="py-2 font-medium">{truck.trailerSpec?.floorType || 'Thép cường lực'}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                
-                <div>
-                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống làm lạnh:</h3>
-                  <table className="w-full border-collapse">
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Đơn vị làm lạnh</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.coolingUnit || 'THERMO-KING/CARRIER'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Xuất xứ máy lạnh</td>
-                        <td className="py-2 font-medium">Nhật Bản/Mỹ</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Công suất làm lạnh</td>
-                        <td className="py-2 font-medium">3,500 - 5,000 kcal/h</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Loại máy nén</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.compressorType || 'Piston/Scroll/Rotary'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Môi chất lạnh</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.refrigerantType || 'R404A/R134A (thân thiện môi trường)'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Nhiệt độ làm lạnh</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.temperatureRange || '-18°C đến +5°C (tùy chỉnh)'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Hệ thống điều khiển</td>
-                        <td className="py-2 font-medium">{truck.coolingBox?.temperatureControl || 'Bộ điều khiển nhiệt độ kỹ thuật số'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Nguồn cấp</td>
-                        <td className="py-2 font-medium">Từ động cơ xe</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Tùy chọn nguồn điện</td>
-                        <td className="py-2 font-medium">380V/220V (tùy chọn thêm)</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Dàn lạnh</td>
-                        <td className="py-2 font-medium">Lắp trên trần thùng</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Dàn nóng</td>
-                        <td className="py-2 font-medium">Lắp phía trên cabin</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div>
-                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
-                  <table className="w-full border-collapse">
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Hệ thống chiếu sáng</td>
-                        <td className="py-2 font-medium">Đèn LED bên trong thùng</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Rèm cửa</td>
-                        <td className="py-2 font-medium">Màn nhựa PVC chống thoát lạnh</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Hệ thống thoát nước</td>
-                        <td className="py-2 font-medium">Có van xả nước đáy thùng</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Thanh chèn hàng</td>
-                        <td className="py-2 font-medium">Có (tùy chọn thêm)</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Sàn nhôm</td>
-                        <td className="py-2 font-medium">Tùy chọn thêm</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Hệ thống ghi nhiệt độ</td>
-                        <td className="py-2 font-medium">Tùy chọn thêm</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div>
-                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Chế độ bảo hành:</h3>
-                  <table className="w-full border-collapse">
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Bảo hành xe</td>
-                        <td className="py-2 font-medium">Theo tiêu chuẩn nhà sản xuất (3 năm hoặc 100,000 km)</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Bảo hành thùng</td>
-                        <td className="py-2 font-medium">12 tháng</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Bảo hành máy lạnh</td>
-                        <td className="py-2 font-medium">12 tháng</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Bảo dưỡng định kỳ</td>
-                        <td className="py-2 font-medium">Theo lịch bảo dưỡng của hãng</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              )}
+            </div>
+          </TabsContent>
+          
+          {/* Tab đầu kéo */}
+          <TabsContent value="tractor" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết đầu kéo</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số cơ bản:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Công suất động cơ</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.horsepower || '380-420'} PS</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Mô-men xoắn</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.torque || '1800-2000'} Nm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cấu hình trục</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.axleConfiguration || '6x4'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều dài cơ sở</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.wheelbase || '3.9'} m</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Dung tích bình nhiên liệu</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.fuelTankCapacityText || `${truck.tractorSpec?.fuelTankCapacity || 400} lít`}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khả năng kéo tối đa</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.maxTowingCapacityText || `${truck.tractorSpec?.maxTowingCapacity || 45} tấn`}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">Sản phẩm này không phải xe đông lạnh.</p>
-                <p className="mt-2">Vui lòng xem các thông số kỹ thuật chung ở tab "Thông số kỹ thuật".</p>
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống truyền động:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hộp số</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.transmission || '16 số tiến, 2 số lùi'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại hộp số</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.transmissionType || 'Cơ khí / Tự động'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Ly hợp</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.clutchType || 'Đĩa đơn, dẫn động thủy lực'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống phanh</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.brakingSystem || 'Phanh khí nén toàn phần, ABS'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống hãm</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.retarderSystem || 'Phanh giảm tốc động cơ / thủy lực'}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            )}
+              
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Cabin và tiện nghi:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Loại cabin</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.cabinType || 'Cabin đôi / cabin đơn'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Giường nằm</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.sleepingBerth ? 'Có' : 'Không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Điều hòa không khí</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.airConditioner ? 'Có' : 'Không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều cao chốt kéo</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.saddleHeight || '1350'} mm</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Loại mâm kéo</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.fifthWheelType || 'JOST (Đức) / Holland (Mỹ)'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống điện</td>
+                      <td className="py-2 font-medium">{truck.tractorSpec?.electricSystem || '24V'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </TabsContent>
           
           <TabsContent value="contact" className="p-6 bg-white border rounded-b-lg mt-2">

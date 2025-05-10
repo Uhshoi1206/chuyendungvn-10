@@ -53,6 +53,56 @@ export interface CoolingBoxStructure {
   loadingSecurity?: string;    // Hệ thống an toàn hàng hóa
 }
 
+// Chi tiết về thùng bảo ôn
+export interface InsulatedBoxStructure {
+  wallThickness?: string;      // Độ dày vách
+  floorThickness?: string;     // Độ dày sàn
+  roofThickness?: string;      // Độ dày mái
+  insulationMaterial?: string; // Vật liệu cách nhiệt
+  outerMaterial?: string;      // Vật liệu bên ngoài
+  innerMaterial?: string;      // Vật liệu bên trong
+  doorType?: string;           // Loại cửa
+  doorCount?: number;          // Số lượng cửa
+  temperatureRange?: string;   // Phạm vi nhiệt độ duy trì
+  insideDimension?: string;    // Kích thước bên trong
+  loadingCapacity?: string;    // Khả năng chịu tải
+}
+
+// Chi tiết về thùng kín
+export interface ClosedBoxStructure {
+  frameStructure?: string;     // Cấu trúc khung
+  panelMaterial?: string;      // Vật liệu panel
+  thickness?: string;          // Độ dày
+  doorType?: string;           // Loại cửa
+  doorCount?: number;          // Số lượng cửa
+  roofType?: string;           // Loại mái
+  floorMaterial?: string;      // Vật liệu sàn
+  loadingSecurity?: string;    // Hệ thống an toàn hàng hóa
+  reinforcement?: string;      // Gia cường
+  waterproofing?: string;      // Chống thấm nước
+}
+
+// Chi tiết về thùng bạt
+export interface TarpaulinBoxStructure {
+  frameStructure?: string;     // Cấu trúc khung
+  tarpaulinMaterial?: string;  // Vật liệu bạt
+  tarpaulinThickness?: string; // Độ dày bạt
+  frameType?: string;          // Loại khung
+  sideAccess?: boolean;        // Khả năng tiếp cận từ bên hông
+  coverType?: string;          // Loại mui phủ
+  floorMaterial?: string;      // Vật liệu sàn
+}
+
+// Chi tiết về thùng lửng
+export interface FlatbedStructure {
+  floorMaterial?: string;      // Vật liệu sàn
+  sideHeight?: number;         // Chiều cao thành bên
+  sideType?: string;           // Loại thành bên
+  sideAccess?: string;         // Khả năng tiếp cận bên hông
+  floorThickness?: string;     // Độ dày sàn
+  reinforcement?: string;      // Gia cường
+}
+
 // Chi tiết về bồn xi téc
 export interface TankSpecification {
   capacity?: number;
@@ -63,6 +113,11 @@ export interface TankSpecification {
   valveSystem?: string;
   pressureRating?: string;
   dischargingSystem?: string;
+  liningMaterial?: string;      // Vật liệu lót trong
+  safetyEquipment?: string;     // Thiết bị an toàn
+  insulationPresent?: boolean;  // Có cách nhiệt không
+  heatingSystem?: string;       // Hệ thống làm nóng
+  measurementSystem?: string;   // Hệ thống đo lường
 }
 
 // Chi tiết về cẩu
@@ -77,6 +132,14 @@ export interface CraneSpecification {
   boomSections?: number;
   hydraulicSystem?: string;
   operatingPressure?: string;
+  mountingType?: string;         // Kiểu gắn cẩu
+  cabinPresent?: boolean;        // Có cabin điều khiển không
+  remoteControl?: boolean;       // Có điều khiển từ xa không
+  maxWorkingHeight?: string;     // Chiều cao làm việc tối đa
+  foldedHeight?: string;         // Chiều cao khi gập
+  powerSource?: string;          // Nguồn điện
+  safetySystem?: string;         // Hệ thống an toàn
+  winchCapacity?: string;        // Sức nâng tời
 }
 
 // Chi tiết về sơ mi rơ mooc
@@ -92,6 +155,15 @@ export interface TrailerSpecification {
   sideHeight?: number;
   rampType?: string;
   extensionLength?: number;
+  totalLength?: string;          // Chiều dài tổng thể
+  wheelbase?: string;            // Khoảng cách trục bánh
+  loadingHeight?: string;        // Chiều cao sàn
+  turningRadius?: string;        // Bán kính quay vòng
+  hydraulicSystem?: string;      // Hệ thống thủy lực (cho mooc ben)
+  liftingAngle?: string;         // Góc nâng (cho mooc ben)
+  dumpingTime?: string;          // Thời gian đổ (cho mooc ben)
+  containerLock?: string;        // Khóa container (cho mooc xương)
+  specialFeatures?: string[];    // Tính năng đặc biệt
 }
 
 // Chi tiết về đầu kéo
@@ -109,6 +181,13 @@ export interface TractorSpecification {
   fifthWheelType?: string;
   maxTowingCapacity?: number;
   maxTowingCapacityText?: string;
+  brakingSystem?: string;        // Hệ thống phanh
+  retarderSystem?: string;       // Hệ thống hãm
+  sleepingBerth?: boolean;       // Có giường nằm không
+  axleConfiguration?: string;    // Cấu hình trục (6x4, 4x2, etc.)
+  interiorFeatures?: string[];   // Tính năng nội thất
+  airConditioner?: boolean;      // Có điều hòa không
+  electricSystem?: string;       // Hệ thống điện
 }
 
 export interface Truck {
@@ -152,6 +231,10 @@ export interface Truck {
   
   // Thông số kỹ thuật chi tiết theo loại xe
   coolingBox?: CoolingBoxStructure;
+  insulatedBox?: InsulatedBoxStructure;
+  closedBox?: ClosedBoxStructure;
+  tarpaulinBox?: TarpaulinBoxStructure;
+  flatbedBox?: FlatbedStructure;
   tankSpec?: TankSpecification;
   craneSpec?: CraneSpecification;
   trailerSpec?: TrailerSpecification;
@@ -282,4 +365,3 @@ export function getTrailerTypeName(type?: string): string {
       return '';
   }
 }
-
