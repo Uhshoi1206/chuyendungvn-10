@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { trucks } from '@/data/truckData';
-import { Truck, VehicleType, getVehicleUrlPrefix, getVehicleTypeName } from '@/models/TruckTypes';
+import { Truck, VehicleType, getVehicleUrlPrefix, getVehicleTypeName, getBoxTypeName } from '@/models/TruckTypes';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import ContactForm from '@/components/ContactForm';
 import TruckItem from '@/components/TruckItem';
@@ -124,6 +125,7 @@ const TruckDetail = () => {
   
   const vehicleUrlPrefix = getVehicleUrlPrefix(truck.type);
   const vehicleTypeName = getVehicleTypeName(truck.type);
+  const boxTypeName = truck.boxType ? getBoxTypeName(truck.boxType) : '';
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -139,6 +141,14 @@ const TruckDetail = () => {
           <Link to={`/danh-muc?type=${truck.type}`} className="text-gray-600 hover:text-primary">
             {vehicleTypeName}
           </Link>
+          {truck.boxType && (
+            <>
+              <span className="mx-2">›</span>
+              <Link to={`/danh-muc?type=${truck.type}&boxType=${truck.boxType}`} className="text-gray-600 hover:text-primary">
+                {boxTypeName}
+              </Link>
+            </>
+          )}
           <span className="mx-2">›</span>
           <span className="font-medium">{truck.name}</span>
         </div>
@@ -183,6 +193,9 @@ const TruckDetail = () => {
                 <Badge className="bg-primary hover:bg-red-700">Hot</Badge>
               )}
               <Badge variant="outline">{truck.brand}</Badge>
+              {truck.boxType && (
+                <Badge variant="outline" className="bg-blue-50">{boxTypeName}</Badge>
+              )}
             </div>
             
             <h1 className="text-3xl font-bold">{truck.name}</h1>
@@ -206,17 +219,19 @@ const TruckDetail = () => {
                   <div className="font-medium">{truck.weightText}</div>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
-                  <div className="text-gray-600 text-sm">Chiều dài thùng</div>
-                  <div className="font-medium">{truck.length} m</div>
+                  <div className="text-gray-600 text-sm">Kích thước tổng thể</div>
+                  <div className="font-medium">{truck.dimensions}</div>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
-                  <div className="text-gray-600 text-sm">Động cơ</div>
-                  <div className="font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</div>
+                  <div className="text-gray-600 text-sm">Xuất xứ</div>
+                  <div className="font-medium">{truck.origin || 'Nhật Bản'}</div>
                 </div>
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <div className="text-gray-600 text-sm">Nhiên liệu</div>
-                  <div className="font-medium">{truck.fuelType || 'Diesel'}</div>
-                </div>
+                {truck.boxType === 'đông-lạnh' && truck.coolingBox && (
+                  <div className="bg-gray-50 p-3 rounded-md">
+                    <div className="text-gray-600 text-sm">Nhiệt độ làm lạnh</div>
+                    <div className="font-medium">{truck.coolingBox.temperatureRange || '-18°C đến +5°C'}</div>
+                  </div>
+                )}
               </div>
             </div>
             
@@ -228,7 +243,17 @@ const TruckDetail = () => {
                     <li key={index} className="text-gray-700">{feature}</li>
                   ))
                 ) : (
-                  <li className="text-gray-700">Thông tin đang được cập nhật</li>
+                  truck.boxType === 'đông-lạnh' ? (
+                    <>
+                      <li className="text-gray-700">Thùng đông lạnh được sản xuất theo tiêu chuẩn châu Âu</li>
+                      <li className="text-gray-700">Hệ thống làm lạnh mạnh mẽ với máy lạnh hiệu suất cao</li>
+                      <li className="text-gray-700">Cách nhiệt Polyurethane chuẩn quốc tế, độ dày 80mm</li>
+                      <li className="text-gray-700">Thùng composite nguyên khối, chống thấm nước tuyệt đối</li>
+                      <li className="text-gray-700">Khả năng duy trì nhiệt độ -18°C đến +5°C tùy nhu cầu</li>
+                    </>
+                  ) : (
+                    <li className="text-gray-700">Thông tin đang được cập nhật</li>
+                  )
                 )}
               </ul>
             </div>
@@ -258,41 +283,85 @@ const TruckDetail = () => {
         
         {/* Product Details Tabs */}
         <Tabs defaultValue="description">
-          <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 mb-8">
+          <TabsList className="w-full grid grid-cols-3 md:grid-cols-4 mb-8">
             <TabsTrigger value="description">Mô tả chi tiết</TabsTrigger>
             <TabsTrigger value="specifications">Thông số kỹ thuật</TabsTrigger>
+            <TabsTrigger value="coolingbox">Thông số thùng đông lạnh</TabsTrigger>
             <TabsTrigger value="contact">Liên hệ tư vấn</TabsTrigger>
           </TabsList>
           
           <TabsContent value="description" className="p-6 bg-white border rounded-b-lg mt-2">
             <h2 className="text-xl font-bold mb-4">Mô tả chi tiết {truck.name}</h2>
-            <p className="text-gray-700 mb-4">{truck.description}</p>
-            <p className="text-gray-700 mb-4">
-              {truck.name} là một trong những dòng {vehicleTypeName.toLowerCase()} phổ biến trên thị trường Việt Nam hiện nay. 
-              Với thiết kế hiện đại, khả năng vận hành ổn định và độ bền cao, {truck.name} là sự lựa chọn 
-              lý tưởng cho các doanh nghiệp vận tải.
-            </p>
-            <p className="text-gray-700">
-              {truck.type === 'xe-tai' || truck.type === 'dau-keo' ? 
-                `Xe được trang bị động cơ ${truck.engineType || truck.engine || 'hiện đại'} mạnh mẽ và tiết kiệm nhiên liệu, 
-                cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình.` 
-                : 
-                truck.type === 'xe-cau' ?
-                `Thiết bị được trang bị hệ thống thủy lực mạnh mẽ và linh hoạt, 
-                giúp nâng hạ hàng hóa an toàn và hiệu quả trên nhiều địa hình khác nhau.`
-                :
-                `Được thiết kế chắc chắn, bền bỉ với khả năng chịu tải cao, 
-                phù hợp cho việc vận chuyển nhiều loại hàng hóa khác nhau.`
-              }
-              {truck.type !== 'mooc' && ` Thùng xe có chiều dài ${truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.`}
-            </p>
+            
+            {truck.boxType === 'đông-lạnh' ? (
+              <div className="space-y-4">
+                <p className="text-gray-700">
+                  <strong>Xe tải {truck.name}</strong> là dòng xe tải đông lạnh chuyên dụng được thiết kế đặc biệt để vận chuyển các loại hàng hóa cần bảo quản ở nhiệt độ thấp như thực phẩm đông lạnh, thủy hải sản, sữa, thuốc và các sản phẩm y tế...
+                </p>
+                
+                <p className="text-gray-700">
+                  Với tải trọng {truck.weightText}, xe tải đông lạnh {truck.name} là lựa chọn lý tưởng cho các doanh nghiệp vừa và nhỏ chuyên vận chuyển hàng đông lạnh trong thành phố và liên tỉnh. Xe được trang bị thùng đông lạnh cao cấp với khả năng cách nhiệt vượt trội, đảm bảo duy trì nhiệt độ bên trong thùng ổn định.
+                </p>
+
+                <h3 className="font-bold text-lg mt-6">Ưu điểm nổi bật của xe tải đông lạnh {truck.name}</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li className="text-gray-700">
+                    <strong>Thùng đông lạnh tiêu chuẩn:</strong> Được sản xuất theo công nghệ tiên tiến, thùng đông lạnh có cấu trúc chắc chắn, vách panel cách nhiệt Polyurethane độ dày 80mm, đảm bảo khả năng giữ lạnh tối ưu.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Hệ thống làm lạnh hiệu quả:</strong> Trang bị máy lạnh công suất lớn, khả năng làm lạnh nhanh và duy trì nhiệt độ ổn định từ -18°C đến +5°C tùy thuộc vào nhu cầu sử dụng.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Tiết kiệm nhiên liệu:</strong> Động cơ {truck.engineType || truck.engine || 'hiện đại'} tiết kiệm nhiên liệu, vận hành êm ái, chi phí bảo dưỡng thấp.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Tính năng an toàn:</strong> Trang bị đầy đủ các hệ thống an toàn như phanh ABS, cân bằng điện tử, túi khí, đảm bảo an toàn cho người và hàng hóa.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Dễ dàng vận hành:</strong> Cabin thiết kế rộng rãi, tầm nhìn thoáng, vô lăng trợ lực điện, điều hòa cabin, giúp tài xế vận hành thoải mái trong thời gian dài.
+                  </li>
+                </ul>
+
+                <p className="text-gray-700 mt-4">
+                  Đặc biệt, xe tải đông lạnh {truck.name} được nhập khẩu nguyên chiếc hoặc lắp ráp trong nước với linh kiện chính hãng 100%, đảm bảo chất lượng và độ bền cao, phù hợp với điều kiện đường sá và thời tiết Việt Nam.
+                </p>
+
+                <p className="text-gray-700">
+                  Liên hệ ngay với chúng tôi để được tư vấn chi tiết và báo giá tốt nhất cho dòng xe tải đông lạnh {truck.name}.
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-gray-700 mb-4">{truck.description}</p>
+                <p className="text-gray-700 mb-4">
+                  {truck.name} là một trong những dòng {vehicleTypeName.toLowerCase()} phổ biến trên thị trường Việt Nam hiện nay. 
+                  Với thiết kế hiện đại, khả năng vận hành ổn định và độ bền cao, {truck.name} là sự lựa chọn 
+                  lý tưởng cho các doanh nghiệp vận tải.
+                </p>
+                <p className="text-gray-700">
+                  {truck.type === 'xe-tai' || truck.type === 'dau-keo' ? 
+                    `Xe được trang bị động cơ ${truck.engineType || truck.engine || 'hiện đại'} mạnh mẽ và tiết kiệm nhiên liệu, 
+                    cùng với hệ thống treo chắc chắn, giúp xe vận hành êm ái trên mọi địa hình.` 
+                    : 
+                    truck.type === 'xe-cau' ?
+                    `Thiết bị được trang bị hệ thống thủy lực mạnh mẽ và linh hoạt, 
+                    giúp nâng hạ hàng hóa an toàn và hiệu quả trên nhiều địa hình khác nhau.`
+                    :
+                    `Được thiết kế chắc chắn, bền bỉ với khả năng chịu tải cao, 
+                    phù hợp cho việc vận chuyển nhiều loại hàng hóa khác nhau.`
+                  }
+                  {truck.type !== 'mooc' && ` Thùng xe có chiều dài ${truck.length}m, rộng rãi và thiết kế hợp lý, giúp tối ưu công suất vận chuyển.`}
+                </p>
+              </>
+            )}
           </TabsContent>
           
           <TabsContent value="specifications" className="p-6 bg-white border rounded-b-lg mt-2">
-            <h2 className="text-xl font-bold mb-4">Thông số kỹ thuật</h2>
+            <h2 className="text-xl font-bold mb-6">Thông số kỹ thuật chi tiết</h2>
             <div className="space-y-6">
+              {/* Thông số chung */}
               <div>
-                <h3 className="font-bold text-lg mb-2">Thông số chung:</h3>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số chung:</h3>
                 <table className="w-full border-collapse">
                   <tbody>
                     <tr className="border-b">
@@ -300,87 +369,439 @@ const TruckDetail = () => {
                       <td className="py-2 font-medium">{truck.brand}</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Xuất xứ</td>
-                      <td className="py-2 font-medium">{truck.origin || 'Việt Nam/Nhập khẩu'}</td>
+                      <td className="py-2 text-gray-600">Model</td>
+                      <td className="py-2 font-medium">{truck.name}</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Tải trọng</td>
-                      <td className="py-2 font-medium">{truck.weightText}</td>
+                      <td className="py-2 text-gray-600">Xuất xứ</td>
+                      <td className="py-2 font-medium">{truck.origin || 'Nhật Bản'}</td>
                     </tr>
-                    {truck.type !== 'mooc' && (
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Số chỗ ngồi</td>
-                        <td className="py-2 font-medium">{truck.seats || 3} chỗ</td>
-                      </tr>
-                    )}
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Màu sắc</td>
+                      <td className="py-2 font-medium">Trắng (tùy chọn theo yêu cầu)</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Năm sản xuất</td>
+                      <td className="py-2 font-medium">2023-2024</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
               
+              {/* Kích thước & Trọng lượng */}
               <div>
-                <h3 className="font-bold text-lg mb-2">Kích thước:</h3>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Kích thước & Trọng lượng:</h3>
                 <table className="w-full border-collapse">
                   <tbody>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Chiều dài {truck.type === 'mooc' ? '' : 'thùng'}</td>
+                      <td className="py-2 text-gray-600 w-1/3">Kích thước tổng thể (DxRxC)</td>
+                      <td className="py-2 font-medium">{truck.dimensions || '7500 x 2200 x 3200 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều dài cơ sở</td>
+                      <td className="py-2 font-medium">{truck.wheelbaseText || '4300 mm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Chiều dài thùng</td>
                       <td className="py-2 font-medium">{truck.length} m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều rộng {truck.type === 'mooc' ? '' : 'thùng'}</td>
+                      <td className="py-2 text-gray-600">Chiều rộng thùng</td>
                       <td className="py-2 font-medium">{truck.width || 2.0} m</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều cao {truck.type === 'mooc' ? '' : 'thùng'}</td>
-                      <td className="py-2 font-medium">{truck.height || 1.8} m</td>
+                      <td className="py-2 text-gray-600">Chiều cao thùng</td>
+                      <td className="py-2 font-medium">{truck.height || 2.0} m</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Trọng lượng bản thân</td>
+                      <td className="py-2 font-medium">{truck.kerbWeight || '4500 kg'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tải trọng cho phép</td>
+                      <td className="py-2 font-medium">{truck.weightText || '7500 kg'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Trọng lượng toàn bộ</td>
+                      <td className="py-2 font-medium">{truck.grossWeight || '12000 kg'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Số người cho phép chở</td>
+                      <td className="py-2 font-medium">{truck.seats || 3} người</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               
-              {(truck.type === 'xe-tai' || truck.type === 'dau-keo') && (
-                <div>
-                  <h3 className="font-bold text-lg mb-2">Động cơ:</h3>
-                  <table className="w-full border-collapse">
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Loại động cơ</td>
-                        <td className="py-2 font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Nhiên liệu</td>
-                        <td className="py-2 font-medium">{truck.fuelType || 'Diesel'}</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="py-2 text-gray-600">Tiêu chuẩn khí thải</td>
-                        <td className="py-2 font-medium">{truck.emission || 'Euro IV'}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              {/* Động cơ */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Động cơ:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kiểu động cơ</td>
+                      <td className="py-2 font-medium">{truck.engineType || truck.engine || 'Diesel, 4 kỳ, 4 xi lanh thẳng hàng, tăng áp'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Model động cơ</td>
+                      <td className="py-2 font-medium">{truck.engineModel || 'N04C-UT'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Dung tích xi lanh</td>
+                      <td className="py-2 font-medium">{truck.engineCapacity || '4000 cc'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Công suất tối đa</td>
+                      <td className="py-2 font-medium">{truck.enginePower || '150 PS'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Mô-men xoắn tối đa</td>
+                      <td className="py-2 font-medium">{truck.engineTorque || '420 Nm'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Tiêu chuẩn khí thải</td>
+                      <td className="py-2 font-medium">{truck.emissionStandard || 'Euro 4'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Nhiên liệu</td>
+                      <td className="py-2 font-medium">{truck.fuel || 'Dầu Diesel'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               
-              {truck.type === 'xe-cau' && (
+              {/* Hệ thống truyền động */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống truyền động:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hộp số</td>
+                      <td className="py-2 font-medium">{truck.transmission || 'Số sàn, 6 số tiến, 1 số lùi'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Ly hợp</td>
+                      <td className="py-2 font-medium">{truck.clutchType || 'Đĩa ma sát khô, dẫn động thủy lực, trợ lực khí nén'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ dẫn động</td>
+                      <td className="py-2 font-medium">Cầu sau</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Hệ thống treo */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống treo:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Treo trước</td>
+                      <td className="py-2 font-medium">{truck.frontSuspension || 'Phụ thuộc, nhíp lá, giảm chấn thủy lực'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Treo sau</td>
+                      <td className="py-2 font-medium">{truck.rearSuspension || 'Phụ thuộc, nhíp lá, giảm chấn thủy lực'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Hệ thống lái */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống lái:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Kiểu hệ thống lái</td>
+                      <td className="py-2 font-medium">{truck.steeringType || 'Trục vít - bi recirculating'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Trợ lực</td>
+                      <td className="py-2 font-medium">Thủy lực</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Hệ thống phanh */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống phanh:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Phanh trước</td>
+                      <td className="py-2 font-medium">{truck.frontBrake || 'Tang trống, dẫn động thủy lực, trợ lực chân không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Phanh sau</td>
+                      <td className="py-2 font-medium">{truck.rearBrake || 'Tang trống, dẫn động thủy lực, trợ lực chân không'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Phanh tay / Phanh đỗ</td>
+                      <td className="py-2 font-medium">{truck.parkingBrake || 'Cơ khí, tác động lên bánh sau'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Lốp xe */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Lốp xe:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Lốp trước / sau</td>
+                      <td className="py-2 font-medium">{truck.tires || '8.25-16 / 8.25-16'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Lốp dự phòng</td>
+                      <td className="py-2 font-medium">01 bộ</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Tính năng an toàn */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tính năng an toàn:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Hệ thống chống bó cứng phanh (ABS)</td>
+                      <td className="py-2 font-medium">Có</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống phân phối lực phanh điện tử (EBD)</td>
+                      <td className="py-2 font-medium">Có</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Túi khí</td>
+                      <td className="py-2 font-medium">01 túi khí cho người lái</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Dây đai an toàn</td>
+                      <td className="py-2 font-medium">3 điểm, có bộ căng đai</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Tiện nghi */}
+              <div>
+                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện nghi:</h3>
+                <table className="w-full border-collapse">
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600 w-1/3">Điều hòa</td>
+                      <td className="py-2 font-medium">Chỉnh tay</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Ghế lái</td>
+                      <td className="py-2 font-medium">Điều chỉnh cơ</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Cửa sổ điện</td>
+                      <td className="py-2 font-medium">Có</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Khóa cửa điện</td>
+                      <td className="py-2 font-medium">Có</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-2 text-gray-600">Hệ thống âm thanh</td>
+                      <td className="py-2 font-medium">AM/FM, MP3, USB, AUX</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="coolingbox" className="p-6 bg-white border rounded-b-lg mt-2">
+            <h2 className="text-xl font-bold mb-6">Thông số chi tiết thùng đông lạnh</h2>
+            
+            {truck.boxType === 'đông-lạnh' ? (
+              <div className="space-y-6">
                 <div>
-                  <h3 className="font-bold text-lg mb-2">Hệ thống cẩu:</h3>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thùng đông lạnh:</h3>
                   <table className="w-full border-collapse">
                     <tbody>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600 w-1/3">Loại hệ thống</td>
-                        <td className="py-2 font-medium">{truck.engineType || truck.engine || 'Không có thông tin'}</td>
+                        <td className="py-2 text-gray-600 w-1/3">Kích thước thùng (DxRxC)</td>
+                        <td className="py-2 font-medium">{truck.insideDimension || `${truck.length}m x ${truck.width}m x ${truck.height}m (Bên trong)`}</td>
                       </tr>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600">Tầm với tối đa</td>
-                        <td className="py-2 font-medium">12-15 m</td>
+                        <td className="py-2 text-gray-600">Vật liệu vỏ ngoài</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.outsideMaterial || 'Composite cao cấp'}</td>
                       </tr>
                       <tr className="border-b">
-                        <td className="py-2 text-gray-600">Góc quay</td>
-                        <td className="py-2 font-medium">360°</td>
+                        <td className="py-2 text-gray-600">Vật liệu vỏ trong</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.insideMaterial || 'Inox 304 dập sóng / FRP kháng khuẩn'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Vật liệu sàn</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.floorMaterial || 'Inox chống trượt / FRP chống trượt'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Khung xương</td>
+                        <td className="py-2 font-medium">Hợp kim nhôm / FRP</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Cách nhiệt</td>
+                        <td className="py-2 font-medium">Polyurethane (PU) cao cấp</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Độ dày vách</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.insulationThickness || '80mm'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Độ dày sàn</td>
+                        <td className="py-2 font-medium">100mm</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Độ dày trần</td>
+                        <td className="py-2 font-medium">80mm</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Cửa sau</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.doorType || '2 cánh mở 270 độ'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Kích thước cửa sau</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.doorSize || `Rộng ${truck.width}m x Cao ${truck.height - 0.1}m`}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Ron cao su cửa</td>
+                        <td className="py-2 font-medium">2 lớp, chịu nhiệt, chống thoát lạnh</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Bản lề</td>
+                        <td className="py-2 font-medium">Inox chống rỉ</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Khóa cửa</td>
+                        <td className="py-2 font-medium">Inox chống rỉ, kèm chốt an toàn</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-              )}
-            </div>
+                
+                <div>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống làm lạnh:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Đơn vị làm lạnh</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.coolingUnit || 'THERMO-KING/CARRIER'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Xuất xứ máy lạnh</td>
+                        <td className="py-2 font-medium">Nhật Bản/Mỹ</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Công suất làm lạnh</td>
+                        <td className="py-2 font-medium">3,500 - 5,000 kcal/h</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Loại máy nén</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.compressorType || 'Piston/Scroll/Rotary'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Môi chất lạnh</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.refrigerantType || 'R404A/R134A (thân thiện môi trường)'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Nhiệt độ làm lạnh</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.temperatureRange || '-18°C đến +5°C (tùy chỉnh)'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Hệ thống điều khiển</td>
+                        <td className="py-2 font-medium">{truck.coolingBox?.temperatureControl || 'Bộ điều khiển nhiệt độ kỹ thuật số'}</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Nguồn cấp</td>
+                        <td className="py-2 font-medium">Từ động cơ xe</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Tùy chọn nguồn điện</td>
+                        <td className="py-2 font-medium">380V/220V (tùy chọn thêm)</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Dàn lạnh</td>
+                        <td className="py-2 font-medium">Lắp trên trần thùng</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Dàn nóng</td>
+                        <td className="py-2 font-medium">Lắp phía trên cabin</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tiện ích bổ sung:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Hệ thống chiếu sáng</td>
+                        <td className="py-2 font-medium">Đèn LED bên trong thùng</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Rèm cửa</td>
+                        <td className="py-2 font-medium">Màn nhựa PVC chống thoát lạnh</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Hệ thống thoát nước</td>
+                        <td className="py-2 font-medium">Có van xả nước đáy thùng</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Thanh chèn hàng</td>
+                        <td className="py-2 font-medium">Có (tùy chọn thêm)</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Sàn nhôm</td>
+                        <td className="py-2 font-medium">Tùy chọn thêm</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Hệ thống ghi nhiệt độ</td>
+                        <td className="py-2 font-medium">Tùy chọn thêm</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div>
+                  <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Chế độ bảo hành:</h3>
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600 w-1/3">Bảo hành xe</td>
+                        <td className="py-2 font-medium">Theo tiêu chuẩn nhà sản xuất (3 năm hoặc 100,000 km)</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Bảo hành thùng</td>
+                        <td className="py-2 font-medium">12 tháng</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Bảo hành máy lạnh</td>
+                        <td className="py-2 font-medium">12 tháng</td>
+                      </tr>
+                      <tr className="border-b">
+                        <td className="py-2 text-gray-600">Bảo dưỡng định kỳ</td>
+                        <td className="py-2 font-medium">Theo lịch bảo dưỡng của hãng</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">Sản phẩm này không phải xe đông lạnh.</p>
+                <p className="mt-2">Vui lòng xem các thông số kỹ thuật chung ở tab "Thông số kỹ thuật".</p>
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="contact" className="p-6 bg-white border rounded-b-lg mt-2">

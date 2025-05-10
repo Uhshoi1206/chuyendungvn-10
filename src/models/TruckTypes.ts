@@ -1,4 +1,5 @@
 
+
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 
 export interface TruckBrand {
@@ -36,6 +37,21 @@ export interface CoolingBoxStructure {
   insulationThickness?: string;
   refrigerationSystem?: string;
   temperatureRange?: string;
+  
+  // Thêm các thông số chi tiết hơn cho thùng đông lạnh
+  coolingUnit?: string;        // Đơn vị làm lạnh
+  compressorType?: string;     // Loại máy nén
+  refrigerantType?: string;    // Loại môi chất lạnh
+  temperatureControl?: string; // Hệ thống điều khiển nhiệt độ
+  doorSize?: string;           // Kích thước cửa
+  doorCount?: number;          // Số lượng cửa
+  insideHeight?: number;       // Chiều cao bên trong thùng
+  insideWidth?: number;        // Chiều rộng bên trong thùng
+  insideLength?: number;       // Chiều dài bên trong thùng
+  outsideMaterial?: string;    // Vật liệu bên ngoài
+  insideMaterial?: string;     // Vật liệu bên trong
+  floorMaterial?: string;      // Vật liệu sàn
+  loadingSecurity?: string;    // Hệ thống an toàn hàng hóa
 }
 
 // Chi tiết về bồn xi téc
@@ -123,6 +139,13 @@ export interface Truck {
   description?: string;
   features?: string[];
   
+  // Thông số chi tiết cho động cơ
+  engineModel?: string;       // Model động cơ
+  engineCapacity?: string;    // Dung tích động cơ
+  enginePower?: string;       // Công suất động cơ
+  engineTorque?: string;      // Mô-men xoắn
+  emissionStandard?: string;  // Tiêu chuẩn khí thải
+  
   // Chi tiết chuyên biệt theo loại xe
   boxType?: 'đông-lạnh' | 'bảo-ôn' | 'kín' | 'bạt' | 'lửng' | 'xi-téc';
   craneType?: 'cẩu-rời' | 'cẩu-gắn-xe';
@@ -148,6 +171,35 @@ export interface Truck {
   seats?: number;
   steeringSystem?: string;
   suspensionType?: string;
+  
+  // Thông số khung gầm
+  chassisMaterial?: string;  // Vật liệu khung gầm
+  frontSuspension?: string;  // Hệ thống treo trước
+  rearSuspension?: string;   // Hệ thống treo sau
+  frontBrake?: string;       // Phanh trước
+  rearBrake?: string;        // Phanh sau
+  parkingBrake?: string;     // Phanh tay/phanh đỗ
+  steeringType?: string;     // Loại hệ thống lái
+  
+  // Kích thước
+  insideDimension?: string;  // Kích thước thùng bên trong (DxRxC)
+  groundClearance?: number;  // Khoảng sáng gầm xe (mm)
+  wheelTrack?: string;       // Vết bánh xe (trước/sau) (mm)
+  turningRadius?: number;    // Bán kính quay vòng (m)
+  
+  // Trọng lượng chi tiết
+  grossWeight?: string;      // Tổng tải trọng
+  kerbWeight?: string;       // Trọng lượng không tải
+  frontAxleLoad?: string;    // Tải trọng cầu trước
+  rearAxleLoad?: string;     // Tải trọng cầu sau
+  
+  // Thông số hiệu suất
+  maxSpeed?: string;         // Tốc độ tối đa
+  climbingAbility?: string;  // Khả năng leo dốc
+  fuelConsumption?: string;  // Mức tiêu thụ nhiên liệu
+  
+  // Trang bị tiện nghi
+  cabinFeatures?: string[];  // Tính năng cabin
   
   // Cho phép mở rộng thêm các trường khác
   [key: string]: any;
@@ -232,3 +284,4 @@ export function getTrailerTypeName(type?: string): string {
       return '';
   }
 }
+
