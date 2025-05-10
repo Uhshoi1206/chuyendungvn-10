@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import CompareTable from '@/components/compare/CompareTable';
@@ -13,6 +13,7 @@ const ComparePage = () => {
   const { trucks: trucksParam } = useParams<{ trucks?: string }>();
   const { compareItems, loadTrucksFromUrl } = useCompare();
   const navigate = useNavigate();
+  const contentRef = useRef<HTMLDivElement>(null);
   
   // Tối ưu SEO với useEffect
   useEffect(() => {
@@ -28,6 +29,13 @@ const ComparePage = () => {
     if (compareItems.length > 0 && !trucksParam) {
       const slugs = compareItems.map(item => item.slug).join('-vs-');
       navigate(`/so-sanh-xe/${slugs}`, { replace: true });
+    }
+    
+    // Cuộn lên đầu nội dung khi danh sách so sánh thay đổi
+    if (contentRef.current) {
+      const yOffset = -100;
+      const y = contentRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }, [compareItems, navigate, trucksParam]);
   
@@ -124,7 +132,7 @@ const ComparePage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto my-12 px-4">
+      <div ref={contentRef} className="container mx-auto my-12 px-4">
         {compareItems.length > 0 ? (
           <CompareTable trucks={compareItems} />
         ) : (

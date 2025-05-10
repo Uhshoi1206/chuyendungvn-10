@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import FilterSidebar from '@/components/FilterSidebar';
@@ -25,6 +25,7 @@ const TruckCatalog: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
   
   // State lưu trữ các tham số filter
   const [filters, setFilters] = useState<TruckFilters>({
@@ -39,6 +40,7 @@ const TruckCatalog: React.FC = () => {
   
   // State lưu trữ kết quả lọc
   const [filteredTrucks, setFilteredTrucks] = useState<Truck[]>(trucks);
+  const [isFiltersApplied, setIsFiltersApplied] = useState(false);
 
   // Cập nhật lại các tham số lọc khi URL thay đổi
   useEffect(() => {
@@ -57,6 +59,17 @@ const TruckCatalog: React.FC = () => {
   useEffect(() => {
     applyFilters();
   }, [filters]);
+
+  // Cuộn trang lên vị trí danh sách xe sau khi lọc
+  useEffect(() => {
+    if (isFiltersApplied && gridRef.current) {
+      const yOffset = -150; // Điều chỉnh vị trí cuộn để hiển thị danh sách xe
+      const y = gridRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      setIsFiltersApplied(false);
+    }
+  }, [filteredTrucks, isFiltersApplied]);
   
   // Hàm áp dụng bộ lọc
   const applyFilters = () => {
@@ -81,7 +94,7 @@ const TruckCatalog: React.FC = () => {
       result = result.filter(truck => truck.price <= (filters.maxPrice || Infinity));
     }
     
-    // Lọc theo tải trọng (Sửa lỗi ở đây)
+    // Lọc theo tải trọng
     if (filters.minWeight !== null) {
       result = result.filter(truck => truck.weight >= (filters.minWeight || 0));
     }
@@ -130,6 +143,7 @@ const TruckCatalog: React.FC = () => {
     
     setSearchParams(newSearchParams);
     setFilters(newFilters);
+    setIsFiltersApplied(true);
     
     // Đóng drawer trên mobile sau khi áp dụng bộ lọc
     if (isMobile) {
@@ -149,6 +163,7 @@ const TruckCatalog: React.FC = () => {
       vehicleType: null,
       search: null
     });
+    setIsFiltersApplied(true);
   };
 
   // Xử lý thay đổi tab loại xe
@@ -214,7 +229,7 @@ const TruckCatalog: React.FC = () => {
             )}
             
             {/* Vehicle Grid */}
-            <div className="md:w-3/4 lg:w-4/5">
+            <div ref={gridRef} className="md:w-3/4 lg:w-4/5">
               <VehicleGrid
                 vehicles={filteredTrucks}
                 onResetFilters={handleResetFilters}
