@@ -49,7 +49,7 @@ const Header: React.FC = () => {
               <Link to="/" className="font-medium hover:text-primary transition-colors">
                 Trang chủ
               </Link>
-              <Link to="/danh-muc" className="font-medium hover:text-primary transition-colors">
+              <Link to="/danh-muc-xe" className="font-medium hover:text-primary transition-colors">
                 Danh mục xe
               </Link>
               <div 

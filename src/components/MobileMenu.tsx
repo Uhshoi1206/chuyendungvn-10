@@ -77,7 +77,7 @@ const MobileMenu: React.FC = () => {
               Trang chủ
             </Link>
             <Link 
-              to="/danh-muc" 
+              to="/danh-muc-xe" 
               className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
               onClick={() => setIsOpen(false)}
             >

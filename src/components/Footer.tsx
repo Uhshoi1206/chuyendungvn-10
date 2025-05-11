@@ -68,22 +68,22 @@ const Footer: React.FC = () => {
             <h3 className="font-heading text-xl font-bold mb-4">Danh mục xe</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/danh-muc?type=xe-tai" className="text-gray-300 hover:text-primary transition-colors">
+                <Link to="/danh-muc-xe?type=xe-tai" className="text-gray-300 hover:text-primary transition-colors">
                   Xe Tải
                 </Link>
               </li>
               <li>
-                <Link to="/danh-muc?type=xe-cau" className="text-gray-300 hover:text-primary transition-colors">
+                <Link to="/danh-muc-xe?type=xe-cau" className="text-gray-300 hover:text-primary transition-colors">
                   Xe Cẩu
                 </Link>
               </li>
               <li>
-                <Link to="/danh-muc?type=mooc" className="text-gray-300 hover:text-primary transition-colors">
+                <Link to="/danh-muc-xe?type=mooc" className="text-gray-300 hover:text-primary transition-colors">
                   Sơ Mi Rơ Mooc
                 </Link>
               </li>
               <li>
-                <Link to="/danh-muc?type=dau-keo" className="text-gray-300 hover:text-primary transition-colors">
+                <Link to="/danh-muc-xe?type=dau-keo" className="text-gray-300 hover:text-primary transition-colors">
                   Xe Đầu Kéo
                 </Link>
               </li>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -209,7 +208,7 @@ const AboutPage = () => {
               <Link to="/lien-he">Liên hệ ngay</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-transparent text-white border-white hover:bg-white hover:text-gray-900">
-              <Link to="/danh-muc">Xem danh mục xe</Link>
+              <Link to="/danh-muc-xe">Xem danh mục xe</Link>
             </Button>
           </div>
         </div>
@@ -221,4 +220,3 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
-

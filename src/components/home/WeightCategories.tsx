@@ -26,7 +26,7 @@ const WeightCategories: React.FC = () => {
           {truckWeights.map((weight, index) => (
             <Link 
               key={weight.id} 
-              to={`/danh-muc?minWeight=${weight.minWeight}&maxWeight=${weight.maxWeight}`}
+              to={`/danh-muc-xe?minWeight=${weight.minWeight}&maxWeight=${weight.maxWeight}`}
               className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md border border-gray-100 hover:border-primary/20 transition-all group"
             >
               <div className="flex flex-col items-center text-center">

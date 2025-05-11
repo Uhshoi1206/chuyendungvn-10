@@ -22,7 +22,7 @@ const BrandCategories = ({ brands }: BrandCategoriesProps) => {
             brands.map(brand => (
               <Link 
                 key={brand.id} 
-                to={`/danh-muc?brand=${brand.name}`}
+                to={`/danh-muc-xe?brand=${brand.name}`}
                 className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center border border-gray-100 hover:border-primary/20 group"
               >
                 <span className="font-bold text-xl group-hover:text-primary transition-colors">{brand.name}</span>

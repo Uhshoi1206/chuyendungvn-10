@@ -39,7 +39,7 @@ const VehicleSection = ({
 
         <div className="text-center mt-10">
           <Button asChild variant="outline" className="px-6 border-primary text-primary hover:bg-primary/10">
-            <Link to={`/danh-muc?type=${type}`} className="flex items-center gap-2">
+            <Link to={`/danh-muc-xe?type=${type}`} className="flex items-center gap-2">
               {linkText}
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>

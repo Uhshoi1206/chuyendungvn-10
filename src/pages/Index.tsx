@@ -44,7 +44,7 @@ const Index = () => {
           vehicles={featuredTrucks} 
           title="Xe Tải Nổi Bật" 
           description="Các dòng xe tải được nhiều khách hàng tin dùng, đa dạng tải trọng và thương hiệu"
-          viewAllUrl="/danh-muc?type=xe-tai"
+          viewAllUrl="/danh-muc-xe?type=xe-tai"
           viewAllText="Xem tất cả xe tải"
         />
 
@@ -53,7 +53,7 @@ const Index = () => {
           vehicles={specializedCranes} 
           title="Cẩu Chuyên Dụng" 
           description="Các dòng xe cẩu chuyên dụng, đa dạng tải trọng và thương hiệu"
-          viewAllUrl="/danh-muc?type=xe-cau"
+          viewAllUrl="/danh-muc-xe?type=xe-cau"
           viewAllText="Xem tất cả xe cẩu"
         />
 
@@ -62,7 +62,7 @@ const Index = () => {
           vehicles={semiTrailers} 
           title="Sơ Mi Rơ Mooc" 
           description="Các dòng mooc chuyên dụng, đa dạng loại và thương hiệu"
-          viewAllUrl="/danh-muc?type=mooc"
+          viewAllUrl="/danh-muc-xe?type=mooc"
           viewAllText="Xem tất cả sơ mi rơ mooc"
         />
 
@@ -71,7 +71,7 @@ const Index = () => {
           vehicles={tractors} 
           title="Xe Đầu Kéo" 
           description="Các dòng xe đầu kéo, đa dạng công suất và thương hiệu"
-          viewAllUrl="/danh-muc?type=dau-keo"
+          viewAllUrl="/danh-muc-xe?type=dau-keo"
           viewAllText="Xem tất cả xe đầu kéo"
         />
         

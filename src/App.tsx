@@ -55,7 +55,7 @@ const App = () => {
               <OrderNotification onOpenQuickContact={handleOpenQuickContact} />
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/danh-muc" element={<TruckCatalog />} />
+                <Route path="/danh-muc-xe" element={<TruckCatalog />} />
                 
                 {/* Các route riêng cho từng loại phương tiện */}
                 <Route path="/xe-tai/:slug" element={<TruckDetail />} />

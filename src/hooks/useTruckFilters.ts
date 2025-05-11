@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TruckFilters, VehicleType } from '@/models/TruckTypes';
@@ -162,7 +161,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       params.set('search', newFilters.search);
     }
     
-    navigate(`/danh-muc?${params.toString()}`, { replace: true });
+    navigate(`/danh-muc-xe?${params.toString()}`, { replace: true });
   };
 
   const handleResetFilters = () => {
@@ -177,7 +176,7 @@ export const useTruckFilters = (initialFilters: TruckFilters) => {
       search: null
     };
     setFilters(emptyFilters);
-    navigate('/danh-muc', { replace: true });
+    navigate('/danh-muc-xe', { replace: true });
   };
 
   return {

@@ -15,7 +15,7 @@ const CompareEmptyState = () => {
         Thêm các xe bạn muốn so sánh từ trang danh mục hoặc trang chi tiết sản phẩm
       </p>
       <Button asChild size="lg" className="bg-primary hover:bg-primary-700">
-        <Link to="/danh-muc">
+        <Link to="/danh-muc-xe">
           Chọn xe để so sánh
         </Link>
       </Button>
