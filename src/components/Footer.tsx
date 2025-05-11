@@ -61,32 +61,32 @@ const Footer: React.FC = () => {
                 </Link>
                 <ul className="pl-4 mt-2 space-y-2">
                   <li>
-                    <Link to="/blog/tin-tuc-tin-nganh-van-tai" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/tin-tuc-tin-nganh-van-tai" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Tin Tức Tin Ngành Vận Tải
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog/danh-gia-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/danh-gia-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Đánh Giá Xe
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog/kinh-nghiem-lai-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/kinh-nghiem-lai-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Kinh Nghiệm Lái Xe
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog/bao-duong" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/bao-duong" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Bảo Dưỡng
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog/tu-van-mua-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/tu-van-mua-xe" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Tư Vấn Mua Xe
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog/cong-nghe-doi-moi" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    <Link to="/danh-muc-bai-viet/cong-nghe-doi-moi" className="text-gray-400 hover:text-primary transition-colors text-sm">
                       Công Nghệ & Đổi Mới
                     </Link>
                   </li>
