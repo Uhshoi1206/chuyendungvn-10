@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="font-heading text-xl font-bold mb-4">XeTaiViet</h3>
+            <h3 className="font-heading text-xl font-bold mb-4">ChuyenDungVN</h3>
             <p className="mb-4 text-gray-300">
               Chuyên cung cấp xe tải, xe đầu kéo, xe cẩu và sơ mi rơ mooc chính hãng.
               Đa dạng tải trọng và mẫu mã, giá cả cạnh tranh trên thị trường.
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2 text-primary" />
-                <span>contact@xetaiviet.vn</span>
+                <span>contact@chuyendungvn.com</span>
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-[#1877F2] transition-colors">
                     <Facebook className="h-5 w-5" />
                   </div>
-                  <span>Facebook XeTaiViet</span>
+                  <span>Facebook ChuyenDungVN</span>
                 </a>
                 
                 <a
@@ -116,7 +116,7 @@ const Footer: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-[#0099FF] transition-colors">
                     <MessageCircle className="h-5 w-5" />
                   </div>
-                  <span>Messenger XeTaiViet</span>
+                  <span>Messenger ChuyenDungVN</span>
                 </a>
                 
                 <a
@@ -128,7 +128,7 @@ const Footer: React.FC = () => {
                   <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-[#FF0000] transition-colors">
                     <Youtube className="h-5 w-5" />
                   </div>
-                  <span>YouTube XeTaiViet</span>
+                  <span>YouTube ChuyenDungVN</span>
                 </a>
                 
                 <a
@@ -142,7 +142,7 @@ const Footer: React.FC = () => {
                       <FaTiktok className="h-5 w-5" />
                     </div>
                   </div>
-                  <span>TikTok XeTaiViet</span>
+                  <span>TikTok ChuyenDungVN</span>
                 </a>
               </div>
             </div>
@@ -174,7 +174,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-6">
           <div className="flex flex-col md:flex-row justify-between">
-            <p className="text-gray-400">© 2024 XeTaiViet. Tất cả các quyền được bảo lưu.</p>
+            <p className="text-gray-400">© 2024 ChuyenDungVN. Tất cả các quyền được bảo lưu.</p>
             <div className="flex space-x-4">
               <Link to="/chinh-sach-bao-mat" className="text-gray-400 hover:text-primary">
                 Chính sách bảo mật

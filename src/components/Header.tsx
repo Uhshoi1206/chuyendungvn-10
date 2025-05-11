@@ -40,7 +40,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="font-heading text-2xl md:text-3xl font-bold text-primary tracking-tight">XeTaiViet</div>
+            <div className="font-heading text-2xl md:text-3xl font-bold text-primary tracking-tight">ChuyenDungVN</div>
           </Link>
 
           {/* Desktop Navigation */}

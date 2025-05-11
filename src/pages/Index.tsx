@@ -28,7 +28,7 @@ const Index = () => {
   return (
     <Layout>
       <Helmet>
-        <title>XeTaiViet - Chuyên Phương Tiện Thương Mại | Xe Tải, Cẩu, Mooc & Đầu Kéo</title>
+        <title>ChuyenDungVN - Chuyên Phương Tiện Thương Mại | Xe Tải, Cẩu, Mooc & Đầu Kéo</title>
         <meta 
           name="description" 
           content="Chuyên cung cấp xe tải, xe cẩu, sơ mi rơ mooc và xe đầu kéo với đa dạng thương hiệu: Hyundai, Thaco, Isuzu, Hino, Dongfeng, JAC. Giá tốt nhất thị trường!" 
