@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { AddressRegion, AddressInfo } from '@/data/addressData';
-import { MapPin, Phone } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 interface AddressRegionsProps {
   regions: AddressRegion[];
@@ -20,15 +20,6 @@ const AddressRegions: React.FC<AddressRegionsProps> = ({ regions }) => {
                 <div className="flex items-start space-x-2 mb-1">
                   <MapPin className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
                   <span className="text-gray-300 text-sm">{address.address}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                  <a
-                    href={`tel:${address.phone}`}
-                    className="text-gray-300 text-sm hover:text-primary transition-colors"
-                  >
-                    {address.phone}
-                  </a>
                 </div>
               </div>
             ))}
