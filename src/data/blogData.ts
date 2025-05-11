@@ -3,9 +3,9 @@ import { BlogPost } from '../models/BlogPost';
 
 // Categories
 export const blogCategories: Record<string, string> = {
-  'industry-news': 'Tin Ngành',
+  'industry-news': 'Tin Tức Tin Ngành Vận Tải',
   'product-review': 'Đánh Giá Xe',
-  'driver-tips': 'Lái Xe',
+  'driver-tips': 'Kinh Nghiệm Lái Xe',
   'maintenance': 'Bảo Dưỡng',
   'buying-guide': 'Tư Vấn Mua Xe',
   'technology': 'Công Nghệ & Đổi Mới'
