@@ -98,7 +98,7 @@ const TruckDetail = () => {
             <h2 className="text-2xl font-bold mb-2">Không tìm thấy phương tiện</h2>
             <p className="text-gray-600 mb-4">Thông tin phương tiện bạn đang tìm kiếm không tồn tại.</p>
             <Button asChild>
-              <Link to="/danh-muc">Quay lại danh mục xe</Link>
+              <Link to="/danh-muc-xe">Quay lại danh mục xe</Link>
             </Button>
           </div>
         </div>
@@ -181,15 +181,15 @@ const TruckDetail = () => {
         <div className="flex items-center mb-6 text-sm">
           <Link to="/" className="text-gray-600 hover:text-primary">Trang chủ</Link>
           <span className="mx-2">›</span>
-          <Link to="/danh-muc" className="text-gray-600 hover:text-primary">Danh mục xe</Link>
+          <Link to="/danh-muc-xe" className="text-gray-600 hover:text-primary">Danh mục xe</Link>
           <span className="mx-2">›</span>
-          <Link to={`/danh-muc?type=${truck.type}`} className="text-gray-600 hover:text-primary">
+          <Link to={`/danh-muc-xe?type=${truck.type}`} className="text-gray-600 hover:text-primary">
             {vehicleTypeName}
           </Link>
           {truck.boxType && (
             <>
               <span className="mx-2">›</span>
-              <Link to={`/danh-muc?type=${truck.type}&boxType=${truck.boxType}`} className="text-gray-600 hover:text-primary">
+              <Link to={`/danh-muc-xe?type=${truck.type}&boxType=${truck.boxType}`} className="text-gray-600 hover:text-primary">
                 {boxTypeName}
               </Link>
             </>
