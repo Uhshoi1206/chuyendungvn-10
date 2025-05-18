@@ -1229,97 +1229,256 @@ const TruckDetail = () => {
           
           {/* Tab xe cẩu */}
           <TabsContent value="crane" className="p-6 bg-white border rounded-b-lg mt-2">
-            <h2 className="text-xl font-bold mb-6">Thông số chi tiết cẩu</h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số cơ bản cẩu:</h3>
-                <table className="w-full border-collapse">
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Sức nâng tối đa</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.liftingCapacityText || `${truck.craneSpec?.liftingCapacity || 3.5} tấn`}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Tầm với xa nhất</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.reachLengthText || `${truck.craneSpec?.reachLength || 8} m`}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Số đốt cần cẩu</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.boomSections || '3-4'} đốt</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều cao nâng tối đa</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.maxWorkingHeight || '10-12 m'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Góc quay</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.rotationAngle || '360°'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Kiểu gắn cẩu</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.mountingType || 'Gắn sau cabin'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chiều cao gập</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.foldedHeight || '2.2 m'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              
-              <div>
-                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống thủy lực:</h3>
-                <table className="w-full border-collapse">
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Hệ thống thủy lực</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.hydraulicSystem || 'Thủy lực cân bằng áp lực'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Áp suất làm việc</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.operatingPressure || '21 - 24 MPa'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Chân chống</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.stabilizers || 'Chân chống thủy lực mở rộng'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Nguồn năng lượng</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.powerSource || 'Từ động cơ xe'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Sức nâng tời</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.winchCapacity || 'Tùy theo model'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              
-              <div>
-                <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống điều khiển:</h3>
-                <table className="w-full border-collapse">
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600 w-1/3">Hệ thống điều khiển</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.controlSystem || 'Điều khiển thủy lực cơ'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Điều khiển từ xa</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.remoteControl ? 'Có' : 'Không'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Cabin điều khiển</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.cabinPresent ? 'Có' : 'Không'}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-2 text-gray-600">Hệ thống an toàn</td>
-                      <td className="py-2 font-medium">{truck.craneSpec?.safetySystem || 'Hệ thống chống quá tải, báo áp suất'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </TabsContent>
+  <h2 className="text-xl font-bold mb-6">Thông số chi tiết cẩu {truck.craneSpec?.craneModelName || truck.brand}</h2>
+  {truck.craneSpec ? (
+    <div className="space-y-6">
+      {/* Thông số nâng của cẩu */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Thông số nâng:</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.craneModelName && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Model cẩu</td>
+                <td className="py-2 font-medium">{truck.craneSpec.craneModelName}</td>
+              </tr>
+            )}
+            {truck.craneSpec.liftingCapacityText && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Sức nâng lớn nhất / tầm với</td>
+                <td className="py-2 font-medium">{truck.craneSpec.liftingCapacityText}</td>
+              </tr>
+            )}
+            {truck.craneSpec.maxLiftingMoment && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Momen nâng lớn nhất</td>
+                <td className="py-2 font-medium">{truck.craneSpec.maxLiftingMoment}</td>
+              </tr>
+            )}
+             {truck.craneSpec.maxLiftingHeight && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Chiều cao làm việc tối đa</td>
+                <td className="py-2 font-medium">{truck.craneSpec.maxLiftingHeight}</td>
+              </tr>
+            )}
+            {truck.craneSpec.maxWorkingRadius && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Bán kính làm việc lớn nhất</td>
+                <td className="py-2 font-medium">{truck.craneSpec.maxWorkingRadius}</td>
+              </tr>
+            )}
+            {/* Chi tiết biểu đồ tải */}
+            {truck.craneSpec.detailedLiftingCapacity && truck.craneSpec.detailedLiftingCapacity.length > 0 && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 align-top">Biểu đồ tải trọng</td>
+                <td className="py-2 font-medium">
+                  <ul className="list-disc pl-5">
+                    {truck.craneSpec.detailedLiftingCapacity.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Thông số cần */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Cần cẩu (Boom):</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.boomType && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Loại cần</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomType}</td>
+              </tr>
+            )}
+             {truck.craneSpec.boomSections && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Số đoạn</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomSections} đoạn</td>
+              </tr>
+            )}
+            {truck.craneSpec.boomLength && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Chiều dài cần</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomLength}</td>
+              </tr>
+            )}
+            {truck.craneSpec.boomExtensionSpeed && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Tốc độ ra cần</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomExtensionSpeed}</td>
+              </tr>
+            )}
+            {truck.craneSpec.boomLuffingAngle && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Góc nâng cần</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomLuffingAngle}</td>
+              </tr>
+            )}
+            {truck.craneSpec.boomLuffingSpeed && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Tốc độ nâng cần</td>
+                <td className="py-2 font-medium">{truck.craneSpec.boomLuffingSpeed}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Thông số tời */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tời (Winch):</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.winchRatedSpeed && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Tốc độ tời định mức</td>
+                <td className="py-2 font-medium">{truck.craneSpec.winchRatedSpeed}</td>
+              </tr>
+            )}
+            {truck.craneSpec.winchHookSpeed && (
+               <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Tốc độ móc cẩu</td>
+                <td className="py-2 font-medium">{truck.craneSpec.winchHookSpeed}</td>
+              </tr>
+            )}
+            {truck.craneSpec.winchRopeType && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Loại cáp tời</td>
+                <td className="py-2 font-medium">{truck.craneSpec.winchRopeType}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Thông số xoay */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống xoay (Swing):</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.swingAngle && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Góc xoay</td>
+                <td className="py-2 font-medium">{truck.craneSpec.swingAngle}</td>
+              </tr>
+            )}
+            {truck.craneSpec.swingSpeed && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Tốc độ xoay</td>
+                <td className="py-2 font-medium">{truck.craneSpec.swingSpeed}</td>
+              </tr>
+            )}
+            {truck.craneSpec.swingReductionType && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Kiểu giảm tốc xoay</td>
+                <td className="py-2 font-medium">{truck.craneSpec.swingReductionType}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      
+      {/* Chân chống */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Chân chống (Outriggers):</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.outriggersType && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Loại chân chống</td>
+                <td className="py-2 font-medium">{truck.craneSpec.outriggersType}</td>
+              </tr>
+            )}
+            {truck.craneSpec.outriggersFrontExtension && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Chân chống trước (mở rộng tối đa)</td>
+                <td className="py-2 font-medium">{truck.craneSpec.outriggersFrontExtension}</td>
+              </tr>
+            )}
+            {truck.craneSpec.outriggersRearExtension && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Chân chống sau (mở rộng tối đa)</td>
+                <td className="py-2 font-medium">{truck.craneSpec.outriggersRearExtension}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Hệ thống thủy lực */}
+      <div>
+        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống thủy lực:</h3>
+        <table className="w-full border-collapse">
+          <tbody>
+            {truck.craneSpec.hydraulicPumpType && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600 w-1/3">Loại bơm thủy lực</td>
+                <td className="py-2 font-medium">{truck.craneSpec.hydraulicPumpType}</td>
+              </tr>
+            )}
+            {truck.craneSpec.hydraulicOilFlow && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Lưu lượng dầu</td>
+                <td className="py-2 font-medium">{truck.craneSpec.hydraulicOilFlow}</td>
+              </tr>
+            )}
+            {truck.craneSpec.hydraulicOperatingPressure && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Áp suất dầu định mức</td>
+                <td className="py-2 font-medium">{truck.craneSpec.hydraulicOperatingPressure}</td>
+              </tr>
+            )}
+            {truck.craneSpec.hydraulicTankCapacity && (
+              <tr className="border-b">
+                <td className="py-2 text-gray-600">Dung tích thùng dầu</td>
+                <td className="py-2 font-medium">{truck.craneSpec.hydraulicTankCapacity}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      
+      {/* Các thông số khác của cẩu nếu có */}
+      {(truck.craneSpec.safetySystem || truck.craneSpec.controlSystem) && (
+        <div>
+          <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tính năng khác:</h3>
+          <table className="w-full border-collapse">
+            <tbody>
+              {truck.craneSpec.safetySystem && (
+                <tr className="border-b">
+                  <td className="py-2 text-gray-600 w-1/3">Hệ thống an toàn</td>
+                  <td className="py-2 font-medium">{truck.craneSpec.safetySystem}</td>
+                </tr>
+              )}
+              {truck.craneSpec.controlSystem && (
+                <tr className="border-b">
+                  <td className="py-2 text-gray-600">Hệ thống điều khiển</td>
+                  <td className="py-2 font-medium">{truck.craneSpec.controlSystem}</td>
+                </tr>
+              )}
+               {truck.craneSpec.remoteControl !== undefined && (
+                <tr className="border-b">
+                  <td className="py-2 text-gray-600 w-1/3">Điều khiển từ xa</td>
+                  <td className="py-2 font-medium">{truck.craneSpec.remoteControl ? 'Có' : 'Không (Tùy chọn)'}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+       <p className="mt-4 text-sm text-gray-600">
+        <em>Lưu ý: Các thông số kỹ thuật trên có thể thay đổi tùy theo model xe nền và cấu hình lắp đặt thực tế. Vui lòng liên hệ để được tư vấn chi tiết.</em>
+      </p>
+    </div>
+  ) : (
+    <p>Không có thông số chi tiết cho cẩu của sản phẩm này.</p>
+  )}
+</TabsContent>
           
           {/* Tab mooc */}
           <TabsContent value="trailer" className="p-6 bg-white border rounded-b-lg mt-2">
