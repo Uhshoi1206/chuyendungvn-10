@@ -1410,38 +1410,39 @@ const TruckDetail = () => {
         </table>
       </div>
 
-      {/* Hệ thống thủy lực */}
-      <div>
-        <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống thủy lực:</h3>
-        <table className="w-full border-collapse">
-          <tbody>
-            {truck.craneSpec.hydraulicPumpType && (
-              <tr className="border-b">
-                <td className="py-2 text-gray-600 w-1/3">Loại bơm thủy lực</td>
-                <td className="py-2 font-medium">{truck.craneSpec.hydraulicPumpType}</td>
-              </tr>
-            )}
-            {truck.craneSpec.hydraulicOilFlow && (
-              <tr className="border-b">
-                <td className="py-2 text-gray-600">Lưu lượng dầu</td>
-                <td className="py-2 font-medium">{truck.craneSpec.hydraulicOilFlow}</td>
-              </tr>
-            )}
-            {truck.craneSpec.hydraulicOperatingPressure && (
-              <tr className="border-b">
-                <td className="py-2 text-gray-600">Áp suất dầu định mức</td>
-                <td className="py-2 font-medium">{truck.craneSpec.hydraulicOperatingPressure}</td>
-              </tr>
-            )}
-            {truck.craneSpec.hydraulicTankCapacity && (
-              <tr className="border-b">
-                <td className="py-2 text-gray-600">Dung tích thùng dầu</td>
-                <td className="py-2 font-medium">{truck.craneSpec.hydraulicTankCapacity}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+    {/* Hệ thống thủy lực */}
+    <div>
+      <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Hệ thống thủy lực:</h3>
+      <table className="w-full border-collapse">
+        <tbody>
+          {truck.craneSpec.hydraulicPumpType && (
+            <tr className="border-b">
+              <td className="py-2 text-gray-600 w-1/3">Loại bơm thủy lực</td>
+              <td className="py-2 font-medium">{truck.craneSpec.hydraulicPumpType}</td>
+            </tr>
+          )}
+          {/* Thay đổi ở đây: Hiển thị các thông số của hệ thống thủy lực thẳng hàng */}
+          {truck.craneSpec.hydraulicOilFlow && (
+            <tr className="border-b">
+              <td className="py-2 text-gray-600 w-1/3">Lưu lượng dầu</td>
+              <td className="py-2 font-medium">{truck.craneSpec.hydraulicOilFlow}</td>
+            </tr>
+          )}
+          {truck.craneSpec.hydraulicOperatingPressure && (
+            <tr className="border-b">
+              <td className="py-2 text-gray-600 w-1/3">Áp suất dầu định mức</td>
+              <td className="py-2 font-medium">{truck.craneSpec.hydraulicOperatingPressure}</td>
+            </tr>
+          )}
+          {truck.craneSpec.hydraulicTankCapacity && (
+            <tr className="border-b">
+              <td className="py-2 text-gray-600 w-1/3">Dung tích thùng dầu</td>
+              <td className="py-2 font-medium">{truck.craneSpec.hydraulicTankCapacity}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
       
       {/* Các thông số khác của cẩu nếu có */}
       {(truck.craneSpec.safetySystem || truck.craneSpec.controlSystem) && (
