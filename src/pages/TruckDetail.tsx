@@ -1445,7 +1445,7 @@ const TruckDetail = () => {
     </div>
       
       {/* Các thông số khác của cẩu nếu có */}
-      {(truck.craneSpec.safetySystem || truck.craneSpec.controlSystem) && (
+      {(truck.craneSpec.safetySystem || truck.craneSpec.controlSystem || truck.craneSpec.remoteControl !== undefined) && (
         <div>
           <h3 className="font-bold text-lg mb-2 bg-gray-100 p-2 rounded">Tính năng khác:</h3>
           <table className="w-full border-collapse">
@@ -1458,11 +1458,11 @@ const TruckDetail = () => {
               )}
               {truck.craneSpec.controlSystem && (
                 <tr className="border-b">
-                  <td className="py-2 text-gray-600">Hệ thống điều khiển</td>
+                  <td className="py-2 text-gray-600 w-1/3">Hệ thống điều khiển</td>
                   <td className="py-2 font-medium">{truck.craneSpec.controlSystem}</td>
                 </tr>
               )}
-               {truck.craneSpec.remoteControl !== undefined && (
+              {truck.craneSpec.remoteControl !== undefined && (
                 <tr className="border-b">
                   <td className="py-2 text-gray-600 w-1/3">Điều khiển từ xa</td>
                   <td className="py-2 font-medium">{truck.craneSpec.remoteControl ? 'Có' : 'Không (Tùy chọn)'}</td>
