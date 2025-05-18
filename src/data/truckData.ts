@@ -1795,47 +1795,96 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "11",
-    name: 'Soosan 10 Tấn',
-    slug: 'soosan-10-tan',
-    brand: 'Soosan',
+    id: "11", // Giả sử đây là ID của Xe Tải Gắn Cẩu Soosan 10 Tấn
+    name: 'Xe Tải Gắn Cẩu Soosan 10 Tấn',
+    slug: 'xe-tai-gan-cau-soosan-10-tan',
+    brand: 'Hyundai', // Thương hiệu xe nền
     price: 2500000000,
     priceText: '2.500.000.000 đ',
-    weightText: '10 Tấn',
-    weight: 10,
-    length: 9.5,
+    weightText: '10 Tấn (Cẩu)', // Tải trọng cẩu
+    weight: 10, // Tải trọng cẩu (số)
+    length: 9.5, // Kích thước xe nền
     width: 2.5,
     height: 3.5,
     dimensions: '9.5 x 2.5 x 3.5 m',
     type: 'xe-cau',
+    craneType: 'cẩu-gắn-xe', // Hoặc 'cẩu-rời' nếu là cẩu rời
     isNew: true,
     isHot: true,
-    origin: 'Hàn Quốc',
-    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Cau/soosan-10t.jpg',
+    origin: 'Hàn Quốc (Cẩu Soosan)',
+    thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Cau/soosan-10t.jpg', // Cần hình ảnh chính xác
     images: [
       'https://tongkhoxetai.vn/upload/images/Cau/soosan-10t.jpg',
       'https://tongkhoxetai.vn/upload/images/Cau/soosan-10t-2.jpg',
       'https://tongkhoxetai.vn/upload/images/Cau/soosan-10t-3.jpg',
     ],
-    specifications: {
-      engineType: 'Diesel',
-      engineCapacity: '6.7L',
-      horsePower: '250 HP',
-      torque: '950 Nm',
-      transmission: 'Số sàn 8 cấp',
-      fuelConsumption: '20L/100km',
-      emission: 'Euro 4',
-      warranty: '2 năm hoặc 100.000 km',
+    specifications: { // Thông số xe nền (ví dụ Hyundai)
+      engineType: 'Diesel D6CC', // Ví dụ
+      engineCapacity: '12.7L',
+      horsePower: '380 HP', // Ví dụ
+      // ... (thêm các thông số khác của xe nền)
+      warranty: '2 năm hoặc 100.000 km (xe nền)',
       seats: 2,
-      year: 2023
+      year: 2024
     },
-    description: 'Soosan 10 tấn là dòng xe cẩu hạng nặng đến từ Hàn Quốc, được thiết kế để nâng và di chuyển các hàng hóa siêu nặng. Xe được trang bị cần cẩu mạnh mẽ có thể nâng tải trọng lên đến 10 tấn.',
+    craneSpec: {
+      craneModelName: 'SOOSAN SCS1015LS', // Thông tin từ link
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng lớn nhất / tại tầm với
+      maxLiftingMoment: '25.0 tấn.m',
+      maxLiftingHeight: '24.5 m', // Chiều cao nâng lớn nhất (bao gồm cả cần phụ nếu có)
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất (cần chính)
+      
+      boomType: 'Cần lục giác, 5 đoạn',
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần chính
+      boomExtensionSpeed: '14.75 m / 50 giây',
+      boomLuffingAngle: '-17° ~ 80°',
+      boomLuffingSpeed: '1° ~ 80° / 20 giây',
+
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)',
+      winchHookSpeed: '16 m/phút', // (Cần làm rõ thêm nếu có tốc độ khác)
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)',
+      
+      swingAngle: '360° liên tục',
+      swingSpeed: '2.0 vòng/phút',
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực',
+
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)',
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Cần xem kỹ tài liệu của từng model cẩu
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất',
+
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)',
+      hydraulicOperatingPressure: '210 kgf/cm²',
+      hydraulicTankCapacity: '120 L',
+      
+      // Thông tin chi tiết sức nâng (lấy từ bảng)
+      detailedLiftingCapacity: [
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      // Các thông số cũ có thể bỏ nếu đã được bao gồm trong các trường mới chi tiết hơn
+      // liftingCapacity: 10000, // Sức nâng (kg)
+      // reachLength: 20.7, // Tầm với (m)
+      // rotationAngle: '360° liên tục', // Đã có swingAngle
+      // stabilizers: 'Chân chống thủy lực trước và sau', // Mô tả chung, đã có outriggers... chi tiết
+      // controlSystem: 'Hệ thống điều khiển thủy lực với van điều khiển tỷ lệ', // Mô tả chung
+      // hydraulicSystem: 'Bơm thủy lực piston', // Mô tả chung, đã có hydraulicPumpType
+      // operatingPressure: '210 kgf/cm2', // Đã có hydraulicOperatingPressure
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay',
+    },
+    description: 'Xe tải Hyundai gắn cẩu Soosan SCS1015LS 10 tấn là giải pháp nâng hạ và vận chuyển hàng hóa nặng hiệu quả. Cẩu Soosan với sức nâng vượt trội và tầm với xa, kết hợp với xe nền Hyundai mạnh mẽ, bền bỉ.',
     features: [
-      'Công suất nâng lớn, tầm với xa',
-      'Hệ thống thủy lực công suất cao',
-      'Cabin điều khiển hiện đại, tầm nhìn tốt',
-      'Hệ thống an toàn tiên tiến',
-      'Khả năng vận hành ổn định'
+      'Cẩu Soosan SCS1015LS sức nâng 10 tấn',
+      'Bán kính làm việc tối đa 20.7m',
+      'Chiều cao nâng tối đa 24.5m',
+      'Hệ thống chân chống thủy lực vững chắc',
+      'Vận hành êm ái, chính xác',
+      'Tích hợp các tính năng an toàn tiên tiến'
     ]
   },
   {
