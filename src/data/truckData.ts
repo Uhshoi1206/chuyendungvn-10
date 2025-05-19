@@ -733,10 +733,10 @@ export const trucks: Truck[] = [
   // ===== XE CẨU =====
   // ... (Đã comment chi tiết ở phần trả lời trước, giữ nguyên và đảm bảo đầy đủ) ...
   {
-    id: "201",
-    name: 'Kanglim KS1056 5 Tấn',
-    slug: 'kanglim-ks1056',
-    brand: 'Kanglim',
+    id: "cau201",
+    name: 'Soosan SCS335 3 Tấn',
+    slug: 'soosan-scs335',
+    brand: 'Soosan',
     price: 850000000,
     priceText: '850.000.000 đ',
     weightText: '5 Tấn', // Sức nâng của cẩu
@@ -760,23 +760,42 @@ export const trucks: Truck[] = [
       warranty: '2 năm hoặc 4.000 giờ', // Bảo hành cẩu
       year: 2023 // Năm sản xuất cẩu
     },
-    craneSpec: { // Thông số kỹ thuật của cẩu
-      liftingCapacity: 5, // Sức nâng tối đa (tấn)
-      liftingCapacityText: '5 tấn tại 3m', // Sức nâng chi tiết (tấn tại mét)
-      reachLength: 18.7, // Tầm với ngang tối đa (mét)
-      reachLengthText: '18.7m (6 đoạn)', // Tầm với chi tiết
-      rotationAngle: '360° liên tục', // Góc quay cẩu
-      stabilizers: '4 chân chống thủy lực mở rộng', // Hệ thống chân chống
-      controlSystem: 'Điều khiển tỷ lệ thủy lực', // Hệ thống điều khiển
-      boomSections: 6, // Số đoạn cần cẩu
-      hydraulicSystem: 'Thủy lực áp suất cao', // Hệ thống thủy lực
-      operatingPressure: '21 MPa', // Áp suất vận hành
-      maxLiftingHeight: '20.7m', // Chiều cao nâng tối đa của cẩu (mét)
-      craneModelName: 'KS1056', // Model cẩu
-      winchRopeType: 'Φ10mm x 100m', // Loại cáp tời
-      swingSpeed: '2.0 rpm', // Tốc độ quay toa
+    craneSpec: { // Thông số của cẩu Soosan
+      craneModelName: 'SOOSAN SCS335', // Model cẩu
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng tối đa tại tầm với cụ thể
+      maxLiftingMoment: '25.0 tấn.m', // Mô men nâng lớn nhất
+      maxLiftingHeight: '24.5 m', // Chiều cao làm việc tối đa của cẩu
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất của cẩu
+      boomType: 'Cần lục giác, 5 đoạn', // Kiểu cần cẩu và số đoạn
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần khi thu vào và duỗi ra tối đa
+      boomExtensionSpeed: '14.75 m / 50 giây', // Tốc độ ra cần
+      boomLuffingAngle: '-17° ~ 80°', // Góc nâng hạ cần
+      boomLuffingSpeed: '1° ~ 80° / 20 giây', // Tốc độ nâng hạ cần
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)', // Tốc độ tời định mức
+      winchHookSpeed: '16 m/phút', // Tốc độ móc của tời
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)', // Loại và kích thước cáp tời
+      swingAngle: '360° liên tục', // Góc quay toa
+      swingSpeed: '2.0 vòng/phút', // Tốc độ quay toa
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực', // Kiểu bộ giảm tốc quay toa
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)', // Độ mở rộng tối đa của chân chống trước
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Độ mở rộng tối đa của chân chống sau (nếu có)
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất', // Loại chân chống
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)', // Lưu lượng dầu thủy lực
+      hydraulicOperatingPressure: '210 kgf/cm²', // Áp suất làm việc của hệ thống thủy lực
+      hydraulicTankCapacity: '120 L', // Dung tích thùng dầu thủy lực
+      detailedLiftingCapacity: [ // Biểu đồ tải chi tiết
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay', // Các thiết bị an toàn
     },
-    description: 'Kanglim KS1056 là cẩu tự hành 5 tấn cao cấp đến từ Hàn Quốc, được thiết kế với công nghệ tiên tiến và khả năng nâng hạ chính xác. Cẩu có thể vươn xa đến 18.7m với 6 đoạn boom, cho phép nâng hàng ở những vị trí khó tiếp cận.',
+    description: 'Soosan SCS335 là cẩu tự hành 5 tấn cao cấp đến từ Hàn Quốc, được thiết kế với công nghệ tiên tiến và khả năng nâng hạ chính xác. Cẩu có thể vươn xa đến 18.7m với 6 đoạn boom, cho phép nâng hàng ở những vị trí khó tiếp cận.',
     features: [
       'Cần cẩu 6 đoạn, với tầm với xa 18.7m',
       'Khả năng nâng tải trọng lớn 5 tấn tại bán kính 3m',
@@ -788,10 +807,10 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "202",
-    name: 'TADANO TM-ZE554MH 5 Tấn',
-    slug: 'tadano-tm-ze554mh',
-    brand: 'TADANO',
+    id: "cau202",
+    name: 'Soosan SCS525 5 Tấn',
+    slug: 'soosan-scs525',
+    brand: 'Soosan',
     price: 880000000,
     priceText: '880.000.000 đ',
     weightText: '5 Tấn', // Sức nâng
@@ -804,7 +823,7 @@ export const trucks: Truck[] = [
     craneType: 'cẩu-rời',
     isNew: false,
     isHot: true,
-    origin: 'Nhật Bản',
+    origin: 'Hàn Quốc',
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Cau/tadano-5t-tm.jpg',
     images: [
       'https://tongkhoxetai.vn/upload/images/Cau/tadano-5t-tm.jpg',
@@ -815,23 +834,42 @@ export const trucks: Truck[] = [
       warranty: '2 năm hoặc 5.000 giờ',
       year: 2023
     },
-    craneSpec: {
-      liftingCapacity: 5,
-      liftingCapacityText: '5 tấn tại 2.5m',
-      reachLength: 21, // Tầm với ngang tối đa (mét)
-      reachLengthText: '21m (5 đoạn + 1 đoạn phụ)',
-      rotationAngle: '360° liên tục',
-      stabilizers: '4 chân chống thủy lực H-type',
-      controlSystem: 'Hệ thống điều khiển AML (Automatic Moment Limiter)',
-      boomSections: 6, // 5 đoạn chính + 1 đoạn phụ
-      hydraulicSystem: 'Thủy lực điều khiển tỷ lệ',
-      operatingPressure: '23 MPa',
-      maxLiftingHeight: '22.5m', // Chiều cao nâng tối đa của cẩu (mét)
-      craneModelName: 'TM-ZE554MH', // Model cẩu
-      winchRopeType: 'Φ10mm x 120m', // Loại cáp tời
-      swingSpeed: '2.5 rpm', // Tốc độ quay toa
+    craneSpec: { // Thông số của cẩu Soosan
+      craneModelName: 'SOOSAN SCS525', // Model cẩu
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng tối đa tại tầm với cụ thể
+      maxLiftingMoment: '25.0 tấn.m', // Mô men nâng lớn nhất
+      maxLiftingHeight: '24.5 m', // Chiều cao làm việc tối đa của cẩu
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất của cẩu
+      boomType: 'Cần lục giác, 5 đoạn', // Kiểu cần cẩu và số đoạn
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần khi thu vào và duỗi ra tối đa
+      boomExtensionSpeed: '14.75 m / 50 giây', // Tốc độ ra cần
+      boomLuffingAngle: '-17° ~ 80°', // Góc nâng hạ cần
+      boomLuffingSpeed: '1° ~ 80° / 20 giây', // Tốc độ nâng hạ cần
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)', // Tốc độ tời định mức
+      winchHookSpeed: '16 m/phút', // Tốc độ móc của tời
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)', // Loại và kích thước cáp tời
+      swingAngle: '360° liên tục', // Góc quay toa
+      swingSpeed: '2.0 vòng/phút', // Tốc độ quay toa
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực', // Kiểu bộ giảm tốc quay toa
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)', // Độ mở rộng tối đa của chân chống trước
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Độ mở rộng tối đa của chân chống sau (nếu có)
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất', // Loại chân chống
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)', // Lưu lượng dầu thủy lực
+      hydraulicOperatingPressure: '210 kgf/cm²', // Áp suất làm việc của hệ thống thủy lực
+      hydraulicTankCapacity: '120 L', // Dung tích thùng dầu thủy lực
+      detailedLiftingCapacity: [ // Biểu đồ tải chi tiết
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay', // Các thiết bị an toàn
     },
-    description: 'TADANO TM-ZE554MH là cần cẩu 5 tấn cao cấp với công nghệ tiên tiến từ Nhật Bản, mang lại hiệu suất cao và độ tin cậy tuyệt đối. Với cần 5 đoạn chính và 1 đoạn phụ, cẩu có thể vươn xa đến 21m, đáp ứng nhiều nhu cầu nâng hạ khác nhau.',
+    description: 'Soosan SCS525 là cần cẩu 5 tấn cao cấp với công nghệ tiên tiến từ Hàn Quốc, mang lại hiệu suất cao và độ tin cậy tuyệt đối. Với cần 5 đoạn chính và 1 đoạn phụ, cẩu có thể vươn xa đến 21m, đáp ứng nhiều nhu cầu nâng hạ khác nhau.',
     features: [
       'Cần cẩu 5 đoạn chính và 1 đoạn phụ với tầm với lên đến 21m',
       'Công nghệ AML (Automatic Moment Limiter) tự động kiểm soát tải trọng',
@@ -843,9 +881,9 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "203",
-    name: 'Hino FC9JLSW Gắn Cẩu UNIC',
-    slug: 'hino-fc9jlsw-gan-cau-unic',
+    id: "cau203",
+    name: 'Hino FC9JLSW Gắn Cẩu Soosan SCS746L',
+    slug: 'hino-fc9jlsw-gan-cau-soosan-scs746l',
     brand: 'Hino', // Thương hiệu xe nền
     price: 1350000000, // Giá xe + cẩu
     priceText: '1.350.000.000 đ',
@@ -878,23 +916,45 @@ export const trucks: Truck[] = [
       seats: 3,
       year: 2023
     },
-    craneSpec: { // Thông số cẩu UNIC (ví dụ model UR-V340 series)
-      liftingCapacity: 3, // Sức nâng cẩu (tấn)
-      liftingCapacityText: '3 tấn tại 3m', // Sức nâng chi tiết
-      reachLength: 12, // Tầm với ngang của cẩu (mét)
-      reachLengthText: '12m (4 đoạn)', // Tầm với chi tiết
-      rotationAngle: '360°', // Góc quay toa cẩu
-      stabilizers: '4 chân chống thủy lực', // Hệ thống chân chống cẩu
-      controlSystem: 'Điều khiển thủy lực', // Hệ thống điều khiển cẩu
-      boomSections: 4, // Số đoạn cần cẩu
-      hydraulicSystem: 'UNIC tiêu chuẩn Nhật Bản', // Hệ thống thủy lực cẩu
-      craneModelName: 'UNIC UR-V344K (ví dụ)', // Model cẩu cụ thể
-      maxLiftingHeight: '13.5m', // Chiều cao nâng tối đa của cẩu (mét)
+    craneSpec: { // Thông số của cẩu Soosan
+      craneModelName: 'SOOSAN SCS746L', // Model cẩu
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng tối đa tại tầm với cụ thể
+      maxLiftingMoment: '25.0 tấn.m', // Mô men nâng lớn nhất
+      maxLiftingHeight: '24.5 m', // Chiều cao làm việc tối đa của cẩu
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất của cẩu
+      boomType: 'Cần lục giác, 5 đoạn', // Kiểu cần cẩu và số đoạn
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần khi thu vào và duỗi ra tối đa
+      boomExtensionSpeed: '14.75 m / 50 giây', // Tốc độ ra cần
+      boomLuffingAngle: '-17° ~ 80°', // Góc nâng hạ cần
+      boomLuffingSpeed: '1° ~ 80° / 20 giây', // Tốc độ nâng hạ cần
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)', // Tốc độ tời định mức
+      winchHookSpeed: '16 m/phút', // Tốc độ móc của tời
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)', // Loại và kích thước cáp tời
+      swingAngle: '360° liên tục', // Góc quay toa
+      swingSpeed: '2.0 vòng/phút', // Tốc độ quay toa
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực', // Kiểu bộ giảm tốc quay toa
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)', // Độ mở rộng tối đa của chân chống trước
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Độ mở rộng tối đa của chân chống sau (nếu có)
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất', // Loại chân chống
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)', // Lưu lượng dầu thủy lực
+      hydraulicOperatingPressure: '210 kgf/cm²', // Áp suất làm việc của hệ thống thủy lực
+      hydraulicTankCapacity: '120 L', // Dung tích thùng dầu thủy lực
+      detailedLiftingCapacity: [ // Biểu đồ tải chi tiết
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay', // Các thiết bị an toàn
     },
-    description: 'Hino FC9JLSW Gắn Cẩu UNIC là giải pháp vận chuyển và nâng hạ hàng hóa hiệu quả. Kết hợp giữa xe tải chất lượng cao của Hino và cẩu UNIC nổi tiếng của Nhật Bản, xe mang lại khả năng vận chuyển và bốc dỡ hàng hóa nặng mà không cần thiết bị hỗ trợ bên ngoài.',
+    description: 'Hino FC9JLSW Gắn Cẩu SOOSAN SCS746L là giải pháp vận chuyển và nâng hạ hàng hóa hiệu quả. Kết hợp giữa xe tải chất lượng cao của Hino và cẩu SOOSAN nổi tiếng của Hàn Quốc, xe mang lại khả năng vận chuyển và bốc dỡ hàng hóa nặng mà không cần thiết bị hỗ trợ bên ngoài.',
     features: [
       'Kết hợp giữa xe tải và cần cẩu trong cùng một phương tiện',
-      'Cẩu UNIC chính hãng Nhật Bản, nâng tải 3 tấn',
+      'Cẩu SOOSAN chính hãng Hàn Quốc, nâng tải 3 tấn',
       'Thùng xe phía sau cẩu rộng rãi',
       'Hệ thống ổn định khi cẩu hoạt động',
       'Động cơ Hino mạnh mẽ, bền bỉ',
@@ -903,10 +963,10 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "9", // ID này bị trùng, cần sửa lại nếu là sản phẩm khác
-    name: 'TADANO 5 Tấn', // Cần tên model cẩu cụ thể hoặc xe nền + cẩu
-    slug: 'tadano-5-tan',
-    brand: 'Tadano',
+    id: "cau204", // ID này bị trùng, cần sửa lại nếu là sản phẩm khác
+    name: 'Soosan SCS1015LS 12 Tấn', // Cần tên model cẩu cụ thể hoặc xe nền + cẩu
+    slug: 'soosan-scs1015ls',
+    brand: 'Soosan',
     price: 1800000000,
     priceText: '1.800.000.000 đ',
     weightText: '5 Tấn', // Sức nâng của cẩu
@@ -919,7 +979,7 @@ export const trucks: Truck[] = [
     craneType: 'cẩu-gắn-xe', // Giả định
     isNew: true,
     isHot: true,
-    origin: 'Nhật Bản',
+    origin: 'Hàn Quốc',
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Cau/tadano-5t.jpg',
     images: [
       'https://tongkhoxetai.vn/upload/images/Cau/tadano-5t.jpg',
@@ -938,19 +998,42 @@ export const trucks: Truck[] = [
       seats: 2,
       year: 2023
     },
-    craneSpec: {
-        liftingCapacity: 5, // Sức nâng (tấn)
-        liftingCapacityText: '5 tấn tại 2.5m', // Sức nâng chi tiết
-        reachLength: 15, // Tầm với (mét) - ví dụ
-        reachLengthText: '15m (4 đoạn)', // Tầm với chi tiết
-        rotationAngle: '360° liên tục', // Góc quay
-        stabilizers: 'Chân chống thủy lực', // Chân chống
-        controlSystem: 'Điều khiển thủy lực', // Hệ thống điều khiển
-        boomSections: 4, // Số đoạn cần
-        craneModelName: 'Tadano TM-ZE504HS (ví dụ)', // Model cẩu
-        maxLiftingHeight: '16.5m', // Chiều cao nâng (ví dụ)
+    craneSpec: { // Thông số của cẩu Soosan
+      craneModelName: 'SOOSAN SCS1015LS', // Model cẩu
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng tối đa tại tầm với cụ thể
+      maxLiftingMoment: '25.0 tấn.m', // Mô men nâng lớn nhất
+      maxLiftingHeight: '24.5 m', // Chiều cao làm việc tối đa của cẩu
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất của cẩu
+      boomType: 'Cần lục giác, 5 đoạn', // Kiểu cần cẩu và số đoạn
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần khi thu vào và duỗi ra tối đa
+      boomExtensionSpeed: '14.75 m / 50 giây', // Tốc độ ra cần
+      boomLuffingAngle: '-17° ~ 80°', // Góc nâng hạ cần
+      boomLuffingSpeed: '1° ~ 80° / 20 giây', // Tốc độ nâng hạ cần
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)', // Tốc độ tời định mức
+      winchHookSpeed: '16 m/phút', // Tốc độ móc của tời
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)', // Loại và kích thước cáp tời
+      swingAngle: '360° liên tục', // Góc quay toa
+      swingSpeed: '2.0 vòng/phút', // Tốc độ quay toa
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực', // Kiểu bộ giảm tốc quay toa
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)', // Độ mở rộng tối đa của chân chống trước
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Độ mở rộng tối đa của chân chống sau (nếu có)
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất', // Loại chân chống
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)', // Lưu lượng dầu thủy lực
+      hydraulicOperatingPressure: '210 kgf/cm²', // Áp suất làm việc của hệ thống thủy lực
+      hydraulicTankCapacity: '120 L', // Dung tích thùng dầu thủy lực
+      detailedLiftingCapacity: [ // Biểu đồ tải chi tiết
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay', // Các thiết bị an toàn
     },
-    description: 'TADANO 5 tấn là dòng xe cẩu chuyên dụng đến từ Nhật Bản, được thiết kế để nâng và di chuyển các hàng hóa nặng. Xe được trang bị cần cẩu có thể nâng tải trọng lên đến 5 tấn và với tầm với xa.',
+    description: 'Soosan 12 tấn là dòng xe cẩu chuyên dụng đến từ Hàn Quốc, được thiết kế để nâng và di chuyển các hàng hóa nặng. Xe được trang bị cần cẩu có thể nâng tải trọng lên đến 5 tấn và với tầm với xa.',
     features: [
       'Cần cẩu chắc chắn, nâng tải trọng lớn',
       'Hệ thống thủy lực mạnh mẽ',
@@ -960,10 +1043,10 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "10", // ID này bị trùng, cần sửa lại nếu là sản phẩm khác
-    name: 'UNIC 3 Tấn', // Cần tên model cẩu cụ thể hoặc xe nền + cẩu
-    slug: 'unic-3-tan',
-    brand: 'UNIC',
+    id: "cau205", // ID này bị trùng, cần sửa lại nếu là sản phẩm khác
+    name: 'Soosan SCS1516S 15 Tấn', // Cần tên model cẩu cụ thể hoặc xe nền + cẩu
+    slug: 'soosan-scs1516s',
+    brand: 'SOOSAN',
     price: 1200000000,
     priceText: '1.200.000.000 đ',
     weightText: '3 Tấn', // Sức nâng cẩu
@@ -976,7 +1059,7 @@ export const trucks: Truck[] = [
     craneType: 'cẩu-gắn-xe', // Giả định
     isNew: false,
     isHot: false,
-    origin: 'Nhật Bản',
+    origin: 'Hàn Quốc',
     thumbnailUrl: 'https://tongkhoxetai.vn/upload/images/Cau/unic-3t.jpg',
     images: [
       'https://tongkhoxetai.vn/upload/images/Cau/unic-3t.jpg',
@@ -995,19 +1078,42 @@ export const trucks: Truck[] = [
       seats: 2,
       year: 2023
     },
-     craneSpec: {
-        liftingCapacity: 3, // Sức nâng (tấn)
-        liftingCapacityText: '3 tấn tại 2.0m', // Sức nâng chi tiết
-        reachLength: 10, // Tầm với (mét) - ví dụ
-        reachLengthText: '10m (3 đoạn)', // Tầm với chi tiết
-        rotationAngle: '360°', // Góc quay
-        stabilizers: 'Chân chống thủy lực', // Chân chống
-        controlSystem: 'Điều khiển thủy lực', // Hệ thống điều khiển
-        boomSections: 3, // Số đoạn cần
-        craneModelName: 'UNIC UR-V373 (ví dụ)', // Model cẩu
-        maxLiftingHeight: '11.5m', // Chiều cao nâng (ví dụ)
+     craneSpec: { // Thông số của cẩu Soosan
+      craneModelName: 'SOOSAN SCS1516S', // Model cẩu
+      liftingCapacityText: '10,000 kg / 2.5 m', // Sức nâng tối đa tại tầm với cụ thể
+      maxLiftingMoment: '25.0 tấn.m', // Mô men nâng lớn nhất
+      maxLiftingHeight: '24.5 m', // Chiều cao làm việc tối đa của cẩu
+      maxWorkingRadius: '20.7 m', // Bán kính làm việc lớn nhất của cẩu
+      boomType: 'Cần lục giác, 5 đoạn', // Kiểu cần cẩu và số đoạn
+      boomSections: 5, // Số đoạn cần chính
+      boomLength: '6.0 m ~ 20.7 m', // Chiều dài cần khi thu vào và duỗi ra tối đa
+      boomExtensionSpeed: '14.75 m / 50 giây', // Tốc độ ra cần
+      boomLuffingAngle: '-17° ~ 80°', // Góc nâng hạ cần
+      boomLuffingSpeed: '1° ~ 80° / 20 giây', // Tốc độ nâng hạ cần
+      winchRatedSpeed: '16 m/phút (ở lớp cáp thứ 4)', // Tốc độ tời định mức
+      winchHookSpeed: '16 m/phút', // Tốc độ móc của tời
+      winchRopeType: 'Ø 10 mm x 120 m (IWRC)', // Loại và kích thước cáp tời
+      swingAngle: '360° liên tục', // Góc quay toa
+      swingSpeed: '2.0 vòng/phút', // Tốc độ quay toa
+      swingReductionType: 'Bánh răng trục vít, mô tơ thủy lực', // Kiểu bộ giảm tốc quay toa
+      outriggersFrontExtension: '5.7 m (Mở rộng tối đa)', // Độ mở rộng tối đa của chân chống trước
+      outriggersRearExtension: '4.4 m (Mở rộng tối đa, tùy chọn)', // Độ mở rộng tối đa của chân chống sau (nếu có)
+      outriggersType: 'Thủy lực, chân chống hạ xuống đất', // Loại chân chống
+      hydraulicOilFlow: '60 L/phút (ở 1000 vòng/phút)', // Lưu lượng dầu thủy lực
+      hydraulicOperatingPressure: '210 kgf/cm²', // Áp suất làm việc của hệ thống thủy lực
+      hydraulicTankCapacity: '120 L', // Dung tích thùng dầu thủy lực
+      detailedLiftingCapacity: [ // Biểu đồ tải chi tiết
+        "10,000 kg / 2.5 m",
+        "6,100 kg / 4.4 m",
+        "3,600 kg / 7.5 m",
+        "2,350 kg / 10.6 m",
+        "1,700 kg / 13.7 m",
+        "1,200 kg / 16.8 m",
+        "1,030 kg / 20.7 m"
+      ],
+      safetySystem: 'Van an toàn, còi báo quá tải, chỉ báo góc cần, khóa xoay', // Các thiết bị an toàn
     },
-    description: 'UNIC 3 tấn là dòng xe cẩu nhỏ gọn, linh hoạt và dễ dàng di chuyển trong các không gian hẹp. Xe được trang bị cần cẩu có thể nâng tải trọng lên đến 3 tấn, phù hợp với các công trình xây dựng vừa và nhỏ.',
+    description: 'SOOSAN SCS1516S 15 tấn là dòng xe cẩu nhỏ gọn, linh hoạt và dễ dàng di chuyển trong các không gian hẹp. Xe được trang bị cần cẩu có thể nâng tải trọng lên đến 3 tấn, phù hợp với các công trình xây dựng vừa và nhỏ.',
     features: [
       'Kích thước nhỏ gọn, linh hoạt',
       'Hệ thống thủy lực mạnh mẽ',
@@ -1017,7 +1123,7 @@ export const trucks: Truck[] = [
     ]
   },
   {
-    id: "11", // ID này đã được sử dụng cho xe cẩu Soosan ở trên. Cần đảm bảo ID là duy nhất. Nếu đây là sản phẩm khác, hãy đổi ID.
+    id: "cau206", // ID này đã được sử dụng cho xe cẩu Soosan ở trên. Cần đảm bảo ID là duy nhất. Nếu đây là sản phẩm khác, hãy đổi ID.
     name: 'Xe Tải Gắn Cẩu Soosan 10 Tấn', // Giữ nguyên nếu đây là sản phẩm đã có
     slug: 'xe-tai-gan-cau-soosan-10-tan',
     brand: 'Hyundai',
