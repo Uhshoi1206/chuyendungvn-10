@@ -17,6 +17,8 @@ import { CalendarDays, Clock, Phone, GitCompare } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 import { useCompare } from '@/contexts/CompareContext';
 import TruckActions from '@/components/TruckDetail/TruckActions';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'; // Đã có
+import CostEstimator from '@/components/TruckDetail/CostEstimator'; // Thêm mới
 
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -1754,6 +1756,13 @@ const TruckDetail = () => {
           </TabsContent>
         </Tabs>
         
+        {/* Cost Estimator Section */}
+        {truck && (
+          <section className="my-12" id="cost-estimator-section"> {/* Thêm ID để scroll tới */}
+            <CostEstimator truck={truck} />
+          </section>
+        )}
+      
         {/* Related Products */}
         {relatedTrucks.length > 0 && (
           <div className="mt-16">
