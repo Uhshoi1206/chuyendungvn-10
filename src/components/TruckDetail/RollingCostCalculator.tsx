@@ -1,111 +1,122 @@
 // src/components/TruckDetail/RollingCostCalculator.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Truck } from '@/models/TruckTypes';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BEFORE_REGISTRATION_FEE_RATE_TRUCK, REGISTRATION_PLATE_FEES, ROAD_MAINTENANCE_FEES_TRUCK, ROAD_MAINTENANCE_FEES_TRACTOR, INSPECTION_FEE, CIVIL_LIABILITY_INSURANCE_FEES_TRUCK, CIVIL_LIABILITY_INSURANCE_FEES_TRACTOR, PHYSICAL_INSURANCE_RATE, PROVINCES, VAT_RATE } from '@/data/feeData';
-import { formatPrice } from '@/lib/utils'; // Giả sử bạn có hàm này
+import { Checkbox } from "@/components/ui/checkbox";
+import { 
+  BEFORE_REGISTRATION_FEE_RATE, 
+  REGISTRATION_PLATE_FEES, 
+  ROAD_MAINTENANCE_FEES_TRUCK, 
+  ROAD_MAINTENANCE_FEES_TRACTOR, 
+  INSPECTION_FEE_DATA, 
+  CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT, 
+  PHYSICAL_INSURANCE_RATE, 
+  PROVINCES, 
+  VAT_RATE 
+} from '@/data/feeData';
+import { formatPrice } from '@/lib/utils';
 
 interface RollingCostCalculatorProps {
   truck: Truck;
 }
 
+interface CostDetailItem {
+  label: string;
+  value: number;
+  note?: string;
+}
+
 const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) => {
-  const [selectedProvince, setSelectedProvince] = useState<string>(PROVINCES[0].value);
-  const [otherServiceFee, setOtherServiceFee] = useState<number>(500000); // Phí dịch vụ khác mặc định
+  const [selectedProvinceKey, setSelectedProvinceKey] = useState<string>(PROVINCES[0].value);
+  const [otherServiceFee, setOtherServiceFee] = useState<number>(500000);
   const [includePhysicalInsurance, setIncludePhysicalInsurance] = useState<boolean>(true);
 
-  const [totalRollingCost, setTotalRollingCost] = useState<number>(0);
-  const [costDetails, setCostDetails] = useState<Record<string, number>>({});
+  const costDetails = useMemo((): CostDetailItem[] => {
+    const truckPrice = truck.price;
+    let details: CostDetailItem[] = [];
 
-  useEffect(() => {
-    const calculateCosts = () => {
-      const truckPrice = truck.price;
-      let details: Record<string, number> = {};
+    // 1. Lệ phí trước bạ
+    const beforeRegistrationFee = truckPrice * BEFORE_REGISTRATION_FEE_RATE;
+    details.push({ label: 'Lệ phí trước bạ', value: beforeRegistrationFee, note: `(${BEFORE_REGISTRATION_FEE_RATE * 100}% giá trị xe)` });
 
-      // 1. Lệ phí trước bạ (2% giá xe)
-      const beforeRegistrationFee = truckPrice * BEFORE_REGISTRATION_FEE_RATE_TRUCK;
-      details['Lệ phí trước bạ'] = beforeRegistrationFee;
+    // 2. Phí biển số
+    const selectedProvinceObject = PROVINCES.find(p => p.value === selectedProvinceKey);
+    const areaKeyForPlateFee = selectedProvinceObject?.area_key || 'OTHERS';
+    const registrationPlateFee = REGISTRATION_PLATE_FEES[areaKeyForPlateFee];
+    details.push({ label: 'Phí cấp biển số', value: registrationPlateFee });
 
-      // 2. Phí biển số
-      let registrationPlateFee = REGISTRATION_PLATE_FEES.OTHERS;
-      if (selectedProvince === 'hanoi' || selectedProvince === 'hcm') {
-        registrationPlateFee = REGISTRATION_PLATE_FEES.HANOI_HCM;
-      } else if (selectedProvince === 'other_cities') {
-        registrationPlateFee = REGISTRATION_PLATE_FEES.CITIES_TOWNS;
-      }
-      details['Phí biển số'] = registrationPlateFee;
+    // 3. Phí bảo trì đường bộ (1 năm)
+    let roadMaintenanceFee = 0;
+    const truckWeight = truck.weight; // Tấn
+    if (truck.type === 'dau-keo') {
+      if (truckWeight < 19) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.UNDER_19_TONS;
+      else if (truckWeight < 27) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_19_TO_UNDER_27_TONS;
+      else if (truckWeight < 40) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_27_TO_UNDER_40_TONS;
+      else roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_40_TONS_UP;
+    } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') {
+      if (truckWeight < 4) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.UNDER_4_TONS;
+      else if (truckWeight < 8.5) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_4_TO_UNDER_8_5_TONS;
+      else if (truckWeight < 13) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_8_5_TO_UNDER_13_TONS;
+      else if (truckWeight < 19) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_13_TO_UNDER_19_TONS;
+      else if (truckWeight < 27) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_19_TO_UNDER_27_TONS;
+      else roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_27_TONS_UP;
+    }
+    details.push({ label: 'Phí bảo trì đường bộ (1 năm)', value: roadMaintenanceFee });
+    
+    // 4. Phí đăng kiểm
+    let inspectionFee = 0;
+    if (truck.type === 'mooc') {
+        inspectionFee = INSPECTION_FEE_DATA.TRAILER;
+    } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau' || truck.type === 'dau-keo') {
+        if (truckWeight <= 2) inspectionFee = INSPECTION_FEE_DATA.TRUCK.TO_2_TONS;
+        else if (truckWeight <= 7) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_2_TO_7_TONS;
+        else if (truckWeight <= 20) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_7_TO_20_TONS;
+        else inspectionFee = INSPECTION_FEE_DATA.TRUCK.OVER_20_TONS;
+    }
+    details.push({ label: 'Phí đăng kiểm (lần đầu)', value: inspectionFee });
 
-      // 3. Phí bảo trì đường bộ (1 năm)
-      let roadMaintenanceFee = 0;
-      if (truck.type === 'dau-keo') {
-        if (truck.weight < 19) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.UNDER_19_TONS;
-        else if (truck.weight < 27) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_19_TO_UNDER_27_TONS;
-        else if (truck.weight < 40) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_27_TO_UNDER_40_TONS;
-        else roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR.FROM_40_TONS_UP;
-      } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') { // Xe cẩu tính như xe tải
-        if (truck.weight < 4) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.UNDER_4_TONS;
-        else if (truck.weight < 8.5) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_4_TO_UNDER_8_5_TONS;
-        else if (truck.weight < 13) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_8_5_TO_UNDER_13_TONS;
-        else if (truck.weight < 19) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_13_TO_UNDER_19_TONS;
-        else if (truck.weight < 27) roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_19_TO_UNDER_27_TONS;
-        else roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK.FROM_27_TONS_UP;
-      }
-      // Mooc không tính phí này riêng lẻ
-      details['Phí bảo trì đường bộ (1 năm)'] = roadMaintenanceFee;
+    // 5. Bảo hiểm TNDS bắt buộc (1 năm, đã bao gồm VAT)
+    let civilLiabilityInsurancePreVAT = 0;
+    if (truck.type === 'dau-keo') {
+      civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR;
+    } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') {
+      if (truckWeight < 3) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.UNDER_3_TONS;
+      else if (truckWeight < 8) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_3_TO_8_TONS;
+      else if (truckWeight < 15) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_8_TO_15_TONS;
+      else civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.OVER_15_TONS;
+    }
+    const civilLiabilityInsuranceWithVAT = civilLiabilityInsurancePreVAT * (1 + VAT_RATE);
+    details.push({ label: 'Bảo hiểm TNDS (1 năm, đã VAT)', value: civilLiabilityInsuranceWithVAT });
 
-      // 4. Phí đăng kiểm
-      details['Phí đăng kiểm'] = INSPECTION_FEE;
+    // 6. Bảo hiểm vật chất (tùy chọn)
+    if (includePhysicalInsurance && truck.type !== 'mooc') { // Thường không mua BHVC cho moóc riêng lẻ
+      const physicalInsuranceFee = truckPrice * PHYSICAL_INSURANCE_RATE;
+      details.push({ label: `Bảo hiểm vật chất (${(PHYSICAL_INSURANCE_RATE * 100).toFixed(1)}% giá trị xe)`, value: physicalInsuranceFee });
+    }
+    
+    // 7. Phí dịch vụ khác
+    if (otherServiceFee > 0) {
+        details.push({ label: 'Phí dịch vụ đăng ký (tạm tính)', value: otherServiceFee });
+    }
+    
+    return details;
+  }, [truck, selectedProvinceKey, otherServiceFee, includePhysicalInsurance]);
 
-      // 5. Bảo hiểm TNDS bắt buộc (1 năm, đã bao gồm VAT 10%)
-      let civilLiabilityInsurance = 0;
-      if (truck.type === 'dau-keo') {
-        civilLiabilityInsurance = CIVIL_LIABILITY_INSURANCE_FEES_TRACTOR * (1 + VAT_RATE);
-      } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') {
-        if (truck.weight < 3) civilLiabilityInsurance = CIVIL_LIABILITY_INSURANCE_FEES_TRUCK.UNDER_3_TONS * (1 + VAT_RATE);
-        else if (truck.weight < 8) civilLiabilityInsurance = CIVIL_LIABILITY_INSURANCE_FEES_TRUCK.FROM_3_TO_8_TONS * (1 + VAT_RATE);
-        else if (truck.weight < 15) civilLiabilityInsurance = CIVIL_LIABILITY_INSURANCE_FEES_TRUCK.FROM_8_TO_15_TONS * (1 + VAT_RATE);
-        else civilLiabilityInsurance = CIVIL_LIABILITY_INSURANCE_FEES_TRUCK.OVER_15_TONS * (1 + VAT_RATE);
-      }
-      details['Bảo hiểm TNDS (1 năm, đã VAT)'] = civilLiabilityInsurance;
-
-      // 6. Bảo hiểm vật chất (tùy chọn)
-      let physicalInsuranceFee = 0;
-      if (includePhysicalInsurance) {
-        physicalInsuranceFee = truckPrice * PHYSICAL_INSURANCE_RATE;
-      }
-      details['Bảo hiểm vật chất thân xe (ước tính)'] = physicalInsuranceFee;
-      
-      // 7. Phí dịch vụ khác
-      details['Phí dịch vụ đăng ký (ước tính)'] = otherServiceFee;
-
-      // Tổng chi phí
-      let total = truckPrice + beforeRegistrationFee + registrationPlateFee + roadMaintenanceFee + INSPECTION_FEE + civilLiabilityInsurance + otherServiceFee;
-      if (includePhysicalInsurance) {
-        total += physicalInsuranceFee;
-      }
-      
-      setCostDetails(details);
-      setTotalRollingCost(total);
-    };
-
-    calculateCosts();
-  }, [truck, selectedProvince, otherServiceFee, includePhysicalInsurance]);
-
-  // Giả sử hàm formatPrice đã được định nghĩa trong utils
-  // const formatPrice = (value: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-
+  const totalRollingCost = useMemo(() => {
+    return truck.price + costDetails.reduce((sum, item) => sum + item.value, 0);
+  }, [truck.price, costDetails]);
 
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold">Dự toán chi phí lăn bánh cho {truck.name}</h3>
+      <h3 className="text-xl font-semibold text-gray-800">Dự toán chi phí lăn bánh {truck.name}</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
         <div>
-          <Label htmlFor="province">Chọn tỉnh/thành phố đăng ký</Label>
-          <Select value={selectedProvince} onValueChange={setSelectedProvince}>
-            <SelectTrigger id="province">
+          <Label htmlFor="province" className="text-sm font-medium text-gray-700">Tỉnh/thành phố đăng ký</Label>
+          <Select value={selectedProvinceKey} onValueChange={setSelectedProvinceKey}>
+            <SelectTrigger id="province" className="mt-1 w-full">
               <SelectValue placeholder="Chọn tỉnh/thành" />
             </SelectTrigger>
             <SelectContent>
@@ -116,49 +127,53 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
           </Select>
         </div>
         <div>
-          <Label htmlFor="otherServiceFee">Phí dịch vụ khác (VNĐ)</Label>
+          <Label htmlFor="otherServiceFee" className="text-sm font-medium text-gray-700">Phí dịch vụ khác (VNĐ)</Label>
           <Input 
             id="otherServiceFee" 
             type="number" 
             value={otherServiceFee} 
-            onChange={(e) => setOtherServiceFee(Number(e.target.value))} 
-            placeholder="Ví dụ: 500.000"
+            onChange={(e) => setOtherServiceFee(Math.max(0, Number(e.target.value)))} 
+            placeholder="VD: 500,000"
+            className="mt-1"
           />
         </div>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
+      <div className="flex items-center space-x-2 mt-4">
+        <Checkbox
           id="includePhysicalInsurance"
           checked={includePhysicalInsurance}
-          onChange={(e) => setIncludePhysicalInsurance(e.target.checked)}
-          className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+          onCheckedChange={(checked) => setIncludePhysicalInsurance(checked as boolean)}
+          disabled={truck.type === 'mooc'} // Không cho chọn BHVC với mooc
         />
-        <Label htmlFor="includePhysicalInsurance" className="text-sm font-medium">
-          Bao gồm Bảo hiểm vật chất thân xe (ước tính 1.5%)
+        <Label 
+            htmlFor="includePhysicalInsurance" 
+            className={`text-sm font-medium text-gray-700 cursor-pointer ${truck.type === 'mooc' ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          Bao gồm Bảo hiểm vật chất thân xe (tạm tính {(PHYSICAL_INSURANCE_RATE * 100).toFixed(1)}% giá xe)
+          {truck.type === 'mooc' && <span className="text-xs"> (Không áp dụng cho SMRM)</span>}
         </Label>
       </div>
 
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h4 className="text-lg font-semibold mb-3">Chi tiết các khoản phí (ước tính):</h4>
-        <ul className="space-y-2">
-          <li className="flex justify-between">
-            <span>Giá xe (đã bao gồm VAT):</span>
-            <span className="font-medium">{formatPrice(truck.price)}</span>
-          </li>
-          {Object.entries(costDetails).map(([key, value]) => (
-            <li key={key} className="flex justify-between">
-              <span>{key}:</span>
-              <span className="font-medium">{formatPrice(value)}</span>
-            </li>
+      <div className="mt-6 bg-slate-50 p-4 sm:p-6 rounded-lg border border-slate-200">
+        <h4 className="text-lg font-semibold mb-4 text-gray-700">Chi tiết các khoản phí (ước tính):</h4>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between py-2 border-b border-slate-200">
+            <span className="text-gray-600">Giá xe (đã bao gồm VAT):</span>
+            <span className="font-semibold text-gray-800">{formatPrice(truck.price)}</span>
+          </div>
+          {costDetails.map((item) => (
+            <div key={item.label} className="flex justify-between py-2 border-b border-slate-200">
+              <span className="text-gray-600">{item.label} {item.note && <span className="text-xs italic text-gray-500">{item.note}</span>}</span>
+              <span className="font-semibold text-gray-800">{formatPrice(item.value)}</span>
+            </div>
           ))}
-          <li className="flex justify-between text-lg font-bold pt-2 border-t">
-            <span>TỔNG CHI PHÍ LĂN BÁNH (ƯỚC TÍNH):</span>
-            <span className="text-primary">{formatPrice(totalRollingCost)}</span>
-          </li>
-        </ul>
-        <p className="text-xs text-gray-500 mt-4">*Lưu ý: Các chi phí trên chỉ là ước tính và có thể thay đổi tùy theo thời điểm và quy định của cơ quan nhà nước. Vui lòng liên hệ để có báo giá chính xác nhất.</p>
+          <div className="flex justify-between text-xl font-bold pt-3 text-primary mt-2">
+            <span>TỔNG CHI PHÍ LĂN BÁNH (TẠM TÍNH):</span>
+            <span>{formatPrice(totalRollingCost)}</span>
+          </div>
+        </div>
+        <p className="text-xs text-gray-500 mt-4 italic">*Lưu ý: Các chi phí trên chỉ mang tính chất tham khảo và có thể thay đổi tùy theo thời điểm và quy định của nhà nước. Vui lòng liên hệ trực tiếp để nhận báo giá chính xác và ưu đãi tốt nhất.</p>
       </div>
     </div>
   );
