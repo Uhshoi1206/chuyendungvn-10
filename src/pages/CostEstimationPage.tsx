@@ -1,10 +1,88 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
 import { Calculator } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { 
+  PROVINCES, 
+  REGISTRATION_PLATE_FEES, 
+  ROAD_MAINTENANCE_FEES_TRUCK,
+  INSPECTION_FEE_DATA,
+  CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT,
+  BEFORE_REGISTRATION_FEE_RATE,
+  VAT_RATE
+} from '@/data/feeData';
 
 const CostEstimationPage = () => {
+  const [vehiclePrice, setVehiclePrice] = useState<string>('');
+  const [province, setProvince] = useState<string>('');
+  const [otherFees, setOtherFees] = useState<string>('');
+  const [vehicleType, setVehicleType] = useState<string>('');
+  const [weightCategory, setWeightCategory] = useState<string>('');
+  const [results, setResults] = useState<any>(null);
+
+  const calculateCosts = () => {
+    if (!vehiclePrice || !province || !vehicleType || !weightCategory) {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    const price = parseFloat(vehiclePrice.replace(/[^\d]/g, ''));
+    const otherFeesAmount = otherFees ? parseFloat(otherFees.replace(/[^\d]/g, '')) : 0;
+    
+    const selectedProvince = PROVINCES.find(p => p.value === province);
+    const plateArea = selectedProvince?.area_key || 'OTHERS';
+    
+    // Tính các khoản phí
+    const beforeRegistrationFee = price * BEFORE_REGISTRATION_FEE_RATE;
+    const plateFee = REGISTRATION_PLATE_FEES[plateArea];
+    
+    let roadMaintenanceFee = 0;
+    let inspectionFee = 0;
+    let insuranceFee = 0;
+
+    if (vehicleType === 'truck') {
+      roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK[weightCategory] || 0;
+      inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
+      insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK[weightCategory] || 0;
+    } else if (vehicleType === 'tractor') {
+      roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK[weightCategory] || 0;
+      inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
+      insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR;
+    }
+
+    const insuranceFeeWithVAT = insuranceFee * (1 + VAT_RATE);
+    const totalCost = beforeRegistrationFee + plateFee + roadMaintenanceFee + inspectionFee + insuranceFeeWithVAT + otherFeesAmount;
+
+    setResults({
+      vehiclePrice: price,
+      beforeRegistrationFee,
+      plateFee,
+      roadMaintenanceFee,
+      inspectionFee,
+      insuranceFee: insuranceFeeWithVAT,
+      otherFees: otherFeesAmount,
+      totalCost
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    }).format(amount);
+  };
+
   return (
     <Layout>
       <Helmet>
@@ -27,17 +105,141 @@ const CostEstimationPage = () => {
             </p>
           </div>
 
+          {/* Form tính toán */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-6 text-gray-800">Thông Tin Xe</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="vehiclePrice">Giá xe (đã bao gồm VAT)</Label>
+                <Input
+                  id="vehiclePrice"
+                  placeholder="Nhập giá xe (VNĐ)"
+                  value={vehiclePrice}
+                  onChange={(e) => setVehiclePrice(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="province">Tỉnh/thành phố đăng ký</Label>
+                <Select value={province} onValueChange={setProvince}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn tỉnh/thành phố" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROVINCES.map((p) => (
+                      <SelectItem key={p.value} value={p.value}>
+                        {p.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="vehicleType">Loại xe</Label>
+                <Select value={vehicleType} onValueChange={setVehicleType}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn loại xe" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="truck">Xe tải</SelectItem>
+                    <SelectItem value="tractor">Xe đầu kéo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="weightCategory">Phân loại tải trọng</Label>
+                <Select value={weightCategory} onValueChange={setWeightCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn tải trọng" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="UNDER_4_TONS">Dưới 4 tấn</SelectItem>
+                    <SelectItem value="FROM_4_TO_UNDER_8_5_TONS">4 - 8.5 tấn</SelectItem>
+                    <SelectItem value="FROM_8_5_TO_UNDER_13_TONS">8.5 - 13 tấn</SelectItem>
+                    <SelectItem value="FROM_13_TO_UNDER_19_TONS">13 - 19 tấn</SelectItem>
+                    <SelectItem value="FROM_19_TO_UNDER_27_TONS">19 - 27 tấn</SelectItem>
+                    <SelectItem value="FROM_27_TONS_UP">Trên 27 tấn</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="otherFees">Phí dịch vụ khác (VNĐ)</Label>
+                <Input
+                  id="otherFees"
+                  placeholder="Nhập phí dịch vụ khác (không bắt buộc)"
+                  value={otherFees}
+                  onChange={(e) => setOtherFees(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Button onClick={calculateCosts} className="w-full">
+                <Calculator className="mr-2 h-4 w-4" />
+                Tính Toán Chi Phí Lăn Bánh
+              </Button>
+            </div>
+          </div>
+
+          {/* Kết quả tính toán */}
+          {results && (
+            <div className="bg-green-50 rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-green-800">Kết Quả Tính Toán</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Giá trị xe:</span>
+                    <span className="font-semibold">{formatCurrency(results.vehiclePrice)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Phí trước bạ (2%):</span>
+                    <span className="font-semibold">{formatCurrency(results.beforeRegistrationFee)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Phí biển số:</span>
+                    <span className="font-semibold">{formatCurrency(results.plateFee)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Phí đăng kiểm:</span>
+                    <span className="font-semibold">{formatCurrency(results.inspectionFee)}</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Bảo hiểm TNDS:</span>
+                    <span className="font-semibold">{formatCurrency(results.insuranceFee)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Phí bảo trì đường bộ:</span>
+                    <span className="font-semibold">{formatCurrency(results.roadMaintenanceFee)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Phí dịch vụ khác:</span>
+                    <span className="font-semibold">{formatCurrency(results.otherFees)}</span>
+                  </div>
+                  <div className="flex justify-between border-t pt-3">
+                    <span className="text-lg font-bold text-green-800">Tổng chi phí:</span>
+                    <span className="text-lg font-bold text-green-600">{formatCurrency(results.totalCost)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Các Khoản Chi Phí Lăn Bánh</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Trước Bạ</h3>
-                  <p className="text-sm text-gray-600">10-12% giá trị xe tùy loại xe</p>
+                  <p className="text-sm text-gray-600">2% giá trị xe cho xe tải và đầu kéo</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Bảo Hiểm Bắt Buộc</h3>
-                  <p className="text-sm text-gray-600">Từ 600.000 - 1.500.000 VND</p>
+                  <p className="text-sm text-gray-600">Tùy theo loại xe và tải trọng</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Đăng Ký</h3>
@@ -47,15 +249,15 @@ const CostEstimationPage = () => {
               <div className="space-y-4">
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Đăng Kiểm</h3>
-                  <p className="text-sm text-gray-600">340.000 - 540.000 VND</p>
+                  <p className="text-sm text-gray-600">Tùy theo loại xe và tải trọng</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Biển Số</h3>
-                  <p className="text-sm text-gray-600">2.000.000 - 5.000.000 VND</p>
+                  <p className="text-sm text-gray-600">Tùy theo địa phương đăng ký</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
-                  <h3 className="font-semibold text-gray-700">Chi Phí Khác</h3>
-                  <p className="text-sm text-gray-600">500.000 - 1.000.000 VND</p>
+                  <h3 className="font-semibold text-gray-700">Phí Bảo Trì Đường Bộ</h3>
+                  <p className="text-sm text-gray-600">Tùy theo tải trọng xe</p>
                 </div>
               </div>
             </div>

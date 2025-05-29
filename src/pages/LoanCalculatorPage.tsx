@@ -1,10 +1,81 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, Calculator } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const LoanCalculatorPage = () => {
+  const [vehiclePrice, setVehiclePrice] = useState<string>('');
+  const [downPayment, setDownPayment] = useState<string>('');
+  const [interestRate, setInterestRate] = useState<string>('');
+  const [loanTerm, setLoanTerm] = useState<string>('');
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const [results, setResults] = useState<any>(null);
+
+  const calculateLoan = () => {
+    if (!vehiclePrice || !downPayment || !interestRate || !loanTerm || !paymentMethod) {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    const price = parseFloat(vehiclePrice.replace(/[^\d]/g, ''));
+    const downPaymentAmount = parseFloat(downPayment.replace(/[^\d]/g, ''));
+    const rate = parseFloat(interestRate) / 100 / 12; // Lãi suất tháng
+    const months = parseInt(loanTerm) * 12;
+    
+    const loanAmount = price - downPaymentAmount;
+    
+    let monthlyPayment = 0;
+    let totalPayment = 0;
+    let totalInterest = 0;
+
+    if (paymentMethod === 'equal_principal_interest') {
+      // Gốc + lãi cố định
+      monthlyPayment = (loanAmount * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+      totalPayment = monthlyPayment * months;
+      totalInterest = totalPayment - loanAmount;
+    } else if (paymentMethod === 'decreasing_principal') {
+      // Gốc giảm dần
+      const principalPayment = loanAmount / months;
+      const firstMonthInterest = loanAmount * rate;
+      const lastMonthInterest = principalPayment * rate;
+      
+      totalInterest = (loanAmount * rate * (months + 1)) / 2;
+      totalPayment = loanAmount + totalInterest;
+      
+      // Khoản thanh toán tháng đầu (cao nhất)
+      monthlyPayment = principalPayment + firstMonthInterest;
+    }
+
+    setResults({
+      vehiclePrice: price,
+      downPayment: downPaymentAmount,
+      loanAmount,
+      monthlyPayment,
+      totalPayment,
+      totalInterest,
+      paymentMethod,
+      loanTerm: parseInt(loanTerm)
+    });
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    }).format(amount);
+  };
+
   return (
     <Layout>
       <Helmet>
@@ -26,6 +97,128 @@ const LoanCalculatorPage = () => {
               Công cụ hỗ trợ tính toán lãi suất và kế hoạch trả góp cho xe tải, xe cẩu, sơ mi rơ mooc và xe đầu kéo
             </p>
           </div>
+
+          {/* Form tính toán */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-6 text-gray-800">Thông Tin Vay</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="vehiclePrice">Giá xe (đã bao gồm VAT)</Label>
+                <Input
+                  id="vehiclePrice"
+                  placeholder="Nhập giá xe (VNĐ)"
+                  value={vehiclePrice}
+                  onChange={(e) => setVehiclePrice(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="downPayment">Số tiền trả trước</Label>
+                <Input
+                  id="downPayment"
+                  placeholder="Nhập số tiền trả trước (VNĐ)"
+                  value={downPayment}
+                  onChange={(e) => setDownPayment(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="interestRate">Lãi suất (%/năm)</Label>
+                <Input
+                  id="interestRate"
+                  placeholder="Nhập lãi suất (ví dụ: 10.5)"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="loanTerm">Thời gian vay (năm)</Label>
+                <Select value={loanTerm} onValueChange={setLoanTerm}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn thời gian vay" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1 năm</SelectItem>
+                    <SelectItem value="2">2 năm</SelectItem>
+                    <SelectItem value="3">3 năm</SelectItem>
+                    <SelectItem value="4">4 năm</SelectItem>
+                    <SelectItem value="5">5 năm</SelectItem>
+                    <SelectItem value="6">6 năm</SelectItem>
+                    <SelectItem value="7">7 năm</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="paymentMethod">Phương thức trả</Label>
+                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chọn phương thức trả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="equal_principal_interest">Gốc + lãi cố định</SelectItem>
+                    <SelectItem value="decreasing_principal">Gốc giảm dần</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <Button onClick={calculateLoan} className="w-full">
+                <Calculator className="mr-2 h-4 w-4" />
+                Tính Toán Lãi Suất Vay
+              </Button>
+            </div>
+          </div>
+
+          {/* Kết quả tính toán */}
+          {results && (
+            <div className="bg-green-50 rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-green-800">Kết Quả Tính Toán</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Giá trị xe:</span>
+                    <span className="font-semibold">{formatCurrency(results.vehiclePrice)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Số tiền trả trước:</span>
+                    <span className="font-semibold">{formatCurrency(results.downPayment)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Số tiền vay:</span>
+                    <span className="font-semibold">{formatCurrency(results.loanAmount)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Thời gian vay:</span>
+                    <span className="font-semibold">{results.loanTerm} năm</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">
+                      {results.paymentMethod === 'decreasing_principal' ? 'Trả hàng tháng (tháng đầu):' : 'Trả hàng tháng:'}
+                    </span>
+                    <span className="font-semibold text-blue-600">{formatCurrency(results.monthlyPayment)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">Tổng tiền lãi:</span>
+                    <span className="font-semibold text-orange-600">{formatCurrency(results.totalInterest)}</span>
+                  </div>
+                  <div className="flex justify-between border-t pt-3">
+                    <span className="text-lg font-bold text-green-800">Tổng tiền phải trả:</span>
+                    <span className="text-lg font-bold text-green-600">{formatCurrency(results.totalPayment)}</span>
+                  </div>
+                  {results.paymentMethod === 'decreasing_principal' && (
+                    <div className="text-sm text-gray-600 mt-2">
+                      * Gốc giảm dần: Khoản thanh toán hàng tháng sẽ giảm dần theo thời gian
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Thông Tin Lãi Suất Hiện Tại</h2>
