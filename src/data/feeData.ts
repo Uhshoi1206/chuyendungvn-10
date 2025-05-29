@@ -1,3 +1,4 @@
+
 // src/data/feeData.ts
 export const REGISTRATION_PLATE_FEES: Record<string, number> = {
   HANOI_HCM: 500000, // Hà Nội & TP.HCM
@@ -23,25 +24,41 @@ export const ROAD_MAINTENANCE_FEES_TRACTOR: Record<string, number> = {
 };
 
 // Phí đăng kiểm (Phí kiểm định + Lệ phí cấp GCN là 50.000)
-export const INSPECTION_FEE_DATA: { TRUCK: Record<string, number>, TRAILER: number } = {
-  TRUCK: { // Tải trọng
-    TO_2_TONS: 290000 + 50000,
-    FROM_2_TO_7_TONS: 330000 + 50000,
-    FROM_7_TO_20_TONS: 360000 + 50000,
-    OVER_20_TONS: 570000 + 50000,
+export const INSPECTION_FEE_DATA = {
+  TRUCK: { // Xe tải và xe cẩu theo tải trọng
+    UNDER_4_TONS: 290000 + 50000,
+    FROM_4_TO_UNDER_8_5_TONS: 330000 + 50000,
+    FROM_8_5_TO_UNDER_13_TONS: 330000 + 50000,
+    FROM_13_TO_UNDER_19_TONS: 360000 + 50000,
+    FROM_19_TO_UNDER_27_TONS: 570000 + 50000,
+    FROM_27_TONS_UP: 570000 + 50000,
+  },
+  TRACTOR: { // Xe đầu kéo theo tải trọng
+    UNDER_19_TONS: 360000 + 50000,
+    FROM_19_TO_UNDER_27_TONS: 570000 + 50000,
+    FROM_27_TO_UNDER_40_TONS: 570000 + 50000,
+    FROM_40_TONS_UP: 570000 + 50000,
   },
   TRAILER: 190000 + 50000, // Sơ mi rơ moóc
 };
 
 // Bảo hiểm TNDS bắt buộc 1 năm (CHƯA bao gồm VAT)
-export const CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT: { TRUCK: Record<string, number>, TRACTOR: number } = {
-  TRUCK: { // Tải trọng
-    UNDER_3_TONS: 853000,
-    FROM_3_TO_8_TONS: 1660000,
-    FROM_8_TO_15_TONS: 2746000,
-    OVER_15_TONS: 3200000,
+export const CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT = {
+  TRUCK: { // Xe tải và xe cẩu theo tải trọng
+    UNDER_4_TONS: 853000,
+    FROM_4_TO_UNDER_8_5_TONS: 1660000,
+    FROM_8_5_TO_UNDER_13_TONS: 2746000,
+    FROM_13_TO_UNDER_19_TONS: 2746000,
+    FROM_19_TO_UNDER_27_TONS: 3200000,
+    FROM_27_TONS_UP: 3200000,
   },
-  TRACTOR: 4800000, // Xe đầu kéo (bao gồm rơ moóc)
+  TRACTOR: { // Xe đầu kéo theo tải trọng
+    UNDER_19_TONS: 3200000,
+    FROM_19_TO_UNDER_27_TONS: 4800000,
+    FROM_27_TO_UNDER_40_TONS: 4800000,
+    FROM_40_TONS_UP: 4800000,
+  },
+  TRAILER: 0, // Sơ mi rơ moóc thường được bảo hiểm chung với xe đầu kéo
 };
 
 export const PROVINCES: { value: string; label: string; area_key: keyof typeof REGISTRATION_PLATE_FEES }[] = [

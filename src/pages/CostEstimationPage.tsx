@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
@@ -64,18 +63,20 @@ const CostEstimationPage = () => {
     let insuranceFee = 0;
 
     if (vehicleType === 'truck' || vehicleType === 'crane') {
+      // Xe tải và xe cẩu
       roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK[weightCategory] || 0;
       inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
       insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK[weightCategory] || 0;
     } else if (vehicleType === 'tractor') {
+      // Xe đầu kéo
       roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR[weightCategory] || 0;
-      inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
-      insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR;
+      inspectionFee = INSPECTION_FEE_DATA.TRACTOR[weightCategory] || 0;
+      insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR[weightCategory] || 0;
     } else if (vehicleType === 'trailer') {
-      // Sơ mi rơ mooc - phí thấp hơn vì không có động cơ
+      // Sơ mi rơ mooc
       roadMaintenanceFee = 0; // Mooc không phải đóng phí bảo trì đường bộ riêng
       inspectionFee = INSPECTION_FEE_DATA.TRAILER;
-      insuranceFee = 0; // Mooc thường được bảo hiểm chung với đầu kéo
+      insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRAILER; // = 0
     }
 
     const insuranceFeeWithVAT = insuranceFee * (1 + VAT_RATE);
@@ -99,7 +100,15 @@ const CostEstimationPage = () => {
         { value: 'FROM_19_TO_UNDER_27_TONS', label: '19 - 27 tấn' },
         { value: 'FROM_27_TONS_UP', label: 'Trên 27 tấn' }
       ];
+    } else if (vehicleType === 'tractor') {
+      return [
+        { value: 'UNDER_19_TONS', label: 'Dưới 19 tấn' },
+        { value: 'FROM_19_TO_UNDER_27_TONS', label: '19 - 27 tấn' },
+        { value: 'FROM_27_TO_UNDER_40_TONS', label: '27 - 40 tấn' },
+        { value: 'FROM_40_TONS_UP', label: 'Trên 40 tấn' }
+      ];
     }
+    // Xe tải và xe cẩu
     return [
       { value: 'UNDER_4_TONS', label: 'Dưới 4 tấn' },
       { value: 'FROM_4_TO_UNDER_8_5_TONS', label: '4 - 8.5 tấn' },
@@ -270,6 +279,15 @@ const CostEstimationPage = () => {
                   </p>
                 </div>
               )}
+
+              {/* Thêm ghi chú cho xe đầu kéo */}
+              {vehicleType === 'tractor' && (
+                <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <p className="text-sm text-yellow-700">
+                    <strong>Lưu ý cho xe đầu kéo:</strong> Xe đầu kéo có mức phí đăng kiểm và bảo hiểm cao hơn xe tải thường do tính chất vận hành đặc biệt. Phí bảo hiểm đã bao gồm cả rơ mooc kéo theo.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -316,7 +334,7 @@ const CostEstimationPage = () => {
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                Phí trước bạ áp dụng khác nhau cho từng loại xe
+                Xe đầu kéo có phí đăng kiểm cao hơn xe tải thường
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
@@ -328,7 +346,7 @@ const CostEstimationPage = () => {
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                Một số xe được miễn giảm phí trước bạ theo chính sách
+                Phí bảo hiểm xe đầu kéo đã bao gồm rơ mooc kéo theo
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
