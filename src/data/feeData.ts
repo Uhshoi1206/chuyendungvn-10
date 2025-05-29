@@ -1,11 +1,12 @@
 // src/data/feeData.ts
-export const REGISTRATION_PLATE_FEES = {
-  HANOI_HCM: 500000,
-  CITIES_TOWNS: 150000,
-  OTHERS: 150000,
+export const REGISTRATION_PLATE_FEES: Record<string, number> = {
+  HANOI_HCM: 500000, // Hà Nội & TP.HCM
+  CITIES_TOWNS: 150000, // Các thành phố trực thuộc tỉnh, thị xã
+  OTHERS: 150000, // Các khu vực khác
 };
 
-export const ROAD_MAINTENANCE_FEES_TRUCK = { // Per year
+// Phí bảo trì đường bộ 1 năm (VNĐ)
+export const ROAD_MAINTENANCE_FEES_TRUCK: Record<string, number> = {
   UNDER_4_TONS: 2160000,
   FROM_4_TO_UNDER_8_5_TONS: 3240000,
   FROM_8_5_TO_UNDER_13_TONS: 4680000,
@@ -14,32 +15,46 @@ export const ROAD_MAINTENANCE_FEES_TRUCK = { // Per year
   FROM_27_TONS_UP: 12480000,
 };
 
-export const ROAD_MAINTENANCE_FEES_TRACTOR = { // Per year
+export const ROAD_MAINTENANCE_FEES_TRACTOR: Record<string, number> = {
   UNDER_19_TONS: 7080000,
   FROM_19_TO_UNDER_27_TONS: 8640000,
   FROM_27_TO_UNDER_40_TONS: 12480000,
-  FROM_40_TONS_UP: 16920000,
+  FROM_40_TONS_UP: 17160000,
 };
 
-export const INSPECTION_FEE = 380000; // Approximate average including certificate
-
-export const CIVIL_LIABILITY_INSURANCE_FEES_TRUCK = { // Per year, before VAT
-  UNDER_3_TONS: 853000,
-  FROM_3_TO_8_TONS: 1660000,
-  FROM_8_TO_15_TONS: 2746000,
-  OVER_15_TONS: 3200000,
+// Phí đăng kiểm (Phí kiểm định + Lệ phí cấp GCN là 50.000)
+export const INSPECTION_FEE_DATA: { TRUCK: Record<string, number>, TRAILER: number } = {
+  TRUCK: { // Tải trọng
+    TO_2_TONS: 290000 + 50000,
+    FROM_2_TO_7_TONS: 330000 + 50000,
+    FROM_7_TO_20_TONS: 360000 + 50000,
+    OVER_20_TONS: 570000 + 50000,
+  },
+  TRAILER: 190000 + 50000, // Sơ mi rơ moóc
 };
 
-export const CIVIL_LIABILITY_INSURANCE_FEES_TRACTOR = 4800000; // Per year, before VAT
+// Bảo hiểm TNDS bắt buộc 1 năm (CHƯA bao gồm VAT)
+export const CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT: { TRUCK: Record<string, number>, TRACTOR: number } = {
+  TRUCK: { // Tải trọng
+    UNDER_3_TONS: 853000,
+    FROM_3_TO_8_TONS: 1660000,
+    FROM_8_TO_15_TONS: 2746000,
+    OVER_15_TONS: 3200000,
+  },
+  TRACTOR: 4800000, // Xe đầu kéo (bao gồm rơ moóc)
+};
 
-export const PROVINCES = [
-  { value: 'hanoi', label: 'Hà Nội' },
-  { value: 'hcm', label: 'TP. Hồ Chí Minh' },
-  { value: 'other_cities', label: 'Thành phố trực thuộc tỉnh / Thị xã khác' },
-  { value: 'other_areas', label: 'Khu vực khác' },
-  // Thêm các tỉnh thành khác nếu cần phân loại chi tiết hơn cho các phí khác
+export const PROVINCES: { value: string; label: string; area_key: keyof typeof REGISTRATION_PLATE_FEES }[] = [
+  { value: 'hanoi', label: 'Hà Nội', area_key: 'HANOI_HCM' },
+  { value: 'hcm', label: 'TP. Hồ Chí Minh', area_key: 'HANOI_HCM' },
+  { value: 'haiphong', label: 'Hải Phòng', area_key: 'CITIES_TOWNS' },
+  { value: 'danang', label: 'Đà Nẵng', area_key: 'CITIES_TOWNS' },
+  { value: 'cantho', label: 'Cần Thơ', area_key: 'CITIES_TOWNS' },
+  // Thêm các tỉnh thành phố lớn khác nếu có mức phí biển số riêng
+  { value: 'other_cities', label: 'Thành phố trực thuộc tỉnh / Thị xã khác', area_key: 'CITIES_TOWNS' },
+  { value: 'other_areas', label: 'Khu vực khác (Nông thôn, Huyện)', area_key: 'OTHERS' },
 ];
 
-export const BEFORE_REGISTRATION_FEE_RATE_TRUCK = 0.02; // 2%
-export const VAT_RATE = 0.1; // 10% for insurance, can be different for car price itself
-export const PHYSICAL_INSURANCE_RATE = 0.015; // 1.5%
+export const BEFORE_REGISTRATION_FEE_RATE = 0.02; // 2% cho xe tải, đầu kéo, chuyên dùng
+export const PHYSICAL_INSURANCE_RATE = 0.015; // Ước tính 1.2% - 1.5%
+export const VAT_RATE = 0.1; // 10%
