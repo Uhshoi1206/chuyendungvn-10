@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Phone } from 'lucide-react';
+import { Search, Phone, Calculator, CreditCard } from 'lucide-react';
 import { Button } from './ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileMenu from './MobileMenu';
@@ -61,6 +61,14 @@ const Header: React.FC = () => {
                   <CompareBadge className="absolute -top-2 -right-6" />
                 </span>
               </div>
+              <Link to="/du-toan-chi-phi" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <Calculator className="h-4 w-4" />
+                Dự toán chi phí
+              </Link>
+              <Link to="/tinh-lai-suat" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <CreditCard className="h-4 w-4" />
+                Tính lãi suất vay
+              </Link>
               <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
                 Giới thiệu
               </Link>

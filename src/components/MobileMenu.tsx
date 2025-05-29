@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { Search, GitCompare } from 'lucide-react';
+import { Search, GitCompare, Calculator, CreditCard } from 'lucide-react';
 import CompareBadge from './CompareBadge';
 import { useCompare } from '@/contexts/CompareContext';
 
@@ -52,7 +52,7 @@ const MobileMenu: React.FC = () => {
       <SheetContent side="right" className="w-[280px] sm:w-[350px]">
         <div className="px-4 pt-8 pb-6 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
-            <span className="text-xl font-bold text-primary">XeTaiViet</span>
+            <span className="text-xl font-bold text-primary">ChuyenDungVN</span>
           </div>
           
           <div className="mb-6">
@@ -91,6 +91,22 @@ const MobileMenu: React.FC = () => {
               <span>So sánh xe</span>
               <CompareBadge className="absolute right-2" />
             </div>
+            <Link 
+              to="/du-toan-chi-phi" 
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
+              <Calculator className="h-4 w-4" />
+              <span>Dự toán chi phí</span>
+            </Link>
+            <Link 
+              to="/tinh-lai-suat" 
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
+              <CreditCard className="h-4 w-4" />
+              <span>Tính lãi suất vay</span>
+            </Link>
             <Link 
               to="/gioi-thieu" 
               className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
