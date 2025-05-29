@@ -18,6 +18,8 @@ import BlogPostPage from "./pages/BlogPostPage";
 import BlogCategoryPage from "./pages/BlogCategoryPage";
 import SearchPage from "./pages/SearchPage";
 import ComparePage from "./pages/ComparePage";
+import CostEstimationPage from "./pages/CostEstimationPage";
+import LoanCalculatorPage from "./pages/LoanCalculatorPage";
 import OrderNotification from "./components/OrderNotification";
 import { CompareProvider } from "./contexts/CompareContext";
 
@@ -67,6 +69,10 @@ const App = () => {
                 <Route path="/so-sanh-xe" element={<ComparePage />} />
                 {/* Thêm route cho so sánh xe với URL thân thiện với SEO */}
                 <Route path="/so-sanh-xe/:trucks" element={<ComparePage />} />
+                
+                {/* Routes cho các trang mới */}
+                <Route path="/du-toan-chi-phi" element={<CostEstimationPage />} />
+                <Route path="/tinh-lai-suat" element={<LoanCalculatorPage />} />
                 
                 <Route path="/lien-he" element={<ContactPage />} />
                 <Route path="/gioi-thieu" element={<AboutPage />} />
