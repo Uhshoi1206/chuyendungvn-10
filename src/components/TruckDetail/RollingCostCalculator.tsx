@@ -1,3 +1,4 @@
+
 // src/components/TruckDetail/RollingCostCalculator.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { Truck } from '@/models/TruckTypes';
@@ -17,6 +18,7 @@ import {
   VAT_RATE 
 } from '@/data/feeData';
 import { formatPrice } from '@/lib/utils';
+import { formatCurrencyInput, parseCurrencyInput } from '@/utils/formatUtils';
 
 interface RollingCostCalculatorProps {
   truck: Truck;
@@ -30,7 +32,7 @@ interface CostDetailItem {
 
 const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) => {
   const [selectedProvinceKey, setSelectedProvinceKey] = useState<string>(PROVINCES[0].value);
-  const [otherServiceFee, setOtherServiceFee] = useState<number>(500000);
+  const [otherServiceFee, setOtherServiceFee] = useState<string>('500,000');
   const [includePhysicalInsurance, setIncludePhysicalInsurance] = useState<boolean>(true);
   const [customTruckPrice, setCustomTruckPrice] = useState<number>(truck.price);
   const [displayPrice, setDisplayPrice] = useState<string>(truck.price.toLocaleString('vi-VN'));
@@ -48,8 +50,14 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
     setDisplayPrice(numericValue.toLocaleString('vi-VN'));
   };
 
+  const handleOtherServiceFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setOtherServiceFee(formatted);
+  };
+
   const costDetails = useMemo((): CostDetailItem[] => {
     const truckPrice = customTruckPrice;
+    const otherServiceFeeValue = parseCurrencyInput(otherServiceFee);
     let details: CostDetailItem[] = [];
 
     // 1. Lệ phí trước bạ
@@ -112,8 +120,8 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
     }
     
     // 7. Phí dịch vụ khác
-    if (otherServiceFee > 0) {
-        details.push({ label: 'Phí dịch vụ đăng ký (tạm tính)', value: otherServiceFee });
+    if (otherServiceFeeValue > 0) {
+        details.push({ label: 'Phí dịch vụ đăng ký (tạm tính)', value: otherServiceFeeValue });
     }
     
     return details;
@@ -145,9 +153,9 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
           <Label htmlFor="otherServiceFee" className="text-sm font-medium text-gray-700">Phí dịch vụ khác (VNĐ)</Label>
           <Input 
             id="otherServiceFee" 
-            type="number" 
+            type="text" 
             value={otherServiceFee} 
-            onChange={(e) => setOtherServiceFee(Math.max(0, Number(e.target.value)))} 
+            onChange={handleOtherServiceFeeChange} 
             placeholder="VD: 500,000"
             className="mt-1"
           />
