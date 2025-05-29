@@ -92,23 +92,37 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
     let inspectionFee = 0;
     if (truck.type === 'mooc') {
         inspectionFee = INSPECTION_FEE_DATA.TRAILER;
-    } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau' || truck.type === 'dau-keo') {
-        if (truckWeight <= 2) inspectionFee = INSPECTION_FEE_DATA.TRUCK.TO_2_TONS;
-        else if (truckWeight <= 7) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_2_TO_7_TONS;
-        else if (truckWeight <= 20) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_7_TO_20_TONS;
-        else inspectionFee = INSPECTION_FEE_DATA.TRUCK.OVER_20_TONS;
+    } else if (truck.type === 'dau-keo') {
+        if (truckWeight < 19) inspectionFee = INSPECTION_FEE_DATA.TRACTOR.UNDER_19_TONS;
+        else if (truckWeight < 27) inspectionFee = INSPECTION_FEE_DATA.TRACTOR.FROM_19_TO_UNDER_27_TONS;
+        else if (truckWeight < 40) inspectionFee = INSPECTION_FEE_DATA.TRACTOR.FROM_27_TO_UNDER_40_TONS;
+        else inspectionFee = INSPECTION_FEE_DATA.TRACTOR.FROM_40_TONS_UP;
+    } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') {
+        if (truckWeight < 4) inspectionFee = INSPECTION_FEE_DATA.TRUCK.UNDER_4_TONS;
+        else if (truckWeight < 8.5) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_4_TO_UNDER_8_5_TONS;
+        else if (truckWeight < 13) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_8_5_TO_UNDER_13_TONS;
+        else if (truckWeight < 19) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_13_TO_UNDER_19_TONS;
+        else if (truckWeight < 27) inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_19_TO_UNDER_27_TONS;
+        else inspectionFee = INSPECTION_FEE_DATA.TRUCK.FROM_27_TONS_UP;
     }
     details.push({ label: 'Phí đăng kiểm (lần đầu)', value: inspectionFee });
 
     // 5. Bảo hiểm TNDS bắt buộc (1 năm, đã bao gồm VAT)
     let civilLiabilityInsurancePreVAT = 0;
     if (truck.type === 'dau-keo') {
-      civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR;
+      if (truckWeight < 19) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR.UNDER_19_TONS;
+      else if (truckWeight < 27) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR.FROM_19_TO_UNDER_27_TONS;
+      else if (truckWeight < 40) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR.FROM_27_TO_UNDER_40_TONS;
+      else civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR.FROM_40_TONS_UP;
     } else if (truck.type === 'xe-tai' || truck.type === 'xe-cau') {
-      if (truckWeight < 3) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.UNDER_3_TONS;
-      else if (truckWeight < 8) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_3_TO_8_TONS;
-      else if (truckWeight < 15) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_8_TO_15_TONS;
-      else civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.OVER_15_TONS;
+      if (truckWeight < 4) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.UNDER_4_TONS;
+      else if (truckWeight < 8.5) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_4_TO_UNDER_8_5_TONS;
+      else if (truckWeight < 13) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_8_5_TO_UNDER_13_TONS;
+      else if (truckWeight < 19) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_13_TO_UNDER_19_TONS;
+      else if (truckWeight < 27) civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_19_TO_UNDER_27_TONS;
+      else civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK.FROM_27_TONS_UP;
+    } else if (truck.type === 'mooc') {
+      civilLiabilityInsurancePreVAT = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRAILER;
     }
     const civilLiabilityInsuranceWithVAT = civilLiabilityInsurancePreVAT * (1 + VAT_RATE);
     details.push({ label: 'Bảo hiểm TNDS (1 năm, đã VAT)', value: civilLiabilityInsuranceWithVAT });
