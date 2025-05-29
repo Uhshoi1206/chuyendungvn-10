@@ -61,30 +61,30 @@ const MobileMenu: React.FC = () => {
               <input
                 type="search"
                 placeholder="Tìm kiếm xe tải..."
-                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </form>
           </div>
 
-          <nav className="flex flex-col space-y-4">
+          <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors text-sm"
               onClick={() => setIsOpen(false)}
             >
               Trang chủ
             </Link>
             <Link 
               to="/danh-muc-xe" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors text-sm"
               onClick={() => setIsOpen(false)}
             >
               Danh mục xe
             </Link>
             <div 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 relative cursor-pointer"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 relative cursor-pointer text-sm"
               onClick={handleCompareClick}
             >
               <GitCompare className="h-4 w-4" />
@@ -93,7 +93,7 @@ const MobileMenu: React.FC = () => {
             </div>
             <Link 
               to="/du-toan-chi-phi" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 text-sm"
               onClick={() => setIsOpen(false)}
             >
               <Calculator className="h-4 w-4" />
@@ -101,7 +101,7 @@ const MobileMenu: React.FC = () => {
             </Link>
             <Link 
               to="/tinh-lai-suat" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2 text-sm"
               onClick={() => setIsOpen(false)}
             >
               <CreditCard className="h-4 w-4" />
@@ -109,21 +109,21 @@ const MobileMenu: React.FC = () => {
             </Link>
             <Link 
               to="/gioi-thieu" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors text-sm"
               onClick={() => setIsOpen(false)}
             >
               Giới thiệu
             </Link>
             <Link 
               to="/blog" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors text-sm"
               onClick={() => setIsOpen(false)}
             >
-              Blog
+              Tin tức
             </Link>
             <Link 
               to="/lien-he" 
-              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors"
+              className="py-2 px-3 hover:bg-gray-100 rounded-md transition-colors text-sm"
               onClick={() => setIsOpen(false)}
             >
               Liên hệ
@@ -148,7 +148,7 @@ const MobileMenu: React.FC = () => {
               </svg>
               <a
                 href="tel:0764678901"
-                className="font-bold hover:underline text-black"
+                className="font-bold hover:underline text-black text-sm"
                 aria-label="Gọi ngay: 0764678901"
               >
                 0764678901

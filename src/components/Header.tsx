@@ -45,15 +45,15 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <nav className="hidden md:flex items-center space-x-6">
-              <Link to="/" className="font-medium hover:text-primary transition-colors">
+            <nav className="hidden md:flex items-center space-x-4">
+              <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
                 Trang chủ
               </Link>
-              <Link to="/danh-muc-xe" className="font-medium hover:text-primary transition-colors">
+              <Link to="/danh-muc-xe" className="text-sm font-medium hover:text-primary transition-colors">
                 Danh mục xe
               </Link>
               <div 
-                className="font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
+                className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
                 onClick={handleCompareClick}
               >
                 <span className="relative">
@@ -61,34 +61,34 @@ const Header: React.FC = () => {
                   <CompareBadge className="absolute -top-2 -right-6" />
                 </span>
               </div>
-              <Link to="/du-toan-chi-phi" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
-                <Calculator className="h-4 w-4" />
+              <Link to="/du-toan-chi-phi" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <Calculator className="h-3 w-3" />
                 Dự toán chi phí
               </Link>
-              <Link to="/tinh-lai-suat" className="font-medium hover:text-primary transition-colors flex items-center gap-1">
-                <CreditCard className="h-4 w-4" />
+              <Link to="/tinh-lai-suat" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+                <CreditCard className="h-3 w-3" />
                 Tính lãi suất vay
               </Link>
-              <Link to="/gioi-thieu" className="font-medium hover:text-primary transition-colors">
+              <Link to="/gioi-thieu" className="text-sm font-medium hover:text-primary transition-colors">
                 Giới thiệu
               </Link>
-              <Link to="/blog" className="font-medium hover:text-primary transition-colors">
+              <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors">
                 Tin tức
               </Link>
-              <Link to="/lien-he" className="font-medium hover:text-primary transition-colors">
+              <Link to="/lien-he" className="text-sm font-medium hover:text-primary transition-colors">
                 Liên hệ
               </Link>
             </nav>
           )}
 
           {/* Contact & Search Button */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {!isMobile && (
               <div className="hidden md:flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-primary" />
                 <a
                   href="tel:0764678901"
-                  className="font-bold hover:underline text-black"
+                  className="text-sm font-bold hover:underline text-black"
                   aria-label="Gọi ngay: 0764678901"
                 >
                   0764678901
@@ -99,8 +99,8 @@ const Header: React.FC = () => {
             {!isMobile ? (
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex items-center">
-                    <Search className="h-4 w-4 mr-2" />
+                  <Button variant="outline" size="sm" className="flex items-center text-xs">
+                    <Search className="h-3 w-3 mr-1" />
                     Tìm kiếm
                   </Button>
                 </PopoverTrigger>

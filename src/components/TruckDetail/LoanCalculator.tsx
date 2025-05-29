@@ -1,7 +1,8 @@
+
 import React, { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button'; // Thêm Button nếu cần nút Xem/Ẩn lịch
+import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatPrice } from '@/lib/utils';
@@ -19,13 +20,19 @@ interface ScheduleItem {
 }
 
 const LoanCalculator: React.FC<LoanCalculatorProps> = ({ truckPrice }) => {
+  const [customTruckPrice, setCustomTruckPrice] = useState<number>(truckPrice);
   const [loanPercentage, setLoanPercentage] = useState<number>(70);
   const [loanTermYears, setLoanTermYears] = useState<number>(5);
   const [interestRatePercent, setInterestRatePercent] = useState<number>(9.5);
   const [showSchedule, setShowSchedule] = useState(false);
 
-  const loanAmount = useMemo(() => truckPrice * (loanPercentage / 100), [truckPrice, loanPercentage]);
-  const downPayment = useMemo(() => truckPrice - loanAmount, [truckPrice, loanAmount]);
+  // Cập nhật giá xe tùy chỉnh khi truck thay đổi
+  React.useEffect(() => {
+    setCustomTruckPrice(truckPrice);
+  }, [truckPrice]);
+
+  const loanAmount = useMemo(() => customTruckPrice * (loanPercentage / 100), [customTruckPrice, loanPercentage]);
+  const downPayment = useMemo(() => customTruckPrice - loanAmount, [customTruckPrice, loanAmount]);
 
   const paymentDetails = useMemo(() => {
     const principal = loanAmount;
@@ -70,7 +77,14 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ truckPrice }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         <div>
           <Label htmlFor="truckPriceLoanCalc" className="text-sm font-medium text-gray-700">Giá trị xe</Label>
-          <Input id="truckPriceLoanCalc" type="text" value={formatPrice(truckPrice)} readOnly className="mt-1 bg-gray-100 cursor-not-allowed" />
+          <Input 
+            id="truckPriceLoanCalc" 
+            type="number" 
+            value={customTruckPrice} 
+            onChange={(e) => setCustomTruckPrice(Math.max(0, Number(e.target.value)))} 
+            className="mt-1"
+            min="0"
+          />
         </div>
          <div>
           <Label htmlFor="downPaymentDisplayCalc" className="text-sm font-medium text-gray-700">Số tiền trả trước</Label>
