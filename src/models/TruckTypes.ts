@@ -1,4 +1,3 @@
-
 export type VehicleType = 'xe-tai' | 'xe-cau' | 'mooc' | 'dau-keo';
 
 export interface TruckBrand {
@@ -96,7 +95,7 @@ export interface TarpaulinBoxStructure {
 // Chi tiết về thùng lửng
 export interface FlatbedStructure {
   floorMaterial?: string;      // Vật liệu sàn
-  sideHeight?: number;         // Chiều cao thành bên
+  sideHeight?: number | string; // Chiều cao thành bên (có thể là số hoặc chuỗi như "1.3-1.6m")
   sideType?: string;           // Loại thành bên
   sideAccess?: string;         // Khả năng tiếp cận bên hông
   floorThickness?: string;     // Độ dày sàn
@@ -188,7 +187,7 @@ export interface TrailerSpecification {
   brakeSystem?: string;
   floorType?: string;
   floorThickness?: string;
-  sideHeight?: number;
+  sideHeight?: number | string; // Cho phép cả number và string
   rampType?: string;
   extensionLength?: number;
   totalLength?: string;          // Chiều dài tổng thể
@@ -322,6 +321,7 @@ export interface Truck {
   [key: string]: any;
 }
 
+// ... keep existing code (utility functions getVehicleUrlPrefix, getVehicleTypeName, getBoxTypeName, getTrailerTypeName)
 export function getVehicleUrlPrefix(type: VehicleType): string {
   switch (type) {
     case 'xe-tai':
