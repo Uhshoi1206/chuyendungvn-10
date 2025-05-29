@@ -17,7 +17,6 @@ import { CalendarDays, Clock, Phone, GitCompare } from 'lucide-react';
 import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 import { useCompare } from '@/contexts/CompareContext';
 import TruckActions from '@/components/TruckDetail/TruckActions';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'; // Đã có
 import CostEstimator from '@/components/TruckDetail/CostEstimator'; // Thêm mới
 
 const TruckDetail = () => {
