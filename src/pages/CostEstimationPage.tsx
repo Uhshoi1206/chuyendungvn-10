@@ -17,6 +17,7 @@ import {
   PROVINCES, 
   REGISTRATION_PLATE_FEES, 
   ROAD_MAINTENANCE_FEES_TRUCK,
+  ROAD_MAINTENANCE_FEES_TRACTOR,
   INSPECTION_FEE_DATA,
   CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT,
   BEFORE_REGISTRATION_FEE_RATE,
@@ -62,18 +63,23 @@ const CostEstimationPage = () => {
     let inspectionFee = 0;
     let insuranceFee = 0;
 
-    if (vehicleType === 'truck') {
+    if (vehicleType === 'truck' || vehicleType === 'crane') {
       roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK[weightCategory] || 0;
       inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
       insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRUCK[weightCategory] || 0;
     } else if (vehicleType === 'tractor') {
-      roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRUCK[weightCategory] || 0;
+      roadMaintenanceFee = ROAD_MAINTENANCE_FEES_TRACTOR[weightCategory] || 0;
       inspectionFee = INSPECTION_FEE_DATA.TRUCK[weightCategory] || 0;
       insuranceFee = CIVIL_LIABILITY_INSURANCE_FEES_PRE_VAT.TRACTOR;
+    } else if (vehicleType === 'trailer') {
+      // Sơ mi rơ mooc - phí thấp hơn vì không có động cơ
+      roadMaintenanceFee = 0; // Mooc không phải đóng phí bảo trì đường bộ riêng
+      inspectionFee = INSPECTION_FEE_DATA.TRAILER;
+      insuranceFee = 0; // Mooc thường được bảo hiểm chung với đầu kéo
     }
 
     const insuranceFeeWithVAT = insuranceFee * (1 + VAT_RATE);
-    const totalCost = beforeRegistrationFee + plateFee + roadMaintenanceFee + inspectionFee + insuranceFeeWithVAT + otherFeesAmount;
+    const totalCost = price + beforeRegistrationFee + plateFee + roadMaintenanceFee + inspectionFee + insuranceFeeWithVAT + otherFeesAmount;
 
     setResults({
       vehiclePrice: price,
@@ -85,6 +91,23 @@ const CostEstimationPage = () => {
       otherFees: otherFeesAmount,
       totalCost
     });
+  };
+
+  const getWeightOptions = () => {
+    if (vehicleType === 'trailer') {
+      return [
+        { value: 'FROM_19_TO_UNDER_27_TONS', label: '19 - 27 tấn' },
+        { value: 'FROM_27_TONS_UP', label: 'Trên 27 tấn' }
+      ];
+    }
+    return [
+      { value: 'UNDER_4_TONS', label: 'Dưới 4 tấn' },
+      { value: 'FROM_4_TO_UNDER_8_5_TONS', label: '4 - 8.5 tấn' },
+      { value: 'FROM_8_5_TO_UNDER_13_TONS', label: '8.5 - 13 tấn' },
+      { value: 'FROM_13_TO_UNDER_19_TONS', label: '13 - 19 tấn' },
+      { value: 'FROM_19_TO_UNDER_27_TONS', label: '19 - 27 tấn' },
+      { value: 'FROM_27_TONS_UP', label: 'Trên 27 tấn' }
+    ];
   };
 
   const formatCurrency = (amount: number) => {
@@ -154,6 +177,8 @@ const CostEstimationPage = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="truck">Xe tải</SelectItem>
+                    <SelectItem value="crane">Xe cẩu</SelectItem>
+                    <SelectItem value="trailer">Sơ mi rơ mooc</SelectItem>
                     <SelectItem value="tractor">Xe đầu kéo</SelectItem>
                   </SelectContent>
                 </Select>
@@ -166,12 +191,11 @@ const CostEstimationPage = () => {
                     <SelectValue placeholder="Chọn tải trọng" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="UNDER_4_TONS">Dưới 4 tấn</SelectItem>
-                    <SelectItem value="FROM_4_TO_UNDER_8_5_TONS">4 - 8.5 tấn</SelectItem>
-                    <SelectItem value="FROM_8_5_TO_UNDER_13_TONS">8.5 - 13 tấn</SelectItem>
-                    <SelectItem value="FROM_13_TO_UNDER_19_TONS">13 - 19 tấn</SelectItem>
-                    <SelectItem value="FROM_19_TO_UNDER_27_TONS">19 - 27 tấn</SelectItem>
-                    <SelectItem value="FROM_27_TONS_UP">Trên 27 tấn</SelectItem>
+                    {getWeightOptions().map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -237,6 +261,15 @@ const CostEstimationPage = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Thêm ghi chú đặc biệt cho sơ mi rơ mooc */}
+              {vehicleType === 'trailer' && (
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-700">
+                    <strong>Lưu ý đặc biệt cho sơ mi rơ mooc:</strong> Sơ mi rơ mooc không phải đóng phí bảo trì đường bộ riêng và thường được bảo hiểm chung với xe đầu kéo. Chi phí có thể thấp hơn so với các loại xe khác.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -246,11 +279,11 @@ const CostEstimationPage = () => {
               <div className="space-y-4">
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Trước Bạ</h3>
-                  <p className="text-sm text-gray-600">2% giá trị xe cho xe tải và đầu kéo</p>
+                  <p className="text-sm text-gray-600">2% giá trị xe cho tất cả các loại xe</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Bảo Hiểm Bắt Buộc</h3>
-                  <p className="text-sm text-gray-600">Tùy theo loại xe và tải trọng</p>
+                  <p className="text-sm text-gray-600">Tùy theo loại xe và tải trọng (mooc có thể miễn)</p>
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Đăng Ký</h3>
@@ -268,7 +301,7 @@ const CostEstimationPage = () => {
                 </div>
                 <div className="border-l-4 border-primary pl-4">
                   <h3 className="font-semibold text-gray-700">Phí Bảo Trì Đường Bộ</h3>
-                  <p className="text-sm text-gray-600">Tùy theo tải trọng xe</p>
+                  <p className="text-sm text-gray-600">Tùy theo tải trọng xe (mooc miễn phí)</p>
                 </div>
               </div>
             </div>
@@ -284,6 +317,14 @@ const CostEstimationPage = () => {
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
                 Phí trước bạ áp dụng khác nhau cho từng loại xe
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-500 mr-2">•</span>
+                Sơ mi rơ mooc thường có chi phí thấp hơn vì không có động cơ riêng
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-500 mr-2">•</span>
+                Xe cẩu có cùng mức phí như xe tải cùng tải trọng
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
