@@ -1,4 +1,3 @@
-
 // src/components/TruckDetail/RollingCostCalculator.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { Truck } from '@/models/TruckTypes';
@@ -34,11 +33,20 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
   const [otherServiceFee, setOtherServiceFee] = useState<number>(500000);
   const [includePhysicalInsurance, setIncludePhysicalInsurance] = useState<boolean>(true);
   const [customTruckPrice, setCustomTruckPrice] = useState<number>(truck.price);
+  const [displayPrice, setDisplayPrice] = useState<string>(truck.price.toLocaleString('vi-VN'));
 
   // Cập nhật giá xe tùy chỉnh khi truck thay đổi
   useEffect(() => {
     setCustomTruckPrice(truck.price);
+    setDisplayPrice(truck.price.toLocaleString('vi-VN'));
   }, [truck.price]);
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^\d]/g, ''); // Chỉ lấy số
+    const numericValue = value === '' ? 0 : Number(value);
+    setCustomTruckPrice(numericValue);
+    setDisplayPrice(numericValue.toLocaleString('vi-VN'));
+  };
 
   const costDetails = useMemo((): CostDetailItem[] => {
     const truckPrice = customTruckPrice;
@@ -169,11 +177,10 @@ const RollingCostCalculator: React.FC<RollingCostCalculatorProps> = ({ truck }) 
             <span className="text-gray-600">Giá xe (đã bao gồm VAT):</span>
             <div className="flex items-center space-x-2">
               <Input 
-                type="number" 
-                value={customTruckPrice} 
-                onChange={(e) => setCustomTruckPrice(Math.max(0, Number(e.target.value)))} 
+                type="text" 
+                value={displayPrice} 
+                onChange={handlePriceChange} 
                 className="w-40 h-8 text-right font-semibold"
-                min="0"
               />
               <span className="text-gray-500 text-xs">VNĐ</span>
             </div>

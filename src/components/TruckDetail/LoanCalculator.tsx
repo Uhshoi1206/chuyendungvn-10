@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +20,7 @@ interface ScheduleItem {
 
 const LoanCalculator: React.FC<LoanCalculatorProps> = ({ truckPrice }) => {
   const [customTruckPrice, setCustomTruckPrice] = useState<number>(truckPrice);
+  const [displayPrice, setDisplayPrice] = useState<string>(truckPrice.toLocaleString('vi-VN'));
   const [loanPercentage, setLoanPercentage] = useState<number>(70);
   const [loanTermYears, setLoanTermYears] = useState<number>(5);
   const [interestRatePercent, setInterestRatePercent] = useState<number>(9.5);
@@ -29,7 +29,15 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ truckPrice }) => {
   // Cập nhật giá xe tùy chỉnh khi truck thay đổi
   React.useEffect(() => {
     setCustomTruckPrice(truckPrice);
+    setDisplayPrice(truckPrice.toLocaleString('vi-VN'));
   }, [truckPrice]);
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^\d]/g, ''); // Chỉ lấy số
+    const numericValue = value === '' ? 0 : Number(value);
+    setCustomTruckPrice(numericValue);
+    setDisplayPrice(numericValue.toLocaleString('vi-VN'));
+  };
 
   const loanAmount = useMemo(() => customTruckPrice * (loanPercentage / 100), [customTruckPrice, loanPercentage]);
   const downPayment = useMemo(() => customTruckPrice - loanAmount, [customTruckPrice, loanAmount]);
@@ -79,11 +87,10 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ truckPrice }) => {
           <Label htmlFor="truckPriceLoanCalc" className="text-sm font-medium text-gray-700">Giá trị xe</Label>
           <Input 
             id="truckPriceLoanCalc" 
-            type="number" 
-            value={customTruckPrice} 
-            onChange={(e) => setCustomTruckPrice(Math.max(0, Number(e.target.value)))} 
+            type="text" 
+            value={displayPrice} 
+            onChange={handlePriceChange} 
             className="mt-1"
-            min="0"
           />
         </div>
          <div>
