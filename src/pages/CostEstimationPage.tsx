@@ -22,6 +22,7 @@ import {
   BEFORE_REGISTRATION_FEE_RATE,
   VAT_RATE
 } from '@/data/feeData';
+import { formatCurrencyInput, parseCurrencyInput } from '@/utils/formatUtils';
 
 const CostEstimationPage = () => {
   const [vehiclePrice, setVehiclePrice] = useState<string>('');
@@ -31,14 +32,24 @@ const CostEstimationPage = () => {
   const [weightCategory, setWeightCategory] = useState<string>('');
   const [results, setResults] = useState<any>(null);
 
+  const handleVehiclePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setVehiclePrice(formatted);
+  };
+
+  const handleOtherFeesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setOtherFees(formatted);
+  };
+
   const calculateCosts = () => {
     if (!vehiclePrice || !province || !vehicleType || !weightCategory) {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
 
-    const price = parseFloat(vehiclePrice.replace(/[^\d]/g, ''));
-    const otherFeesAmount = otherFees ? parseFloat(otherFees.replace(/[^\d]/g, '')) : 0;
+    const price = parseCurrencyInput(vehiclePrice);
+    const otherFeesAmount = parseCurrencyInput(otherFees);
     
     const selectedProvince = PROVINCES.find(p => p.value === province);
     const plateArea = selectedProvince?.area_key || 'OTHERS';
@@ -115,7 +126,7 @@ const CostEstimationPage = () => {
                   id="vehiclePrice"
                   placeholder="Nhập giá xe (VNĐ)"
                   value={vehiclePrice}
-                  onChange={(e) => setVehiclePrice(e.target.value)}
+                  onChange={handleVehiclePriceChange}
                 />
               </div>
 
@@ -171,7 +182,7 @@ const CostEstimationPage = () => {
                   id="otherFees"
                   placeholder="Nhập phí dịch vụ khác (không bắt buộc)"
                   value={otherFees}
-                  onChange={(e) => setOtherFees(e.target.value)}
+                  onChange={handleOtherFeesChange}
                 />
               </div>
             </div>

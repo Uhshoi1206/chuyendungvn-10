@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { formatCurrencyInput, parseCurrencyInput } from '@/utils/formatUtils';
 
 const LoanCalculatorPage = () => {
   const [vehiclePrice, setVehiclePrice] = useState<string>('');
@@ -22,14 +23,24 @@ const LoanCalculatorPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [results, setResults] = useState<any>(null);
 
+  const handleVehiclePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setVehiclePrice(formatted);
+  };
+
+  const handleDownPaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setDownPayment(formatted);
+  };
+
   const calculateLoan = () => {
     if (!vehiclePrice || !downPayment || !interestRate || !loanTerm || !paymentMethod) {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
     }
 
-    const price = parseFloat(vehiclePrice.replace(/[^\d]/g, ''));
-    const downPaymentAmount = parseFloat(downPayment.replace(/[^\d]/g, ''));
+    const price = parseCurrencyInput(vehiclePrice);
+    const downPaymentAmount = parseCurrencyInput(downPayment);
     const rate = parseFloat(interestRate) / 100 / 12; // Lãi suất tháng
     const months = parseInt(loanTerm) * 12;
     
@@ -108,7 +119,7 @@ const LoanCalculatorPage = () => {
                   id="vehiclePrice"
                   placeholder="Nhập giá xe (VNĐ)"
                   value={vehiclePrice}
-                  onChange={(e) => setVehiclePrice(e.target.value)}
+                  onChange={handleVehiclePriceChange}
                 />
               </div>
 
@@ -118,7 +129,7 @@ const LoanCalculatorPage = () => {
                   id="downPayment"
                   placeholder="Nhập số tiền trả trước (VNĐ)"
                   value={downPayment}
-                  onChange={(e) => setDownPayment(e.target.value)}
+                  onChange={handleDownPaymentChange}
                 />
               </div>
 
