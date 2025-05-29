@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrencyInput, parseCurrencyInput } from '@/utils/formatUtils';
 
 const LoanCalculatorPage = () => {
@@ -22,6 +22,7 @@ const LoanCalculatorPage = () => {
   const [loanTerm, setLoanTerm] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [results, setResults] = useState<any>(null);
+  const [showSchedule, setShowSchedule] = useState(false);
 
   const handleVehiclePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCurrencyInput(e.target.value);
@@ -49,23 +50,54 @@ const LoanCalculatorPage = () => {
     let monthlyPayment = 0;
     let totalPayment = 0;
     let totalInterest = 0;
+    let schedule: any[] = [];
 
     if (paymentMethod === 'equal_principal_interest') {
       // Gốc + lãi cố định
       monthlyPayment = (loanAmount * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
       totalPayment = monthlyPayment * months;
       totalInterest = totalPayment - loanAmount;
+
+      // Tạo bảng kế hoạch trả nợ cho gốc + lãi cố định
+      let remainingBalance = loanAmount;
+      for (let i = 1; i <= months; i++) {
+        const interestForMonth = remainingBalance * rate;
+        const principalForMonth = monthlyPayment - interestForMonth;
+        remainingBalance -= principalForMonth;
+
+        schedule.push({
+          month: i,
+          principalPayment: principalForMonth,
+          interestPayment: interestForMonth,
+          totalPayment: monthlyPayment,
+          remainingBalance: Math.max(0, remainingBalance)
+        });
+      }
     } else if (paymentMethod === 'decreasing_principal') {
       // Gốc giảm dần
       const principalPayment = loanAmount / months;
-      const firstMonthInterest = loanAmount * rate;
-      const lastMonthInterest = principalPayment * rate;
-      
-      totalInterest = (loanAmount * rate * (months + 1)) / 2;
+      let remainingBalance = loanAmount;
+      totalInterest = 0;
+
+      // Tạo bảng kế hoạch trả nợ cho gốc giảm dần
+      for (let i = 1; i <= months; i++) {
+        const interestForMonth = remainingBalance * rate;
+        const totalPaymentForMonth = principalPayment + interestForMonth;
+        remainingBalance -= principalPayment;
+        totalInterest += interestForMonth;
+
+        schedule.push({
+          month: i,
+          principalPayment: principalPayment,
+          interestPayment: interestForMonth,
+          totalPayment: totalPaymentForMonth,
+          remainingBalance: Math.max(0, remainingBalance)
+        });
+      }
+
       totalPayment = loanAmount + totalInterest;
-      
       // Khoản thanh toán tháng đầu (cao nhất)
-      monthlyPayment = principalPayment + firstMonthInterest;
+      monthlyPayment = schedule[0]?.totalPayment || 0;
     }
 
     setResults({
@@ -76,7 +108,8 @@ const LoanCalculatorPage = () => {
       totalPayment,
       totalInterest,
       paymentMethod,
-      loanTerm: parseInt(loanTerm)
+      loanTerm: parseInt(loanTerm),
+      schedule
     });
   };
 
@@ -228,9 +261,55 @@ const LoanCalculatorPage = () => {
                   )}
                 </div>
               </div>
+
+              {/* Nút hiển thị/ẩn bảng kế hoạch trả nợ */}
+              <div className="mt-6">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowSchedule(!showSchedule)}
+                  className="w-full"
+                >
+                  {showSchedule ? 'Ẩn bảng kế hoạch trả nợ chi tiết' : 'Xem bảng kế hoạch trả nợ chi tiết'}
+                </Button>
+              </div>
             </div>
           )}
 
+          {/* Bảng kế hoạch trả nợ chi tiết */}
+          {showSchedule && results && results.schedule && (
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">Bảng kế hoạch trả nợ chi tiết (Dư nợ giảm dần)</h2>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-center">Kỳ</TableHead>
+                      <TableHead className="text-right">Gốc trả</TableHead>
+                      <TableHead className="text-right">Lãi trả</TableHead>
+                      <TableHead className="text-right">Tổng trả</TableHead>
+                      <TableHead className="text-right">Dư nợ</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {results.schedule.map((item: any) => (
+                      <TableRow key={item.month}>
+                        <TableCell className="text-center font-medium">{item.month}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(item.principalPayment)}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(item.interestPayment)}</TableCell>
+                        <TableCell className="text-right font-semibold">{formatCurrency(item.totalPayment)}</TableCell>
+                        <TableCell className="text-right">{formatCurrency(item.remainingBalance)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="mt-4 text-sm text-gray-600">
+                <p className="italic">*Lưu ý: Kết quả trên chỉ là ước tính. Lãi suất thực tế và các điều khoản vay có thể thay đổi tùy thuộc vào ngân hàng và thời điểm vay. Vui lòng liên hệ trực tiếp để được tư vấn chi tiết.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Thông tin lãi suất hiện tại */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Thông Tin Lãi Suất Hiện Tại</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -261,6 +340,7 @@ const LoanCalculatorPage = () => {
             </div>
           </div>
 
+          {/* Điều kiện vay */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Điều Kiện Vay</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -309,6 +389,7 @@ const LoanCalculatorPage = () => {
             </div>
           </div>
 
+          {/* Uu đãi đặc biệt */}
           <div className="bg-yellow-50 rounded-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-yellow-800">Ưu Đãi Đặc Biệt</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -327,6 +408,7 @@ const LoanCalculatorPage = () => {
             </div>
           </div>
 
+          {/* Liên hệ */}
           <div className="text-center">
             <div className="bg-primary/10 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-primary mb-2">Cần Tư Vấn Gói Vay?</h3>
