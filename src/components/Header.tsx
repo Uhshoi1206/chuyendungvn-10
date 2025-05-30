@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Phone, Calculator, CreditCard } from 'lucide-react';
+import { Search, Phone, Calculator, CreditCard, GitCompare } from 'lucide-react';
 import { Button } from './ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileMenu from './MobileMenu';
@@ -56,6 +56,7 @@ const Header: React.FC = () => {
                 className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
                 onClick={handleCompareClick}
               >
+                <GitCompare className="h-3 w-3" />
                 <span className="relative">
                   So sánh xe
                   <CompareBadge className="absolute -top-2 -right-6" />
