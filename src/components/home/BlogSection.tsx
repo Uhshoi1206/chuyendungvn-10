@@ -12,6 +12,7 @@ import {
   CarouselNext
 } from "@/components/ui/carousel";
 import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
+import { getVehicleUrlPrefix } from '@/models/TruckTypes';
 
 interface BlogSectionProps {
   posts: BlogPost[];
@@ -32,6 +33,11 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
 
   const handleCategoryClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const getProductUrl = (product: any) => {
+    const vehicleUrlPrefix = getVehicleUrlPrefix(product.type);
+    return `/${vehicleUrlPrefix}/${product.slug}`;
   };
 
   return (
@@ -95,7 +101,7 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
             <div className="mt-4 pt-3 border-t border-gray-100">
               <div className="text-xs text-gray-500">Bài viết có liên quan đến sản phẩm:</div>
               <Link 
-                to={`/xe/${relatedProduct.slug}`}
+                to={getProductUrl(relatedProduct)}
                 className="flex items-center text-sm font-medium text-primary hover:underline mt-1 cursor-pointer"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -124,6 +130,11 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
 
   const handleCategoryClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const getProductUrl = (product: any) => {
+    const vehicleUrlPrefix = getVehicleUrlPrefix(product.type);
+    return `/${vehicleUrlPrefix}/${product.slug}`;
   };
 
   return (
@@ -167,7 +178,7 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
           {relatedProduct && (
             <div className="mt-2 pt-2 border-t border-gray-100">
               <Link 
-                to={`/xe/${relatedProduct.slug}`}
+                to={getProductUrl(relatedProduct)}
                 className="flex items-center text-xs text-primary hover:underline cursor-pointer"
                 onClick={(e) => e.stopPropagation()}
               >
