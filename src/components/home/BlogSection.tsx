@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap, MessageCircle, BookOpen } from 'lucide-react';
@@ -31,6 +30,14 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
     return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
   };
 
+  const handleCategoryClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleProductClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Link to={getPostUrl(post)} className="group">
       <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
@@ -50,13 +57,12 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
               {post.title}
             </h3>
             <div className="flex flex-wrap items-center gap-4 text-white/90">
-              <Link 
-                to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-                className="bg-primary/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium hover:bg-primary/50 transition-colors"
-                onClick={(e) => e.stopPropagation()}
+              <span 
+                className="bg-primary/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium hover:bg-primary/50 transition-colors cursor-pointer"
+                onClick={handleCategoryClick}
               >
                 {categories[post.category]}
-              </Link>
+              </span>
               <span className="text-sm flex items-center">
                 <CalendarDays className="h-3 w-3 mr-1" />
                 {new Date(post.publishDate).toLocaleDateString('vi-VN')}
@@ -92,14 +98,13 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
           {relatedProduct && (
             <div className="mt-4 pt-3 border-t border-gray-100">
               <div className="text-xs text-gray-500">Bài viết có liên quan đến sản phẩm:</div>
-              <Link 
-                to={`/xe-tai/${relatedProduct.slug}`}
-                className="flex items-center text-sm font-medium text-primary hover:underline mt-1"
-                onClick={(e) => e.stopPropagation()}
+              <div 
+                className="flex items-center text-sm font-medium text-primary hover:underline mt-1 cursor-pointer"
+                onClick={handleProductClick}
               >
                 <Tag className="h-3 w-3 mr-1" />
                 {relatedProduct.name}
-              </Link>
+              </div>
             </div>
           )}
         </div>
@@ -120,6 +125,14 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
     return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
   };
 
+  const handleCategoryClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleProductClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Link to={getPostUrl(post)} className="group">
       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 h-full flex">
@@ -138,13 +151,12 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
           </div>
         </div>
         <div className="w-2/3 p-4 flex flex-col">
-          <Link 
-            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-            className="text-xs text-primary font-medium mb-1 hover:underline"
-            onClick={(e) => e.stopPropagation()}
+          <span 
+            className="text-xs text-primary font-medium mb-1 hover:underline cursor-pointer"
+            onClick={handleCategoryClick}
           >
             {categories[post.category]}
-          </Link>
+          </span>
           <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
             {post.title}
           </h3>
@@ -161,14 +173,13 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
           
           {relatedProduct && (
             <div className="mt-2 pt-2 border-t border-gray-100">
-              <Link 
-                to={`/xe-tai/${relatedProduct.slug}`}
-                className="flex items-center text-xs text-primary hover:underline"
-                onClick={(e) => e.stopPropagation()}
+              <div 
+                className="flex items-center text-xs text-primary hover:underline cursor-pointer"
+                onClick={handleProductClick}
               >
                 <Tag className="h-3 w-3 mr-1" />
                 {relatedProduct.name}
-              </Link>
+              </div>
             </div>
           )}
         </div>
@@ -187,6 +198,10 @@ const CarouselBlogPost = ({ post, categories, getPostUrl }: {
     return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
   };
 
+  const handleCategoryClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Link to={getPostUrl(post)} className="group h-full">
       <div className="bg-white rounded-lg overflow-hidden shadow-sm h-full hover:shadow-md transition duration-300 flex flex-col">
@@ -203,13 +218,12 @@ const CarouselBlogPost = ({ post, categories, getPostUrl }: {
           </div>
         </div>
         <div className="p-4 flex flex-col flex-grow">
-          <Link 
-            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-            className="text-xs font-medium text-primary mb-2 hover:underline"
-            onClick={(e) => e.stopPropagation()}
+          <span 
+            className="text-xs font-medium text-primary mb-2 hover:underline cursor-pointer"
+            onClick={handleCategoryClick}
           >
             {categories[post.category]}
-          </Link>
+          </span>
           <h4 className="font-bold line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {post.title}
           </h4>

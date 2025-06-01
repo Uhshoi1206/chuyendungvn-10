@@ -13,178 +13,120 @@ const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
   return useMemo(() => {
     if (!post) return null;
 
+    console.log(`Tìm sản phẩm liên quan cho bài viết: ${post.title}`);
+
     // Xử lý tìm gần đúng tên xe xuất hiện ở đầu tiêu đề hoặc tag chứa slug
     const normalizedTitle = post.title.toLowerCase();
     const normalizedDesc = post.description.toLowerCase();
     const normalizedContent = post.content?.toLowerCase() || '';
     const tags = post.tags?.map(t => t.toLowerCase()) || [];
 
-    // Tạo một số biến thể có thể xuất hiện trong bài viết
-    const possibleTruckVariants: Record<string, string[]> = {
-      // Xe tải
-      'mighty-ex8-gtl-8-tan': ['ex8', 'mighty ex8', 'ex8 gtl', 'mighty ex8 gtl', '8 tấn', 'hyundai ex8', 'hyundai mighty ex8'],
-      'hd72-3-5-tan': ['hd72', 'hyundai hd72', '3.5 tấn', '3.5t', 'hyundai 3.5 tấn'],
-      'new-porter-h150-1-5-tan': ['porter', 'h150', 'porter h150', 'hyundai porter', '1.5 tấn', '1.5t', 'hyundai 1.5 tấn'],
-      'hino-xzu-7-5tan-thung-dong-lanh': ['hino đông lạnh', 'xe đông lạnh', 'thùng đông lạnh', 'xe tải đông lạnh', 'hino xzu', 'xe 7.5 tấn đông lạnh'],
-      'hyundai-h150-thung-bao-on': ['h150 bảo ôn', 'hyundai bảo ôn', 'thùng bảo ôn', 'xe tải bảo ôn', 'xe bảo ôn'],
-      'isuzu-qkr-thung-kin': ['isuzu thùng kín', 'qkr thùng kín', 'xe thùng kín', 'xe tải thùng kín'],
-      'veam-vpt350-thung-bat': ['veam thùng bạt', 'vpt350 thùng bạt', 'xe thùng bạt', 'xe tải thùng bạt'],
-      'isuzu-vm-fx-thung-lung': ['isuzu thùng lửng', 'vm fx thùng lửng', 'xe thùng lửng', 'xe tải thùng lửng'],
-      'dongfeng-xi-tec-9-khoi': ['dongfeng xi téc', 'xe xi téc', 'xe chở xăng dầu', 'xi téc 9 khối'],
-      
-      // Xe cẩu
-      'tadano-tm-ze554mh': ['cẩu tadano', 'tadano 5 tấn', 'cẩu 5 tấn', 'xe cẩu tadano'],
-      'kanglim-ks1056': ['cẩu kanglim', 'kanglim 5 tấn', 'cẩu 5 tấn kanglim', 'xe cẩu kanglim'],
-      'hino-fc9jlsw-gan-cau-unic': ['hino gắn cẩu', 'xe hino gắn cẩu', 'hino fc gắn cẩu', 'xe tải gắn cẩu'],
-      
-      // Sơ mi rơ mooc
-      'doosung-3-truc-ben': ['mooc ben doosung', 'sơ mi rơ mooc ben', 'mooc ben 3 trục', 'mooc ben'],
-      'cimc-3-truc-san': ['mooc sàn cimc', 'sơ mi rơ mooc sàn', 'mooc sàn 3 trục', 'mooc sàn'],
-      'doosung-3-truc-san-rut': ['mooc sàn rút dài', 'mooc rút dài', 'sơ mi rơ mooc sàn rút', 'mooc sàn rút'],
-      'doosung-chuyên-chở-container': ['mooc lùn', 'chở container', 'sơ mi rơ mooc container', 'mooc container'],
-      'doosung-co-co': ['mooc cổ cò', 'sơ mi rơ mooc cổ cò', 'mooc cổ ngỗng'],
-      'doosung-xuong': ['mooc xương', 'sơ mi rơ mooc xương', 'mooc khung'],
-      'cimc-lung': ['mooc lửng', 'sơ mi rơ mooc lửng', 'mooc trần'],
-      'cimc-rao': ['mooc rào', 'sơ mi rơ mooc rào', 'mooc có rào chắn'],
-      'doosung-xitec-xang-dau': ['mooc xi téc', 'mooc chở xăng dầu', 'sơ mi rơ mooc xi téc'],
-      'cimc-bon-xi-mang': ['mooc bồn xi măng', 'mooc chở xi măng rời', 'sơ mi rơ mooc xi măng'],
-      'doosung-bon-bui-sat': ['mooc bồn bụi sắt', 'mooc chở bụi sắt', 'sơ mi rơ mooc bụi sắt'],
-      'cimc-bon-bot-mi': ['mooc bồn bột mì', 'mooc chở bột mì', 'sơ mi rơ mooc bột mì'],
-      
-      // Xe đầu kéo
-      'hyundai-xcient-dau-keo': ['hyundai đầu kéo', 'đầu kéo xcient', 'đầu kéo hyundai'],
-      'howo-dau-keo': ['howo đầu kéo', 'đầu kéo howo', 'đầu kéo trung quốc'],
-      'isuzu-giga-dau-keo': ['isuzu đầu kéo', 'đầu kéo isuzu', 'đầu kéo giga', 'giga đầu kéo']
+    // Định nghĩa ánh xạ cụ thể cho từng bài viết dựa trên title hoặc category
+    const specificMappings: Record<string, string> = {
+      // Mapping dựa trên từ khóa trong tiêu đề
+      'mighty': 'mighty-ex8-gtl-8-tan',
+      'ex8': 'mighty-ex8-gtl-8-tan', 
+      'hyundai ex8': 'mighty-ex8-gtl-8-tan',
+      'porter': 'new-porter-h150-1-5-tan',
+      'h150': 'new-porter-h150-1-5-tan',
+      'hd72': 'hd72-3-5-tan',
+      'hino': 'hino-xzu-7-5tan-thung-dong-lanh',
+      'đông lạnh': 'hino-xzu-7-5tan-thung-dong-lanh',
+      'dong lanh': 'hino-xzu-7-5tan-thung-dong-lanh',
+      'bảo ôn': 'hyundai-h150-thung-bao-on',
+      'bao on': 'hyundai-h150-thung-bao-on',
+      'thùng kín': 'isuzu-qkr-thung-kin',
+      'thung kin': 'isuzu-qkr-thung-kin',
+      'thùng bạt': 'veam-vpt350-thung-bat',
+      'thung bat': 'veam-vpt350-thung-bat',
+      'thùng lửng': 'isuzu-vm-fx-thung-lung',
+      'thung lung': 'isuzu-vm-fx-thung-lung',
+      'xi téc': 'dongfeng-xi-tec-9-khoi',
+      'xi tec': 'dongfeng-xi-tec-9-khoi',
+      'xăng dầu': 'dongfeng-xi-tec-9-khoi',
+      'xang dau': 'dongfeng-xi-tec-9-khoi',
+      'tadano': 'tadano-tm-ze554mh',
+      'kanglim': 'kanglim-ks1056',
+      'cẩu': 'tadano-tm-ze554mh',
+      'cau': 'tadano-tm-ze554mh',
+      'mooc ben': 'doosung-3-truc-ben',
+      'mooc sàn': 'cimc-3-truc-san',
+      'mooc san': 'cimc-3-truc-san',
+      'sàn rút': 'doosung-3-truc-san-rut',
+      'san rut': 'doosung-3-truc-san-rut',
+      'container': 'doosung-chuyên-chở-container',
+      'cổ cò': 'doosung-co-co',
+      'co co': 'doosung-co-co',
+      'cổ ngỗng': 'doosung-co-co',
+      'co ngong': 'doosung-co-co',
+      'xương': 'doosung-xuong',
+      'xuong': 'doosung-xuong',
+      'lửng': 'cimc-lung',
+      'lung': 'cimc-lung',
+      'rào': 'cimc-rao',
+      'rao': 'cimc-rao',
+      'xi măng': 'cimc-bon-xi-mang',
+      'xi mang': 'cimc-bon-xi-mang',
+      'bụi sắt': 'doosung-bon-bui-sat',
+      'bui sat': 'doosung-bon-bui-sat',
+      'bột mì': 'cimc-bon-bot-mi',
+      'bot mi': 'cimc-bon-bot-mi',
+      'đầu kéo': 'hyundai-xcient-dau-keo',
+      'dau keo': 'hyundai-xcient-dau-keo',
+      'xcient': 'hyundai-xcient-dau-keo',
+      'howo': 'howo-dau-keo',
+      'giga': 'isuzu-giga-dau-keo'
     };
 
-    // Ưu tiên tìm kiếm chính xác theo tên đầy đủ và các biến thể phổ biến
-    for (const truck of trucks) {
-      const truckName = truck.name.toLowerCase();
-      const truckSlug = truck.slug;
-      const truckSlugWords = truckSlug.replace(/-/g, " ").toLowerCase();
-      const slugParts = truckSlug.split('-');
-      const boxType = truck.boxType ? truck.boxType.toLowerCase() : '';
-      const trailerType = truck.trailerType ? truck.trailerType.toLowerCase() : '';
-      
-      // Các từ khóa quan trọng để đánh trọng số cao hơn
-      const keyTerms = [
-        truckName,
-        truckSlugWords,
-        ...slugParts
-      ];
-
-      // Thêm từ khóa chuyên biệt theo loại xe
-      if (truck.type === 'xe-tai' && truck.boxType) {
-        keyTerms.push(`thùng ${boxType}`);
-        keyTerms.push(`xe ${boxType}`);
-        keyTerms.push(`xe tải ${boxType}`);
-      }
-      
-      if (truck.type === 'mooc' && truck.trailerType) {
-        keyTerms.push(`mooc ${trailerType}`);
-        keyTerms.push(`sơ mi rơ mooc ${trailerType}`);
-      }
-      
-      // Thêm các biến thể phổ biến của xe vào từ khóa tìm kiếm
-      if (possibleTruckVariants[truckSlug]) {
-        keyTerms.push(...possibleTruckVariants[truckSlug]);
-      }
-
-      // Tìm kiếm chính xác trong tiêu đề - ưu tiên cao nhất
-      if (normalizedTitle.includes(truckName)) {
-        return truck;
-      }
-      
-      // Tìm kiếm biến thể loại thùng xe trong tiêu đề
-      if (truck.boxType && normalizedTitle.includes(truck.boxType.toLowerCase())) {
-        return truck;
-      }
-      
-      // Tìm kiếm biến thể loại mooc trong tiêu đề
-      if (truck.trailerType && normalizedTitle.includes(truck.trailerType.toLowerCase())) {
-        return truck;
-      }
-
-      // Kiểm tra từng từ khóa trong các phần quan trọng của bài viết
-      for (const term of keyTerms) {
-        // Ưu tiên tìm trong tiêu đề
-        if (normalizedTitle.includes(term)) {
-          return truck;
-        }
+    // Tìm kiếm theo specific mappings trước
+    for (const [keyword, truckSlug] of Object.entries(specificMappings)) {
+      if (normalizedTitle.includes(keyword) || 
+          normalizedDesc.includes(keyword) || 
+          tags.some(tag => tag.includes(keyword))) {
         
-        // Tìm trong tags
-        if (tags.some(tag => tag.includes(term))) {
-          return truck;
-        }
-        
-        // Tìm trong mô tả
-        if (normalizedDesc.includes(term)) {
-          return truck;
-        }
-        
-        // Tìm trong nội dung (ưu tiên thấp hơn)
-        if (normalizedContent.includes(term)) {
-          return truck;
-        }
-      }
-
-      // Kiểm tra đặc biệt cho các tên xe có thể bị chia cắt trong nội dung
-      // Ví dụ: "Mighty" và "EX8" có thể xuất hiện riêng lẻ
-      if (truckName.includes(' ')) {
-        const nameParts = truckName.split(' ');
-        let allPartsFound = true;
-        
-        for (const part of nameParts) {
-          if (part.length < 2) continue; // Bỏ qua các phần quá ngắn
-          
-          if (!normalizedTitle.includes(part) && 
-              !normalizedDesc.includes(part) && 
-              !normalizedContent.includes(part)) {
-            allPartsFound = false;
-            break;
-          }
-        }
-        
-        if (allPartsFound) {
-          return truck;
-        }
-      }
-      
-      // Kiểm tra số tấn trong tên xe và trong nội dung
-      const weightMatch = truckName.match(/(\d+\.?\d*)\s*t[ấ|a]n/i);
-      if (weightMatch) {
-        const weight = weightMatch[1];
-        const weightPattern = new RegExp(`${weight}\\s*t[ấ|a]n`, 'i');
-        
-        if (weightPattern.test(normalizedTitle) || 
-            weightPattern.test(normalizedDesc) || 
-            weightPattern.test(normalizedContent)) {
-          return truck;
-        }
-      }
-      
-      // Kiểm tra khả năng đề cập đến "thùng đông lạnh", "thùng bảo ôn", v.v.
-      if (truck.boxType) {
-        const boxTypeTerms = [`thùng ${truck.boxType}`, `xe tải ${truck.boxType}`, `xe ${truck.boxType}`];
-        for (const term of boxTypeTerms) {
-          if (normalizedTitle.includes(term) || normalizedDesc.includes(term) || tags.some(tag => tag.includes(term))) {
-            return truck;
-          }
-        }
-      }
-      
-      // Kiểm tra khả năng đề cập đến loại mooc
-      if (truck.trailerType) {
-        const trailerTerms = [`mooc ${truck.trailerType}`, `sơ mi rơ mooc ${truck.trailerType}`];
-        for (const term of trailerTerms) {
-          if (normalizedTitle.includes(term) || normalizedDesc.includes(term) || tags.some(tag => tag.includes(term))) {
-            return truck;
-          }
+        const foundTruck = trucks.find(truck => truck.slug === truckSlug);
+        if (foundTruck) {
+          console.log(`Tìm thấy sản phẩm theo keyword "${keyword}": ${foundTruck.name}`);
+          return foundTruck;
         }
       }
     }
 
-    // Không tìm thấy xe phù hợp rõ ràng
+    // Fallback: tìm kiếm theo category và random selection để tránh trả về cùng 1 sản phẩm
+    const categoryBasedTrucks = trucks.filter(truck => {
+      if (post.category === 'product-review') {
+        return truck.type === 'xe-tai';
+      }
+      if (post.category === 'driver-tips') {
+        return truck.type === 'xe-tai' || truck.type === 'xe-cau';
+      }
+      if (post.category === 'maintenance') {
+        return true; // Tất cả loại xe đều cần bảo dưỡng
+      }
+      if (post.category === 'buying-guide') {
+        return truck.type === 'xe-tai';
+      }
+      if (post.category === 'technology') {
+        return truck.type === 'dau-keo' || truck.type === 'mooc';
+      }
+      return truck.type === 'xe-tai'; // Default
+    });
+
+    if (categoryBasedTrucks.length > 0) {
+      // Sử dụng hash của post ID để đảm bảo consistent nhưng khác nhau cho mỗi bài viết
+      const hash = post.id.split('').reduce((a, b) => {
+        a = ((a << 5) - a) + b.charCodeAt(0);
+        return a & a;
+      }, 0);
+      
+      const index = Math.abs(hash) % categoryBasedTrucks.length;
+      const selectedTruck = categoryBasedTrucks[index];
+      
+      console.log(`Fallback: chọn sản phẩm theo category cho bài "${post.title}": ${selectedTruck.name}`);
+      return selectedTruck;
+    }
+
+    console.log(`Không tìm thấy sản phẩm liên quan cho bài viết: ${post.title}`);
     return null;
   }, [post]);
 };
