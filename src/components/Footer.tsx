@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle, Youtube } from 'lucide-react';
@@ -10,7 +11,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
             <h3 className="font-heading text-xl font-bold mb-4">ChuyenDungVN</h3>
@@ -120,28 +121,28 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* Tiện ích */}
-          <div>
-            <h3 className="font-heading text-xl font-bold mb-4">Tiện ích</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/so-sanh-xe" className="text-gray-300 hover:text-primary transition-colors">
-                  So sánh xe
-                </Link>
-              </li>
-              <li>
-                <Link to="/du-toan-chi-phi" className="text-gray-300 hover:text-primary transition-colors">
-                  Dự toán chi phí
-                </Link>
-              </li>
-              <li>
-                <Link to="/tinh-lai-suat" className="text-gray-300 hover:text-primary transition-colors">
-                  Tính lãi suất vay
-                </Link>
-              </li>
-            </ul>
+            
+            {/* Phân cách và Tiện ích */}
+            <div className="mt-6 pt-6 border-t border-gray-700">
+              <h4 className="font-heading text-lg font-bold mb-3 text-primary-100">Tiện ích</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link to="/so-sanh-xe" className="text-gray-300 hover:text-primary transition-colors">
+                    So sánh xe
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/du-toan-chi-phi" className="text-gray-300 hover:text-primary transition-colors">
+                    Dự toán chi phí
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/tinh-lai-suat" className="text-gray-300 hover:text-primary transition-colors">
+                    Tính lãi suất vay
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Social Media & Contact */}
@@ -245,3 +246,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
