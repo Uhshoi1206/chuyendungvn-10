@@ -80,13 +80,13 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
           <p className="text-gray-600">{description}</p>
         </div>
 
-        <div className="relative" ref={containerRef}>
+        <div className="relative px-8 lg:px-16" ref={containerRef}>
           {/* Hiển thị nút điều hướng cho desktop */}
           {!isMobile && showNavigation && (
             <>
               <button
                 onClick={goToPrevPage}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-3 md:-translate-x-5 lg:-translate-x-8"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20"
                 aria-label="Xem sản phẩm trước đó"
                 style={{
                   background: 'linear-gradient(90deg, #ef4444, #f87171)',
@@ -105,7 +105,7 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
               
               <button
                 onClick={goToNextPage}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-3 md:translate-x-5 lg:translate-x-8"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20"
                 aria-label="Xem sản phẩm tiếp theo"
                 style={{
                   background: 'linear-gradient(90deg, #ef4444, #f87171)',
