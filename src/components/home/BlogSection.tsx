@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, ChevronRight, Tag, TrendingUp, User, Eye, Lightbulb, Zap, MessageCircle, BookOpen } from 'lucide-react';
@@ -18,6 +19,216 @@ interface BlogSectionProps {
   categories: Record<string, string>;
 }
 
+// Component cho bài viết nổi bật
+const FeaturedBlogPost = ({ post, categories, getPostUrl }: { 
+  post: BlogPost; 
+  categories: Record<string, string>; 
+  getPostUrl: (post: BlogPost) => string;
+}) => {
+  const relatedProduct = useRelatedTruckForBlogPost(post);
+  
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
+
+  return (
+    <Link to={getPostUrl(post)} className="group">
+      <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
+        <div className="aspect-[16/9] relative overflow-hidden">
+          <img
+            src={post.images[0]}
+            alt={post.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+          />
+          <div className="absolute top-0 left-0 bg-gradient-to-r from-primary to-primary/70 text-white px-4 py-2 rounded-br-lg rounded-tl-lg flex items-center font-medium">
+            <TrendingUp className="h-4 w-4 mr-1" />
+            Nổi Bật
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
+              {post.title}
+            </h3>
+            <div className="flex flex-wrap items-center gap-4 text-white/90">
+              <Link 
+                to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
+                className="bg-primary/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium hover:bg-primary/50 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {categories[post.category]}
+              </Link>
+              <span className="text-sm flex items-center">
+                <CalendarDays className="h-3 w-3 mr-1" />
+                {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-5">
+          <p className="text-gray-600 mb-4 line-clamp-2">
+            {post.description}
+          </p>
+          <div className="flex flex-wrap items-center justify-between text-sm text-gray-600 gap-2">
+            <div className="flex items-center">
+              <User className="h-4 w-4 mr-1 text-primary/80" />
+              <span className="mr-4">{post.author}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center">
+                <Clock className="h-4 w-4 mr-1" />
+                <span>{post.readTime} phút đọc</span>
+              </div>
+              <div className="flex items-center text-primary/80">
+                <Eye className="h-4 w-4 mr-1" />
+                <span>{post.views || '28'}</span>
+              </div>
+              <div className="flex items-center text-primary/80">
+                <MessageCircle className="h-4 w-4 mr-1" />
+                <span>{post.comments || '5'}</span>
+              </div>
+            </div>
+          </div>
+          
+          {relatedProduct && (
+            <div className="mt-4 pt-3 border-t border-gray-100">
+              <div className="text-xs text-gray-500">Bài viết có liên quan đến sản phẩm:</div>
+              <Link 
+                to={`/xe-tai/${relatedProduct.slug}`}
+                className="flex items-center text-sm font-medium text-primary hover:underline mt-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Tag className="h-3 w-3 mr-1" />
+                {relatedProduct.name}
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// Component cho bài viết nhỏ
+const RecentBlogPost = ({ post, categories, getPostUrl }: { 
+  post: BlogPost; 
+  categories: Record<string, string>; 
+  getPostUrl: (post: BlogPost) => string;
+}) => {
+  const relatedProduct = useRelatedTruckForBlogPost(post);
+  
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
+
+  return (
+    <Link to={getPostUrl(post)} className="group">
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 h-full flex">
+        <div className="w-1/3 aspect-square relative overflow-hidden">
+          <img
+            src={post.images[0]}
+            alt={post.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div className="absolute bottom-0 left-0 bg-gradient-to-r from-primary/90 to-primary/50 text-white text-xs px-2 py-1">
+            <div className="flex items-center">
+              <Eye className="h-3 w-3 mr-1" />
+              <span>{post.views || Math.floor(Math.random() * 50) + 10}</span>
+            </div>
+          </div>
+        </div>
+        <div className="w-2/3 p-4 flex flex-col">
+          <Link 
+            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
+            className="text-xs text-primary font-medium mb-1 hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {categories[post.category]}
+          </Link>
+          <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+            {post.title}
+          </h3>
+          <div className="mt-auto flex items-center justify-between text-xs text-gray-500">
+            <span className="flex items-center">
+              <CalendarDays className="h-3 w-3 mr-1" />
+              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+            </span>
+            <span className="flex items-center">
+              <User className="h-3 w-3 mr-1" />
+              {post.author}
+            </span>
+          </div>
+          
+          {relatedProduct && (
+            <div className="mt-2 pt-2 border-t border-gray-100">
+              <Link 
+                to={`/xe-tai/${relatedProduct.slug}`}
+                className="flex items-center text-xs text-primary hover:underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Tag className="h-3 w-3 mr-1" />
+                {relatedProduct.name}
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// Component cho carousel item
+const CarouselBlogPost = ({ post, categories, getPostUrl }: { 
+  post: BlogPost; 
+  categories: Record<string, string>; 
+  getPostUrl: (post: BlogPost) => string;
+}) => {
+  const getCategorySlug = (category: string) => {
+    return blogCategorySlugs[category as keyof typeof blogCategorySlugs] || category;
+  };
+
+  return (
+    <Link to={getPostUrl(post)} className="group h-full">
+      <div className="bg-white rounded-lg overflow-hidden shadow-sm h-full hover:shadow-md transition duration-300 flex flex-col">
+        <div className="aspect-video relative overflow-hidden">
+          <img
+            src={post.images[0]}
+            alt={post.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div className="absolute bottom-0 right-0 bg-black/60 text-white text-xs px-2 py-1 rounded-tl-md flex items-center">
+            <BookOpen className="h-3 w-3 mr-1" />
+            <span>{post.readTime} phút</span>
+          </div>
+        </div>
+        <div className="p-4 flex flex-col flex-grow">
+          <Link 
+            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
+            className="text-xs font-medium text-primary mb-2 hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {categories[post.category]}
+          </Link>
+          <h4 className="font-bold line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+            {post.title}
+          </h4>
+          <div className="mt-auto pt-2 flex items-center justify-between text-xs text-gray-500">
+            <span className="flex items-center">
+              <CalendarDays className="h-3 w-3 mr-1" />
+              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+            </span>
+            <span className="flex items-center">
+              <MessageCircle className="h-3 w-3 mr-1" />
+              <span>{post.comments || Math.floor(Math.random() * 10) + 1}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 const BlogSection = ({ posts, categories }: BlogSectionProps) => {
   // Phân loại bài viết nổi bật và mới nhất
   const featuredPost = posts[0]; // Bài viết đầu tiên sẽ là bài nổi bật
@@ -37,9 +248,6 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
     return `/${categorySlug}/${blogPost.slug}`;
   };
 
-  // Kiểm tra xem bài viết có liên quan đến sản phẩm nào không
-  const relatedProduct = useRelatedTruckForBlogPost(featuredPost);
-
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
@@ -51,143 +259,23 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
           {/* Bài viết nổi bật - chiếm 2/3 không gian */}
           <div className="lg:col-span-2">
-            <Link to={getPostUrl(featuredPost)} className="group">
-              <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
-                <div className="aspect-[16/9] relative overflow-hidden">
-                  <img
-                    src={featuredPost.images[0]}
-                    alt={featuredPost.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-0 left-0 bg-gradient-to-r from-primary to-primary/70 text-white px-4 py-2 rounded-br-lg rounded-tl-lg flex items-center font-medium">
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                    Nổi Bật
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
-                      {featuredPost.title}
-                    </h3>
-                    <div className="flex flex-wrap items-center gap-4 text-white/90">
-                      <Link 
-                        to={`/danh-muc-bai-viet/${getCategorySlug(featuredPost.category)}`}
-                        className="bg-primary/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium hover:bg-primary/50 transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {categories[featuredPost.category]}
-                      </Link>
-                      <span className="text-sm flex items-center">
-                        <CalendarDays className="h-3 w-3 mr-1" />
-                        {new Date(featuredPost.publishDate).toLocaleDateString('vi-VN')}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {featuredPost.description}
-                  </p>
-                  <div className="flex flex-wrap items-center justify-between text-sm text-gray-600 gap-2">
-                    <div className="flex items-center">
-                      <User className="h-4 w-4 mr-1 text-primary/80" />
-                      <span className="mr-4">{featuredPost.author}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span>{featuredPost.readTime} phút đọc</span>
-                      </div>
-                      <div className="flex items-center text-primary/80">
-                        <Eye className="h-4 w-4 mr-1" />
-                        <span>{featuredPost.views || '28'}</span>
-                      </div>
-                      <div className="flex items-center text-primary/80">
-                        <MessageCircle className="h-4 w-4 mr-1" />
-                        <span>{featuredPost.comments || '5'}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {relatedProduct && (
-                    <div className="mt-4 pt-3 border-t border-gray-100">
-                      <div className="text-xs text-gray-500">Bài viết có liên quan đến sản phẩm:</div>
-                      <Link 
-                        to={`/xe-tai/${relatedProduct.slug}`}
-                        className="flex items-center text-sm font-medium text-primary hover:underline mt-1"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Tag className="h-3 w-3 mr-1" />
-                        {relatedProduct.name}
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </Link>
+            <FeaturedBlogPost 
+              post={featuredPost} 
+              categories={categories} 
+              getPostUrl={getPostUrl} 
+            />
           </div>
 
           {/* Các bài viết mới - chiếm 1/3 không gian */}
           <div className="flex flex-col space-y-4">
-            {recentPosts.map((post) => {
-              // Kiểm tra sản phẩm liên quan cho mỗi bài viết
-              const postRelatedProduct = useRelatedTruckForBlogPost(post);
-              
-              return (
-                <Link key={post.id} to={getPostUrl(post)} className="group">
-                  <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 h-full flex">
-                    <div className="w-1/3 aspect-square relative overflow-hidden">
-                      <img
-                        src={post.images[0]}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute bottom-0 left-0 bg-gradient-to-r from-primary/90 to-primary/50 text-white text-xs px-2 py-1">
-                        <div className="flex items-center">
-                          <Eye className="h-3 w-3 mr-1" />
-                          <span>{post.views || Math.floor(Math.random() * 50) + 10}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="w-2/3 p-4 flex flex-col">
-                      <Link 
-                        to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-                        className="text-xs text-primary font-medium mb-1 hover:underline"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {categories[post.category]}
-                      </Link>
-                      <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <div className="mt-auto flex items-center justify-between text-xs text-gray-500">
-                        <span className="flex items-center">
-                          <CalendarDays className="h-3 w-3 mr-1" />
-                          {new Date(post.publishDate).toLocaleDateString('vi-VN')}
-                        </span>
-                        <span className="flex items-center">
-                          <User className="h-3 w-3 mr-1" />
-                          {post.author}
-                        </span>
-                      </div>
-                      
-                      {postRelatedProduct && (
-                        <div className="mt-2 pt-2 border-t border-gray-100">
-                          <Link 
-                            to={`/xe-tai/${postRelatedProduct.slug}`}
-                            className="flex items-center text-xs text-primary hover:underline"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Tag className="h-3 w-3 mr-1" />
-                            {postRelatedProduct.name}
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+            {recentPosts.map((post) => (
+              <RecentBlogPost 
+                key={post.id} 
+                post={post} 
+                categories={categories} 
+                getPostUrl={getPostUrl} 
+              />
+            ))}
           </div>
         </div>
         
@@ -201,44 +289,11 @@ const BlogSection = ({ posts, categories }: BlogSectionProps) => {
               <CarouselContent className="-ml-2 md:-ml-4">
                 {shuffledPosts.map((post) => (
                   <CarouselItem key={post.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-                    <Link to={getPostUrl(post)} className="group h-full">
-                      <div className="bg-white rounded-lg overflow-hidden shadow-sm h-full hover:shadow-md transition duration-300 flex flex-col">
-                        <div className="aspect-video relative overflow-hidden">
-                          <img
-                            src={post.images[0]}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                          />
-                          <div className="absolute bottom-0 right-0 bg-black/60 text-white text-xs px-2 py-1 rounded-tl-md flex items-center">
-                            <BookOpen className="h-3 w-3 mr-1" />
-                            <span>{post.readTime} phút</span>
-                          </div>
-                        </div>
-                        <div className="p-4 flex flex-col flex-grow">
-                          <Link 
-                            to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-                            className="text-xs font-medium text-primary mb-2 hover:underline"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {categories[post.category]}
-                          </Link>
-                          <h4 className="font-bold line-clamp-2 mb-2 group-hover:text-primary transition-colors">
-                            {post.title}
-                          </h4>
-                          <div className="mt-auto pt-2 flex items-center justify-between text-xs text-gray-500">
-                            <span className="flex items-center">
-                              <CalendarDays className="h-3 w-3 mr-1" />
-                              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
-                            </span>
-                            <span className="flex items-center">
-                              <MessageCircle className="h-3 w-3 mr-1" />
-                              <span>{post.comments || Math.floor(Math.random() * 10) + 1}</span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
+                    <CarouselBlogPost 
+                      post={post} 
+                      categories={categories} 
+                      getPostUrl={getPostUrl} 
+                    />
                   </CarouselItem>
                 ))}
               </CarouselContent>
