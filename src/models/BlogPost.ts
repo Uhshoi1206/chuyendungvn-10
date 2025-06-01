@@ -20,7 +20,7 @@ export type BlogCategory = 'industry-news' | 'product-review' | 'driver-tips' | 
 
 // Nhãn hiển thị cho các danh mục
 export const blogCategoryLabels: Record<BlogCategory, string> = {
-  'industry-news': 'Tin Tức Tin Ngành Vận Tải',
+  'industry-news': 'Tin Tức Ngành Vận Tải',
   'product-review': 'Đánh Giá Xe',
   'driver-tips': 'Kinh Nghiệm Lái Xe',
   'maintenance': 'Bảo Dưỡng',
@@ -30,7 +30,7 @@ export const blogCategoryLabels: Record<BlogCategory, string> = {
 
 // Slug tiếng Việt không dấu cho các danh mục
 export const blogCategorySlugs: Record<BlogCategory, string> = {
-  'industry-news': 'tin-tuc-tin-nganh-van-tai',
+  'industry-news': 'tin-tuc-nganh-van-tai',
   'product-review': 'danh-gia-xe',
   'driver-tips': 'kinh-nghiem-lai-xe',
   'maintenance': 'bao-duong',
@@ -40,7 +40,7 @@ export const blogCategorySlugs: Record<BlogCategory, string> = {
 
 // Ánh xạ ngược từ slug tiếng Việt sang BlogCategory
 export const slugToBlogCategory: Record<string, BlogCategory> = {
-  'tin-tuc-tin-nganh-van-tai': 'industry-news',
+  'tin-tuc-nganh-van-tai': 'industry-news',
   'danh-gia-xe': 'product-review',
   'kinh-nghiem-lai-xe': 'driver-tips',
   'bao-duong': 'maintenance',

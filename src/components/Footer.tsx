@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle, Youtube } from 'lucide-react';
@@ -61,8 +60,8 @@ const Footer: React.FC = () => {
                 </Link>
                 <ul className="pl-4 mt-2 space-y-2">
                   <li>
-                    <Link to="/danh-muc-bai-viet/tin-tuc-tin-nganh-van-tai" className="text-gray-400 hover:text-primary transition-colors text-sm">
-                      Tin Tức Tin Ngành Vận Tải
+                    <Link to="/danh-muc-bai-viet/tin-tuc-nganh-van-tai" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                      Tin Tức Ngành Vận Tải
                     </Link>
                   </li>
                   <li>
