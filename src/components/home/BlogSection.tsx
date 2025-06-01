@@ -34,10 +34,6 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
     e.stopPropagation();
   };
 
-  const handleProductClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   return (
     <Link to={getPostUrl(post)} className="group">
       <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
@@ -98,13 +94,14 @@ const FeaturedBlogPost = ({ post, categories, getPostUrl }: {
           {relatedProduct && (
             <div className="mt-4 pt-3 border-t border-gray-100">
               <div className="text-xs text-gray-500">Bài viết có liên quan đến sản phẩm:</div>
-              <div 
+              <Link 
+                to={`/xe/${relatedProduct.slug}`}
                 className="flex items-center text-sm font-medium text-primary hover:underline mt-1 cursor-pointer"
-                onClick={handleProductClick}
+                onClick={(e) => e.stopPropagation()}
               >
                 <Tag className="h-3 w-3 mr-1" />
                 {relatedProduct.name}
-              </div>
+              </Link>
             </div>
           )}
         </div>
@@ -126,10 +123,6 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
   };
 
   const handleCategoryClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const handleProductClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
@@ -173,13 +166,14 @@ const RecentBlogPost = ({ post, categories, getPostUrl }: {
           
           {relatedProduct && (
             <div className="mt-2 pt-2 border-t border-gray-100">
-              <div 
+              <Link 
+                to={`/xe/${relatedProduct.slug}`}
                 className="flex items-center text-xs text-primary hover:underline cursor-pointer"
-                onClick={handleProductClick}
+                onClick={(e) => e.stopPropagation()}
               >
                 <Tag className="h-3 w-3 mr-1" />
                 {relatedProduct.name}
-              </div>
+              </Link>
             </div>
           )}
         </div>
