@@ -34,10 +34,12 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
       let columns = 4; // Mặc định hiển thị 4 sản phẩm một hàng
 
       // Responsive: Tính toán số cột dựa trên độ rộng của container
-      if (containerWidth < 640) { // Mobile
+      if (containerWidth < 768) { // Mobile - hiển thị 1 sản phẩm mỗi trang
         columns = 1;
-      } else if (containerWidth < 1024) { // Tablet
-        columns = 2;
+      } else if (containerWidth < 1024) { // Tablet - hiển thị 1 sản phẩm mỗi trang  
+        columns = 1;
+      } else { // Desktop - hiển thị 4 sản phẩm mỗi trang
+        columns = 4;
       }
 
       setItemsPerPage(columns);
@@ -124,7 +126,8 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
             </>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* Grid responsive: 1 cột trên mobile/tablet, 4 cột trên desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
             {currentVehicles.map((vehicle, index) => (
               <div 
                 key={vehicle.id} 
