@@ -118,6 +118,23 @@ const Footer: React.FC = () => {
                   Xe Đầu Kéo
                 </Link>
               </li>
+              
+              {/* Thêm các liên kết mới */}
+              <li className="pt-2 border-t border-gray-700 mt-4">
+                <Link to="/so-sanh-xe" className="text-gray-300 hover:text-primary transition-colors">
+                  So sánh xe
+                </Link>
+              </li>
+              <li>
+                <Link to="/du-toan-chi-phi" className="text-gray-300 hover:text-primary transition-colors">
+                  Dự toán chi phí
+                </Link>
+              </li>
+              <li>
+                <Link to="/tinh-lai-suat" className="text-gray-300 hover:text-primary transition-colors">
+                  Tính lãi suất vay
+                </Link>
+              </li>
             </ul>
           </div>
 
