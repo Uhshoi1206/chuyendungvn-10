@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle, Youtube } from 'lucide-react';
@@ -9,7 +10,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           {/* Company Info */}
           <div>
             <h3 className="font-heading text-xl font-bold mb-4">ChuyenDungVN</h3>
@@ -118,9 +119,14 @@ const Footer: React.FC = () => {
                   Xe Đầu Kéo
                 </Link>
               </li>
-              
-              {/* Thêm các liên kết mới */}
-              <li className="pt-2 border-t border-gray-700 mt-4">
+            </ul>
+          </div>
+
+          {/* Tiện ích */}
+          <div>
+            <h3 className="font-heading text-xl font-bold mb-4">Tiện ích</h3>
+            <ul className="space-y-2">
+              <li>
                 <Link to="/so-sanh-xe" className="text-gray-300 hover:text-primary transition-colors">
                   So sánh xe
                 </Link>
