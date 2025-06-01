@@ -9,10 +9,10 @@ import {
   specializedCranes, 
   semiTrailers, 
   tractors,
-  truckWeights 
+  truckWeights,
+  trucks
 } from '@/data/truckData';
 import { blogPosts, blogCategories } from '@/data/blogData';
-import { truckBrands } from '@/data/truckData';
 import VehicleCarousel from '@/components/home/VehicleCarousel';
 import BrandCategories from '@/components/home/BrandCategories';
 import ContactSection from '@/components/home/ContactSection';
@@ -81,7 +81,7 @@ const Index = () => {
         </div>
         
         {/* Thương Hiệu Nổi Tiếng */}
-        <BrandCategories brands={truckBrands} />
+        <BrandCategories trucks={trucks} />
         
         {/* Liên Hệ Tư Vấn */}
         <ContactSection />

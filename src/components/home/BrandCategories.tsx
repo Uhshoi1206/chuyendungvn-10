@@ -1,14 +1,32 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { TruckBrand } from '@/models/TruckTypes';
+import { Truck } from '@/models/TruckTypes';
 import SectionTitle from '@/components/SectionTitle';
 
 interface BrandCategoriesProps {
-  brands: TruckBrand[];
+  trucks: Truck[];
 }
 
-const BrandCategories = ({ brands }: BrandCategoriesProps) => {
+const BrandCategories = ({ trucks }: BrandCategoriesProps) => {
+  // Tạo danh sách thương hiệu duy nhất từ sản phẩm có sẵn
+  const getUniqueBrands = () => {
+    const brandSet = new Set<string>();
+    trucks.forEach(truck => {
+      if (truck.brand && truck.brand.trim()) {
+        brandSet.add(truck.brand.trim());
+      }
+    });
+    
+    // Chuyển đổi Set thành mảng và sắp xếp theo thứ tự alphabet
+    return Array.from(brandSet).sort().map((brand, index) => ({
+      id: index + 1,
+      name: brand
+    }));
+  };
+
+  const brands = getUniqueBrands();
+
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
