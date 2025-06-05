@@ -1,4 +1,3 @@
-
 import { Truck, VehicleType } from '@/models/TruckTypes';
 import { trucks } from '@/data/truckData';
 
@@ -42,7 +41,7 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
   // Áp dụng các bộ lọc khác
   filteredVehicles = filteredVehicles.filter(vehicle => {
     // Lọc theo thương hiệu
-    if (filters.brand && vehicle.brand !== filters.brand) {
+    if (filters.brand && !(Array.isArray(vehicle.brand) ? vehicle.brand.includes(filters.brand) : vehicle.brand === filters.brand)) {
       return false;
     }
     
@@ -72,7 +71,9 @@ export const useVehicleFiltering = (vehicles: Truck[], selectedType: VehicleType
     if (filters.search && filters.search.trim() !== "") {
       const searchLower = filters.search.toLowerCase();
       const nameMatch = vehicle.name.toLowerCase().includes(searchLower);
-      const brandMatch = vehicle.brand.toLowerCase().includes(searchLower);
+      const brandMatch = Array.isArray(vehicle.brand)
+        ? vehicle.brand.some(b => b.toLowerCase().includes(searchLower))
+        : vehicle.brand.toLowerCase().includes(searchLower);
       const descriptionMatch = vehicle.description?.toLowerCase().includes(searchLower);
       
       if (!nameMatch && !brandMatch && !descriptionMatch) {
