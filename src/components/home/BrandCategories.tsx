@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Truck } from '@/models/TruckTypes';
@@ -13,8 +12,16 @@ const BrandCategories = ({ trucks }: BrandCategoriesProps) => {
   const getUniqueBrands = () => {
     const brandSet = new Set<string>();
     trucks.forEach(truck => {
-      if (truck.brand && truck.brand.trim()) {
-        brandSet.add(truck.brand.trim());
+      if (Array.isArray(truck.brand)) {
+        truck.brand.forEach(b => {
+            if (b && b.trim()) {
+                brandSet.add(b.trim());
+            }
+        });
+      } else {
+        if (truck.brand && truck.brand.trim()) {
+            brandSet.add(truck.brand.trim());
+        }
       }
     });
     
@@ -44,7 +51,8 @@ const BrandCategories = ({ trucks }: BrandCategoriesProps) => {
       'Mercedes-Benz': 'https://logos-world.net/wp-content/uploads/2020/04/Mercedes-Benz-Logo.png',
       'Volvo': 'https://logos-world.net/wp-content/uploads/2020/04/Volvo-Logo.png',
       'Scania': 'https://logos-world.net/wp-content/uploads/2021/04/Scania-Logo.png',
-      'MAN': 'https://logos-world.net/wp-content/uploads/2021/04/MAN-Logo.png'
+      'MAN': 'https://logos-world.net/wp-content/uploads/2021/04/MAN-Logo.png',
+      'Soosan': 'https://seeklogo.com/images/S/soosan-heavy-industries-logo-1433C40292-seeklogo.com.png'
     };
 
     return logoMap[brandName] || `https://via.placeholder.com/120x60/f0f0f0/666?text=${encodeURIComponent(brandName)}`;
