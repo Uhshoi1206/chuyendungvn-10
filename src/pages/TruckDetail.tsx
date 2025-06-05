@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -72,7 +71,7 @@ const TruckDetail = () => {
 
     // Nếu có ít hơn 3 bài viết liên quan trực tiếp, mở rộng thêm bài viết cùng thương hiệu nhưng trừ bài khác sản phẩm
     if (mainRelated.length < 3) {
-      const brandKeyword = truck.brand.toLowerCase();
+      const brandKeyword = Array.isArray(truck.brand) ? truck.brand[0].toLowerCase() : truck.brand.toLowerCase();
       const extraRelated = blogPosts.filter(post =>
         // Cùng thương hiệu, không phải bài chính này và chưa nằm trong mainRelated
         (post.title.toLowerCase().includes(brandKeyword) ||
@@ -238,7 +237,13 @@ const TruckDetail = () => {
               {truck.isHot && (
                 <Badge className="bg-primary hover:bg-red-700">Hot</Badge>
               )}
-              <Badge variant="outline">{truck.brand}</Badge>
+              {Array.isArray(truck.brand) ? (
+                truck.brand.map((b, index) => (
+                  <Badge key={index} variant="outline">{b}</Badge>
+                ))
+              ) : (
+                <Badge variant="outline">{truck.brand}</Badge>
+              )}
               {truck.boxType && (
                 <Badge variant="outline" className="bg-blue-50">{boxTypeName}</Badge>
               )}
@@ -258,7 +263,9 @@ const TruckDetail = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-3 rounded-md">
                   <div className="text-gray-600 text-sm">Thương hiệu</div>
-                  <div className="font-medium">{truck.brand}</div>
+                  <div className="font-medium">
+                    {Array.isArray(truck.brand) ? truck.brand.join(' / ') : truck.brand}
+                  </div>
                 </div>
                 <div className="bg-gray-50 p-3 rounded-md">
                   <div className="text-gray-600 text-sm">Tải trọng</div>
@@ -411,7 +418,9 @@ const TruckDetail = () => {
                   <tbody>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600 w-1/3">Hãng sản xuất</td>
-                      <td className="py-2 font-medium">{truck.brand}</td>
+                      <td className="py-2 font-medium">
+                        {Array.isArray(truck.brand) ? truck.brand.join(' / ') : truck.brand}
+                      </td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Model</td>
@@ -1184,7 +1193,7 @@ const TruckDetail = () => {
                   <tbody>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600 w-1/3">Thiết bị an toàn</td>
-                      <td className="py-2 font-medium">{truck.tankSpec?.safetyEquipment || 'Van an toàn, dây tiếp mát, thoát hơi'}</td>
+                      <td className="py-2 font-medium">{truck.tankSpec?.safetyEquipment || 'Van thở, dây tiếp mát, thoát hơi'}</td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 text-gray-600">Hệ thống bơm</td>
