@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Truck, getVehicleUrlPrefix } from '@/models/TruckTypes';
@@ -34,6 +35,14 @@ const TruckItem = ({ truck }: TruckItemProps) => {
         }, 300);
       }
     }
+  };
+
+  // Hàm để hiển thị thương hiệu - hỗ trợ mảng thương hiệu
+  const renderBrands = () => {
+    if (Array.isArray(truck.brand)) {
+      return truck.brand.join(' • ');
+    }
+    return truck.brand;
   };
   
   return (
@@ -83,7 +92,7 @@ const TruckItem = ({ truck }: TruckItemProps) => {
       <div className="p-4 flex-grow flex flex-col">
         <div>
           <span className="text-gray-500 text-sm">
-            {Array.isArray(truck.brand) ? truck.brand.join(' / ') : truck.brand}
+            {renderBrands()}
           </span>
           <Link to={`/${vehicleUrlPrefix}/${truck.slug}`} className="group" onClick={() => window.scrollTo(0, 0)}>
             <h3 className="font-bold text-lg mb-2 hover:text-red-600 transition-colors line-clamp-2">

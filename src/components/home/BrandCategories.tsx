@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Truck } from '@/models/TruckTypes';
@@ -8,7 +9,7 @@ interface BrandCategoriesProps {
 }
 
 const BrandCategories = ({ trucks }: BrandCategoriesProps) => {
-  // Tạo danh sách thương hiệu duy nhất từ sản phẩm có sẵn
+  // Tạo danh sách thương hiệu duy nhất từ sản phẩm có sẵn - hỗ trợ mảng thương hiệu
   const getUniqueBrands = () => {
     const brandSet = new Set<string>();
     trucks.forEach(truck => {
