@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -81,9 +80,14 @@ const TruckCatalog: React.FC = () => {
       result = result.filter(truck => truck.type === filters.vehicleType);
     }
     
-    // Lọc theo thương hiệu
+    // Lọc theo thương hiệu - cập nhật để hỗ trợ mảng thương hiệu
     if (filters.brand) {
-      result = result.filter(truck => truck.brand === filters.brand);
+      result = result.filter(truck => {
+        const vehicleBrands = Array.isArray(truck.brand) ? truck.brand : [truck.brand];
+        return vehicleBrands.some(brand => 
+          brand.toLowerCase().includes(filters.brand!.toLowerCase())
+        );
+      });
     }
     
     // Lọc theo giá
@@ -102,16 +106,22 @@ const TruckCatalog: React.FC = () => {
       result = result.filter(truck => truck.weight <= (filters.maxWeight || Infinity));
     }
     
-    // Lọc theo từ khóa tìm kiếm
+    // Lọc theo từ khóa tìm kiếm - cập nhật để hỗ trợ mảng thương hiệu
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      result = result.filter(
-        truck => 
-          truck.name.toLowerCase().includes(searchLower) || 
-          truck.brand.toLowerCase().includes(searchLower) ||
-          truck.description?.toLowerCase().includes(searchLower) ||
-          truck.weightText.toLowerCase().includes(searchLower)
-      );
+      result = result.filter(truck => {
+        const nameMatch = truck.name.toLowerCase().includes(searchLower);
+        
+        const vehicleBrands = Array.isArray(truck.brand) ? truck.brand : [truck.brand];
+        const brandMatch = vehicleBrands.some(brand => 
+          brand.toLowerCase().includes(searchLower)
+        );
+        
+        const descriptionMatch = truck.description?.toLowerCase().includes(searchLower);
+        const weightTextMatch = truck.weightText.toLowerCase().includes(searchLower);
+        
+        return nameMatch || brandMatch || descriptionMatch || weightTextMatch;
+      });
     }
     
     console.log("Kết quả lọc:", result.length, "xe");

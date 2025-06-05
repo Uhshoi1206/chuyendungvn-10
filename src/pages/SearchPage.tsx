@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
@@ -34,12 +33,20 @@ const SearchPage: React.FC = () => {
     const performSearch = () => {
       if (!query) return;
 
-      // Tìm kiếm xe
-      const trucksResult = trucks.filter(truck => 
-        truck.name.toLowerCase().includes(query.toLowerCase()) || 
-        truck.brand.toLowerCase().includes(query.toLowerCase()) || 
-        truck.description.toLowerCase().includes(query.toLowerCase())
-      );
+      // Tìm kiếm xe - cập nhật để hỗ trợ mảng thương hiệu
+      const trucksResult = trucks.filter(truck => {
+        const nameMatch = truck.name.toLowerCase().includes(query.toLowerCase());
+        
+        // Xử lý tìm kiếm thương hiệu cho cả string và mảng
+        const vehicleBrands = Array.isArray(truck.brand) ? truck.brand : [truck.brand];
+        const brandMatch = vehicleBrands.some(brand => 
+          brand.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        const descriptionMatch = truck.description.toLowerCase().includes(query.toLowerCase());
+        
+        return nameMatch || brandMatch || descriptionMatch;
+      });
       setFilteredTrucks(trucksResult);
 
       // Tìm kiếm bài viết
