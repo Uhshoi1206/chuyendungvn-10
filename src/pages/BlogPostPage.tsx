@@ -9,8 +9,9 @@ import useRelatedTruckForBlogPost from '@/hooks/useRelatedTruckForBlogPost';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { getVehicleUrlPrefix } from '@/models/TruckTypes';
+import ContactForm from '@/components/ContactForm';
 
 const BlogPostPage = () => {
   const { slug, category } = useParams();
@@ -443,25 +444,13 @@ const BlogPostPage = () => {
                 </div>
               )}
               
-              {/* Form đăng ký tư vấn */}
+              {/* Form đăng ký tư vấn - Sử dụng ContactForm component */}
               <div className="bg-primary/10 rounded-xl p-6">
                 <h3 className="text-lg font-bold mb-2">Đăng Ký Nhận Tư Vấn</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   Để lại thông tin để nhận tư vấn miễn phí về sản phẩm phù hợp với nhu cầu của bạn
                 </p>
-                <form className="space-y-3">
-                  <input 
-                    type="text" 
-                    placeholder="Họ tên"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary" 
-                  />
-                  <input 
-                    type="tel" 
-                    placeholder="Số điện thoại"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary" 
-                  />
-                  <Button className="w-full">Gửi yêu cầu</Button>
-                </form>
+                <ContactForm source="bai-viet-blog" />
               </div>
               
               {/* Tags */}

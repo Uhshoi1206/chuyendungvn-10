@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -8,6 +9,7 @@ import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import NewsletterForm from '@/components/NewsletterForm';
 
 const BlogPage = () => {
   // State để lưu trữ kết quả tìm kiếm
@@ -389,19 +391,15 @@ const BlogPage = () => {
           </div>
         </div>
         
-        {/* Đăng ký nhận tin mới nhất */}
-        <div className="bg-gradient-to-tr from-primary/10 to-gray-50 rounded-xl p-8 mt-16 mb-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-bold mb-3">Đăng Ký Nhận Tin Mới Nhất</h3>
-            <p className="text-gray-600 mb-6">
-              Nhận thông tin mới nhất về sản phẩm, khuyến mãi và bài viết hữu ích về ngành vận tải
-            </p>
-            <form className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-              <Input placeholder="Email của bạn" className="flex-grow" />
-              <Button variant="default" className="whitespace-nowrap">
-                Đăng ký
-              </Button>
-            </form>
+        {/* Đăng ký nhận tin mới nhất - Sử dụng NewsletterForm component */}
+        <div className="mt-16 mb-8">
+          <div className="max-w-2xl mx-auto">
+            <NewsletterForm 
+              source="blog"
+              title="Đăng Ký Nhận Tin Mới Nhất"
+              placeholder="Nhập email của bạn để nhận tin tức mới nhất"
+              buttonText="Đăng ký nhận tin"
+            />
           </div>
         </div>
       </div>
