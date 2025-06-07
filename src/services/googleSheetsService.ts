@@ -1,6 +1,6 @@
 
 // Cấu hình Google Sheets - thay đổi URL này theo sheet của bạn
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxfsILcpeYwjC85Y3rJHOWo6-kXplkn2WSJ4RJmNt_42797ZnVXpY9xL5MnFkgJ0SJK/exec';
 
 export interface ContactData {
   timestamp: string;
