@@ -7,6 +7,7 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { useToast } from './ui/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { submitToGoogleSheets, ContactData } from '@/services/googleSheetsService';
 
 interface PriceQuoteDialogProps {
   productName: string;
@@ -46,7 +47,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Kiểm tra dữ liệu
@@ -70,26 +71,48 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     
     setIsSubmitting(true);
     
-    // Mô phỏng gửi dữ liệu
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsOpen(false);
+    try {
+      const contactData: ContactData = {
+        timestamp: new Date().toLocaleString('vi-VN'),
+        source: 'chi-tiet-san-pham',
+        name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        company: formData.company,
+        product: productName,
+        message: formData.message
+      };
+
+      const success = await submitToGoogleSheets(contactData);
       
+      if (success) {
+        setIsOpen(false);
+        
+        toast({
+          title: "Gửi yêu cầu thành công!",
+          description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
+        });
+        
+        // Reset form
+        setFormData({
+          fullName: '',
+          phone: '',
+          email: '',
+          company: '',
+          message: '',
+        });
+      } else {
+        throw new Error('Gửi thất bại');
+      }
+    } catch (error) {
       toast({
-        title: "Gửi yêu cầu thành công!",
-        description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
+        title: "Có lỗi xảy ra!",
+        description: "Vui lòng thử lại sau hoặc liên hệ trực tiếp qua hotline.",
+        variant: "destructive"
       });
-      
-      // Reset form
-      setFormData({
-        fullName: '',
-        phone: '',
-        email: '',
-        company: '',
-        message: '',
-      });
-      
-    }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

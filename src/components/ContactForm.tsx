@@ -5,12 +5,17 @@ import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { useToast } from './ui/use-toast';
+import { submitToGoogleSheets, ContactData } from '@/services/googleSheetsService';
 
 interface ContactFormProps {
   productName?: string;
+  source?: string; // Để xác định nguồn form
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({ productName = '' }) => {
+const ContactForm: React.FC<ContactFormProps> = ({ 
+  productName = '', 
+  source = 'trang-chu'
+}) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
@@ -29,29 +34,51 @@ const ContactForm: React.FC<ContactFormProps> = ({ productName = '' }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const contactData: ContactData = {
+        timestamp: new Date().toLocaleString('vi-VN'),
+        source: source,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        product: formData.product,
+        message: formData.message
+      };
+
+      const success = await submitToGoogleSheets(contactData);
       
+      if (success) {
+        toast({
+          title: "Gửi thành công!",
+          description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
+        });
+        
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          address: '',
+          product: productName,
+          message: ''
+        });
+      } else {
+        throw new Error('Gửi thất bại');
+      }
+    } catch (error) {
       toast({
-        title: "Gửi thành công!",
-        description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.",
+        title: "Có lỗi xảy ra!",
+        description: "Vui lòng thử lại sau hoặc liên hệ trực tiếp qua hotline.",
+        variant: "destructive"
       });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        address: '',
-        product: productName,
-        message: ''
-      });
-    }, 1000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

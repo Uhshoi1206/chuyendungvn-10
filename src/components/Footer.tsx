@@ -1,13 +1,61 @@
-
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, MessageCircle, Youtube } from 'lucide-react';
 import { FaTiktok } from 'react-icons/fa';
 import AddressRegions from './AddressRegions';
 import { addressRegions } from '@/data/addressData';
+import { useToast } from './ui/use-toast';
+import { submitToGoogleSheets, ContactData } from '@/services/googleSheetsService';
 
 const Footer: React.FC = () => {
+  const { toast } = useToast();
+  const [phone, setPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!phone.trim()) {
+      toast({
+        title: "Vui lòng nhập số điện thoại!",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const contactData: ContactData = {
+        timestamp: new Date().toLocaleString('vi-VN'),
+        source: 'footer',
+        phone: phone,
+        message: 'Yêu cầu gọi lại'
+      };
+
+      const success = await submitToGoogleSheets(contactData);
+      
+      if (success) {
+        toast({
+          title: "Gửi thành công!",
+          description: "Chúng tôi sẽ gọi lại cho bạn trong thời gian sớm nhất.",
+        });
+        
+        setPhone('');
+      } else {
+        throw new Error('Gửi thất bại');
+      }
+    } catch (error) {
+      toast({
+        title: "Có lỗi xảy ra!",
+        description: "Vui lòng thử lại sau hoặc gọi trực tiếp hotline.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-8">
       <div className="container mx-auto px-4">
@@ -207,14 +255,21 @@ const Footer: React.FC = () => {
               <p className="text-gray-300 mb-4">
                 Để lại số điện thoại, chúng tôi sẽ gọi lại cho bạn ngay!
               </p>
-              <form className="flex space-x-2">
+              <form onSubmit={handlePhoneSubmit} className="flex space-x-2">
                 <input
                   type="tel"
                   placeholder="Số điện thoại của bạn"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="flex-1 px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-primary"
+                  required
                 />
-                <button type="submit" className="px-4 py-2 bg-primary hover:bg-primary-700 rounded-md transition-colors">
-                  Gửi
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="px-4 py-2 bg-primary hover:bg-primary-700 rounded-md transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Đang gửi...' : 'Gửi'}
                 </button>
               </form>
             </div>
@@ -246,4 +301,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-

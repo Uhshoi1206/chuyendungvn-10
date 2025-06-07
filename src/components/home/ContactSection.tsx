@@ -19,7 +19,7 @@ const ContactSection = () => {
               chương trình khuyến mãi, vui lòng để lại thông tin liên hệ. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
             </p>
             
-            <ContactForm />
+            <ContactForm source="trang-chu" />
           </div>
           
           <div className="flex flex-col justify-center">
