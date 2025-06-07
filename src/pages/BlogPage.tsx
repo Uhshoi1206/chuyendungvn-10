@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { blogPosts, blogCategories } from '@/data/blogData';
 import { blogCategoryLabels, BlogPost, blogCategorySlugs } from '@/models/BlogPost';
 import Layout from '@/components/Layout';
-import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, Lightbulb, Zap, MessageCircle, BookOpen, ArrowRight } from 'lucide-react';
+import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, Lightbulb, Zap, MessageCircle, BookOpen, ArrowRight, Mail, Bell, Gift } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -391,15 +390,57 @@ const BlogPage = () => {
           </div>
         </div>
         
-        {/* Đăng ký nhận tin mới nhất - Sử dụng NewsletterForm component */}
+        {/* Đăng ký nhận tin mới nhất - Section được thiết kế đẹp mắt */}
         <div className="mt-16 mb-8">
-          <div className="max-w-2xl mx-auto">
-            <NewsletterForm 
-              source="blog"
-              title="Đăng Ký Nhận Tin Mới Nhất"
-              placeholder="Nhập email của bạn để nhận tin tức mới nhất"
-              buttonText="Đăng ký nhận tin"
-            />
+          <div className="bg-gradient-to-br from-primary/5 via-white to-blue-50/30 rounded-2xl p-8 border border-gray-100 shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Phần thông tin bên trái */}
+              <div>
+                <div className="flex items-center mb-4">
+                  <div className="bg-primary/10 p-3 rounded-full mr-4">
+                    <Mail className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Đăng Ký Nhận Tin Mới Nhất</h3>
+                </div>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Nhận thông tin mới nhất về sản phẩm, khuyến mãi và bài viết hữu ích về ngành vận tải thương mại trực tiếp qua email của bạn.
+                </p>
+                
+                {/* Danh sách lợi ích */}
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm">
+                    <Bell className="h-4 w-4 text-primary mr-3 flex-shrink-0" />
+                    <span className="text-gray-700">Tin tức cập nhật hàng tuần về thị trường xe tải</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <Gift className="h-4 w-4 text-primary mr-3 flex-shrink-0" />
+                    <span className="text-gray-700">Thông báo khuyến mãi và ưu đãi đặc biệt</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <BookOpen className="h-4 w-4 text-primary mr-3 flex-shrink-0" />
+                    <span className="text-gray-700">Bài viết chuyên sâu về kỹ thuật và bảo dưỡng</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Form đăng ký bên phải */}
+              <div>
+                <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                  <NewsletterForm 
+                    source="blog"
+                    title="Thông Tin Liên Hệ"
+                    placeholder="Nhập email của bạn để nhận tin tức mới nhất"
+                    buttonText="Đăng Ký Ngay"
+                  />
+                  
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <p className="text-xs text-gray-500 text-center">
+                      Bằng cách đăng ký, bạn đồng ý nhận email từ chúng tôi. Bạn có thể hủy đăng ký bất cứ lúc nào.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
