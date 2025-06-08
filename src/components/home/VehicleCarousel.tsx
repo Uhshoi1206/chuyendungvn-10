@@ -78,50 +78,7 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
           <p className="text-gray-600">{description}</p>
         </div>
 
-        <div className="relative px-8 lg:px-16" ref={containerRef}>
-          {/* Hiển thị nút điều hướng cho desktop */}
-          {!isMobile && showNavigation && (
-            <>
-              <button
-                onClick={goToPrevPage}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20"
-                aria-label="Xem sản phẩm trước đó"
-                style={{
-                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  border: '2px solid white'
-                }}
-              >
-                <ChevronLeft className="h-6 w-6 text-white" />
-              </button>
-              
-              <button
-                onClick={goToNextPage}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20"
-                aria-label="Xem sản phẩm tiếp theo"
-                style={{
-                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  border: '2px solid white'
-                }}
-              >
-                <ChevronRight className="h-6 w-6 text-white" />
-              </button>
-            </>
-          )}
-
+        <div className="relative" ref={containerRef}>
           {/* Grid responsive: 1 cột trên mobile/tablet (4 dòng), 4 cột trên desktop (1 dòng) */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
             {currentVehicles.map((vehicle, index) => (
@@ -139,47 +96,25 @@ const VehicleCarousel: React.FC<VehicleCarouselProps> = ({
             ))}
           </div>
 
-          {/* Hiển thị nút điều hướng cho mobile dạng inline */}
-          {isMobile && showNavigation && (
-            <div className="carousel-controls-mobile mt-4 flex justify-center gap-4">
+          {/* Navigation buttons - giống như trong BlogSection carousel */}
+          {showNavigation && (
+            <>
               <button
                 onClick={goToPrevPage}
-                className="carousel-button-mobile"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white h-8 w-8 rounded-full flex items-center justify-center shadow-sm border border-gray-200"
                 aria-label="Xem sản phẩm trước đó"
-                style={{
-                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  border: '2px solid white'
-                }}
               >
-                <ChevronLeft className="h-6 w-6 text-white" />
+                <ChevronLeft className="h-4 w-4" />
               </button>
               
               <button
                 onClick={goToNextPage}
-                className="carousel-button-mobile"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white h-8 w-8 rounded-full flex items-center justify-center shadow-sm border border-gray-200"
                 aria-label="Xem sản phẩm tiếp theo"
-                style={{
-                  background: 'linear-gradient(90deg, #ef4444, #f87171)',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  border: '2px solid white'
-                }}
               >
-                <ChevronRight className="h-6 w-6 text-white" />
+                <ChevronRight className="h-4 w-4" />
               </button>
-            </div>
+            </>
           )}
         </div>
 
