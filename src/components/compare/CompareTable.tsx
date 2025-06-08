@@ -299,11 +299,23 @@ const CompareTable: React.FC<CompareTableProps> = ({ trucks }) => {
     return value.toString();
   };
 
+  // Hàm format thương hiệu - sửa để hiển thị đẹp hơn
+  const formatBrand = (brand: string | string[]) => {
+    if (!brand) return '-';
+    
+    if (Array.isArray(brand)) {
+      // Nếu là mảng, nối bằng " & " để trông tinh tế hơn
+      return brand.join(' & ');
+    }
+    
+    return brand.toString();
+  };
+
   // Hàm lấy giá trị của thuộc tính
   const getPropertyValue = (truck: Truck, propId: string, isPrice?: boolean, unit?: string, isArray?: boolean) => {
     if (!truck) return '-';
 
-    if (propId === 'brand') return truck.brand || '-';
+    if (propId === 'brand') return formatBrand(truck.brand);
     if (propId === 'weightText') return truck.weightText || '-';
     if (propId === 'dimensions') return truck.dimensions || `${truck.length} x ${truck.width} x ${truck.height} m`;
     if (propId === 'price' && isPrice) return truck.priceText || formatPrice(truck.price) || '-';
