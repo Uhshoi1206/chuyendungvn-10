@@ -230,7 +230,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
   // Render desktop TOC
   return (
     <div className={cn(
-      "fixed right-6 top-1/2 transform -translate-y-1/2 z-40 w-80 max-h-[80vh] bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden",
+      "fixed right-6 top-1/2 transform -translate-y-1/2 z-40 w-80 max-h-[85vh] bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden",
       className
     )}>
       {/* Header */}
@@ -268,7 +268,10 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
       {!isCollapsed && (
         <div 
           ref={tocContainerRef}
-          className="max-h-96 overflow-y-auto p-2 scroll-smooth"
+          className="flex-1 overflow-y-auto p-2 scroll-smooth"
+          style={{ 
+            maxHeight: 'calc(85vh - 140px)' // Trừ đi chiều cao header và footer
+          }}
         >
           <nav className="space-y-1">
             {tocItems.map((item) => (
