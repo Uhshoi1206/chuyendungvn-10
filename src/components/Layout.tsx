@@ -1,8 +1,8 @@
-
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
+import './blog/BlogStyles.css';
 
 interface LayoutProps {
   children: React.ReactNode;

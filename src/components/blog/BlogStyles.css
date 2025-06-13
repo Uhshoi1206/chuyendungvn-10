@@ -1,0 +1,48 @@
+
+/* Đảm bảo mobile progress bar không bị che khuất */
+@media (max-width: 767px) {
+  body {
+    padding-top: 60px !important;
+  }
+  
+  .container {
+    margin-top: 0 !important;
+  }
+}
+
+/* Smooth scroll cho toàn bộ trang */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Styling cho prose content để TOC hoạt động tốt */
+.prose-content h1,
+.prose-content h2,
+.prose-content h3,
+.prose-content h4,
+.prose-content h5,
+.prose-content h6 {
+  scroll-margin-top: 100px;
+}
+
+/* Tối ưu hiển thị line-clamp */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive cho Table of Contents */
+@media (max-width: 1200px) {
+  .fixed.right-6 {
+    display: none;
+  }
+}

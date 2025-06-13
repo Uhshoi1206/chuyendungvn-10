@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { blogPosts, blogCategories } from '@/data/blogData';
@@ -12,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from '@/hooks/use-toast';
 import { getVehicleUrlPrefix } from '@/models/TruckTypes';
 import ContactForm from '@/components/ContactForm';
+import TableOfContents from '@/components/blog/TableOfContents';
 
 const BlogPostPage = () => {
   const { slug, category } = useParams();
@@ -123,7 +123,7 @@ const BlogPostPage = () => {
             {/* Main content */}
             <div className="lg:w-2/3">
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                {/* Quay lại button */}
+                {/* Quay lại button và meta info */}
                 <div className="p-4 md:p-6">
                   <Link to={`/danh-muc-bai-viet/${currentCategorySlug}`} className="inline-flex items-center text-primary hover:underline mb-4">
                     <ArrowLeft className="h-4 w-4 mr-1" />
@@ -181,7 +181,7 @@ const BlogPostPage = () => {
                 <div className="p-4 md:p-8">
                   {/* Post content */}
                   <div 
-                    className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg"
+                    className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-content"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                   />
                   
@@ -490,6 +490,9 @@ const BlogPostPage = () => {
           </div>
         </div>
       </div>
+      
+      {/* Table of Contents Component */}
+      <TableOfContents content={post.content} />
     </Layout>
   );
 };
