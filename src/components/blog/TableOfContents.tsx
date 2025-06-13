@@ -44,17 +44,33 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
       const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
       const items: TocItem[] = [];
       
-      headings.forEach((heading) => {
-        const id = heading.id || heading.textContent?.toLowerCase()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .trim() || '';
+      headings.forEach((heading, index) => {
+        let id = heading.id;
+        
+        // Nếu heading chưa có id, tạo id từ text content
+        if (!id && heading.textContent) {
+          id = heading.textContent
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // Loại bỏ dấu tiếng Việt
+            .replace(/[^\w\s-]/g, '') // Loại bỏ ký tự đặc biệt
+            .replace(/\s+/g, '-') // Thay thế khoảng trắng bằng dấu gạch ngang
+            .trim()
+            .replace(/^-+|-+$/g, ''); // Loại bỏ dấu gạch ngang ở đầu và cuối
+          
+          // Đảm bảo id là duy nhất
+          let finalId = id;
+          let counter = 1;
+          while (items.some(item => item.id === finalId)) {
+            finalId = `${id}-${counter}`;
+            counter++;
+          }
+          id = finalId;
+        }
         
         if (id && heading.textContent) {
-          // Đảm bảo heading có id
-          if (!heading.id) {
-            heading.id = id;
-          }
+          // Đảm bảo heading có id trong DOM
+          heading.id = id;
           
           items.push({
             id,
@@ -64,6 +80,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
         }
       });
       
+      console.log('Extracted TOC items:', items); // Debug log
       setTocItems(items);
       
       // Cập nhật lại content trong DOM
@@ -113,19 +130,38 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
     const progress = Math.min((scrollTop / documentHeight) * 100, 100);
     setScrollProgress(progress);
 
-    // Tìm heading hiện tại
-    const headingElements = tocItems.map(item => document.getElementById(item.id)).filter(Boolean);
-    let currentActiveId = '';
+    // Tìm heading hiện tại với logic cải tiến
+    const headingElements = tocItems.map(item => {
+      const element = document.getElementById(item.id);
+      return element ? { element, item } : null;
+    }).filter(Boolean);
 
-    for (let i = headingElements.length - 1; i >= 0; i--) {
-      const element = headingElements[i];
-      if (element && element.getBoundingClientRect().top <= 100) {
-        currentActiveId = element.id;
-        break;
+    let currentActiveId = '';
+    
+    // Nếu đã cuộn gần đến cuối trang (95%), chọn heading cuối cùng
+    if (progress >= 95 && headingElements.length > 0) {
+      currentActiveId = headingElements[headingElements.length - 1]!.item.id;
+    } else {
+      // Logic thông thường: tìm heading gần nhất đã vượt qua
+      for (let i = headingElements.length - 1; i >= 0; i--) {
+        const { element, item } = headingElements[i]!;
+        const rect = element.getBoundingClientRect();
+        
+        // Sử dụng threshold linh hoạt hơn
+        if (rect.top <= 150) {
+          currentActiveId = item.id;
+          break;
+        }
+      }
+      
+      // Nếu không tìm thấy, chọn heading đầu tiên nếu đã cuộn xuống
+      if (!currentActiveId && headingElements.length > 0 && scrollTop > 100) {
+        currentActiveId = headingElements[0]!.item.id;
       }
     }
 
     if (currentActiveId !== activeId) {
+      console.log('Active heading changed to:', currentActiveId); // Debug log
       setActiveId(currentActiveId);
     }
   }, [tocItems, activeId]);
@@ -139,10 +175,20 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
 
   // Lắng nghe scroll event
   useEffect(() => {
-    window.addEventListener('scroll', updateScrollInfo, { passive: true });
+    const throttledUpdate = (() => {
+      let timeoutId: NodeJS.Timeout;
+      return () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(updateScrollInfo, 50); // Throttle để tối ưu performance
+      };
+    })();
+    
+    window.addEventListener('scroll', throttledUpdate, { passive: true });
     updateScrollInfo(); // Gọi ngay lập tức để tính toán ban đầu
     
-    return () => window.removeEventListener('scroll', updateScrollInfo);
+    return () => {
+      window.removeEventListener('scroll', throttledUpdate);
+    };
   }, [updateScrollInfo]);
 
   // Cuộn đến heading khi click
