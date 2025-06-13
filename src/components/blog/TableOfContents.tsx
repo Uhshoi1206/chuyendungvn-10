@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronDown, ChevronUp, List, BarChart3 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -127,9 +126,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
   const updateScrollInfo = useCallback(() => {
     const scrollTop = window.scrollY;
     const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = Math.min((scrollTop / documentHeight) * 100, 100);
-    setScrollProgress(progress);
-
+    
+    // Tính toán progress dựa trên vị trí cuộn
+    let progress = 0;
+    if (documentHeight > 0) {
+      progress = Math.min((scrollTop / documentHeight) * 100, 100);
+    }
+    
     // Tìm heading hiện tại với logic cải tiến
     const headingElements = tocItems.map(item => {
       const element = document.getElementById(item.id);
@@ -137,31 +140,64 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
     }).filter(Boolean);
 
     let currentActiveId = '';
+    let readingProgress = 0;
     
-    // Nếu đã cuộn gần đến cuối trang (95%), chọn heading cuối cùng
-    if (progress >= 95 && headingElements.length > 0) {
-      currentActiveId = headingElements[headingElements.length - 1]!.item.id;
-    } else {
-      // Logic thông thường: tìm heading gần nhất đã vượt qua
-      for (let i = headingElements.length - 1; i >= 0; i--) {
-        const { element, item } = headingElements[i]!;
-        const rect = element.getBoundingClientRect();
+    if (headingElements.length > 0) {
+      // Nếu đã cuộn gần đến cuối trang (90% trở lên), đặt progress = 100% và chọn heading cuối
+      if (progress >= 90 || scrollTop + window.innerHeight >= document.documentElement.scrollHeight - 50) {
+        readingProgress = 100;
+        currentActiveId = headingElements[headingElements.length - 1]!.item.id;
+      } else {
+        // Logic thông thường: tìm heading gần nhất đã vượt qua
+        let activeIndex = -1;
         
-        // Sử dụng threshold linh hoạt hơn
-        if (rect.top <= 150) {
-          currentActiveId = item.id;
-          break;
+        for (let i = headingElements.length - 1; i >= 0; i--) {
+          const { element, item } = headingElements[i]!;
+          const rect = element.getBoundingClientRect();
+          
+          // Sử dụng threshold linh hoạt hơn
+          if (rect.top <= 150) {
+            currentActiveId = item.id;
+            activeIndex = i;
+            break;
+          }
+        }
+        
+        // Nếu không tìm thấy heading nào, nhưng đã cuộn xuống
+        if (!currentActiveId && scrollTop > 100 && headingElements.length > 0) {
+          currentActiveId = headingElements[0]!.item.id;
+          activeIndex = 0;
+        }
+        
+        // Tính toán reading progress dựa trên heading hiện tại
+        if (activeIndex >= 0) {
+          const baseProgress = (activeIndex / Math.max(headingElements.length - 1, 1)) * 100;
+          
+          // Điều chỉnh progress trong khoảng của heading hiện tại
+          const currentHeading = headingElements[activeIndex]!;
+          const nextHeading = headingElements[activeIndex + 1];
+          
+          if (nextHeading) {
+            const currentRect = currentHeading.element.getBoundingClientRect();
+            const nextRect = nextHeading.element.getBoundingClientRect();
+            const sectionHeight = nextRect.top - currentRect.top + scrollTop;
+            const sectionProgress = Math.max(0, Math.min(1, (150 - currentRect.top) / Math.max(sectionHeight, 1)));
+            const segmentSize = 100 / Math.max(headingElements.length - 1, 1);
+            readingProgress = Math.min(100, baseProgress + (sectionProgress * segmentSize));
+          } else {
+            // Heading cuối cùng
+            readingProgress = Math.max(baseProgress, progress);
+          }
+        } else {
+          readingProgress = Math.max(0, Math.min(progress, 15)); // Tối đa 15% nếu chưa đến heading nào
         }
       }
-      
-      // Nếu không tìm thấy, chọn heading đầu tiên nếu đã cuộn xuống
-      if (!currentActiveId && headingElements.length > 0 && scrollTop > 100) {
-        currentActiveId = headingElements[0]!.item.id;
-      }
     }
+    
+    setScrollProgress(Math.round(readingProgress));
 
     if (currentActiveId !== activeId) {
-      console.log('Active heading changed to:', currentActiveId); // Debug log
+      console.log('Active heading changed to:', currentActiveId, 'Progress:', Math.round(readingProgress) + '%'); // Debug log
       setActiveId(currentActiveId);
     }
   }, [tocItems, activeId]);
@@ -219,7 +255,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
               <BarChart3 className="h-4 w-4 mr-2 text-primary" />
               Tiến độ đọc
             </div>
-            <span className="text-xs text-gray-500">{Math.round(scrollProgress)}%</span>
+            <span className="text-xs text-gray-500">{scrollProgress}%</span>
           </div>
           <Progress value={scrollProgress} className="h-2" />
         </div>
@@ -258,7 +294,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
         <div className="mt-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-medium text-gray-600">Tiến độ đọc</span>
-            <span className="text-xs text-gray-500">{Math.round(scrollProgress)}%</span>
+            <span className="text-xs text-gray-500">{scrollProgress}%</span>
           </div>
           <Progress value={scrollProgress} className="h-2" />
         </div>
