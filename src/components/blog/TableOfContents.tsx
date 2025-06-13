@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronDown, ChevronUp, List, BarChart3 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const tocContainerRef = useRef<HTMLDivElement>(null);
 
   // Phát hiện thiết bị mobile
   useEffect(() => {
@@ -77,6 +78,34 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
     }
   }, [content]);
 
+  // Tự động cuộn mục lục theo active item
+  const scrollToActiveItem = useCallback((activeItemId: string) => {
+    if (!tocContainerRef.current || !activeItemId) return;
+
+    const activeItemElement = tocContainerRef.current.querySelector(`[data-toc-id="${activeItemId}"]`);
+    if (activeItemElement && tocContainerRef.current) {
+      const container = tocContainerRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = activeItemElement.getBoundingClientRect();
+      
+      // Tính toán vị trí cần cuộn
+      const containerTop = containerRect.top;
+      const containerBottom = containerRect.bottom;
+      const itemTop = itemRect.top;
+      const itemBottom = itemRect.bottom;
+      
+      // Kiểm tra nếu item không nằm trong vùng nhìn thấy
+      if (itemTop < containerTop || itemBottom > containerBottom) {
+        // Cuộn để item ở giữa container
+        const scrollTop = container.scrollTop + (itemTop - containerTop) - (containerRect.height / 2) + (itemRect.height / 2);
+        container.scrollTo({
+          top: scrollTop,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, []);
+
   // Tính toán progress và active heading
   const updateScrollInfo = useCallback(() => {
     const scrollTop = window.scrollY;
@@ -100,6 +129,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
       setActiveId(currentActiveId);
     }
   }, [tocItems, activeId]);
+
+  // Tự động cuộn mục lục khi activeId thay đổi
+  useEffect(() => {
+    if (activeId) {
+      scrollToActiveItem(activeId);
+    }
+  }, [activeId, scrollToActiveItem]);
 
   // Lắng nghe scroll event
   useEffect(() => {
@@ -184,11 +220,15 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, className })
 
       {/* Content */}
       {!isCollapsed && (
-        <div className="max-h-96 overflow-y-auto p-2">
+        <div 
+          ref={tocContainerRef}
+          className="max-h-96 overflow-y-auto p-2 scroll-smooth"
+        >
           <nav className="space-y-1">
             {tocItems.map((item) => (
               <button
                 key={item.id}
+                data-toc-id={item.id}
                 onClick={() => scrollToHeading(item.id)}
                 className={cn(
                   "w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 hover:bg-gray-100",
