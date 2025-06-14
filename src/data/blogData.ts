@@ -2,9 +2,11 @@ import { BlogPost } from '@/models/BlogPost';
 import { newIndustryNewsPosts } from './blogDataAddition';
 import { newProductReviewPosts } from './productReviewPosts';
 import { driverTipsPosts } from './driverTipsPosts';
+import { maintenancePosts } from './maintenancePosts';
 
 // Gộp các bài viết mới vào danh sách bài viết hiện có
 export const blogPosts: BlogPost[] = [
+  ...maintenancePosts, // Thêm 4 bài viết về bảo dưỡng mới
   ...driverTipsPosts, // Thêm 4 bài viết kinh nghiệm lái xe mới
   ...newProductReviewPosts, // Thêm 4 bài viết đánh giá xe mới
   ...newIndustryNewsPosts, // Thêm 4 bài viết tin tức ngành
