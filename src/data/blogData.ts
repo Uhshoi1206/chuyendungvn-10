@@ -4,9 +4,11 @@ import { newProductReviewPosts } from './productReviewPosts';
 import { driverTipsPosts } from './driverTipsPosts';
 import { maintenancePosts } from './maintenancePosts';
 import { buyingGuidePosts } from './buyingGuidePosts';
+import { technologyPosts } from './technologyPosts';
 
 // Gộp các bài viết mới vào danh sách bài viết hiện có
 export const blogPosts: BlogPost[] = [
+  ...technologyPosts, // Thêm 4 bài viết công nghệ & đổi mới mới
   ...buyingGuidePosts, // Thêm 4 bài viết tư vấn mua xe mới
   ...maintenancePosts, // Thêm 4 bài viết về bảo dưỡng mới
   ...driverTipsPosts, // Thêm 4 bài viết kinh nghiệm lái xe mới
