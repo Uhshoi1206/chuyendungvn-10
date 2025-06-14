@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -8,12 +9,15 @@ import { CalendarDays, User, ChevronRight, Clock, Search, Tag, TrendingUp, Eye, 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/components/ui/pagination";
 import NewsletterForm from '@/components/NewsletterForm';
 
 const BlogPage = () => {
-  // State để lưu trữ kết quả tìm kiếm
+  // State để lưu trữ kết quả tìm kiếm và phân trang
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 9; // Số bài viết hiển thị trên mỗi trang
   
   // Lấy ra tất cả bài viết và sắp xếp theo thời gian mới nhất
   const allPosts = [...blogPosts].sort((a, b) => 
@@ -74,15 +78,72 @@ const BlogPage = () => {
     
     return matchesCategory && matchesSearch;
   });
+
+  // Tính toán phân trang
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+
+  // Reset trang khi thay đổi filter hoặc search
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, searchQuery]);
   
   // Hàm xử lý tìm kiếm
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setCurrentPage(1);
     // Tự động cuộn xuống phần kết quả tìm kiếm
     const resultsSection = document.getElementById('blog-results');
     if (resultsSection) {
       resultsSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  // Hàm xử lý thay đổi trang
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Cuộn lên đầu kết quả khi chuyển trang
+    const resultsSection = document.getElementById('blog-results');
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Tạo array số trang để hiển thị pagination
+  const getVisiblePages = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('ellipsis');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('ellipsis');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -242,68 +303,136 @@ const BlogPage = () => {
                 </p>
               )}
               
-              {filteredPosts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredPosts.map(post => (
-                    <Link key={post.id} to={getPostUrl(post)} className="group">
-                      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
-                        <div className="aspect-video relative overflow-hidden">
-                          <img
-                            src={post.images[0]}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                          />
-                          <div className="absolute top-3 left-3">
-                            <Link 
-                              to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
-                              className="inline-block bg-white/80 backdrop-blur-sm text-primary rounded-full px-3 py-1 text-xs font-medium"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {blogCategories[post.category]}
-                            </Link>
-                          </div>
-                          {post.views && (
-                            <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md flex items-center">
-                              <Eye className="h-3 w-3 mr-1" />
-                              <span>{post.views}</span>
+              {/* Hiển thị thông tin phân trang */}
+              {filteredPosts.length > 0 && (
+                <div className="mb-4 flex justify-between items-center text-sm text-gray-600">
+                  <span>
+                    Hiển thị {startIndex + 1}-{Math.min(startIndex + postsPerPage, filteredPosts.length)} trong tổng số {filteredPosts.length} bài viết
+                  </span>
+                  <span>
+                    Trang {currentPage} / {totalPages}
+                  </span>
+                </div>
+              )}
+              
+              {currentPosts.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {currentPosts.map(post => (
+                      <Link key={post.id} to={getPostUrl(post)} className="group">
+                        <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition h-full flex flex-col">
+                          <div className="aspect-video relative overflow-hidden">
+                            <img
+                              src={post.images[0]}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                            <div className="absolute top-3 left-3">
+                              <Link 
+                                to={`/danh-muc-bai-viet/${getCategorySlug(post.category)}`}
+                                className="inline-block bg-white/80 backdrop-blur-sm text-primary rounded-full px-3 py-1 text-xs font-medium"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {blogCategories[post.category]}
+                              </Link>
                             </div>
-                          )}
-                        </div>
-                        <div className="p-5 flex flex-col flex-grow">
-                          <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
-                            <span className="flex items-center">
-                              <CalendarDays className="h-3 w-3 mr-1" />
-                              {new Date(post.publishDate).toLocaleDateString('vi-VN')}
-                            </span>
-                            <span className="flex items-center">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {post.readTime} phút
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                            {post.title}
-                          </h3>
-                          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                            {post.description}
-                          </p>
-                          <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <div className="flex items-center text-sm">
-                              <User className="h-4 w-4 mr-1 text-primary/80" />
-                              <span className="text-gray-700">{post.author}</span>
-                            </div>
-                            {post.comments && (
-                              <div className="flex items-center text-sm text-gray-500">
-                                <MessageCircle className="h-4 w-4 mr-1" />
-                                <span>{post.comments}</span>
+                            {post.views && (
+                              <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md flex items-center">
+                                <Eye className="h-3 w-3 mr-1" />
+                                <span>{post.views}</span>
                               </div>
                             )}
                           </div>
+                          <div className="p-5 flex flex-col flex-grow">
+                            <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
+                              <span className="flex items-center">
+                                <CalendarDays className="h-3 w-3 mr-1" />
+                                {new Date(post.publishDate).toLocaleDateString('vi-VN')}
+                              </span>
+                              <span className="flex items-center">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {post.readTime} phút
+                              </span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                              {post.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                              {post.description}
+                            </p>
+                            <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                              <div className="flex items-center text-sm">
+                                <User className="h-4 w-4 mr-1 text-primary/80" />
+                                <span className="text-gray-700">{post.author}</span>
+                              </div>
+                              {post.comments && (
+                                <div className="flex items-center text-sm text-gray-500">
+                                  <MessageCircle className="h-4 w-4 mr-1" />
+                                  <span>{post.comments}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-8 flex justify-center">
+                      <Pagination>
+                        <PaginationContent>
+                          {currentPage > 1 && (
+                            <PaginationItem>
+                              <PaginationPrevious 
+                                href="#" 
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handlePageChange(currentPage - 1);
+                                }}
+                              />
+                            </PaginationItem>
+                          )}
+                          
+                          {getVisiblePages().map((page, index) => (
+                            <PaginationItem key={index}>
+                              {page === 'ellipsis' ? (
+                                <PaginationEllipsis />
+                              ) : (
+                                <PaginationLink
+                                  href="#"
+                                  isActive={currentPage === page}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    if (typeof page === 'number') {
+                                      handlePageChange(page);
+                                    }
+                                  }}
+                                >
+                                  {page}
+                                </PaginationLink>
+                              )}
+                            </PaginationItem>
+                          ))}
+                          
+                          {currentPage < totalPages && (
+                            <PaginationItem>
+                              <PaginationNext 
+                                href="#" 
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handlePageChange(currentPage + 1);
+                                }}
+                              />
+                            </PaginationItem>
+                          )}
+                        </PaginationContent>
+                      </Pagination>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="py-10 text-center">
                   <p className="text-gray-600">Không tìm thấy bài viết nào phù hợp với từ khóa "{searchQuery}"</p>
