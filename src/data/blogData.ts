@@ -1,9 +1,11 @@
 import { BlogPost } from '@/models/BlogPost';
 import { newIndustryNewsPosts } from './blogDataAddition';
+import { newProductReviewPosts } from './productReviewPosts';
 
 // Gộp các bài viết mới vào danh sách bài viết hiện có
 export const blogPosts: BlogPost[] = [
-  ...newIndustryNewsPosts, // Thêm 4 bài viết mới vào đầu danh sách
+  ...newProductReviewPosts, // Thêm 4 bài viết đánh giá xe mới
+  ...newIndustryNewsPosts, // Thêm 4 bài viết tin tức ngành
   {
     id: 'xe-tai-ban-chay-2023',
     title: 'Top 5 xe tải bán chạy nhất năm 2023',
