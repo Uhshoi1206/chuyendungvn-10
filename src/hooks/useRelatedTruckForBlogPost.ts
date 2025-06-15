@@ -1,134 +1,185 @@
-
-import { useMemo } from "react";
-import { trucks } from "@/data/truckData";
-import { BlogPost } from "@/models/BlogPost";
-import { Truck } from "@/models/TruckTypes";
+import { BlogPost } from '@/models/BlogPost';
+import { trucks } from '@/data/truckData';
+import { Truck } from '@/models/TruckTypes';
 
 /**
- * Tìm chiếc xe liên quan nhất nếu bài viết blog có nhắc nổi bật tới model xe cụ thể nào đó.
- * Ưu tiên khớp tên/ngắn gọn/slug trong title, description, tags. 
- * Trả về thông tin sản phẩm hoặc null nếu không có.
+ * Hook để tìm sản phẩm liên quan đến bài viết blog
+ * Dựa vào tiêu đề, nội dung, danh mục và tag của bài viết
  */
 const useRelatedTruckForBlogPost = (post: BlogPost): Truck | null => {
-  return useMemo(() => {
-    if (!post) return null;
+  if (!post) return null;
 
-    console.log(`Tìm sản phẩm liên quan cho bài viết: ${post.title}`);
+  // Xác định loại xe dựa vào danh mục bài viết
+  let preferredVehicleType: string | null = null;
+  
+  switch (post.category) {
+    case 'product-review':
+      // Ưu tiên tìm xe cụ thể được đề cập trong tiêu đề hoặc nội dung
+      break;
+    case 'driver-tips':
+      // Ưu tiên xe tải cho bài viết kinh nghiệm lái xe
+      preferredVehicleType = 'xe-tai';
+      break;
+    case 'maintenance':
+      // Bảo dưỡng - tìm theo loại xe được đề cập
+      break;
+    case 'buying-guide':
+      // Tư vấn mua xe - tìm theo loại xe được đề cập
+      break;
+    case 'technology':
+      // Công nghệ - tìm theo loại xe được đề cập
+      break;
+    case 'industry-news':
+      // Tin tức ngành - không có ưu tiên cụ thể
+      break;
+  }
 
-    // Xử lý tìm gần đúng tên xe xuất hiện ở đầu tiêu đề hoặc tag chứa slug
-    const normalizedTitle = post.title.toLowerCase();
-    const normalizedDesc = post.description.toLowerCase();
-    const normalizedContent = post.content?.toLowerCase() || '';
-    const tags = post.tags?.map(t => t.toLowerCase()) || [];
+  // Tạo danh sách từ khóa từ tiêu đề, nội dung và tag
+  const titleWords = post.title.toLowerCase().split(' ');
+  const contentWords = post.content.toLowerCase().split(' ');
+  const tags = post.tags ? post.tags.map(tag => tag.toLowerCase()) : [];
+  
+  // Danh sách các từ khóa quan trọng để tìm kiếm
+  const keywordsByType: Record<string, string[]> = {
+    'xe-tai': ['xe tải', 'truck', 'tải trọng', 'thùng', 'mighty', 'hyundai', 'isuzu', 'hino', 'dongfeng', 'thaco'],
+    'xe-cau': ['cẩu', 'crane', 'tadano', 'kanglim', 'soosan', 'unic', 'nâng', 'cần cẩu', 'xe cẩu'],
+    'mooc': ['mooc', 'sơ mi rơ mooc', 'rơ mooc', 'semi-trailer', 'trailer', 'container', 'xương', 'sàn', 'ben', 'lùn', 'cimc'],
+    'dau-keo': ['đầu kéo', 'tractor', 'kéo', 'hyundai', 'howo', 'chenglong', 'xcient', 'deawoo']
+  };
 
-    // Định nghĩa ánh xạ cụ thể cho từng bài viết dựa trên title hoặc category
-    const specificMappings: Record<string, string> = {
-      // Mapping dựa trên từ khóa trong tiêu đề
-      'mighty': 'mighty-ex8-gtl-8-tan',
-      'ex8': 'mighty-ex8-gtl-8-tan', 
-      'hyundai ex8': 'mighty-ex8-gtl-8-tan',
-      'porter': 'new-porter-h150-1-5-tan',
-      'h150': 'new-porter-h150-1-5-tan',
-      'hd72': 'hd72-3-5-tan',
-      'hino': 'hino-xzu-7-5tan-thung-dong-lanh',
-      'đông lạnh': 'hino-xzu-7-5tan-thung-dong-lanh',
-      'dong lanh': 'hino-xzu-7-5tan-thung-dong-lanh',
-      'bảo ôn': 'hyundai-h150-thung-bao-on',
-      'bao on': 'hyundai-h150-thung-bao-on',
-      'thùng kín': 'isuzu-qkr-thung-kin',
-      'thung kin': 'isuzu-qkr-thung-kin',
-      'thùng bạt': 'veam-vpt350-thung-bat',
-      'thung bat': 'veam-vpt350-thung-bat',
-      'thùng lửng': 'isuzu-vm-fx-thung-lung',
-      'thung lung': 'isuzu-vm-fx-thung-lung',
-      'xi téc': 'dongfeng-xi-tec-9-khoi',
-      'xi tec': 'dongfeng-xi-tec-9-khoi',
-      'xăng dầu': 'dongfeng-xi-tec-9-khoi',
-      'xang dau': 'dongfeng-xi-tec-9-khoi',
-      'tadano': 'tadano-tm-ze554mh',
-      'kanglim': 'kanglim-ks1056',
-      'cẩu': 'tadano-tm-ze554mh',
-      'cau': 'tadano-tm-ze554mh',
-      'mooc ben': 'doosung-3-truc-ben',
-      'mooc sàn': 'cimc-3-truc-san',
-      'mooc san': 'cimc-3-truc-san',
-      'sàn rút': 'doosung-3-truc-san-rut',
-      'san rut': 'doosung-3-truc-san-rut',
-      'container': 'doosung-chuyên-chở-container',
-      'cổ cò': 'doosung-co-co',
-      'co co': 'doosung-co-co',
-      'cổ ngỗng': 'doosung-co-co',
-      'co ngong': 'doosung-co-co',
-      'xương': 'doosung-xuong',
-      'xuong': 'doosung-xuong',
-      'lửng': 'cimc-lung',
-      'lung': 'cimc-lung',
-      'rào': 'cimc-rao',
-      'rao': 'cimc-rao',
-      'xi măng': 'cimc-bon-xi-mang',
-      'xi mang': 'cimc-bon-xi-mang',
-      'bụi sắt': 'doosung-bon-bui-sat',
-      'bui sat': 'doosung-bon-bui-sat',
-      'bột mì': 'cimc-bon-bot-mi',
-      'bot mi': 'cimc-bon-bot-mi',
-      'đầu kéo': 'hyundai-xcient-dau-keo',
-      'dau keo': 'hyundai-xcient-dau-keo',
-      'xcient': 'hyundai-xcient-dau-keo',
-      'howo': 'howo-dau-keo',
-      'giga': 'isuzu-giga-dau-keo'
+  // Tìm loại xe được đề cập nhiều nhất trong bài viết
+  if (!preferredVehicleType) {
+    const typeCounts: Record<string, number> = {
+      'xe-tai': 0,
+      'xe-cau': 0,
+      'mooc': 0,
+      'dau-keo': 0
     };
 
-    // Tìm kiếm theo specific mappings trước
-    for (const [keyword, truckSlug] of Object.entries(specificMappings)) {
-      if (normalizedTitle.includes(keyword) || 
-          normalizedDesc.includes(keyword) || 
-          tags.some(tag => tag.includes(keyword))) {
-        
-        const foundTruck = trucks.find(truck => truck.slug === truckSlug);
-        if (foundTruck) {
-          console.log(`Tìm thấy sản phẩm theo keyword "${keyword}": ${foundTruck.name}`);
-          return foundTruck;
+    // Đếm số lần xuất hiện của từ khóa theo loại xe
+    Object.entries(keywordsByType).forEach(([type, keywords]) => {
+      keywords.forEach(keyword => {
+        // Kiểm tra trong tiêu đề
+        if (post.title.toLowerCase().includes(keyword)) {
+          typeCounts[type] += 3; // Tiêu đề quan trọng hơn
         }
-      }
-    }
-
-    // Fallback: tìm kiếm theo category và random selection để tránh trả về cùng 1 sản phẩm
-    const categoryBasedTrucks = trucks.filter(truck => {
-      if (post.category === 'product-review') {
-        return truck.type === 'xe-tai';
-      }
-      if (post.category === 'driver-tips') {
-        return truck.type === 'xe-tai' || truck.type === 'xe-cau';
-      }
-      if (post.category === 'maintenance') {
-        return true; // Tất cả loại xe đều cần bảo dưỡng
-      }
-      if (post.category === 'buying-guide') {
-        return truck.type === 'xe-tai';
-      }
-      if (post.category === 'technology') {
-        return truck.type === 'dau-keo' || truck.type === 'mooc';
-      }
-      return truck.type === 'xe-tai'; // Default
+        
+        // Kiểm tra trong nội dung
+        if (post.content.toLowerCase().includes(keyword)) {
+          typeCounts[type] += 1;
+        }
+        
+        // Kiểm tra trong tags
+        if (tags.some(tag => tag.includes(keyword) || keyword.includes(tag))) {
+          typeCounts[type] += 2; // Tags quan trọng
+        }
+      });
     });
 
-    if (categoryBasedTrucks.length > 0) {
-      // Sử dụng hash của post ID để đảm bảo consistent nhưng khác nhau cho mỗi bài viết
-      const hash = post.id.split('').reduce((a, b) => {
-        a = ((a << 5) - a) + b.charCodeAt(0);
-        return a & a;
-      }, 0);
-      
-      const index = Math.abs(hash) % categoryBasedTrucks.length;
-      const selectedTruck = categoryBasedTrucks[index];
-      
-      console.log(`Fallback: chọn sản phẩm theo category cho bài "${post.title}": ${selectedTruck.name}`);
-      return selectedTruck;
-    }
+    // Tìm loại xe có điểm cao nhất
+    let maxCount = 0;
+    Object.entries(typeCounts).forEach(([type, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        preferredVehicleType = type;
+      }
+    });
+  }
 
-    console.log(`Không tìm thấy sản phẩm liên quan cho bài viết: ${post.title}`);
-    return null;
-  }, [post]);
+  // Tìm các mẫu xe cụ thể được đề cập
+  const mentionedModels: Record<string, number> = {};
+  
+  // Tạo danh sách tất cả các mẫu xe
+  trucks.forEach(truck => {
+    // Tách tên xe thành các từ để tìm kiếm
+    const truckNameWords = truck.name.toLowerCase().split(' ');
+    
+    // Tính điểm cho mỗi xe dựa trên sự xuất hiện trong bài viết
+    let score = 0;
+    
+    // Kiểm tra tên xe trong tiêu đề
+    if (post.title.toLowerCase().includes(truck.name.toLowerCase())) {
+      score += 10; // Tiêu đề đề cập trực tiếp đến tên xe
+    }
+    
+    // Kiểm tra tên xe trong nội dung
+    if (post.content.toLowerCase().includes(truck.name.toLowerCase())) {
+      score += 5; // Nội dung đề cập trực tiếp đến tên xe
+    }
+    
+    // Kiểm tra từng từ trong tên xe
+    truckNameWords.forEach(word => {
+      if (word.length < 3) return; // Bỏ qua các từ quá ngắn
+      
+      if (post.title.toLowerCase().includes(word)) {
+        score += 3;
+      }
+      
+      if (post.content.toLowerCase().includes(word)) {
+        score += 1;
+      }
+      
+      // Kiểm tra trong tags
+      if (tags.some(tag => tag.includes(word) || word.includes(tag))) {
+        score += 2;
+      }
+    });
+    
+    // Kiểm tra thương hiệu
+    const brands = Array.isArray(truck.brand) ? truck.brand : [truck.brand];
+    brands.forEach(brand => {
+      if (post.title.toLowerCase().includes(brand.toLowerCase())) {
+        score += 3;
+      }
+      
+      if (post.content.toLowerCase().includes(brand.toLowerCase())) {
+        score += 1;
+      }
+      
+      // Kiểm tra trong tags
+      if (tags.some(tag => tag.includes(brand.toLowerCase()) || brand.toLowerCase().includes(tag))) {
+        score += 2;
+      }
+    });
+    
+    // Nếu loại xe phù hợp với loại xe ưu tiên, tăng điểm
+    if (preferredVehicleType && truck.type === preferredVehicleType) {
+      score += 3;
+    }
+    
+    // Lưu điểm cho xe này
+    if (score > 0) {
+      mentionedModels[truck.id] = score;
+    }
+  });
+  
+  // Tìm xe có điểm cao nhất
+  let highestScore = 0;
+  let bestMatchTruckId: string | null = null;
+  
+  Object.entries(mentionedModels).forEach(([truckId, score]) => {
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatchTruckId = truckId;
+    }
+  });
+  
+  // Nếu không tìm thấy xe phù hợp cụ thể, chọn xe ngẫu nhiên từ loại xe ưu tiên
+  if (!bestMatchTruckId && preferredVehicleType) {
+    const trucksOfPreferredType = trucks.filter(truck => truck.type === preferredVehicleType);
+    if (trucksOfPreferredType.length > 0) {
+      const randomIndex = Math.floor(Math.random() * trucksOfPreferredType.length);
+      return trucksOfPreferredType[randomIndex];
+    }
+  }
+  
+  // Trả về xe phù hợp nhất nếu tìm thấy
+  if (bestMatchTruckId) {
+    return trucks.find(truck => truck.id === bestMatchTruckId) || null;
+  }
+  
+  // Nếu không tìm thấy xe phù hợp, trả về null
+  return null;
 };
 
 export default useRelatedTruckForBlogPost;
