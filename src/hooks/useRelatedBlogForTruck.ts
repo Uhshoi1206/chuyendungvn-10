@@ -1,3 +1,4 @@
+
 import { BlogPost } from '@/models/BlogPost';
 import { blogPosts } from '@/data/blogData';
 import { Truck } from '@/models/TruckTypes';
