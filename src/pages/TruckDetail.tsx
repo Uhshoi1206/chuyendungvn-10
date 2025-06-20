@@ -1763,8 +1763,11 @@ const TruckDetail = () => {
               className="rounded-2xl shadow-xl border border-blue-100 bg-gradient-to-b from-blue-50 via-white to-white px-2 py-7 mb-2"
             >
               <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center uppercase tracking-wider">
-                Bài viết liên quan về {truck.name}
-              </h2>
+  {relatedBlogs.some(post => 
+    post.title.toLowerCase().includes(truck.name.toLowerCase()) ||
+    post.content.toLowerCase().includes(truck.name.toLowerCase())
+  ) ? `Bài viết liên quan về ${truck.name}` : 'Bài viết đề xuất'}
+</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedBlogs.slice(0, 3).map((post) => (
                   <Link key={post.id} to={`/${getCategorySlug(post.category)}/${post.slug}`} className="group">
