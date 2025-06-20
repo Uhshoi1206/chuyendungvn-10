@@ -17,6 +17,7 @@ import PriceQuoteDialog from '@/components/PriceQuoteDialog';
 import { useCompare } from '@/contexts/CompareContext';
 import TruckActions from '@/components/TruckDetail/TruckActions';
 import CostEstimator from '@/components/TruckDetail/CostEstimator'; // Thêm mới
+import useRelatedBlogForTruck from '@/hooks/useRelatedBlogForTruck';
 
 const TruckDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -47,48 +48,20 @@ const TruckDetail = () => {
     }
   }, [slug]);
 
-  // ====== CẢI TIẾN LỌC BÀI VIẾT BLOG LIÊN QUAN ======
-  let relatedBlogs: typeof blogPosts = [];
-  if (truck) {
-    // Tạo ra các từ khóa chính xác cho sản phẩm hiện tại
-    const nameKeywords = [
-      truck.name.toLowerCase(),
-      truck.slug.replace(/-/g, ' ').toLowerCase()
-    ];
-    // Tìm các bài viết có nhắc đến đúng sản phẩm này trong tiêu đề/mô tả/tag (ưu tiên số 1)
-    let mainRelated = blogPosts.filter(post =>
-      nameKeywords.some(kw =>
-        post.title.toLowerCase().includes(kw) ||
-        post.description.toLowerCase().includes(kw) ||
-        (post.tags && post.tags.some(tag => tag.toLowerCase().includes(kw)))
-      )
-    );
+  const relatedBlogs = useRelatedBlogForTruck(truck);
 
-    // Loại bỏ trùng id
-    mainRelated = mainRelated.filter(
-      (post, idx, arr) => arr.findIndex(p => p.id === post.id) === idx
-    );
+  const getCategorySlug = (category: string) => {
+  const slugMap: Record<string, string> = {
+    'industry-news': 'tin-tuc-nganh-van-tai',
+    'product-review': 'danh-gia-xe', 
+    'driver-tips': 'kinh-nghiem-lai-xe',
+    'maintenance': 'bao-duong',
+    'buying-guide': 'tu-van-mua-xe',
+    'technology': 'cong-nghe-doi-moi'
+  };
+  return slugMap[category] || category;
+};
 
-    // Nếu có ít hơn 3 bài viết liên quan trực tiếp, mở rộng thêm bài viết cùng thương hiệu nhưng trừ bài khác sản phẩm
-    if (mainRelated.length < 3) {
-      const brandKeyword = Array.isArray(truck.brand) ? truck.brand[0].toLowerCase() : truck.brand.toLowerCase();
-      const extraRelated = blogPosts.filter(post =>
-        // Cùng thương hiệu, không phải bài chính này và chưa nằm trong mainRelated
-        (post.title.toLowerCase().includes(brandKeyword) ||
-         post.description.toLowerCase().includes(brandKeyword) ||
-         (post.tags && post.tags.some(tag => tag.toLowerCase().includes(brandKeyword)))
-        )
-        && !mainRelated.some(p => p.id === post.id)
-      );
-      // Gộp lại, vẫn loại trùng id
-      relatedBlogs = [...mainRelated, ...extraRelated].filter(
-        (post, idx, arr) => arr.findIndex(p => p.id === post.id) === idx
-      );
-    } else {
-      relatedBlogs = mainRelated;
-    }
-  }
-  
   if (!truck) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -1794,7 +1767,7 @@ const TruckDetail = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedBlogs.slice(0, 3).map((post) => (
-                  <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                  <Link key={post.id} to={`/${getCategorySlug(post.category)}/${post.slug}`} className="group">
                     <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition flex flex-col h-full border border-blue-100">
                       <div className="aspect-video w-full overflow-hidden relative">
                         <img
